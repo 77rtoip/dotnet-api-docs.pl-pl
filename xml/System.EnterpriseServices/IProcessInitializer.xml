@@ -1,0 +1,135 @@
+<Type Name="IProcessInitializer" FullName="System.EnterpriseServices.IProcessInitializer">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="71de6c95b5ac06ee9ff4c5ad83a05ad3542abd35" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public interface IProcessInitializer" />
+  <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IProcessInitializer" />
+  <TypeSignature Language="DocId" Value="T:System.EnterpriseServices.IProcessInitializer" />
+  <TypeSignature Language="VB.NET" Value="Public Interface IProcessInitializer" />
+  <TypeSignature Language="C++ CLI" Value="public interface class IProcessInitializer" />
+  <AssemblyInfo>
+    <AssemblyName>System.EnterpriseServices</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Interfaces />
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.Guid("1113f52d-dc7f-4943-aed6-88d04027e32a")</AttributeName>
+    </Attribute>
+    <Attribute>
+      <AttributeName>System.Runtime.InteropServices.InterfaceType</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="5d337-101">Obsługuje metody, które mogą być wywoływane, gdy składnik COM uruchamiania lub wyłączania.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="5d337-101">Supports methods that can be called when a COM component starts up or shuts down.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5d337-102">Implementowanie <xref:System.EnterpriseServices.IProcessInitializer> metody interfejsu w obsługiwanych składników Jeśli chcesz uruchomić inicjowania lub zamknięcia kodu podczas procesu serwera (Dllhost.exe) uruchamiania lub zamykania, odpowiednio.</span><span class="sxs-lookup"><span data-stu-id="5d337-102">Implement the <xref:System.EnterpriseServices.IProcessInitializer> interface methods on serviced components if you want to run initialization or shutdown code when a server process (Dllhost.exe) starts up or shuts down, respectively.</span></span>  
+  
+ <span data-ttu-id="5d337-103">COM + zawiera `Startup` i `Shutdown` zdarzenia, gdy Dllhost.exe początkowej i końcowej.</span><span class="sxs-lookup"><span data-stu-id="5d337-103">COM+ provides `Startup` and `Shutdown` events when Dllhost.exe starts and ends.</span></span> <span data-ttu-id="5d337-104">Ta funkcja umożliwia wszystkie składniki modelu COM + w aplikacji serwera COM + (nazywane składniki serwera poniżej) do uruchamiania niestandardowych inicjowanie i oczyszczanie kodu są zainstalowane.</span><span class="sxs-lookup"><span data-stu-id="5d337-104">This feature enables any COM+ components that are installed in a COM+ server application (referred to as server components hereafter) to run custom initialization and clean up code.</span></span> <span data-ttu-id="5d337-105">Wystąpienia każdego składnika, który implementuje <xref:System.EnterpriseServices.IProcessInitializer> interfejs zostanie utworzona i przechowywana w czasie trwania procesu i wywołano metody interfejsu podczas uruchamiania i wyłączania.</span><span class="sxs-lookup"><span data-stu-id="5d337-105">An instance of each component that implements the <xref:System.EnterpriseServices.IProcessInitializer> interface will be created and stored for the duration of the process, and called on the interface methods during startup and shutdown.</span></span> <span data-ttu-id="5d337-106">Po zaimplementowaniu na <xref:System.EnterpriseServices.ServicedComponent>, podczas rejestracji składnika `InitializesServerApplication` parametru w `COMAdminCatalogObject` w składnikach kolekcji ustawiono `true`.</span><span class="sxs-lookup"><span data-stu-id="5d337-106">When implemented on a <xref:System.EnterpriseServices.ServicedComponent>, during registration of the component, the `InitializesServerApplication` parameter in the `COMAdminCatalogObject` within the Components collection is set to `true`.</span></span>  
+  
+ <span data-ttu-id="5d337-107">Przy użyciu `Startup` i `Shutdown` zdarzenia, można zainicjować zasobów, tworzyć połączenia, zainicjować udostępnionych danych, a następnie uruchom oczyszczanie kodu.</span><span class="sxs-lookup"><span data-stu-id="5d337-107">Using the `Startup` and `Shutdown` events, you can initialize resources, create connections, initialize shared data, and run cleanup code.</span></span> <span data-ttu-id="5d337-108">Nie należy jednak dostępu stanów, które są specyficzne dla modelu COM +, ponieważ wystąpienia serwera składników nie został jeszcze utworzony.</span><span class="sxs-lookup"><span data-stu-id="5d337-108">However, you must not access states that are specific to COM+ because instances of server components have not yet been created.</span></span> <span data-ttu-id="5d337-109">Ponadto kod w `Startup` i `Shutdown` zdarzenia powinien zwrócić tak szybko jak to możliwe, ponieważ system oczekuje tylko 90 sekund na Dllhost.exe w celu przygotowania do akceptowania aktywacji po procesie uruchamiania systemu.</span><span class="sxs-lookup"><span data-stu-id="5d337-109">In addition, the code in the `Startup` and `Shutdown` events should return as quickly as possible, because the system waits only 90 seconds for Dllhost.exe to prepare to accept activations after the system starts the process.</span></span> <span data-ttu-id="5d337-110">Jeśli nie Dllhost.exe sygnalizuje, że jest gotowy w ciągu 90 sekund, system kończy proces; w związku z tym wszystkie inicjowania przetwarzania musi zostać wykonane w tym przedziale czasu.</span><span class="sxs-lookup"><span data-stu-id="5d337-110">If Dllhost.exe does not signal that it is ready within 90 seconds, the system ends the process; thus, all initialization processing needs to be completed within this time frame.</span></span> <span data-ttu-id="5d337-111">Składnik każdego serwera, który uczestniczy w inicjowania musi obsługiwać <xref:System.EnterpriseServices.IProcessInitializer> interfejsu.</span><span class="sxs-lookup"><span data-stu-id="5d337-111">Each server component that participates in initialization must support the <xref:System.EnterpriseServices.IProcessInitializer> interface.</span></span> <span data-ttu-id="5d337-112">Przy uruchamianiu DllHost.exe COM + tworzy wszystkie składniki serwera, którzy zażądali tej usługi, wywołania `QueryInterface` dla <xref:System.EnterpriseServices.IProcessInitializer> interfejsu i wywołania <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> funkcji.</span><span class="sxs-lookup"><span data-stu-id="5d337-112">On DllHost.exe startup, COM+ creates all server components that requested this service, calls `QueryInterface` for the <xref:System.EnterpriseServices.IProcessInitializer> interface, and calls the <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> function.</span></span> <span data-ttu-id="5d337-113">Podobnie podczas zamykania procesu DllHost.exe wywołuje <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> funkcja tych wcześniej zapisanych wskaźniki interfejsu.</span><span class="sxs-lookup"><span data-stu-id="5d337-113">Similarly, when the DllHost.exe process is shut down, it calls the <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> function on those previously stored interface pointers.</span></span>  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="Shutdown">
+      <MemberSignature Language="C#" Value="public void Shutdown ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Shutdown() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.EnterpriseServices.IProcessInitializer.Shutdown" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Shutdown ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Shutdown();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.EnterpriseServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="5d337-114">Wykonuje akcje zamknięcia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-114">Performs shutdown actions.</span>
+          </span>
+          <span data-ttu-id="5d337-115">Wywoływana, gdy Dllhost.exe zostanie zamknięta.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-115">Called when Dllhost.exe is shut down.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5d337-116"><xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> nie jest wywoływana podczas natychmiastowy błąd lub inne zdarzenia zamknięcia krytycznego.</span><span class="sxs-lookup"><span data-stu-id="5d337-116"><xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> is not called during a failfast or other catastrophic shutdown events.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Startup">
+      <MemberSignature Language="C#" Value="public void Startup (object punkProcessControl);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Startup([in]object punkProcessControl) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.EnterpriseServices.IProcessInitializer.Startup(System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Startup (punkProcessControl As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Startup(System::Object ^ punkProcessControl);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.EnterpriseServices</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="punkProcessControl" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="punkProcessControl">
+          <span data-ttu-id="5d337-117">W systemie Microsoft Windows XP wskaźnik do <see langword="IUnknown" /> interfejs składnika COM uruchamiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-117">In Microsoft Windows XP, a pointer to the <see langword="IUnknown" /> interface of the COM component starting up.</span>
+          </span>
+          <span data-ttu-id="5d337-118">W systemie Windows 2000, ten argument jest zawsze <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-118">In Microsoft Windows 2000, this argument is always <see langword="null" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5d337-119">Wykonuje inicjowania podczas uruchamiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-119">Performs initialization at startup.</span>
+          </span>
+          <span data-ttu-id="5d337-120">Wywołuje się po uruchomieniu Dllhost.exe.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5d337-120">Called when Dllhost.exe is started.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5d337-121">Zawiera odwołanie do obiektu `punkProcessControl` implementuje <xref:System.EnterpriseServices.IProcessInitControl> interfejsu.</span><span class="sxs-lookup"><span data-stu-id="5d337-121">The object referenced by `punkProcessControl` implements an <xref:System.EnterpriseServices.IProcessInitControl> interface.</span></span> <span data-ttu-id="5d337-122"><xref:System.EnterpriseServices.IProcessInitControl> obsługuje pojedynczej metody <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>.</span><span class="sxs-lookup"><span data-stu-id="5d337-122"><xref:System.EnterpriseServices.IProcessInitControl> supports the single method <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>.</span></span>  
+  
+ <span data-ttu-id="5d337-123">Kod inicjujący w <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> można wywołać <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>, z równa ponownego uruchamiania razy składnika limit czasu w sekundach limit czasu.</span><span class="sxs-lookup"><span data-stu-id="5d337-123">The initialization code in <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> can call the <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>, with the time-out set equal to the number of seconds remaining before the startup of the component times out.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

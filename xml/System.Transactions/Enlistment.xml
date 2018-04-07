@@ -1,0 +1,118 @@
+<Type Name="Enlistment" FullName="System.Transactions.Enlistment">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="5dacb6e0d9a3eb1837291d29c765d3aadae3c06c" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class Enlistment" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Enlistment extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Transactions.Enlistment" />
+  <TypeSignature Language="VB.NET" Value="Public Class Enlistment" />
+  <TypeSignature Language="C++ CLI" Value="public ref class Enlistment" />
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Transactions.Local</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.0.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="8e6ed-101">Umożliwia komunikację między uczestnika transakcji zarejestrowane i Menedżera transakcji podczas ostatniej fazy transakcji.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="8e6ed-101">Facilitates communication between an enlisted transaction participant and the transaction manager during the final phase of the transaction.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="8e6ed-102">Gdy <xref:System.Transactions.Transaction.EnlistVolatile%2A> i <xref:System.Transactions.Transaction.EnlistDurable%2A> metody <xref:System.Transactions.Transaction> obiektu są wywoływane można zarejestrować uczestnika transakcji, zwracają ten obiekt opisujący rejestracji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-102">When the <xref:System.Transactions.Transaction.EnlistVolatile%2A> and <xref:System.Transactions.Transaction.EnlistDurable%2A> methods of the <xref:System.Transactions.Transaction> object are invoked to enlist a participant in a transaction, they return this object describing the enlistment.</span></span>  
+  
+ <span data-ttu-id="8e6ed-103">Podczas fazy ostateczne zatwierdzenie transakcji Menedżera transakcji przekazuje tego obiektu do wdrażania Menedżera zasobów <xref:System.Transactions.IEnlistmentNotification> interfejs, który został zarejestrowany w transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-103">During the final phase of the transaction commit, the transaction manager passes this object to a resource manager implementing the <xref:System.Transactions.IEnlistmentNotification> interface that has enlisted in a transaction.</span></span> <span data-ttu-id="8e6ed-104">W szczególności Menedżera transakcji wywołuje <xref:System.Transactions.IEnlistmentNotification.Commit%2A> lub <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> metody uczestnika, w zależności od tego, czy jego postanowiła przekazać ani wycofać transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-104">Specifically, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A> or the <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> method of the participant, depending on whether the latter has decided to commit or roll back the transaction.</span></span> <span data-ttu-id="8e6ed-105">Uczestnik powinny wywoływać <xref:System.Transactions.Enlistment.Done%2A> metody tego obiektu, aby dowiedzieć się, że ukończono pracę Menedżera transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-105">The participant should call the <xref:System.Transactions.Enlistment.Done%2A> method of this object to let the transaction manager know that it has completed its work.</span></span>  
+  
+ <span data-ttu-id="8e6ed-106">Funkcja rejestracji można wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowywania.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-106">An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase.</span></span>  <span data-ttu-id="8e6ed-107">W ten sposób rejestracji jest rzutowanie odczytu tylko głosowania, co oznacza, że głosów zatwierdzania w transakcji, ale nie musi odbierać końcowego wyniku.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-107">By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</span></span> <span data-ttu-id="8e6ed-108">Należy zauważyć, że po <xref:System.Transactions.Enlistment.Done%2A> metoda jest wywoływana, zarejestrowane uczestnika odbiera żadne dalsze powiadomienia z Menedżera transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-108">Note that, after the <xref:System.Transactions.Enlistment.Done%2A> method is called, the enlisted participant receives no further notifications from the transaction manager.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="8e6ed-109">Poniższy przykład przedstawia implementację <xref:System.Transactions.IEnlistmentNotification> interfejsu i kiedy <xref:System.Transactions.Enlistment.Done%2A> powinna zostać wywołana metoda.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-109">The following example shows an implementation of the <xref:System.Transactions.IEnlistmentNotification> interface, and when the <xref:System.Transactions.Enlistment.Done%2A> method should be called.</span></span>  
+  
+ [!code-csharp[Tx_Enlist#2](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#2)]
+ [!code-vb[Tx_Enlist#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#2)]  
+  
+ ]]></format>
+    </remarks>
+    <threadsafe>
+      <span data-ttu-id="8e6ed-110">Ten typ jest bezpieczny wątkowo.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="8e6ed-110">This type is thread safe.</span>
+      </span>
+    </threadsafe>
+    <altmember cref="T:System.Transactions.PreparingEnlistment" />
+    <altmember cref="T:System.Transactions.IEnlistmentNotification" />
+  </Docs>
+  <Members>
+    <Member MemberName="Done">
+      <MemberSignature Language="C#" Value="public void Done ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Done() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Transactions.Enlistment.Done" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Done ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Done();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Transactions.Local</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.0.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="8e6ed-111">Wskazuje, że uczestnika transakcji ukończył pracę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8e6ed-111">Indicates that the transaction participant has completed its work.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="8e6ed-112">Podczas fazy ostateczne zatwierdzenie transakcji Menedżera transakcji wywołuje albo <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> lub <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> metody uczestnika, w zależności od tego, czy transakcja została zatwierdzona lub wycofana.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-112">During the final phase of the transaction commit, the transaction manager calls either the <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> or <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> method of the participant, depending on whether the transaction is to be committed or rolled back.</span></span> <span data-ttu-id="8e6ed-113">Menedżer zasobów należy wykonać pracę, Zakończ transakcję i następnie informują menedżera transakcji, że zostało zakończone przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metoda `enlistment` parametru.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-113">The resource manager should perform any work necessary to finish the transaction and then inform the transaction manager that it has finished by calling the <xref:System.Transactions.Enlistment.Done%2A> method on the `enlistment` parameter.</span></span>  
+  
+ <span data-ttu-id="8e6ed-114">Jeśli Menedżer zasobów został zarejestrowany trwałym, ale nie odpowiada przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metody Menedżera transakcji jest nie wiesz, że Menedżer zasobów odebrał wywołanie odpowiednie powiadomienie.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-114">If the resource manager has enlisted durably, but does not respond by calling <xref:System.Transactions.Enlistment.Done%2A> method, the transaction manager is unsure that the resource manager has received the respective notification call.</span></span> <span data-ttu-id="8e6ed-115">Tak Menedżer transakcji śledzi oczekiwania na odpowiedź i przechowuje informacje dotyczące tej transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-115">As such, the transaction manager keeps waiting for a response, and maintains information relevant to this transaction.</span></span>  <span data-ttu-id="8e6ed-116">Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie wywołuje się, ta część informacji jest przechowywana wokół przez nieograniczony czas w pamięci lub zasobów całego systemu.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-116">If <xref:System.Transactions.Enlistment.Done%2A> is never called, this piece of information is kept around indefinitely in memory or in a system-wide resource.</span></span> <span data-ttu-id="8e6ed-117">Powoduje to zasoby nie mogą zostać odzyskane.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-117">This results in resources not being able to be reclaimed.</span></span> <span data-ttu-id="8e6ed-118">W przypadku transakcji rozproszonych może to ostatecznie wypełnienia dziennika usługi MSDTC, który przerywa proces MSDTC.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-118">In the case of a distributed transaction, this could eventually fill the MSDTC log which halts the MSDTC process.</span></span> <span data-ttu-id="8e6ed-119">W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowo i ciągłe wzrost zużycia pamięci procesu Menedżera zasobów.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-119">In the case of a transaction managed by <xref:System.Transactions>, this results in a gradual and continual increase in the memory consumption of the resource manager's process.</span></span> <span data-ttu-id="8e6ed-120">W związku z tym jest niezwykle ważny, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metody po wykonuje się za pomocą Menedżera zasobów z Praca przygotować.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-120">Therefore, it is crucial that you call the <xref:System.Transactions.Enlistment.Done%2A> method once your resource manager is done with your prepare work.</span></span>  
+  
+ <span data-ttu-id="8e6ed-121">Funkcja rejestracji można wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowywania.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-121">An enlistment can call the <xref:System.Transactions.Enlistment.Done%2A> method at anytime before it has called <xref:System.Transactions.PreparingEnlistment.Prepared%2A> in the prepare phase.</span></span> <span data-ttu-id="8e6ed-122">W ten sposób rejestracji jest rzutowanie odczytu tylko głosowania, co oznacza, że głosów zatwierdzania w transakcji, ale nie musi odbierać końcowego wyniku.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-122">By doing so, the enlistment is casting a read only vote, meaning that it votes commit on the transaction but does not need to receive the final outcome.</span></span> <span data-ttu-id="8e6ed-123">Należy pamiętać, że po ta metoda jest wywoływana, zarejestrowane uczestnika odbiera żadne dalsze powiadomienia z Menedżera transakcji.</span><span class="sxs-lookup"><span data-stu-id="8e6ed-123">Note that, after this method is called, the enlisted participant receives no further notifications from the transaction manager.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Transactions.PreparingEnlistment" />
+        <altmember cref="T:System.Transactions.IEnlistmentNotification" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,2512 @@
+<Type Name="NamedPipeServerStream" FullName="System.IO.Pipes.NamedPipeServerStream">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="5227488f40fbac42cefb8e3bc168e443c0d92452" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class NamedPipeServerStream : System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit NamedPipeServerStream extends System.IO.Pipes.PipeStream" />
+  <TypeSignature Language="DocId" Value="T:System.IO.Pipes.NamedPipeServerStream" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class NamedPipeServerStream&#xA;Inherits PipeStream" />
+  <TypeSignature Language="C++ CLI" Value="public ref class NamedPipeServerStream sealed : System::IO::Pipes::PipeStream" />
+  <AssemblyInfo>
+    <AssemblyName>System.IO.Pipes</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Core</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.IO.Pipes.PipeStream</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="f0c80-101">Przedstawia <see cref="T:System.IO.Stream" /> wokół nazwany potok, obsługa synchroniczne i asynchroniczne operacje odczytu i zapisu.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="f0c80-101">Exposes a <see cref="T:System.IO.Stream" /> around a named pipe, supporting both synchronous and asynchronous read and write operations.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-102">Nazwane potoki zapewniają jednokierunkowe lub dupleks potoków do komunikacji między serwerem potoku i co najmniej jeden klient potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-102">Named pipes provide one-way or duplex pipes for communication between a pipe server and one or more pipe clients.</span></span> <span data-ttu-id="f0c80-103">Nazwane potoki może służyć do komunikacji międzyprocesowej lokalnie lub za pośrednictwem sieci.</span><span class="sxs-lookup"><span data-stu-id="f0c80-103">Named pipes can be used for interprocess communication locally or over a network.</span></span> <span data-ttu-id="f0c80-104">Nazwa pojedynczego potoku mogą być współużytkowane przez wiele <xref:System.IO.Pipes.NamedPipeClientStream> obiektów.</span><span class="sxs-lookup"><span data-stu-id="f0c80-104">A single pipe name can be shared by multiple <xref:System.IO.Pipes.NamedPipeClientStream> objects.</span></span>  
+  
+ <span data-ttu-id="f0c80-105">Każdy proces może działać jako serwera potoków nazwanych lub klienta lub obie.</span><span class="sxs-lookup"><span data-stu-id="f0c80-105">Any process can act as either a named pipe server or client, or both.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="f0c80-106">Aby uzyskać [!INCLUDE[winxppro](~/includes/winxppro-md.md)] i [!INCLUDE[win2kserver](~/includes/win2kserver-md.md)], maksymalnie 10 potoków mogą jednocześnie połączyć za pośrednictwem sieci.</span><span class="sxs-lookup"><span data-stu-id="f0c80-106">For [!INCLUDE[winxppro](~/includes/winxppro-md.md)] and [!INCLUDE[win2kserver](~/includes/win2kserver-md.md)], a maximum of 10 pipes can simultaneously connect over the network.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="f0c80-107">W poniższym przykładzie pokazano sposób wysyłania ciąg z procesu nadrzędnego procesów podrzędnych na w tym samym komputerze przy użyciu nazwanych potoków.</span><span class="sxs-lookup"><span data-stu-id="f0c80-107">The following example demonstrates a way to send a string from a parent process to a child process on the same computer using named pipes.</span></span> <span data-ttu-id="f0c80-108">Ten przykład tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt w ramach procesu nadrzędnego z <xref:System.IO.Pipes.PipeDirection> wartość <xref:System.IO.Pipes.PipeDirection.Out>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-108">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process with a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.Out>.</span></span> <span data-ttu-id="f0c80-109">Serwer czeka na <xref:System.IO.Pipes.NamedPipeClientStream> obiekt w ramach procesu podrzędnego się z nią połączyć.</span><span class="sxs-lookup"><span data-stu-id="f0c80-109">The server then waits for a <xref:System.IO.Pipes.NamedPipeClientStream> object in a child process to connect to it.</span></span> <span data-ttu-id="f0c80-110">W tym przykładzie są oba procesy na tym samym komputerze i <xref:System.IO.Pipes.NamedPipeClientStream> obiekt ma <xref:System.IO.Pipes.PipeDirection> wartość <xref:System.IO.Pipes.PipeDirection.In>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-110">In this example, both processes are on the same computer and the <xref:System.IO.Pipes.NamedPipeClientStream> object has a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.In>.</span></span> <span data-ttu-id="f0c80-111">Proces nadrzędny wysyła następnie ciągu podanego przez użytkownika do procesu podrzędnego.</span><span class="sxs-lookup"><span data-stu-id="f0c80-111">The parent process then sends a user-supplied string to the child process.</span></span> <span data-ttu-id="f0c80-112">Ten ciąg jest wyświetlana w konsoli.</span><span class="sxs-lookup"><span data-stu-id="f0c80-112">The string is displayed to the console.</span></span>  
+  
+ <span data-ttu-id="f0c80-113">W tym przykładzie jest przeznaczony dla procesu serwera, który używa <xref:System.IO.Pipes.NamedPipeServerStream> klasy.</span><span class="sxs-lookup"><span data-stu-id="f0c80-113">This example is for the server process, which uses the <xref:System.IO.Pipes.NamedPipeServerStream> class.</span></span> <span data-ttu-id="f0c80-114">Na przykład całego kodu, w tym kod dla potoku klienta i serwera, zobacz [porady: użycie nazwanych potoków do sieciowej komunikacji międzyprocesowej](~/docs/standard/io/how-to-use-named-pipes-for-network-interprocess-communication.md).</span><span class="sxs-lookup"><span data-stu-id="f0c80-114">For the entire code example, including the code for both the pipe client and server, see [How to: Use Named Pipes for Network Interprocess Communication](~/docs/standard/io/how-to-use-named-pipes-for-network-interprocess-communication.md).</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-115">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-115">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-116">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-116">The name of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-117">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy o nazwie określonej potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-117">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-118">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-118">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-119">Domyślny kierunek potoku <xref:System.IO.Pipes.PipeDirection.InOut>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-119">A default pipe direction of <xref:System.IO.Pipes.PipeDirection.InOut>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-120">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę, wartość 1.</span><span class="sxs-lookup"><span data-stu-id="f0c80-120">The maximum number of server instances that share the same name set to 1.</span></span>  
+  
+-   <span data-ttu-id="f0c80-121">A <xref:System.IO.Pipes.PipeTransmissionMode> wartość <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-121">A <xref:System.IO.Pipes.PipeTransmissionMode> value of <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-122">A <xref:System.IO.Pipes.PipeOptions> wartość <xref:System.IO.Pipes.PipeOptions.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-122">A <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-123">Domyślny rozmiar buforu wejściowych i wyjściowych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-123">Default input and output buffer sizes.</span></span>  
+  
+-   <span data-ttu-id="f0c80-124">Żadne dodatkowe zabezpieczenia potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-124">No pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-125">A <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-125">A <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-126">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-126">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-127">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-127">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-128">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-128">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-129">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-129">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-130">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-130">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-131">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-131">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-132">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-132">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-133">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-133">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-134">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-134">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String, direction As PipeDirection)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-135">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-135">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-136">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-136">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-137">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy o nazwie określonej potoku i kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-137">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name and pipe direction.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-138">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-138">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-139">A <xref:System.IO.Pipes.PipeTransmissionMode> wartość <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-139">A <xref:System.IO.Pipes.PipeTransmissionMode> value of <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-140">A <xref:System.IO.Pipes.PipeOptions> wartość <xref:System.IO.Pipes.PipeOptions.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-140">A <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-141">Domyślny rozmiar buforu wejściowych i wyjściowych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-141">Default input and output buffer sizes.</span></span>  
+  
+-   <span data-ttu-id="f0c80-142">Żadne dodatkowe zabezpieczenia potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-142">No pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-143">A <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-143">A <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-144">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-144">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="f0c80-145">W poniższym przykładzie pokazano sposób wysyłania ciąg z procesu nadrzędnego do podrzędnego procesu używającego potoków nazwanych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-145">The following example demonstrates a method to send a string from a parent process to a child process using named pipes.</span></span> <span data-ttu-id="f0c80-146">Ten przykład tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt w ramach procesu nadrzędnego.</span><span class="sxs-lookup"><span data-stu-id="f0c80-146">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process.</span></span> <span data-ttu-id="f0c80-147"><xref:System.IO.Pipes.NamedPipeServerStream> Obiekt ma <xref:System.IO.Pipes.PipeDirection> wartość <xref:System.IO.Pipes.PipeDirection.Out>, który następnie blokuje do <xref:System.IO.Pipes.NamedPipeClientStream> obiektu nawiąże połączenie z bieżącej <xref:System.IO.Pipes.NamedPipeServerStream> obiektu.</span><span class="sxs-lookup"><span data-stu-id="f0c80-147">The <xref:System.IO.Pipes.NamedPipeServerStream> object has a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.Out>, which then blocks until a <xref:System.IO.Pipes.NamedPipeClientStream> object establishes a connection to the current <xref:System.IO.Pipes.NamedPipeServerStream> object.</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-148">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-148">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-149">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-149">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-150">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-150">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-151">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-151">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-152">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-152">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-153">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-153">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-154">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-154">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-155">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-155">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-156">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-156">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-157">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-157">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String, direction As PipeDirection, maxNumberOfServerInstances As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-158">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-158">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-159">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-159">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-160">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-160">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-161">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-161">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-162">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy o nazwie określonej potoku, kierunek potoku i maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-162">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, and maximum number of server instances.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-163">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-163">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-164">Domyślna wartość 1 maksymalnej liczby wystąpień serwera, które mają taką samą nazwę.</span><span class="sxs-lookup"><span data-stu-id="f0c80-164">A default value of 1 for the maximum number of server instances that share the same name.</span></span>  
+  
+-   <span data-ttu-id="f0c80-165">Domyślnie <xref:System.IO.Pipes.PipeTransmissionMode> wartość <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-165">A default <xref:System.IO.Pipes.PipeTransmissionMode> value of <xref:System.IO.Pipes.PipeTransmissionMode.Byte>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-166">A <xref:System.IO.Pipes.PipeOptions> wartość <xref:System.IO.Pipes.PipeOptions.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-166">A <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-167">Domyślny rozmiar buforu wejściowych i wyjściowych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-167">Default input and output buffer sizes.</span></span>  
+  
+-   <span data-ttu-id="f0c80-168">Żadne dodatkowe zabezpieczenia potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-168">No pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-169">A <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-169">A <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-170">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-170">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-171">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-171">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-172">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-172">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-173">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-173">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-174">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-174">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-175">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-175">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-176">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-176">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-177">Wymagana jest liczba nieujemna.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-177">A non-negative number is required.</span>
+          </span>
+          <span data-ttu-id="f0c80-178">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-178">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-179">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-179">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-180">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-180">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-181">
+            <see cref="F:System.IO.HandleInheritability.None" /> lub <see cref="F:System.IO.HandleInheritability.Inheritable" /> jest wymagana.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-181">
+              <see cref="F:System.IO.HandleInheritability.None" /> or <see cref="F:System.IO.HandleInheritability.Inheritable" /> is required.</span>
+          </span>
+          <span data-ttu-id="f0c80-182">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-182">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-183">Prawa dostępu jest ograniczona do <see cref="F:System.IO.Pipes.PipeAccessRights.ChangePermissions" /> , <see cref="F:System.IO.Pipes.PipeAccessRights.TakeOwnership" /> , i <see cref="F:System.IO.Pipes.PipeAccessRights.AccessSystemSecurity" /> flagi.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-183">Access rights is limited to the <see cref="F:System.IO.Pipes.PipeAccessRights.ChangePermissions" /> , <see cref="F:System.IO.Pipes.PipeAccessRights.TakeOwnership" /> , and <see cref="F:System.IO.Pipes.PipeAccessRights.AccessSystemSecurity" /> flags.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-184">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-184">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-185">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-185">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-186">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-186">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-187">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-187">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-188">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-188">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (System.IO.Pipes.PipeDirection direction, bool isAsync, bool isConnected, Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(valuetype System.IO.Pipes.PipeDirection direction, bool isAsync, bool isConnected, class Microsoft.Win32.SafeHandles.SafePipeHandle safePipeHandle) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.IO.Pipes.PipeDirection,System.Boolean,System.Boolean,Microsoft.Win32.SafeHandles.SafePipeHandle)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::IO::Pipes::PipeDirection direction, bool isAsync, bool isConnected, Microsoft::Win32::SafeHandles::SafePipeHandle ^ safePipeHandle);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="isAsync" Type="System.Boolean" />
+        <Parameter Name="isConnected" Type="System.Boolean" />
+        <Parameter Name="safePipeHandle" Type="Microsoft.Win32.SafeHandles.SafePipeHandle" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="f0c80-189">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-189">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="isAsync">
+          <span data-ttu-id="f0c80-190">
+            <see langword="true" /> Aby wskazać, że dojście zostało otwarte asynchronicznie; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-190">
+              <see langword="true" /> to indicate that the handle was opened asynchronously; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="isConnected">
+          <span data-ttu-id="f0c80-191">
+            <see langword="true" /> Aby wskazać, że jest połączony potoku; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-191">
+              <see langword="true" /> to indicate that the pipe is connected; otherwise, <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="safePipeHandle">
+          <span data-ttu-id="f0c80-192">Sejfie obsługi dla potoku tego <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> będzie Hermetyzowanie obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-192">A safe handle for the pipe that this <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object will encapsulate.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-193">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy z dojścia potoku określony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-193">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class from the specified pipe handle.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-194">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-194">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-195">
+            <paramref name="safePipeHandle" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-195">
+              <paramref name="safePipeHandle" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-196">
+            <paramref name="safePipeHandle" /> jest nieprawidłowe dojście.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-196">
+              <paramref name="safePipeHandle" /> is an invalid handle.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-197">
+            <paramref name="safePipeHandle" /> nie jest dojścia potoku prawidłowe.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-197">
+              <paramref name="safePipeHandle" /> is not a valid pipe handle.</span>
+          </span>
+          <span data-ttu-id="f0c80-198">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-198">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-199">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-199">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-200">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-200">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-201">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-201">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String, direction As PipeDirection, maxNumberOfServerInstances As Integer, transmissionMode As PipeTransmissionMode)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-202">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-202">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-203">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-203">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-204">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-204">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-205">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-205">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-206">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-206">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-207">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy potoku określona nazwa, kierunek potoku, maksymalną liczbę wystąpień serwera i tryb transmisji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-207">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, and transmission mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-208">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-208">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-209">Domyślnie <xref:System.IO.Pipes.PipeOptions> wartość <xref:System.IO.Pipes.PipeOptions.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-209">A default <xref:System.IO.Pipes.PipeOptions> value of <xref:System.IO.Pipes.PipeOptions.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-210">Domyślny rozmiar buforu wejściowych i wyjściowych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-210">Default input and output buffer sizes.</span></span>  
+  
+-   <span data-ttu-id="f0c80-211">Żadne dodatkowe zabezpieczenia potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-211">No pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-212">A <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-212">A <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-213">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-213">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-214">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-214">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-215">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-215">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-216">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-216">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-217">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-217">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-218">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-218">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-219">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-219">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-220">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-220">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-221">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-221">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-222">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-222">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-223">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-223">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-224">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-224">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-225">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-225">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode, valuetype System.IO.Pipes.PipeOptions options) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String, direction As PipeDirection, maxNumberOfServerInstances As Integer, transmissionMode As PipeTransmissionMode, options As PipeOptions)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode, System::IO::Pipes::PipeOptions options);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-226">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-226">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-227">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-227">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-228">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-228">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-229">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-229">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-230">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-230">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="f0c80-231">Jedna z wartości wyliczenia, które określa, jak otworzyć lub utworzyć potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-231">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-232">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy potoku określona nazwa, kierunek potoku, maksymalna liczba wystąpień serwera, tryb transmisji i opcje potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-232">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, and pipe options.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-233">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-233">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-234">Domyślny rozmiar buforu wejściowych i wyjściowych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-234">Default input and output buffer sizes.</span></span>  
+  
+-   <span data-ttu-id="f0c80-235">Żadne dodatkowe zabezpieczenia potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-235">No pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-236">A <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-236">A <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-237">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-237">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-238">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-238">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-239">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-239">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-240">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-240">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-241">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-241">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-242">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-242">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-243">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-243">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-244">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-244">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-245">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-245">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-246">
+            <paramref name="options" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeOptions" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-246">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-247">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-247">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-248">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-248">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-249">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-249">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-250">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-250">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-251">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-251">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, int inBufferSize, int outBufferSize);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode, valuetype System.IO.Pipes.PipeOptions options, int32 inBufferSize, int32 outBufferSize) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (pipeName As String, direction As PipeDirection, maxNumberOfServerInstances As Integer, transmissionMode As PipeTransmissionMode, options As PipeOptions, inBufferSize As Integer, outBufferSize As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode, System::IO::Pipes::PipeOptions options, int inBufferSize, int outBufferSize);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="inBufferSize" Type="System.Int32" />
+        <Parameter Name="outBufferSize" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-252">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-252">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-253">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-253">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-254">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-254">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-255">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-255">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-256">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-256">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="f0c80-257">Jedna z wartości wyliczenia, które określa, jak otworzyć lub utworzyć potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-257">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="inBufferSize">
+          <span data-ttu-id="f0c80-258">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wejściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-258">A positive value greater than 0 that indicates the input buffer size.</span>
+          </span>
+        </param>
+        <param name="outBufferSize">
+          <span data-ttu-id="f0c80-259">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wyjściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-259">A positive value greater than 0 that indicates the output buffer size.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-260">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy potoku określona nazwa, kierunek potoku, maksymalna liczba wystąpień serwera, tryb transmisji, opcje potoku i zalecane in i out rozmiar buforów.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-260">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, pipe options, and recommended in and out buffer sizes.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-261">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-261">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-262">Żadne dodatkowe zabezpieczenia dodatkowe potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-262">No additional pipe security.</span></span>  
+  
+-   <span data-ttu-id="f0c80-263">Domyślnie <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-263">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-264">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-264">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-265">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-265">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-266">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-266">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-267">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-267">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-268">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-268">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-269">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-269">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-270">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-270">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-271">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-271">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-272">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-272">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-273">
+            <paramref name="options" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeOptions" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-273">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-274">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-274">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-275">
+            <paramref name="inBufferSize" /> jest ujemna.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-275">
+              <paramref name="inBufferSize" /> is negative.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-276">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-276">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-277">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-277">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-278">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-278">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-279">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-279">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-280">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-280">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, int inBufferSize, int outBufferSize, System.IO.Pipes.PipeSecurity pipeSecurity);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode, valuetype System.IO.Pipes.PipeOptions options, int32 inBufferSize, int32 outBufferSize, class System.IO.Pipes.PipeSecurity pipeSecurity) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,System.Int32,System.Int32,System.IO.Pipes.PipeSecurity)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode, System::IO::Pipes::PipeOptions options, int inBufferSize, int outBufferSize, System::IO::Pipes::PipeSecurity ^ pipeSecurity);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="inBufferSize" Type="System.Int32" />
+        <Parameter Name="outBufferSize" Type="System.Int32" />
+        <Parameter Name="pipeSecurity" Type="System.IO.Pipes.PipeSecurity" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-281">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-281">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-282">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-282">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-283">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-283">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-284">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-284">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-285">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-285">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="f0c80-286">Jedna z wartości wyliczenia, które określa, jak otworzyć lub utworzyć potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-286">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="inBufferSize">
+          <span data-ttu-id="f0c80-287">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wejściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-287">A positive value greater than 0 that indicates the input buffer size.</span>
+          </span>
+        </param>
+        <param name="outBufferSize">
+          <span data-ttu-id="f0c80-288">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wyjściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-288">A positive value greater than 0 that indicates the output buffer size.</span>
+          </span>
+        </param>
+        <param name="pipeSecurity">
+          <span data-ttu-id="f0c80-289">Obiekt, który określa kontroli dostępu i inspekcji zabezpieczeń dla potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-289">An object that determines the access control and audit security for the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-290">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy z określony potok nazwa, kierunek potoku, maksymalna liczba wystąpień serwera tryb transmisji, opcje potoku, zalecane i wylogowywanie buforu rozmiary i przekazać zabezpieczeń.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-290">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, pipe options, recommended in and out buffer sizes, and pipe security.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-291">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który ma następującą charakterystykę:</span><span class="sxs-lookup"><span data-stu-id="f0c80-291">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has the following characteristics:</span></span>  
+  
+-   <span data-ttu-id="f0c80-292">Domyślnie <xref:System.IO.HandleInheritability> wartość <xref:System.IO.HandleInheritability.None>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-292">A default <xref:System.IO.HandleInheritability> value of <xref:System.IO.HandleInheritability.None>.</span></span>  
+  
+-   <span data-ttu-id="f0c80-293">Nie określono dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-293">No specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-294">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-294">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-295">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-295">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-296">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-296">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-297">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-297">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-298">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-298">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-299">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-299">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-300">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-300">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-301">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-301">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-302">
+            <paramref name="options" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeOptions" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-302">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-303">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-303">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-304">
+            <paramref name="inBufferSize" /> jest ujemna.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-304">
+              <paramref name="inBufferSize" /> is negative.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-305">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-305">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-306">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-306">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-307">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-307">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-308">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-308">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-309">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-309">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, int inBufferSize, int outBufferSize, System.IO.Pipes.PipeSecurity pipeSecurity, System.IO.HandleInheritability inheritability);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode, valuetype System.IO.Pipes.PipeOptions options, int32 inBufferSize, int32 outBufferSize, class System.IO.Pipes.PipeSecurity pipeSecurity, valuetype System.IO.HandleInheritability inheritability) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,System.Int32,System.Int32,System.IO.Pipes.PipeSecurity,System.IO.HandleInheritability)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode, System::IO::Pipes::PipeOptions options, int inBufferSize, int outBufferSize, System::IO::Pipes::PipeSecurity ^ pipeSecurity, System::IO::HandleInheritability inheritability);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="inBufferSize" Type="System.Int32" />
+        <Parameter Name="outBufferSize" Type="System.Int32" />
+        <Parameter Name="pipeSecurity" Type="System.IO.Pipes.PipeSecurity" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-310">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-310">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-311">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-311">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-312">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-312">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-313">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-313">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-314">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-314">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="f0c80-315">Jedna z wartości wyliczenia, które określa, jak otworzyć lub utworzyć potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-315">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="inBufferSize">
+          <span data-ttu-id="f0c80-316">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wejściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-316">A positive value greater than 0 that indicates the input buffer size.</span>
+          </span>
+        </param>
+        <param name="outBufferSize">
+          <span data-ttu-id="f0c80-317">Dodatnia wartość większą niż 0, który wskazuje rozmiar buforu wyjściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-317">A positive value greater than 0 that indicates the output buffer size.</span>
+          </span>
+        </param>
+        <param name="pipeSecurity">
+          <span data-ttu-id="f0c80-318">Obiekt, który określa kontroli dostępu i inspekcji zabezpieczeń dla potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-318">An object that determines the access control and audit security for the pipe.</span>
+          </span>
+        </param>
+        <param name="inheritability">
+          <span data-ttu-id="f0c80-319">Jedna z wartości wyliczenia, które określa, czy podstawowy dojście mogą być dziedziczone przez procesy podrzędne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-319">One of the enumeration values that determines whether the underlying handle can be inherited by child processes.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-320">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy z potoku określona nazwa, kierunek potoku, maksymalna liczba wystąpień serwera, tryb transmisji, opcje potoku, zalecane in i out rozmiar buforów, potoku zabezpieczeń i tryb inheritability.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-320">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, pipe options, recommended in and out buffer sizes, pipe security, and inheritability mode.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-321">Ten konstruktor tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, który nie ma określone dodatkowe <xref:System.IO.Pipes.PipeAccessRights>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-321">This constructor creates a <xref:System.IO.Pipes.NamedPipeServerStream> object that has no specified additional <xref:System.IO.Pipes.PipeAccessRights>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-322">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-322">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-323">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-323">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-324">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-324">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-325">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-325">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-326">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-326">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-327">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-327">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-328">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-328">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-329">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-329">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-330">
+            <paramref name="options" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeOptions" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-330">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-331">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-331">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-332">
+            <paramref name="inBufferSize" /> jest ujemna.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-332">
+              <paramref name="inBufferSize" /> is negative.</span>
+          </span>
+          <span data-ttu-id="f0c80-333">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-333">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-334">
+            <paramref name="inheritability" /> nie jest prawidłową <see cref="T:System.IO.HandleInheritability" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-334">
+              <paramref name="inheritability" /> is not a valid <see cref="T:System.IO.HandleInheritability" /> value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-335">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-335">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-336">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-336">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-337">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-337">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-338">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-338">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-339">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-339">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public NamedPipeServerStream (string pipeName, System.IO.Pipes.PipeDirection direction, int maxNumberOfServerInstances, System.IO.Pipes.PipeTransmissionMode transmissionMode, System.IO.Pipes.PipeOptions options, int inBufferSize, int outBufferSize, System.IO.Pipes.PipeSecurity pipeSecurity, System.IO.HandleInheritability inheritability, System.IO.Pipes.PipeAccessRights additionalAccessRights);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string pipeName, valuetype System.IO.Pipes.PipeDirection direction, int32 maxNumberOfServerInstances, valuetype System.IO.Pipes.PipeTransmissionMode transmissionMode, valuetype System.IO.Pipes.PipeOptions options, int32 inBufferSize, int32 outBufferSize, class System.IO.Pipes.PipeSecurity pipeSecurity, valuetype System.IO.HandleInheritability inheritability, valuetype System.IO.Pipes.PipeAccessRights additionalAccessRights) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.#ctor(System.String,System.IO.Pipes.PipeDirection,System.Int32,System.IO.Pipes.PipeTransmissionMode,System.IO.Pipes.PipeOptions,System.Int32,System.Int32,System.IO.Pipes.PipeSecurity,System.IO.HandleInheritability,System.IO.Pipes.PipeAccessRights)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; NamedPipeServerStream(System::String ^ pipeName, System::IO::Pipes::PipeDirection direction, int maxNumberOfServerInstances, System::IO::Pipes::PipeTransmissionMode transmissionMode, System::IO::Pipes::PipeOptions options, int inBufferSize, int outBufferSize, System::IO::Pipes::PipeSecurity ^ pipeSecurity, System::IO::HandleInheritability inheritability, System::IO::Pipes::PipeAccessRights additionalAccessRights);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="pipeName" Type="System.String" />
+        <Parameter Name="direction" Type="System.IO.Pipes.PipeDirection" />
+        <Parameter Name="maxNumberOfServerInstances" Type="System.Int32" />
+        <Parameter Name="transmissionMode" Type="System.IO.Pipes.PipeTransmissionMode" />
+        <Parameter Name="options" Type="System.IO.Pipes.PipeOptions" />
+        <Parameter Name="inBufferSize" Type="System.Int32" />
+        <Parameter Name="outBufferSize" Type="System.Int32" />
+        <Parameter Name="pipeSecurity" Type="System.IO.Pipes.PipeSecurity" />
+        <Parameter Name="inheritability" Type="System.IO.HandleInheritability" />
+        <Parameter Name="additionalAccessRights" Type="System.IO.Pipes.PipeAccessRights" />
+      </Parameters>
+      <Docs>
+        <param name="pipeName">
+          <span data-ttu-id="f0c80-340">Nazwa potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-340">The name of the pipe.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="f0c80-341">Jedna z wartości wyliczenia, które określa kierunek potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-341">One of the enumeration values that determines the direction of the pipe.</span>
+          </span>
+        </param>
+        <param name="maxNumberOfServerInstances">
+          <span data-ttu-id="f0c80-342">Maksymalna liczba wystąpień serwera, które mają taką samą nazwę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-342">The maximum number of server instances that share the same name.</span>
+          </span>
+          <span data-ttu-id="f0c80-343">Można przekazać <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> dla tej wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-343">You can pass <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" /> for this value.</span>
+          </span>
+        </param>
+        <param name="transmissionMode">
+          <span data-ttu-id="f0c80-344">Jedna z wartości wyliczenia, które określa tryb transmisji potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-344">One of the enumeration values that determines the transmission mode of the pipe.</span>
+          </span>
+        </param>
+        <param name="options">
+          <span data-ttu-id="f0c80-345">Jedna z wartości wyliczenia, które określa, jak otworzyć lub utworzyć potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-345">One of the enumeration values that determines how to open or create the pipe.</span>
+          </span>
+        </param>
+        <param name="inBufferSize">
+          <span data-ttu-id="f0c80-346">Rozmiar buforu wejściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-346">The input buffer size.</span>
+          </span>
+        </param>
+        <param name="outBufferSize">
+          <span data-ttu-id="f0c80-347">Rozmiar buforu wyjściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-347">The output buffer size.</span>
+          </span>
+        </param>
+        <param name="pipeSecurity">
+          <span data-ttu-id="f0c80-348">Obiekt, który określa kontroli dostępu i inspekcji zabezpieczeń dla potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-348">An object that determines the access control and audit security for the pipe.</span>
+          </span>
+        </param>
+        <param name="inheritability">
+          <span data-ttu-id="f0c80-349">Jedna z wartości wyliczenia, które określa, czy podstawowy dojście mogą być dziedziczone przez procesy podrzędne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-349">One of the enumeration values that determines whether the underlying handle can be inherited by child processes.</span>
+          </span>
+        </param>
+        <param name="additionalAccessRights">
+          <span data-ttu-id="f0c80-350">Jedna z wartości wyliczenia, które określa prawa dostępu do potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-350">One of the enumeration values that specifies the access rights of the pipe.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-351">Inicjuje nowe wystąpienie klasy <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> klasy z określony potok nazwa, kierunek potoku, maksymalna liczba wystąpień serwera tryb transmisji, opcje potoku, zalecane i wylogowywanie buforu rozmiary, zabezpieczenia potoku tryb inheritability i przekazać dostępu prawa.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-351">Initializes a new instance of the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> class with the specified pipe name, pipe direction, maximum number of server instances, transmission mode, pipe options, recommended in and out buffer sizes, pipe security, inheritability mode, and pipe access rights.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-352">
+            <paramref name="pipeName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-352">
+              <paramref name="pipeName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="f0c80-353">
+            <paramref name="pipeName" /> jest ciągiem o zerowej długości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-353">
+              <paramref name="pipeName" /> is a zero-length string.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="f0c80-354">
+            <paramref name="pipeName" /> jest ustawiony na "anonymous".</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-354">
+              <paramref name="pipeName" /> is set to "anonymous".</span>
+          </span>
+          <span data-ttu-id="f0c80-355">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-355">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-356">
+            <paramref name="direction" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeDirection" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-356">
+              <paramref name="direction" /> is not a valid <see cref="T:System.IO.Pipes.PipeDirection" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-357">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-357">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-358">
+            <paramref name="maxNumberofServerInstances" /> jest mniejsze niż -1 lub większa niż 254 (-1 oznacza <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-358">
+              <paramref name="maxNumberofServerInstances" /> is less than -1 or greater than 254 (-1 indicates <see cref="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />)</span>
+          </span>
+          <span data-ttu-id="f0c80-359">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-359">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-360">
+            <paramref name="options" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeOptions" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-360">
+              <paramref name="options" /> is not a valid <see cref="T:System.IO.Pipes.PipeOptions" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-361">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-361">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-362">
+            <paramref name="inBufferSize" /> jest ujemna.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-362">
+              <paramref name="inBufferSize" /> is negative.</span>
+          </span>
+          <span data-ttu-id="f0c80-363">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-363">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-364">
+            <paramref name="inheritability" /> nie jest prawidłową <see cref="T:System.IO.HandleInheritability" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-364">
+              <paramref name="inheritability" /> is not a valid <see cref="T:System.IO.HandleInheritability" /> value.</span>
+          </span>
+          <span data-ttu-id="f0c80-365">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-365">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-366">
+            <paramref name="additionalAccessRights" /> nie jest prawidłową <see cref="T:System.IO.Pipes.PipeAccessRights" /> wartość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-366">
+              <paramref name="additionalAccessRights" /> is not a valid <see cref="T:System.IO.Pipes.PipeAccessRights" /> value.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.NotSupportedException">
+          <span data-ttu-id="f0c80-367">
+            <paramref name="pipeName" /> zawiera dwukropek (":").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-367">
+              <paramref name="pipeName" /> contains a colon (":").</span>
+          </span>
+        </exception>
+        <exception cref="T:System.PlatformNotSupportedException">
+          <span data-ttu-id="f0c80-368">System operacyjny jest Windows Millennium Edition, Windows 98 lub system operacyjny Windows 95, które nie są obsługiwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-368">The operating system is Windows Millennium Edition, Windows 98, or Windows 95, which are not supported.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-369">Przekroczono maksymalną liczbę wystąpień serwera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-369">The maximum number of server instances has been exceeded.</span>
+          </span>
+        </exception>
+        <permission cref="F:System.Security.Permissions.SecurityAction.Demand">
+          <span data-ttu-id="f0c80-370">Aby uzyskać pełne zaufanie do bezpośredniego obiektu wywołującego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-370">For full trust for the immediate caller.</span>
+          </span>
+          <span data-ttu-id="f0c80-371">Ten element członkowski nie może być używany przez kod częściowo zaufany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-371">This member cannot be used by partially trusted code.</span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="BeginWaitForConnection">
+      <MemberSignature Language="C#" Value="public IAsyncResult BeginWaitForConnection (AsyncCallback callback, object state);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.IAsyncResult BeginWaitForConnection(class System.AsyncCallback callback, object state) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection(System.AsyncCallback,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Function BeginWaitForConnection (callback As AsyncCallback, state As Object) As IAsyncResult" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; IAsyncResult ^ BeginWaitForConnection(AsyncCallback ^ callback, System::Object ^ state);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.IAsyncResult</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="callback" Type="System.AsyncCallback" />
+        <Parameter Name="state" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="callback">
+          <span data-ttu-id="f0c80-372">Metoda wywoływana, gdy klient nawiąże połączenie <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-372">The method to call when a client connects to the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object.</span>
+          </span>
+        </param>
+        <param name="state">
+          <span data-ttu-id="f0c80-373">Obiekt dostarczane przez użytkownika, który odróżnia tego konkretnego żądania asynchroniczne od innych żądań.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-373">A user-provided object that distinguishes this particular asynchronous request from other requests.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-374">Rozpoczyna operację asynchroniczną oczekiwania klienta do połączenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-374">Begins an asynchronous operation to wait for a client to connect.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="f0c80-375">Obiekt, który odwołuje się do żądania asynchronicznego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-375">An object that references the asynchronous request.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-376">Jest to odpowiednik asynchroniczne <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-376">This is the asynchronous equivalent of <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnection%2A>.</span></span>  
+  
+ <span data-ttu-id="f0c80-377"><xref:System.IO.Pipes.NamedPipeServerStream.EndWaitForConnection%2A> musi zostać wywołana tylko raz dla każdego wywołania <xref:System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection%2A>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-377"><xref:System.IO.Pipes.NamedPipeServerStream.EndWaitForConnection%2A> must be called exactly once for every call to <xref:System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-378">Potok nie zostało otwarte asynchronicznie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-378">The pipe was not opened asynchronously.</span>
+          </span>
+          <span data-ttu-id="f0c80-379">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-379">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-380">Nawiązano już połączenie z potokiem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-380">A pipe connection has already been established.</span>
+          </span>
+          <span data-ttu-id="f0c80-381">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-381">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-382">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-382">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-383">Połączenie z potokiem zostało przerwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-383">The pipe connection has been broken.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-384">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-384">The pipe is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Disconnect">
+      <MemberSignature Language="C#" Value="public void Disconnect ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void Disconnect() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.Disconnect" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Disconnect ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void Disconnect();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-385">Rozłącza bieżące połączenie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-385">Disconnects the current connection.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-386">Wywoływanie <xref:System.IO.Pipes.NamedPipeServerStream.Disconnect%2A> — metoda będzie blokować, dopóki wszystkie znaki wysłane zostały przeczytane chyba, że ustawiono tryb transmisji potoku <xref:System.IO.Pipes.PipeTransmissionMode.Message> , a rozmiar buforu jest ustawiony w Konstruktorze utworzony <xref:System.IO.Pipes.NamedPipeServerStream> obiektu.</span><span class="sxs-lookup"><span data-stu-id="f0c80-386">Calling the <xref:System.IO.Pipes.NamedPipeServerStream.Disconnect%2A> method will block until all the sent characters have been read unless the transmission mode of the pipe is set to <xref:System.IO.Pipes.PipeTransmissionMode.Message> and the buffer size is set in the constructor that created the <xref:System.IO.Pipes.NamedPipeServerStream> object.</span></span> <span data-ttu-id="f0c80-387">W takim przypadku nie wszystkie komunikaty nie będą odbierane.</span><span class="sxs-lookup"><span data-stu-id="f0c80-387">In this case, not all of the messages will be received.</span></span> <span data-ttu-id="f0c80-388">Wywołanie <xref:System.IO.Pipes.PipeStream.WaitForPipeDrain%2A> powoduje, że serwer zablokować, dopóki wszystkie dane są odczytywane z potoku.</span><span class="sxs-lookup"><span data-stu-id="f0c80-388">Calling <xref:System.IO.Pipes.PipeStream.WaitForPipeDrain%2A> causes the server to block until all the data has been read from the pipe.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-389">Dokonano jeszcze połączenia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-389">No pipe connections have been made yet.</span>
+          </span>
+          <span data-ttu-id="f0c80-390">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-390">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-391">Połączone potoku już został odłączony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-391">The connected pipe has already disconnected.</span>
+          </span>
+          <span data-ttu-id="f0c80-392">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-392">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-393">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-393">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-394">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-394">The pipe is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="EndWaitForConnection">
+      <MemberSignature Language="C#" Value="public void EndWaitForConnection (IAsyncResult asyncResult);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void EndWaitForConnection(class System.IAsyncResult asyncResult) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.EndWaitForConnection(System.IAsyncResult)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub EndWaitForConnection (asyncResult As IAsyncResult)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void EndWaitForConnection(IAsyncResult ^ asyncResult);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="asyncResult" Type="System.IAsyncResult" />
+      </Parameters>
+      <Docs>
+        <param name="asyncResult">
+          <span data-ttu-id="f0c80-395">Oczekujące żądania asynchronicznego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-395">The pending asynchronous request.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-396">Kończy operację asynchroniczną oczekiwania klienta do połączenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-396">Ends an asynchronous operation to wait for a client to connect.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-397"><xref:System.IO.Pipes.NamedPipeServerStream.EndWaitForConnection%2A> musi zostać wywołana tylko raz dla każdego wywołania <xref:System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection%2A>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-397"><xref:System.IO.Pipes.NamedPipeServerStream.EndWaitForConnection%2A> must be called exactly once for every call to <xref:System.IO.Pipes.NamedPipeServerStream.BeginWaitForConnection%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="f0c80-398">
+            <paramref name="asyncResult" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-398">
+              <paramref name="asyncResult" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-399">Potok nie zostało otwarte asynchronicznie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-399">The pipe was not opened asynchronously.</span>
+          </span>
+          <span data-ttu-id="f0c80-400">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-400">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-401">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-401">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-402">Połączenie z potokiem zostało przerwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-402">The pipe connection has been broken.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-403">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-403">The pipe is closed.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~NamedPipeServerStream ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!NamedPipeServerStream ()" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-404">Zwalnia zasoby niezarządzane, a następnie wykonuje inne operacje oczyszczania przed <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> wystąpienia jest odzyskana przez wyrzucanie elementów bezużytecznych.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-404">Releases unmanaged resources and performs other cleanup operations before the <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> instance is reclaimed by garbage collection.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetImpersonationUserName">
+      <MemberSignature Language="C#" Value="public string GetImpersonationUserName ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetImpersonationUserName() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.GetImpersonationUserName" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetImpersonationUserName () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ GetImpersonationUserName();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-405">Pobiera nazwę użytkownika klienta po drugiej stronie potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-405">Gets the user name of the client on the other end of the pipe.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="f0c80-406">Nazwa użytkownika klienta po drugiej stronie potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-406">The user name of the client on the other end of the pipe.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-407"><xref:System.IO.Pipes.NamedPipeServerStream.GetImpersonationUserName%2A> Metoda zwraca `null` Jeśli klient nie został jeszcze zapisany do potoku lub połączony klient nie może połączyć z <xref:System.Security.Principal.TokenImpersonationLevel> z <xref:System.Security.Principal.TokenImpersonationLevel.Impersonation>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-407">The <xref:System.IO.Pipes.NamedPipeServerStream.GetImpersonationUserName%2A> method returns `null` if the client has not yet written to the pipe or if the connected client did not connect with a <xref:System.Security.Principal.TokenImpersonationLevel> of <xref:System.Security.Principal.TokenImpersonationLevel.Impersonation>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="f0c80-408">W poniższym przykładzie pokazano metodę, aby utworzyć serwer potoku, który odpowiada na wiele równoczesnych żądań i metody dla personifikacji klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-408">The following example demonstrates a method to create a pipe server that can respond to multiple simultaneous client requests, and a method for client impersonation.</span></span> <span data-ttu-id="f0c80-409">Ten przykład tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiektu w procesu nadrzędnego, który następnie tworzy wiele wątków, które poczekaj, aż <xref:System.IO.Pipes.NamedPipeClientStream> obiektów do połączenia.</span><span class="sxs-lookup"><span data-stu-id="f0c80-409">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process, which then creates multiple threads that wait for <xref:System.IO.Pipes.NamedPipeClientStream> objects to connect.</span></span> <span data-ttu-id="f0c80-410">Po połączeniu klienta podaje nazwę pliku na serwerze, a zawartość tego pliku są odczytywać i wysyłane z powrotem do klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-410">After a client is connected, it supplies a file name to the server and the contents of that file are read and sent back to the client.</span></span> <span data-ttu-id="f0c80-411">Ponieważ <xref:System.IO.Pipes.NamedPipeServerStream> podczas otwierania pliku, może żądać klient tylko pliki którego nie ma wystarczających uprawnień do otwierania personifikuje klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-411">Because the <xref:System.IO.Pipes.NamedPipeServerStream> impersonates the client when opening the file, the client can request only files that it has sufficient permissions to open.</span></span>  
+  
+ [!code-cpp[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-412">Dokonano jeszcze połączenia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-412">No pipe connections have been made yet.</span>
+          </span>
+          <span data-ttu-id="f0c80-413">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-413">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-414">Połączone potoku już został odłączony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-414">The connected pipe has already disconnected.</span>
+          </span>
+          <span data-ttu-id="f0c80-415">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-415">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-416">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-416">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-417">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-417">The pipe is closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-418">Połączenie z potokiem zostało przerwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-418">The pipe connection has been broken.</span>
+          </span>
+          <span data-ttu-id="f0c80-419">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-419">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-420">Nazwa użytkownika klienta jest dłuższa niż 19 znaków.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-420">The user name of the client is longer than 19 characters.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermissionFlag">
+          <span data-ttu-id="f0c80-421">Aby uzyskać możliwość manipulowania obiekt główny.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-421">for the ability to manipulate the principal object.</span>
+          </span>
+          <span data-ttu-id="f0c80-422">Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-422">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="f0c80-423">Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-423">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="MaxAllowedServerInstances">
+      <MemberSignature Language="C#" Value="public const int MaxAllowedServerInstances = -1;" />
+      <MemberSignature Language="ILAsm" Value=".field public static literal int32 MaxAllowedServerInstances = (-1)" />
+      <MemberSignature Language="DocId" Value="F:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances" />
+      <MemberSignature Language="VB.NET" Value="Public Const MaxAllowedServerInstances As Integer  = -1" />
+      <MemberSignature Language="C++ CLI" Value="public: int MaxAllowedServerInstances = -1;" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <MemberValue>-1</MemberValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-424">Reprezentuje maksymalną liczbę wystąpień serwera, zezwalających na zasoby systemowe.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-424">Represents the maximum number of server instances that the system resources allow.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-425">Użyj <xref:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances> podczas tworzenia <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, aby ustawić maksymalną liczbę wystąpień serwera, zezwalających na zasoby systemowe.</span><span class="sxs-lookup"><span data-stu-id="f0c80-425">Use the <xref:System.IO.Pipes.NamedPipeServerStream.MaxAllowedServerInstances> when creating a <xref:System.IO.Pipes.NamedPipeServerStream> object to set the maximum number of server instances that the system resources allow.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="RunAsClient">
+      <MemberSignature Language="C#" Value="public void RunAsClient (System.IO.Pipes.PipeStreamImpersonationWorker impersonationWorker);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void RunAsClient(class System.IO.Pipes.PipeStreamImpersonationWorker impersonationWorker) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.RunAsClient(System.IO.Pipes.PipeStreamImpersonationWorker)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub RunAsClient (impersonationWorker As PipeStreamImpersonationWorker)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void RunAsClient(System::IO::Pipes::PipeStreamImpersonationWorker ^ impersonationWorker);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="impersonationWorker" Type="System.IO.Pipes.PipeStreamImpersonationWorker" />
+      </Parameters>
+      <Docs>
+        <param name="impersonationWorker">
+          <span data-ttu-id="f0c80-426">Delegat, który określa metodę do wywołania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-426">The delegate that specifies a method to call.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-427">Wywołuje delegata podczas personifikacji klienta.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-427">Calls a delegate while impersonating the client.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-428">Klient nawiązujący połączenie uprawnień są stosowane do serwera zdalnego.</span><span class="sxs-lookup"><span data-stu-id="f0c80-428">The connecting client's permissions are applied to the remote server.</span></span> <span data-ttu-id="f0c80-429">Na przykład, jeśli klient nawiązujący połączenie próbuje zażądać zawartość pliku na serwerze, może żądać klient tylko pliki, które ma wystarczające uprawnienia do otwarcia.</span><span class="sxs-lookup"><span data-stu-id="f0c80-429">For example, if the connecting client tries to request the contents of a file on the server, the client can request only files that it has sufficient permissions to open.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="f0c80-430">W poniższym przykładzie pokazano metodę, aby utworzyć serwer potoku, który odpowiada na wiele równoczesnych żądań i metody dla personifikacji klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-430">The following example demonstrates a method to create a pipe server that can respond to multiple simultaneous client requests, and a method for client impersonation.</span></span> <span data-ttu-id="f0c80-431">Ten przykład tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiektu w procesu nadrzędnego, który następnie tworzy wiele wątków, które poczekaj, aż <xref:System.IO.Pipes.NamedPipeClientStream> obiektów do połączenia.</span><span class="sxs-lookup"><span data-stu-id="f0c80-431">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process, which then creates multiple threads that wait for <xref:System.IO.Pipes.NamedPipeClientStream> objects to connect.</span></span> <span data-ttu-id="f0c80-432">Po połączeniu klienta podaje nazwę pliku na serwerze, a zawartość tego pliku są odczytywać i wysyłane z powrotem do klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-432">After a client is connected, it supplies a file name to the server and the contents of that file are read and sent back to the client.</span></span> <span data-ttu-id="f0c80-433">Ponieważ <xref:System.IO.Pipes.NamedPipeServerStream> podczas otwierania pliku, może żądać klient tylko pliki którego nie ma wystarczających uprawnień do otwierania personifikuje klienta.</span><span class="sxs-lookup"><span data-stu-id="f0c80-433">Because the <xref:System.IO.Pipes.NamedPipeServerStream> impersonates the client when opening the file, the client can request only files that it has sufficient permissions to open.</span></span>  
+  
+ [!code-cpp[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/cpp/program.cpp#01)]
+ [!code-csharp[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeServerStream_ImpersonationSample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_ImpersonationSample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-434">Dokonano jeszcze połączenia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-434">No pipe connections have been made yet.</span>
+          </span>
+          <span data-ttu-id="f0c80-435">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-435">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-436">Połączone potoku już został odłączony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-436">The connected pipe has already disconnected.</span>
+          </span>
+          <span data-ttu-id="f0c80-437">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-437">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-438">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-438">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-439">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-439">The pipe is closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-440">Połączenie z potokiem zostało przerwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-440">The pipe connection has been broken.</span>
+          </span>
+          <span data-ttu-id="f0c80-441">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-441">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-442">Wystąpił błąd we/wy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-442">An I/O error occurred.</span>
+          </span>
+        </exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermissionFlag">
+          <span data-ttu-id="f0c80-443">Aby uzyskać możliwość manipulowania obiekt główny.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-443">for the ability to manipulate the principal object.</span>
+          </span>
+          <span data-ttu-id="f0c80-444">Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-444">Security action: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />.</span>
+          </span>
+          <span data-ttu-id="f0c80-445">Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-445">Associated enumeration: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlPrincipal" /></span>
+          </span>
+        </permission>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForConnection">
+      <MemberSignature Language="C#" Value="public void WaitForConnection ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void WaitForConnection() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.WaitForConnection" />
+      <MemberSignature Language="VB.NET" Value="Public Sub WaitForConnection ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void WaitForConnection();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-446">Czeka na kliencie do łączenia z tą <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-446">Waits for a client to connect to this <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-447">Wywołanie tej metody powoduje, że <xref:System.IO.Pipes.NamedPipeServerStream> obiekt, aby zablokować, dopóki klient nawiąże połączenie.</span><span class="sxs-lookup"><span data-stu-id="f0c80-447">Calling this method causes the <xref:System.IO.Pipes.NamedPipeServerStream> object to block until a client connects.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="f0c80-448">W poniższym przykładzie pokazano sposób wysyłania ciąg z procesu nadrzędnego do podrzędnego procesu używającego potoków nazwanych.</span><span class="sxs-lookup"><span data-stu-id="f0c80-448">The following example demonstrates a method to send a string from a parent process to a child process using named pipes.</span></span> <span data-ttu-id="f0c80-449">Ten przykład tworzy <xref:System.IO.Pipes.NamedPipeServerStream> obiekt w ramach procesu nadrzędnego.</span><span class="sxs-lookup"><span data-stu-id="f0c80-449">This example creates a <xref:System.IO.Pipes.NamedPipeServerStream> object in a parent process.</span></span> <span data-ttu-id="f0c80-450">Ten obiekt zawiera <xref:System.IO.Pipes.PipeDirection> wartość <xref:System.IO.Pipes.PipeDirection.Out>, który następnie blokuje do <xref:System.IO.Pipes.NamedPipeClientStream> obiektu ustanawia połączenie <xref:System.IO.Pipes.NamedPipeServerStream> obiektu.</span><span class="sxs-lookup"><span data-stu-id="f0c80-450">This object has a <xref:System.IO.Pipes.PipeDirection> value of <xref:System.IO.Pipes.PipeDirection.Out>, which then blocks until a <xref:System.IO.Pipes.NamedPipeClientStream> object establishes a connection to the <xref:System.IO.Pipes.NamedPipeServerStream> object.</span></span> <span data-ttu-id="f0c80-451">Ten przykład jest częścią większego przykładu udostępnionego dla <xref:System.IO.Pipes.NamedPipeServerStream> i <xref:System.IO.Pipes.NamedPipeClientStream> klasy.</span><span class="sxs-lookup"><span data-stu-id="f0c80-451">This example is part of a larger example provided for the <xref:System.IO.Pipes.NamedPipeServerStream> and <xref:System.IO.Pipes.NamedPipeClientStream> classes.</span></span>  
+  
+ [!code-csharp[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/cs/Program.cs#01)]
+ [!code-vb[System.IO.Pipes.NamedPipeServerStream_Sample1#01](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.IO.Pipes.NamedPipeServerStream_Sample1/vb/program.vb#01)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="f0c80-452">Nawiązano już połączenie z potokiem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-452">A pipe connection has already been established.</span>
+          </span>
+          <span data-ttu-id="f0c80-453">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-453">-or-</span>
+          </span>
+          <span data-ttu-id="f0c80-454">Nie ustawiono dojścia potoku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-454">The pipe handle has not been set.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="f0c80-455">Potok jest zamknięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-455">The pipe is closed.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.IO.IOException">
+          <span data-ttu-id="f0c80-456">Połączenie z potokiem zostało przerwane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-456">The pipe connection has been broken.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="WaitForConnectionAsync">
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-457">Asynchronicznie oczekuje klienta do łączenia z tą <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-457">Asynchronously waits for a client to connect to this <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="WaitForConnectionAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task WaitForConnectionAsync ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task WaitForConnectionAsync() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.WaitForConnectionAsync" />
+      <MemberSignature Language="VB.NET" Value="Public Function WaitForConnectionAsync () As Task" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ WaitForConnectionAsync();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="f0c80-458">Asynchronicznie oczekuje klienta do łączenia z tą <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-458">Asynchronously waits for a client to connect to this <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="f0c80-459">Zadanie reprezentujące operację asynchroniczną oczekiwania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-459">A task that represents the asynchronous wait operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-460">Ponieważ jest asynchroniczne, ta metoda zwraca natychmiast, ale proces połączenia jest zakończony, kiedy klient wywołuje <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> lub <xref:System.IO.Pipes.NamedPipeClientStream.ConnectAsync%2A>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-460">Because it is asynchronous, this method returns immediately, but the connection process is completed when the client calls <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> or <xref:System.IO.Pipes.NamedPipeClientStream.ConnectAsync%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="WaitForConnectionAsync">
+      <MemberSignature Language="C#" Value="public System.Threading.Tasks.Task WaitForConnectionAsync (System.Threading.CancellationToken cancellationToken);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Threading.Tasks.Task WaitForConnectionAsync(valuetype System.Threading.CancellationToken cancellationToken) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipes.NamedPipeServerStream.WaitForConnectionAsync(System.Threading.CancellationToken)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::Tasks::Task ^ WaitForConnectionAsync(System::Threading::CancellationToken cancellationToken);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.IO.Pipes</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Core</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Threading.Tasks.Task</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
+      </Parameters>
+      <Docs>
+        <param name="cancellationToken">
+          <span data-ttu-id="f0c80-461">Token do monitorowania żądań anulowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-461">The token to monitor for cancellation requests.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="f0c80-462">Asynchronicznie oczekuje klienta do łączenia z tą <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> żądań anulowania obiektu i monitory.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-462">Asynchronously waits for a client to connect to this <see cref="T:System.IO.Pipes.NamedPipeServerStream" /> object and monitors cancellation requests.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="f0c80-463">Zadanie reprezentujące operację asynchroniczną oczekiwania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="f0c80-463">A task that represents the asynchronous wait operation.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="f0c80-464">Ponieważ jest asynchroniczne, ta metoda zwraca natychmiast, ale proces połączenia jest zakończony, kiedy klient wywołuje <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> lub <xref:System.IO.Pipes.NamedPipeClientStream.ConnectAsync%2A>.</span><span class="sxs-lookup"><span data-stu-id="f0c80-464">Because it is asynchronous, this method returns immediately, but the connection process is completed when the client calls <xref:System.IO.Pipes.NamedPipeClientStream.Connect%2A> or <xref:System.IO.Pipes.NamedPipeClientStream.ConnectAsync%2A>.</span></span>  
+  
+ <span data-ttu-id="f0c80-465">Anulowanie żądania przy użyciu token anulowania tylko będzie działać, jeśli <xref:System.IO.Pipes.NamedPipeServerStream> obiekt został utworzony przy użyciu wartości opcji potoku <xref:System.IO.Pipes.PipeOptions.Asynchronous?displayProperty=nameWithType> lub w przypadku anulowania przed <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnectionAsync%2A> metoda jest wywoływana.</span><span class="sxs-lookup"><span data-stu-id="f0c80-465">Cancellation requests using the cancellation token will only work if   the <xref:System.IO.Pipes.NamedPipeServerStream> object was created with a pipe option value of <xref:System.IO.Pipes.PipeOptions.Asynchronous?displayProperty=nameWithType> or if the cancellation occurs before the <xref:System.IO.Pipes.NamedPipeServerStream.WaitForConnectionAsync%2A> method is called.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>

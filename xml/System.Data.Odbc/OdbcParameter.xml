@@ -1,0 +1,1739 @@
+<Type Name="OdbcParameter" FullName="System.Data.Odbc.OdbcParameter">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="b182830d8ea844ee2780122fc5255e2bb44d7d35" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class OdbcParameter : System.Data.Common.DbParameter, ICloneable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit OdbcParameter extends System.Data.Common.DbParameter implements class System.Data.IDataParameter, class System.Data.IDbDataParameter, class System.ICloneable" />
+  <TypeSignature Language="DocId" Value="T:System.Data.Odbc.OdbcParameter" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class OdbcParameter&#xA;Inherits DbParameter&#xA;Implements ICloneable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class OdbcParameter sealed : System::Data::Common::DbParameter, ICloneable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Data</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Data.Odbc</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Data.Common.DbParameter</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.ICloneable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Attributes>
+    <Attribute>
+      <AttributeName>System.ComponentModel.TypeConverter(typeof(System.Data.Odbc.OdbcParameter/OdbcParameterConverter))</AttributeName>
+    </Attribute>
+  </Attributes>
+  <Docs>
+    <summary>
+      <span data-ttu-id="20619-101">Reprezentuje parametr <see cref="T:System.Data.Odbc.OdbcCommand" /> i opcjonalnie jego mapowanie <see cref="T:System.Data.DataColumn" />.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="20619-101">Represents a parameter to an <see cref="T:System.Data.Odbc.OdbcCommand" /> and optionally, its mapping to a <see cref="T:System.Data.DataColumn" />.</span>
+      </span>
+      <span data-ttu-id="20619-102">Klasa ta nie może być dziedziczona.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="20619-102">This class cannot be inherited.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-103">Nazwy parametrów nie jest uwzględniana.</span><span class="sxs-lookup"><span data-stu-id="20619-103">Parameter names are not case sensitive.</span></span>  
+  
+ <span data-ttu-id="20619-104">Podczas wykonywania zapytania bazy danych Oracle przy użyciu dostawcy OLE DB firmy Microsoft dla programu Oracle (MSDAORA) i ODBC .NET Framework Data Provider, przy użyciu `LIKE` klauzuli zapytania wartości w polach o stałej długości nie mogą zwracać wszystkie oczekiwane dopasowań.</span><span class="sxs-lookup"><span data-stu-id="20619-104">When querying an Oracle database using the Microsoft OLE DB Provider for Oracle (MSDAORA) and the ODBC .NET Framework Data Provider, using the `LIKE` clause to query values in fixed-length fields might not return all expected matches.</span></span> <span data-ttu-id="20619-105">Przyczyną jest fakt, że Oracle odpowiada wartości pól o stałej długości w `LIKE` klauzuli odpowiada całej długości ciągu, w tym wszelkie uzupełnienia spacje końcowe.</span><span class="sxs-lookup"><span data-stu-id="20619-105">The reason is that when Oracle matches values for fixed-length fields in a `LIKE` clause, it matches the entire length of the string, including any padding trailing spaces.</span></span> <span data-ttu-id="20619-106">Na przykład jeśli w tabeli bazy danych programu Oracle zawiera pole o nazwie "Pole1", który jest zdefiniowany jako `char(3)`, a następnie wprowadź wartość "" do wiersza tej tabeli, następujący kod nie będzie zwracać wiersza.</span><span class="sxs-lookup"><span data-stu-id="20619-106">For example, if a table in an Oracle database contains a field named "Field1" that is defined as `char(3)`, and you enter the value "a" into a row of that table, the following code will not return the row.</span></span>  
+  
+```vb  
+Dim queryString As String = "SELECT * FROM Table1 WHERE Field1 LIKE ?"  
+Dim command As OleDbCommand = New OleDbCommand(queryString, connection)  
+command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a"  
+Dim reader As OleDbDataReader = command.ExecuteReader()  
+```  
+  
+```csharp  
+string queryString = "SELECT * FROM Table1 WHERE Field1 LIKE ?";  
+OleDbCommand command = new OleDbCommand(queryString, connection);  
+command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a";  
+OleDbDataReader reader = command.ExecuteReader();  
+```  
+  
+ <span data-ttu-id="20619-107">Wynika to z faktu Oracle przechowuje wartość kolumny jako "" (dopełnienie "a", na końcowe spacje, do pola stałej długości 3), który Oracle nie traktuje jako dopasowanie dla wartości parametru "a" w odniesieniu `LIKE` porównania pól o stałej długości.</span><span class="sxs-lookup"><span data-stu-id="20619-107">This is because Oracle stores the column value as "a  " (padding "a", with trailing spaces, to the fixed field length of 3), which Oracle does not treat as a match for the parameter value of "a" in the case of a `LIKE` comparison of fixed-length fields.</span></span>  
+  
+ <span data-ttu-id="20619-108">Aby rozwiązać ten problem, należy dołączyć symbolu wieloznacznego procentu ("%") do wartość parametru (`"a%"`), lub użyj SQL `=` porównania zamiast tego.</span><span class="sxs-lookup"><span data-stu-id="20619-108">To resolve this problem, append a percentage ("%") wildcard character to the parameter value (`"a%"`), or use an SQL `=` comparison instead.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-109">Poniższy przykład tworzy wiele wystąpień <xref:System.Data.Odbc.OdbcParameter> za pośrednictwem <xref:System.Data.Odbc.OdbcParameterCollection> w <xref:System.Data.Odbc.OdbcDataAdapter>.</span><span class="sxs-lookup"><span data-stu-id="20619-109">The following example creates multiple instances of <xref:System.Data.Odbc.OdbcParameter> through the <xref:System.Data.Odbc.OdbcParameterCollection> within the <xref:System.Data.Odbc.OdbcDataAdapter>.</span></span> <span data-ttu-id="20619-110">Te parametry są używane do wybierz dane ze źródła danych i umieść dane w <xref:System.Data.DataSet>.</span><span class="sxs-lookup"><span data-stu-id="20619-110">These parameters are used to select data from the data source and place the data in the <xref:System.Data.DataSet>.</span></span> <span data-ttu-id="20619-111">W tym przykładzie założono, że <xref:System.Data.DataSet> i <xref:System.Data.Odbc.OdbcDataAdapter> zostały już utworzone przy użyciu odpowiedniego schematu, poleceń i połączenia.</span><span class="sxs-lookup"><span data-stu-id="20619-111">This example assumes that a <xref:System.Data.DataSet> and an <xref:System.Data.Odbc.OdbcDataAdapter> have already been created by using the appropriate schema, commands, and connection.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/VB/source.vb#1)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName=".ctor">
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-112">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-112">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-113">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-113">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-114">Podstawowy Konstruktor inicjuje wszystkie pola z wartościami domyślnymi.</span><span class="sxs-lookup"><span data-stu-id="20619-114">The base constructor initializes all fields to their default values.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-115">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-115">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.OdbcParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.OdbcParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string name, System.Data.Odbc.OdbcType type);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.Odbc.OdbcType type) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Data.Odbc.OdbcType)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, type As OdbcType)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ name, System::Data::Odbc::OdbcType type);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="type" Type="System.Data.Odbc.OdbcType" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="20619-116">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-116">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="type">
+          <span data-ttu-id="20619-117">Jeden z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-117">One of the <see cref="T:System.Data.Odbc.OdbcType" /> values.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-118">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa parametru typu danych.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-118">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name and data type.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="20619-119">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-119">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.OdbcParameter1#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter1/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.OdbcParameter1#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter1/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-120">Wartość podana w <paramref name="type" /> parametr ma nieprawidłowy typ zaplecza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-120">The value supplied in the <paramref name="type" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string name, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Object)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, value As Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ name, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="20619-121">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-121">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="20619-122">
+            <see cref="T:System.Data.Odbc.OdbcParameter" /> Obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-122">An <see cref="T:System.Data.Odbc.OdbcParameter" /> object.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-123">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru i <see cref="T:System.Data.Odbc.OdbcParameter" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-123">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name and an <see cref="T:System.Data.Odbc.OdbcParameter" /> object.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-124">Należy zachować ostrożność podczas korzystania z tego przeciążenia <xref:System.Data.Odbc.OdbcParameter> konstruktora, aby określić wartości parametru liczby całkowitej.</span><span class="sxs-lookup"><span data-stu-id="20619-124">Use caution when you are using this overload of the <xref:System.Data.Odbc.OdbcParameter> constructor to specify integer parameter values.</span></span> <span data-ttu-id="20619-125">Ponieważ to przeciążenie przyjmuje `value` typu <xref:System.Object>, należy przekonwertować wartość całkowitą <xref:System.Object> wprowadź, jeśli wartość wynosi zero, jak pokazano w poniższym przykładzie C#.</span><span class="sxs-lookup"><span data-stu-id="20619-125">Because this overload takes a `value` of type <xref:System.Object>, you must convert the integral value to an <xref:System.Object> type when the value is zero, as the following C# example demonstrates.</span></span>  
+  
+```  
+Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));  
+```  
+  
+ <span data-ttu-id="20619-126">Jeśli ta konwersja nie zostanie wykonana, kompilator zakłada próby wywołania <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> przeładowania konstruktora.</span><span class="sxs-lookup"><span data-stu-id="20619-126">If you do not perform this conversion, the compiler assumes that you are trying to call the <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> constructor overload.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string name, System.Data.Odbc.OdbcType type, int size);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.Odbc.OdbcType type, int32 size) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Data.Odbc.OdbcType,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, type As OdbcType, size As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ name, System::Data::Odbc::OdbcType type, int size);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="type" Type="System.Data.Odbc.OdbcType" />
+        <Parameter Name="size" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="20619-127">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-127">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="type">
+          <span data-ttu-id="20619-128">Jeden z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-128">One of the <see cref="T:System.Data.Odbc.OdbcType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="20619-129">Długość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-129">The length of the parameter.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-130">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa parametru Nazwa, typ danych i długość.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-130">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name, data type, and length.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="20619-131">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-131">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.OdbcParameter2#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter2/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.OdbcParameter2#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter2/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-132">Wartość podana w <paramref name="type" /> parametr ma nieprawidłowy typ zaplecza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-132">The value supplied in the <paramref name="type" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string name, System.Data.Odbc.OdbcType type, int size, string sourcecolumn);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string name, valuetype System.Data.Odbc.OdbcType type, int32 size, string sourcecolumn) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Data.Odbc.OdbcType,System.Int32,System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub New (name As String, type As OdbcType, size As Integer, sourcecolumn As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ name, System::Data::Odbc::OdbcType type, int size, System::String ^ sourcecolumn);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+        <Parameter Name="type" Type="System.Data.Odbc.OdbcType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="sourcecolumn" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="20619-133">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-133">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="type">
+          <span data-ttu-id="20619-134">Jeden z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-134">One of the <see cref="T:System.Data.Odbc.OdbcType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="20619-135">Długość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-135">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="sourcecolumn">
+          <span data-ttu-id="20619-136">Nazwa kolumny źródłowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-136">The name of the source column.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-137">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa parametru Nazwa, typ danych, długość i nazwa kolumny źródłowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-137">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name, data type, length, and source column name.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="20619-138">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-138">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.OdbcParameter3#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter3/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.OdbcParameter3#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter3/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-139">Wartość podana w <paramref name="type" /> parametr ma nieprawidłowy typ zaplecza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-139">The value supplied in the <paramref name="type" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string parameterName, System.Data.Odbc.OdbcType odbcType, int size, System.Data.ParameterDirection parameterDirection, bool isNullable, byte precision, byte scale, string srcColumn, System.Data.DataRowVersion srcVersion, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string parameterName, valuetype System.Data.Odbc.OdbcType odbcType, int32 size, valuetype System.Data.ParameterDirection parameterDirection, bool isNullable, unsigned int8 precision, unsigned int8 scale, string srcColumn, valuetype System.Data.DataRowVersion srcVersion, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Data.Odbc.OdbcType,System.Int32,System.Data.ParameterDirection,System.Boolean,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ parameterName, System::Data::Odbc::OdbcType odbcType, int size, System::Data::ParameterDirection parameterDirection, bool isNullable, System::Byte precision, System::Byte scale, System::String ^ srcColumn, System::Data::DataRowVersion srcVersion, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="parameterName" Type="System.String" />
+        <Parameter Name="odbcType" Type="System.Data.Odbc.OdbcType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="parameterDirection" Type="System.Data.ParameterDirection" />
+        <Parameter Name="isNullable" Type="System.Boolean" />
+        <Parameter Name="precision" Type="System.Byte" />
+        <Parameter Name="scale" Type="System.Byte" />
+        <Parameter Name="srcColumn" Type="System.String" />
+        <Parameter Name="srcVersion" Type="System.Data.DataRowVersion" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="parameterName">
+          <span data-ttu-id="20619-140">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-140">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="odbcType">
+          <span data-ttu-id="20619-141">Jeden z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-141">One of the <see cref="T:System.Data.Odbc.OdbcType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="20619-142">Długość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-142">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="parameterDirection">
+          <span data-ttu-id="20619-143">Jeden z <see cref="T:System.Data.ParameterDirection" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-143">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </param>
+        <param name="isNullable">
+          <span data-ttu-id="20619-144">
+            <see langword="true" /> Jeśli wartość pola mogą mieć wartości null; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-144">
+              <see langword="true" /> if the value of the field can be null; otherwise <see langword="false" />.</span>
+          </span>
+        </param>
+        <param name="precision">
+          <span data-ttu-id="20619-145">Całkowita liczba cyfr po lewej i prawej strony punktu dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-145">The total number of digits to the left and right of the decimal point to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="scale">
+          <span data-ttu-id="20619-146">Całkowita liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-146">The total number of decimal places to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="srcColumn">
+          <span data-ttu-id="20619-147">Nazwa kolumny źródłowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-147">The name of the source column.</span>
+          </span>
+        </param>
+        <param name="srcVersion">
+          <span data-ttu-id="20619-148">Jeden z <see cref="T:System.Data.DataRowVersion" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-148">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="20619-149">
+            <see cref="T:System.Object" /> Będący wartością <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-149">An <see cref="T:System.Object" /> that is the value of the <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-150">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwę parametru, typu danych, długość, nazwa kolumny źródłowej, kierunek parametru, dokładność liczbowych i inne właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-150">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name, data type, length, source column name, parameter direction, numeric precision, and other properties.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="20619-151">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i wyświetla <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.</span><span class="sxs-lookup"><span data-stu-id="20619-151">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and displays the <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.OdbcParameter4#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter4/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.OdbcParameter4#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter4/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-152">Wartość podana w <paramref name="type" /> parametr ma nieprawidłowy typ zaplecza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-152">The value supplied in the <paramref name="type" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="public OdbcParameter (string parameterName, System.Data.Odbc.OdbcType odbcType, int size, System.Data.ParameterDirection parameterDirection, byte precision, byte scale, string sourceColumn, System.Data.DataRowVersion sourceVersion, bool sourceColumnNullMapping, object value);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(string parameterName, valuetype System.Data.Odbc.OdbcType odbcType, int32 size, valuetype System.Data.ParameterDirection parameterDirection, unsigned int8 precision, unsigned int8 scale, string sourceColumn, valuetype System.Data.DataRowVersion sourceVersion, bool sourceColumnNullMapping, object value) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.#ctor(System.String,System.Data.Odbc.OdbcType,System.Int32,System.Data.ParameterDirection,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Boolean,System.Object)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; OdbcParameter(System::String ^ parameterName, System::Data::Odbc::OdbcType odbcType, int size, System::Data::ParameterDirection parameterDirection, System::Byte precision, System::Byte scale, System::String ^ sourceColumn, System::Data::DataRowVersion sourceVersion, bool sourceColumnNullMapping, System::Object ^ value);" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <Parameters>
+        <Parameter Name="parameterName" Type="System.String" />
+        <Parameter Name="odbcType" Type="System.Data.Odbc.OdbcType" />
+        <Parameter Name="size" Type="System.Int32" />
+        <Parameter Name="parameterDirection" Type="System.Data.ParameterDirection" />
+        <Parameter Name="precision" Type="System.Byte" />
+        <Parameter Name="scale" Type="System.Byte" />
+        <Parameter Name="sourceColumn" Type="System.String" />
+        <Parameter Name="sourceVersion" Type="System.Data.DataRowVersion" />
+        <Parameter Name="sourceColumnNullMapping" Type="System.Boolean" />
+        <Parameter Name="value" Type="System.Object" />
+      </Parameters>
+      <Docs>
+        <param name="parameterName">
+          <span data-ttu-id="20619-153">Nazwa parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-153">The name of the parameter.</span>
+          </span>
+        </param>
+        <param name="odbcType">
+          <span data-ttu-id="20619-154">Jeden z <see cref="P:System.Data.Odbc.OdbcParameter.OdbcType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-154">One of the <see cref="P:System.Data.Odbc.OdbcParameter.OdbcType" /> values.</span>
+          </span>
+        </param>
+        <param name="size">
+          <span data-ttu-id="20619-155">Długość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-155">The length of the parameter.</span>
+          </span>
+        </param>
+        <param name="parameterDirection">
+          <span data-ttu-id="20619-156">Jeden z <see cref="T:System.Data.ParameterDirection" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-156">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </param>
+        <param name="precision">
+          <span data-ttu-id="20619-157">Całkowita liczba cyfr po lewej i prawej strony punktu dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-157">The total number of digits to the left and right of the decimal point to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="scale">
+          <span data-ttu-id="20619-158">Całkowita liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-158">The total number of decimal places to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+        </param>
+        <param name="sourceColumn">
+          <span data-ttu-id="20619-159">Nazwa kolumny źródłowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-159">The name of the source column.</span>
+          </span>
+        </param>
+        <param name="sourceVersion">
+          <span data-ttu-id="20619-160">Jeden z <see cref="T:System.Data.DataRowVersion" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-160">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+        </param>
+        <param name="sourceColumnNullMapping">
+          <span data-ttu-id="20619-161">
+            <see langword="true" /> Jeśli odpowiednia kolumna źródłowego ma wartość null; <see langword="false" /> Jeśli nie jest.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-161">
+              <see langword="true" /> if the corresponding source column is nullable; <see langword="false" /> if it is not.</span>
+          </span>
+        </param>
+        <param name="value">
+          <span data-ttu-id="20619-162">
+            <see cref="T:System.Object" /> Będący wartością <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-162">An <see cref="T:System.Object" /> that is the value of the <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="20619-163">Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwę parametru, typu danych, długość, nazwa kolumny źródłowej, kierunek parametru, dokładność liczbowych i inne właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-163">Initializes a new instance of the <see cref="T:System.Data.Odbc.OdbcParameter" /> class that uses the parameter name, data type, length, source column name, parameter direction, numeric precision, and other properties.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="20619-164">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i wyświetla <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.</span><span class="sxs-lookup"><span data-stu-id="20619-164">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and displays the <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+  Dim parameter As New OdbcParameter("Description", OdbcType.VarChar, 11, ParameterDirection.Output, True, 0, 0, "Description", DataRowVersion.Current, False, "garden hose")  
+  MessageBox.Show(parameter.ToString())  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+{  
+  OdbcParameter parameter = new OdbcParameter("Description",OdbcType.VarChar,  
+              11,ParameterDirection.Output,true,0,0,"Description",  
+              DataRowVersion.Current, false, "garden hose");  
+  MessageBox.Show(parameter.ToString());  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-165">Wartość podana w <paramref name="type" /> parametr ma nieprawidłowy typ zaplecza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-165">The value supplied in the <paramref name="type" /> parameter is an invalid back-end data type.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="DbType">
+      <MemberSignature Language="C#" Value="public override System.Data.DbType DbType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.DbType DbType" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.DbType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property DbType As DbType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::DbType DbType { System::Data::DbType get(); void set(System::Data::DbType value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.DbType</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.DbType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-166">Pobiera lub ustawia <see cref="T:System.Data.DbType" /> parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-166">Gets or sets the <see cref="T:System.Data.DbType" /> of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-167">Jeden z <see cref="T:System.Data.DbType" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-167">One of the <see cref="T:System.Data.DbType" /> values.</span>
+          </span>
+          <span data-ttu-id="20619-168">Wartość domyślna to <see cref="T:System.String" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-168">The default is <see cref="T:System.String" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-169"><xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> i <xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone.</span><span class="sxs-lookup"><span data-stu-id="20619-169">The <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> and <xref:System.Data.Odbc.OdbcParameter.DbType%2A> are linked.</span></span> <span data-ttu-id="20619-170">W związku z tym ustawienie <xref:System.Data.Odbc.OdbcParameter.DbType%2A> zmiany <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> do obsługi <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>.</span><span class="sxs-lookup"><span data-stu-id="20619-170">Therefore, setting the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> changes the <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> to a supporting <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>.</span></span>  
+  
+ <span data-ttu-id="20619-171">Aby uzyskać listę obsługiwanych typów znajduje się w odpowiednim <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> elementu członkowskiego.</span><span class="sxs-lookup"><span data-stu-id="20619-171">For a list of the supported data types, see the appropriate <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> member.</span></span> <span data-ttu-id="20619-172">Aby uzyskać więcej informacji, zobacz [parametry element DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md).</span><span class="sxs-lookup"><span data-stu-id="20619-172">For more information, see [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20619-173"><xref:System.Data.DbType.Object> dla ODBC nie jest obsługiwana przez dostawcę danych programu Microsoft .NET Framework.</span><span class="sxs-lookup"><span data-stu-id="20619-173"><xref:System.Data.DbType.Object> is not supported by the Microsoft .NET Framework Data Provider for ODBC.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-174">Następujące przykładowe wywołania **procedury składowanej** z trzema parametrami przy użyciu ODBC zarządzanego dostawcy.</span><span class="sxs-lookup"><span data-stu-id="20619-174">The following example calls a **Stored Procedure** with three parameters using the ODBC managed provider.</span></span>  
+  
+ [!code-csharp[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/CS/source.cs#1)]
+ [!code-vb[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/VB/source.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="20619-175">Właściwość nie został ustawiony na prawidłowy <see cref="T:System.Data.DbType" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-175">The property was not set to a valid <see cref="T:System.Data.DbType" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Direction">
+      <MemberSignature Language="C#" Value="public override System.Data.ParameterDirection Direction { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.ParameterDirection Direction" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Direction" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Direction As ParameterDirection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::ParameterDirection Direction { System::Data::ParameterDirection get(); void set(System::Data::ParameterDirection value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.Direction</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.ParameterDirection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-176">Pobiera lub ustawia wartość wskazującą, czy parametr tylko wejściowym, jest tylko do danych wyjściowych, dwukierunkowego lub parametru wartości zwracanej procedury składowanej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-176">Gets or sets a value that indicates whether the parameter is input-only, output-only, bidirectional, or a stored procedure return value parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-177">Jeden z <see cref="T:System.Data.ParameterDirection" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-177">One of the <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+          <span data-ttu-id="20619-178">Wartość domyślna to <see langword="Input" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-178">The default is <see langword="Input" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-179">Jeśli <xref:System.Data.ParameterDirection> jest `Output`i wykonywanie skojarzonego <xref:System.Data.Odbc.OdbcCommand> nie zwraca wartości <xref:System.Data.Odbc.OdbcParameter> będzie zawierać wartości null.</span><span class="sxs-lookup"><span data-stu-id="20619-179">If the <xref:System.Data.ParameterDirection> is `Output`, and execution of the associated <xref:System.Data.Odbc.OdbcCommand> does not return a value, the <xref:System.Data.Odbc.OdbcParameter> will contain a null value.</span></span> <span data-ttu-id="20619-180">Wartości null są obsługiwane przy użyciu <xref:System.DBNull> klasy.</span><span class="sxs-lookup"><span data-stu-id="20619-180">Null values are handled using the <xref:System.DBNull> class.</span></span>  
+  
+ <span data-ttu-id="20619-181">`Output`, `InputOut`, i `ReturnValue` Parametry zwracane przez wywołanie metody <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> będą niedostępne do czasu wywołania <xref:System.Data.Odbc.OdbcDataReader.Close%2A> lub `Dispose` na <xref:System.Data.Odbc.OdbcDataReader>.</span><span class="sxs-lookup"><span data-stu-id="20619-181">`Output`, `InputOut`, and `ReturnValue` parameters returned by calling <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> cannot be accessed until you call <xref:System.Data.Odbc.OdbcDataReader.Close%2A> or `Dispose` on the <xref:System.Data.Odbc.OdbcDataReader>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-182">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-182">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateMyProc(connection As OdbcConnection)  
+  
+   Dim command As OdbcCommand = connection.CreateCommand()  
+   command.CommandText = "{ call MyProc(?,?,?) }"  
+   command.Parameters.Add("", OdbcType.Int).Value = 1  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 2  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 3  
+  
+End Sub  
+```  
+  
+```csharp  
+public void CreateMyProc(OdbcConnection connection)   
+{  
+   OdbcCommand command = connection.CreateCommand();  
+   command.CommandText = "{ call MyProc(?,?,?) }";  
+   command.Parameters.Add("", OdbcType.Int).Value = 1;  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 2;  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 3;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="20619-183">Właściwość nie została ustawiona na jedną z prawidłowych <see cref="T:System.Data.ParameterDirection" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-183">The property was not set to one of the valid <see cref="T:System.Data.ParameterDirection" /> values.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsNullable">
+      <MemberSignature Language="C#" Value="public override bool IsNullable { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsNullable" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.IsNullable" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property IsNullable As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool IsNullable { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-184">Pobiera lub ustawia wartość wskazującą, czy parametr akceptuje wartości null.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-184">Gets or sets a value that indicates whether the parameter accepts null values.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-185">
+            <see langword="true" /> Jeśli są akceptowane wartości zerowe; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-185">
+              <see langword="true" /> if null values are accepted; otherwise <see langword="false" />.</span>
+          </span>
+          <span data-ttu-id="20619-186">Wartość domyślna to <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-186">The default is <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-187">Wartości null są obsługiwane przy użyciu <xref:System.DBNull> klasy.</span><span class="sxs-lookup"><span data-stu-id="20619-187">Null values are handled using the <xref:System.DBNull> class.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-188">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-188">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+   Dim parameter As New OdbcParameter("Description", OdbcType.VarChar, 88)  
+   parameter.IsNullable = True  
+   parameter.Direction = ParameterDirection.Output  
+End Sub  
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+{  
+   OdbcParameter parameter = new OdbcParameter("Description", OdbcType.VarChar, 88);  
+   parameter.IsNullable = true;  
+   parameter.Direction = ParameterDirection.Output;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="OdbcType">
+      <MemberSignature Language="C#" Value="public System.Data.Odbc.OdbcType OdbcType { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.Odbc.OdbcType OdbcType" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.OdbcType" />
+      <MemberSignature Language="VB.NET" Value="Public Property OdbcType As OdbcType" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Data::Odbc::OdbcType OdbcType { System::Data::Odbc::OdbcType get(); void set(System::Data::Odbc::OdbcType value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DefaultValue(Mono.Cecil.CustomAttributeArgument)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.Data.Common.DbProviderSpecificTypeProperty(true)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Data.Odbc.OdbcType</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-189">Pobiera lub ustawia <see cref="T:System.Data.Odbc.OdbcType" /> parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-189">Gets or sets the <see cref="T:System.Data.Odbc.OdbcType" /> of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-190">
+            <see cref="T:System.Data.Odbc.OdbcType" /> Wartość, czyli <see cref="T:System.Data.Odbc.OdbcType" /> parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-190">An <see cref="T:System.Data.Odbc.OdbcType" /> value that is the <see cref="T:System.Data.Odbc.OdbcType" /> of the parameter.</span>
+          </span>
+          <span data-ttu-id="20619-191">Wartość domyślna to <see langword="Nchar" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-191">The default is <see langword="Nchar" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-192"><xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> i <xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone.</span><span class="sxs-lookup"><span data-stu-id="20619-192">The <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> and <xref:System.Data.Odbc.OdbcParameter.DbType%2A> are linked.</span></span> <span data-ttu-id="20619-193">W związku z tym ustawienie <xref:System.Data.Odbc.OdbcParameter.DbType%2A> zmiany <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> do obsługi <xref:System.Data.Odbc.OdbcType>.</span><span class="sxs-lookup"><span data-stu-id="20619-193">Therefore, setting the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> changes the <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> to a supporting <xref:System.Data.Odbc.OdbcType>.</span></span>  
+  
+ <span data-ttu-id="20619-194">Aby uzyskać listę obsługiwanych typów znajduje się w odpowiednim <xref:System.Data.Odbc.OdbcType> elementu członkowskiego.</span><span class="sxs-lookup"><span data-stu-id="20619-194">For a list of the supported data types, see the appropriate <xref:System.Data.Odbc.OdbcType> member.</span></span> <span data-ttu-id="20619-195">Aby uzyskać więcej informacji, zobacz [parametry element DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md).</span><span class="sxs-lookup"><span data-stu-id="20619-195">For more information, see [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Offset">
+      <MemberSignature Language="C#" Value="public int Offset { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Offset" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Offset" />
+      <MemberSignature Language="VB.NET" Value="Public Property Offset As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property int Offset { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.Browsable(false)</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Advanced)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ParameterName">
+      <MemberSignature Language="C#" Value="public override string ParameterName { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string ParameterName" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.ParameterName" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property ParameterName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ ParameterName { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.ParameterName</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-196">Pobiera lub ustawia nazwę <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-196">Gets or sets the name of the <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-197">Nazwa <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-197">The name of the <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+          <span data-ttu-id="20619-198">Wartością domyślną jest ciąg pusty ("").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-198">The default is an empty string ("").</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-199">Zamiast nazwane parametry dostawcy .NET ODBC używa parametrów pozycyjnych, które są oznaczone znakiem zapytania (?) w składni tekst polecenia.</span><span class="sxs-lookup"><span data-stu-id="20619-199">Instead of named parameters, the ODBC .NET Provider uses positional parameters that are marked with a question mark (?) in the syntax of the command text.</span></span> <span data-ttu-id="20619-200">Parametr obiekty w <xref:System.Data.Odbc.OdbcParameterCollection> i rzeczywistych parametrów zaakceptowane przez procedurę składowaną lub sparametryzowanych instrukcji SQL zgodne ze sobą na podstawie kolejności, w którym <xref:System.Data.Odbc.OdbcParameter> obiekty są wstawiane do kolekcji, a nie przez Nazwa parametru.</span><span class="sxs-lookup"><span data-stu-id="20619-200">Parameter objects in the <xref:System.Data.Odbc.OdbcParameterCollection> and the actual parameters accepted by the stored procedure or parameterized SQL statement correspond to each other based on the order in which the <xref:System.Data.Odbc.OdbcParameter> objects are inserted into the collection instead of by parameter name.</span></span> <span data-ttu-id="20619-201">Nazwy parametrów można podać, ale zostaną pominięte podczas tworzenia powiązania obiektu parametru.</span><span class="sxs-lookup"><span data-stu-id="20619-201">Parameter names can be supplied, but will be ignored during parameter object binding.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-202">W poniższym przykładzie założono, że źródło danych ma nazwę tabeli **MyTable** i procedury składowanej o nazwie MyProc, która jest zdefiniowana jako:</span><span class="sxs-lookup"><span data-stu-id="20619-202">The following example assumes that the data source has a table name **MyTable** and a stored procedure named MyProc that is defined as:</span></span>  
+  
+```  
+CREATE TABLE MyTable (col1 int, col2 smallmoney, col3 decimal)  
+CREATE PROC MyProc (@p1 int, @p2 smallmoney, @p3 decimal) AS INSERT INTO MyTable VALUES (@p1, @p2, @p3)  
+```  
+  
+ <span data-ttu-id="20619-203">Poniższy przykład tworzy parametrów i wywołuje procedurę MyProc przechowywane:</span><span class="sxs-lookup"><span data-stu-id="20619-203">The following example creates parameters and calls the MyProc stored procedure:</span></span>  
+  
+```vb  
+Public Sub CreateMyProc(connection As OdbcConnection)  
+  
+   Dim command As OdbcCommand = connection.CreateCommand()  
+  
+   command.CommandText = "{ call MyProc(?,?,?) }"  
+   command.Parameters.Add("", OdbcType.Int).Value = 1  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 2  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 3  
+  
+End Sub  
+```  
+  
+```csharp  
+public void CreateMyProc(OdbcConnection connection)   
+{  
+   OdbcCommand command = myConnection.CreateCommand();  
+  
+   command.CommandText = "{ call MyProc(?,?,?) }";  
+   command.Parameters.Add("", OdbcType.Int).Value = 1;  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 2;  
+   command.Parameters.Add("", OdbcType.Decimal).Value = 3;  
+}  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Precision">
+      <MemberSignature Language="C#" Value="public byte Precision { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8 Precision" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Precision" />
+      <MemberSignature Language="VB.NET" Value="Public Property Precision As Byte" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Byte Precision { System::Byte get(); void set(System::Byte value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Precision</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DefaultValue(0)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-204">Pobiera lub ustawia liczbę cyfr używana do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-204">Gets or sets the number of digits used to represent the <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> property.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-205">Maksymalna liczba cyfr używana do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-205">The maximum number of digits used to represent the <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> property.</span>
+          </span>
+          <span data-ttu-id="20619-206">Wartość domyślna to 0, co oznacza, że dostawca danych określa dokładność <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-206">The default value is 0, which indicates that the data provider sets the precision for <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-207">Ustawienie tej właściwości na wartość inna niż wartość w bazie danych zależy od implementacji dostawcy danych i mogą zwracać błąd kodu, truncate lub round danych.</span><span class="sxs-lookup"><span data-stu-id="20619-207">Setting this property to a value other than the value in the database depends on the implementation of the data provider and may return an error code, truncate, or round data.</span></span>  
+  
+ <span data-ttu-id="20619-208"><xref:System.Data.Odbc.OdbcParameter.Precision%2A> Właściwość ma wpływ tylko na parametry których <xref:System.Data.Odbc.OdbcType> jest `Decimal` lub `Numeric`.</span><span class="sxs-lookup"><span data-stu-id="20619-208">The <xref:System.Data.Odbc.OdbcParameter.Precision%2A> property only affects parameters whose <xref:System.Data.Odbc.OdbcType> is `Decimal` or `Numeric`.</span></span> <span data-ttu-id="20619-209">Dla innych typów danych <xref:System.Data.Odbc.OdbcParameter.Precision%2A> jest ignorowana.</span><span class="sxs-lookup"><span data-stu-id="20619-209">For other data types, <xref:System.Data.Odbc.OdbcParameter.Precision%2A> is ignored.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20619-210">Użycie tej właściwości, aby wymusić przekazane do bazy danych nie jest obsługiwane.</span><span class="sxs-lookup"><span data-stu-id="20619-210">Use of this property to coerce data passed to the database is not supported.</span></span> <span data-ttu-id="20619-211">Aby round, truncate, lub w przeciwnym razie wymuszone danych przed przekazaniem go do bazy danych, użyj <xref:System.Math> klasy, która jest częścią `System` przestrzeni nazw przed przypisywanie wartości do parametru `Value` właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-211">To round, truncate, or otherwise coerce data before passing it to the database, use the <xref:System.Math> class that is part of the `System` namespace prior to assigning a value to the parameter's `Value` property.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-212">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-212">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim parameter As New OdbcParameter("Price", OdbcType.Decimal)  
+    parameter.Value = 3.1416  
+    parameter.Precision = 8  
+    parameter.Scale = 4  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    OdbcParameter parameter = new OdbcParameter("Price", OdbcType.Decimal);  
+    parameter.Value = 3.1416;  
+    parameter.Precision = 8;  
+    parameter.Scale = 4;  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetDbType">
+      <MemberSignature Language="C#" Value="public override void ResetDbType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ResetDbType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.ResetDbType" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ResetDbType ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ResetDbType();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-213">Typ skojarzony z tym resetuje <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-213">Resets the type associated with this <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-214">Podczas wykonywania polecenia zawierającą wartości parametrów, kodu można ustawić jawnie typ parametru lub parametr można wywnioskować jej typu ze swojej wartości.</span><span class="sxs-lookup"><span data-stu-id="20619-214">When executing a command that includes parameter values, code can either set the type of a parameter explicitly, or the parameter can infer its type from its value.</span></span> <span data-ttu-id="20619-215">Wywołanie tej metody resetuje parametr, aby go ponownie wywnioskować jej typu z wartości przekazywane w parametrze.</span><span class="sxs-lookup"><span data-stu-id="20619-215">Calling this method resets the parameter so that it can again infer its type from the value passed in the parameter.</span></span> <span data-ttu-id="20619-216">Wywołanie tej metody ma wpływ zarówno na <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> właściwości <xref:System.Data.Odbc.OdbcParameter>.</span><span class="sxs-lookup"><span data-stu-id="20619-216">Calling this method affects both the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> and <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> properties of the <xref:System.Data.Odbc.OdbcParameter>.</span></span>  
+  
+ <span data-ttu-id="20619-217">Wywoływanie <xref:System.Data.Odbc.OdbcParameter.ResetDbType%2A> resetuje <xref:System.Data.Odbc.OdbcParameter.DbType%2A> jego wartość domyślna (ciąg).</span><span class="sxs-lookup"><span data-stu-id="20619-217">Calling <xref:System.Data.Odbc.OdbcParameter.ResetDbType%2A> resets <xref:System.Data.Odbc.OdbcParameter.DbType%2A> to its default value (String).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ResetOdbcType">
+      <MemberSignature Language="C#" Value="public void ResetOdbcType ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ResetOdbcType() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.ResetOdbcType" />
+      <MemberSignature Language="VB.NET" Value="Public Sub ResetOdbcType ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ResetOdbcType();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-218">Typ skojarzony z tym resetuje <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-218">Resets the type associated with this <see cref="T:System.Data.Odbc.OdbcParameter" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-219">Podczas wykonywania polecenia zawierającą wartości parametrów, kodu można ustawić jawnie typ parametru lub parametr można wywnioskować jej typu ze swojej wartości.</span><span class="sxs-lookup"><span data-stu-id="20619-219">When executing a command that includes parameter values, code can either set the type of a parameter explicitly, or the parameter can infer its type from its value.</span></span> <span data-ttu-id="20619-220">Wywołanie tej metody resetuje parametr, aby go ponownie wywnioskować jej typu z wartości przekazywane w parametrze.</span><span class="sxs-lookup"><span data-stu-id="20619-220">Calling this method resets the parameter so that it can again infer its type from the value passed in the parameter.</span></span> <span data-ttu-id="20619-221">Wywołanie tej metody ma wpływ zarówno na <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> właściwości <xref:System.Data.Odbc.OdbcParameter>.</span><span class="sxs-lookup"><span data-stu-id="20619-221">Calling this method affects both the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> and <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> properties of the <xref:System.Data.Odbc.OdbcParameter>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Scale">
+      <MemberSignature Language="C#" Value="public byte Scale { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance unsigned int8 Scale" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Scale" />
+      <MemberSignature Language="VB.NET" Value="Public Property Scale As Byte" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Byte Scale { System::Byte get(); void set(System::Byte value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Scale</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.DefaultValue(0)</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Byte</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-222">Pobiera lub ustawia liczbę miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-222">Gets or sets the number of decimal places to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-223">Liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-223">The number of decimal places to which <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> is resolved.</span>
+          </span>
+          <span data-ttu-id="20619-224">Wartość domyślna to 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-224">The default is 0.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-225"><xref:System.Data.Odbc.OdbcParameter.Scale%2A> Właściwość jest używana tylko dla parametrów wejściowych numerycznych i dziesiętnych.</span><span class="sxs-lookup"><span data-stu-id="20619-225">The <xref:System.Data.Odbc.OdbcParameter.Scale%2A> property is used only for decimal and numeric input parameters.</span></span>  
+  
+ <span data-ttu-id="20619-226">Wpływ ustawienia tej właściwości na wartość inną niż wartość w bazie danych zależy od implementacji dostawcy danych i może zwracają kod błędu obcięcia lub zaokrąglona danych.</span><span class="sxs-lookup"><span data-stu-id="20619-226">The effect of setting this property to a value other than the value in the database depends on the implementation of the data provider and may return an error code, or truncate or round data.</span></span>  
+  
+ <span data-ttu-id="20619-227"><xref:System.Data.Odbc.OdbcParameter.Scale%2A> Właściwość ma wpływ tylko na parametry których <xref:System.Data.Odbc.OdbcType> jest `Decimal` lub `Numeric`.</span><span class="sxs-lookup"><span data-stu-id="20619-227">The <xref:System.Data.Odbc.OdbcParameter.Scale%2A> property only affects parameters whose <xref:System.Data.Odbc.OdbcType> is `Decimal` or `Numeric`.</span></span> <span data-ttu-id="20619-228">Dla innych typów danych <xref:System.Data.Odbc.OdbcParameter.Scale%2A> jest ignorowana.</span><span class="sxs-lookup"><span data-stu-id="20619-228">For other data types, <xref:System.Data.Odbc.OdbcParameter.Scale%2A> is ignored.</span></span>  
+  
+ <span data-ttu-id="20619-229">Korzystając z programu SQL Server Native Client 10 (lub późniejszy) aby powiązać parametr, którego typ jest dziesiętna, wartość liczbowa, VarNumeric, DBDate lub Odcisk czasowy, należy ręcznie określić odpowiednią wartość skali.</span><span class="sxs-lookup"><span data-stu-id="20619-229">When using SQL Server Native Client 10 (or later) to bind a parameter whose type is Decimal, Numeric, VarNumeric, DBDate, or DBTimeStamp, you must manually specify an appropriate Scale value.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20619-230">Użycie tej właściwości, aby wymusić przekazane do bazy danych nie jest obsługiwane.</span><span class="sxs-lookup"><span data-stu-id="20619-230">Use of this property to coerce data passed to the database is not supported.</span></span> <span data-ttu-id="20619-231">Aby round, truncate, lub w przeciwnym razie wymuszone danych przed przekazaniem go do bazy danych, użyj <xref:System.Math> klasy, która jest częścią `System` przestrzeni nazw przed przypisywanie wartości do parametru `Value` właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-231">To round, truncate, or otherwise coerce data before passing it to the database, use the <xref:System.Math> class that is part of the `System` namespace prior to assigning a value to the parameter's `Value` property.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20619-232">Dostawcy danych .NET framework, które są dołączone do programu .NET Framework w wersji 1.0 nie weryfikują `scale` z <xref:System.Decimal> wartości parametrów.</span><span class="sxs-lookup"><span data-stu-id="20619-232">.NET Framework data providers that are included with the .NET Framework version 1.0 do not verify the `scale` of <xref:System.Decimal> parameter values.</span></span> <span data-ttu-id="20619-233">Może to spowodować zmodyfikowane dane wstawiane w źródle danych.</span><span class="sxs-lookup"><span data-stu-id="20619-233">This can cause modified data being inserted at the data source.</span></span> <span data-ttu-id="20619-234">Jeśli używasz .NET Framework w wersji 1.0, sprawdzanie poprawności s`cale` d`ecimal` wartości przed ustawieniem wartości parametru.</span><span class="sxs-lookup"><span data-stu-id="20619-234">If you are using .NET Framework version 1.0, validate the s`cale` of d`ecimal` values before setting the parameter value.</span></span> <span data-ttu-id="20619-235">Gdy używasz wersji .NET Framework 1.1 lub nowszej, `scale` wartości, które przekraczają `decimal` skalowania parametr może być obcięty w skali, tylko jeśli jest to zachowanie sterownika ODBC.</span><span class="sxs-lookup"><span data-stu-id="20619-235">When you use .NET Framework version 1.1 or later versions, `scale` values that exceed the `decimal` parameter scale might only be truncated in scale, if that is the behavior of the underlying ODBC driver.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-236">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-236">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim parameter As New OdbcParameter("Price", OdbcType.Decimal)  
+    parameter.Value = 3.1416  
+    parameter.Precision = 8  
+    parameter.Scale = 4  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    OdbcParameter parameter = new OdbcParameter("Price", OdbcType.Decimal);  
+    parameter.Value = 3.1416;  
+    parameter.Precision = 8;  
+    parameter.Scale = 4;  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Size">
+      <MemberSignature Language="C#" Value="public override int Size { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 Size" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Size" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Size As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property int Size { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDbDataParameter.Size</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-237">Pobiera lub ustawia maksymalny rozmiar danych w kolumnie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-237">Gets or sets the maximum size of the data within the column.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-238">Maksymalny rozmiar danych w kolumnie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-238">The maximum size of the data within the column.</span>
+          </span>
+          <span data-ttu-id="20619-239">Wartością domyślną jest wywnioskowany na podstawie wartości parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-239">The default value is inferred from the parameter value.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-240"><xref:System.Data.Odbc.OdbcParameter.Size%2A> Właściwość jest używana dla typu binary i ciąg.</span><span class="sxs-lookup"><span data-stu-id="20619-240">The <xref:System.Data.Odbc.OdbcParameter.Size%2A> property is used for binary and string types.</span></span>  
+  
+ <span data-ttu-id="20619-241">Dla typów danych typu i ANSI dane ciągu <xref:System.Data.Odbc.OdbcParameter.Size%2A> właściwość odwołuje się do liczby bajtów.</span><span class="sxs-lookup"><span data-stu-id="20619-241">For nonstring data types and ANSI string data, the <xref:System.Data.Odbc.OdbcParameter.Size%2A> property refers to the number of bytes.</span></span> <span data-ttu-id="20619-242">W przypadku danych ciąg Unicode <xref:System.Data.Odbc.OdbcParameter.Size%2A> odwołuje się do liczby znaków.</span><span class="sxs-lookup"><span data-stu-id="20619-242">For Unicode string data, <xref:System.Data.Odbc.OdbcParameter.Size%2A> refers to the number of characters.</span></span> <span data-ttu-id="20619-243">Liczba ciągów nie zawiera znaku zakończenia.</span><span class="sxs-lookup"><span data-stu-id="20619-243">The count for strings does not include the terminating character.</span></span>  
+  
+ <span data-ttu-id="20619-244">Dla typów danych o zmiennej długości `Size` opisuje maksymalna ilość danych do przesłania do serwera.</span><span class="sxs-lookup"><span data-stu-id="20619-244">For variable-length data types, `Size` describes the maximum amount of data to transmit to the server.</span></span> <span data-ttu-id="20619-245">Na przykład, aby uzyskać wartość ciągu Unicode `Size` można ograniczyć ilość danych przesyłanych do serwera, aby najpierw sto znaków.</span><span class="sxs-lookup"><span data-stu-id="20619-245">For example, for a Unicode string value, `Size` could be used to limit the amount of data sent to the server to the first one hundred characters.</span></span>  
+  
+ <span data-ttu-id="20619-246">Dla parametrów dwukierunkowy i danych wyjściowych i wartości zwracane, należy ustawić wartość `Size`.</span><span class="sxs-lookup"><span data-stu-id="20619-246">For bidirectional and output parameters, and return values, you must set the value of `Size`.</span></span> <span data-ttu-id="20619-247">Nie jest to wymagane dla parametrów wejściowych, a jeśli nie jest jawnie ustawiona, wartość jest wywnioskowany na podstawie rzeczywisty rozmiar określony parametr po wykonaniu sparametryzowanych instrukcji.</span><span class="sxs-lookup"><span data-stu-id="20619-247">This is not required for input parameters, and if not explicitly set, the value of is inferred from the actual size of the specified parameter when a parameterized statement is executed.</span></span>  
+  
+ <span data-ttu-id="20619-248"><xref:System.Data.Common.DbParameter.DbType%2A>, <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>, I <xref:System.Data.Odbc.OdbcParameter.Size%2A> można wywnioskować przez ustawienie właściwości parametru <xref:System.Data.Odbc.OdbcParameter.Value%2A>.</span><span class="sxs-lookup"><span data-stu-id="20619-248">The <xref:System.Data.Common.DbParameter.DbType%2A>, <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>, and <xref:System.Data.Odbc.OdbcParameter.Size%2A> properties of a parameter can be inferred by setting <xref:System.Data.Odbc.OdbcParameter.Value%2A>.</span></span> <span data-ttu-id="20619-249">W związku z tym nie są wymagane ich podanie.</span><span class="sxs-lookup"><span data-stu-id="20619-249">Therefore, you are not required to specify them.</span></span> <span data-ttu-id="20619-250">Jednak nie są widoczne w <xref:System.Data.Odbc.OdbcParameter> ustawienia właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-250">However, they are not exposed in <xref:System.Data.Odbc.OdbcParameter> property settings.</span></span> <span data-ttu-id="20619-251">Na przykład, jeśli rozmiar parametru został wywnioskowany `Size` nie zawiera wartości wnioskowany po wykonaniu instrukcji.</span><span class="sxs-lookup"><span data-stu-id="20619-251">For example, if the size of the parameter has been inferred, `Size` does not contain inferred value after statement execution.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="20619-252">Aby uzyskać `OdbcParameter` z <xref:System.Data.Odbc.OdbcParameter.Direction%2A> z `ParameterDirection.Output`, `ParameterDirection.InputOutput`, lub `ParameterDirection.ReturnValue`, jest zwracany wyjątek, jeśli polecenie zostanie wykonane, jeśli rozmiar wartość zwrócona przez źródło danych przekracza określoną `Size` z <xref:System.Data.Odbc.OdbcParameter>.</span><span class="sxs-lookup"><span data-stu-id="20619-252">For an `OdbcParameter` with a <xref:System.Data.Odbc.OdbcParameter.Direction%2A> of `ParameterDirection.Output`, `ParameterDirection.InputOutput`, or `ParameterDirection.ReturnValue`, an exception is thrown when the command is executed if the size of the value returned by the data source exceeds the specified `Size` of the <xref:System.Data.Odbc.OdbcParameter>.</span></span>  
+  
+ <span data-ttu-id="20619-253">Dla typów danych o stałej długości, wartość `Size` jest ignorowana.</span><span class="sxs-lookup"><span data-stu-id="20619-253">For fixed-length data types, the value of `Size` is ignored.</span></span> <span data-ttu-id="20619-254">Można pobrać do celów informacyjnych i zwraca maksymalną liczbę bajtów używanych przez dostawcę przy przekazywaniu wartość parametru do serwera.</span><span class="sxs-lookup"><span data-stu-id="20619-254">It can be retrieved for informational purposes, and returns the maximum amount of bytes the provider uses when transmitting the value of the parameter to the server.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-255">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-255">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim myValue As String = "12 foot scarf - multiple colors, one previous owner"  
+    Dim parameter As New OdbcParameter("Description", OdbcType.VarChar)  
+    parameter.Direction = ParameterDirection.Output  
+    parameter.Size = myValue.Length  
+    parameter.Value = myValue  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    string myValue = "12 foot scarf - multiple colors, one previous owner";  
+    OdbcParameter parameter = new OdbcParameter("Description", OdbcType.VarChar);  
+    parameter.Direction = ParameterDirection.Output;  
+    parameter.Size = myValue.Length;  
+    parameter.Value = myValue;  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceColumn">
+      <MemberSignature Language="C#" Value="public override string SourceColumn { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string SourceColumn" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.SourceColumn" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceColumn As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ SourceColumn { System::String ^ get(); void set(System::String ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.SourceColumn</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-256">Pobiera lub ustawia nazwę kolumny źródłowej mapowane na <see cref="T:System.Data.DataSet" /> i używane do ładowania lub zwracanie <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-256">Gets or sets the name of the source column mapped to the <see cref="T:System.Data.DataSet" /> and used for loading or returning the <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-257">Nazwa kolumny źródłowej, która będzie służyć do ustawienia wartości tego parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-257">The name of the source column that will be used to set the value of this parameter.</span>
+          </span>
+          <span data-ttu-id="20619-258">Wartością domyślną jest ciąg pusty ("").</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-258">The default is an empty string ("").</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-259">Gdy <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> jest ustawiona jest wartość inną niż pusty ciąg, wartość parametru jest pobierana z kolumny z `SourceColumn` nazwy.</span><span class="sxs-lookup"><span data-stu-id="20619-259">When <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> is set to anything other than an empty string, the value of the parameter is retrieved from the column with the `SourceColumn` name.</span></span> <span data-ttu-id="20619-260">Jeśli <xref:System.Data.Odbc.OdbcParameter.Direction%2A> ustawiono `Input`, wartość jest pobierana z <xref:System.Data.DataSet>.</span><span class="sxs-lookup"><span data-stu-id="20619-260">If <xref:System.Data.Odbc.OdbcParameter.Direction%2A> is set to `Input`, the value is taken from the <xref:System.Data.DataSet>.</span></span> <span data-ttu-id="20619-261">Jeśli `Direction` ma ustawioną wartość `Output`, wartość jest pobierana ze źródła danych.</span><span class="sxs-lookup"><span data-stu-id="20619-261">If `Direction` is set to `Output`, the value is taken from the data source.</span></span> <span data-ttu-id="20619-262">A `Direction` z `InputOutput` jest obie te grupy.</span><span class="sxs-lookup"><span data-stu-id="20619-262">A `Direction` of `InputOutput` is a combination of both.</span></span>  
+  
+ <span data-ttu-id="20619-263">Aby uzyskać więcej informacji o sposobie używania <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> właściwości, zobacz [parametry element DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md) i [aktualizowanie źródła danych z obiektów DataAdapter](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md).</span><span class="sxs-lookup"><span data-stu-id="20619-263">For more information about how to use the <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> property, see [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md) and [Updating Data Sources with DataAdapters](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-264">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-264">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim parameter As New OdbcParameter("Description", OdbcType.VarChar, 88)  
+    parameter.SourceColumn = "Description"  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    OdbcParameter parameter = new OdbcParameter("Description", OdbcType.VarChar, 88);  
+    parameter.SourceColumn = "Description";  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceColumnNullMapping">
+      <MemberSignature Language="C#" Value="public override bool SourceColumnNullMapping { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool SourceColumnNullMapping" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceColumnNullMapping As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property bool SourceColumnNullMapping { bool get(); void set(bool value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-265">Ustawia lub pobiera wartość wskazującą, czy kolumna źródłowa jest null.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-265">Sets or gets a value which indicates whether the source column is nullable.</span>
+          </span>
+          <span data-ttu-id="20619-266">Dzięki temu <see cref="T:System.Data.Common.DbCommandBuilder" /> prawidłowo wygenerować instrukcji Update dla kolumn o wartości null.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-266">This lets <see cref="T:System.Data.Common.DbCommandBuilder" /> correctly generate Update statements for nullable columns.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-267">
+            <see langword="true" /> Jeśli kolumna źródłowa jest wartość null; <see langword="false" /> Jeśli nie jest.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-267">
+              <see langword="true" /> if the source column is nullable; <see langword="false" /> if it is not.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-268"><xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> jest używany przez <xref:System.Data.Common.DbCommandBuilder> prawidłowo wygenerować polecenia aktualizacji podczas pracy nad kolumny dopuszczające wartość null.</span><span class="sxs-lookup"><span data-stu-id="20619-268"><xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> is used by the <xref:System.Data.Common.DbCommandBuilder> to correctly generate update commands when dealing with nullable columns.</span></span> <span data-ttu-id="20619-269">Ogólnie rzecz biorąc, użycie <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> jest ograniczona do deweloperów dziedziczących <xref:System.Data.Common.DbCommandBuilder>.</span><span class="sxs-lookup"><span data-stu-id="20619-269">Generally, use of <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> is limited to developers inheriting from <xref:System.Data.Common.DbCommandBuilder>.</span></span>  
+  
+ <span data-ttu-id="20619-270"><xref:System.Data.Common.DbCommandBuilder> używa tej właściwości, aby określić, czy kolumna źródłowa ma wartość null i ustawia tę właściwość na `true` przypadku wartości null, a `false` Jeśli nie jest.</span><span class="sxs-lookup"><span data-stu-id="20619-270"><xref:System.Data.Common.DbCommandBuilder> uses this property to determine whether the source column is nullable, and sets this property to `true` if it is nullable, and `false` if it is not.</span></span> <span data-ttu-id="20619-271">Gdy <xref:System.Data.Common.DbCommandBuilder> jest generowanie jej instrukcji Update, sprawdza <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> dla każdego parametru.</span><span class="sxs-lookup"><span data-stu-id="20619-271">When <xref:System.Data.Common.DbCommandBuilder> is generating its Update statement, it examines the <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> for each parameter.</span></span> <span data-ttu-id="20619-272">Jeśli właściwość jest `true`, <xref:System.Data.Common.DbCommandBuilder> generuje klauzulach WHERE, jak w następującym przykładzie.</span><span class="sxs-lookup"><span data-stu-id="20619-272">If the property is `true`, <xref:System.Data.Common.DbCommandBuilder> generates a WHERE clauses like the following example.</span></span> <span data-ttu-id="20619-273">W tym wyrażeniu zapytania "FieldName" reprezentuje nazwę pola:</span><span class="sxs-lookup"><span data-stu-id="20619-273">In this query expression, "FieldName" represents the name of the field:</span></span>  
+  
+```  
+((@IsNull_FieldName = 1 AND FieldName IS NULL) OR   
+  (FieldName = @Original_FieldName))  
+```  
+  
+ <span data-ttu-id="20619-274">Jeśli <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> dla pole ma wartość false, <xref:System.Data.Common.DbCommandBuilder> generuje następująca klauzula WHERE:</span><span class="sxs-lookup"><span data-stu-id="20619-274">If <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> for the field is false, <xref:System.Data.Common.DbCommandBuilder> generates the following WHERE clause:</span></span>  
+  
+```  
+FieldName = @OriginalFieldName  
+```  
+  
+ <span data-ttu-id="20619-275">Ponadto @IsNull_FieldName zawiera 1, jeśli pola źródłowego zawiera wartość null i 0, jeśli nie ma.</span><span class="sxs-lookup"><span data-stu-id="20619-275">In addition, @IsNull_FieldName contains 1 if the source field contains null, and 0 if it does not.</span></span> <span data-ttu-id="20619-276">Mechanizm ten umożliwia optymalizowanie wydajności w programie SQL Server i zapewnia wspólny kod, który działa na wielu dostawców.</span><span class="sxs-lookup"><span data-stu-id="20619-276">This mechanism allows for a performance optimization in SQL Server, and provides for common code that works across multiple providers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SourceVersion">
+      <MemberSignature Language="C#" Value="public override System.Data.DataRowVersion SourceVersion { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Data.DataRowVersion SourceVersion" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.SourceVersion" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property SourceVersion As DataRowVersion" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Data::DataRowVersion SourceVersion { System::Data::DataRowVersion get(); void set(System::Data::DataRowVersion value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.SourceVersion</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Data.DataRowVersion</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-277">Pobiera lub ustawia <see cref="T:System.Data.DataRowVersion" /> do użycia podczas ładowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-277">Gets or sets the <see cref="T:System.Data.DataRowVersion" /> to use when you load <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-278">Jeden z <see cref="T:System.Data.DataRowVersion" /> wartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-278">One of the <see cref="T:System.Data.DataRowVersion" /> values.</span>
+          </span>
+          <span data-ttu-id="20619-279">Ustawieniem domyślnym jest bieżący.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-279">The default is Current.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-280">`SourceVersion` Jest używany przez <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> podczas <xref:System.Data.Common.DbDataAdapter.Update*> operację, aby określić, czy do bieżącej lub oryginalne ustawiono wartość parametru.</span><span class="sxs-lookup"><span data-stu-id="20619-280">The `SourceVersion` is used by <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> during an <xref:System.Data.Common.DbDataAdapter.Update*> operation to determine whether the parameter value is set to Current or Original.</span></span> <span data-ttu-id="20619-281">Dzięki temu kluczy podstawowych do zaktualizowania.</span><span class="sxs-lookup"><span data-stu-id="20619-281">This allows primary keys to be updated.</span></span>  
+  
+ <span data-ttu-id="20619-282">Ta właściwość jest ustawiona na wersję <xref:System.Data.DataRow> używane przez jedną `Item` właściwości (`DataRow` indeksatora), lub <xref:System.Data.DataRow.GetChildRows%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="20619-282">This property is set to the version of the <xref:System.Data.DataRow> used by either the `Item` property (`DataRow` indexer), or the <xref:System.Data.DataRow.GetChildRows%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-283">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-283">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim parameter As New OdbcParameter("Description", OdbcType.VarChar, 88)  
+    parameter.SourceColumn = "Description"  
+    parameter.SourceVersion = DataRowVersion.Current  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    OdbcParameter parameter = new OdbcParameter("Description", OdbcType.VarChar, 88);  
+    parameter.SourceColumn = "Description";  
+    parameter.SourceVersion = DataRowVersion.Current;  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="System.ICloneable.Clone">
+      <MemberSignature Language="C#" Value="object ICloneable.Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method hidebysig newslot virtual instance object System.ICloneable.Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.System#ICloneable#Clone" />
+      <MemberSignature Language="VB.NET" Value="Function Clone () As Object Implements ICloneable.Clone" />
+      <MemberSignature Language="C++ CLI" Value=" virtual System::Object ^ System.ICloneable.Clone() = ICloneable::Clone;" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.ICloneable.Clone</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-284">Opis tego elementu członkowskiego, zobacz <see cref="M:System.ICloneable.Clone" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-284">For a description of this member, see <see cref="M:System.ICloneable.Clone" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="20619-285">Nowy <see cref="T:System.Object" /> czyli kopię tego wystąpienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-285">A new <see cref="T:System.Object" /> that is a copy of this instance.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-286">Ten element jest jawną implementacją członków.</span><span class="sxs-lookup"><span data-stu-id="20619-286">This member is an explicit interface member implementation.</span></span> <span data-ttu-id="20619-287">Można go używać tylko wtedy, gdy <xref:System.Data.Odbc.OdbcParameter> wystąpienia jest rzutowane na <xref:System.ICloneable> interfejsu.</span><span class="sxs-lookup"><span data-stu-id="20619-287">It can be used only when the <xref:System.Data.Odbc.OdbcParameter> instance is cast to an <xref:System.ICloneable> interface.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Data.Odbc.OdbcParameter.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-288">Pobiera ciąg, który zawiera <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-288">Gets a string that contains the <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="20619-289">Ciąg, który zawiera <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-289">A string that contains the <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Value">
+      <MemberSignature Language="C#" Value="public override object Value { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance object Value" />
+      <MemberSignature Language="DocId" Value="P:System.Data.Odbc.OdbcParameter.Value" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Property Value As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::Object ^ Value { System::Object ^ get(); void set(System::Object ^ value); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Data.IDataParameter.Value</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Data</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Data.Odbc</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Attributes>
+        <Attribute>
+          <AttributeName>System.ComponentModel.RefreshProperties</AttributeName>
+        </Attribute>
+        <Attribute>
+          <AttributeName>System.ComponentModel.TypeConverter(typeof(System.ComponentModel.StringConverter))</AttributeName>
+        </Attribute>
+      </Attributes>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="20619-290">Pobiera lub ustawia wartość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-290">Gets or sets the value of the parameter.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="20619-291">
+            <see cref="T:System.Object" /> Oznacza to wartość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-291">An <see cref="T:System.Object" /> that is the value of the parameter.</span>
+          </span>
+          <span data-ttu-id="20619-292">Wartość domyślna to null.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="20619-292">The default value is null.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="20619-293">Dla parametrów wejściowych, wartość jest powiązany z <xref:System.Data.Odbc.OdbcCommand> wysyłanego do serwera.</span><span class="sxs-lookup"><span data-stu-id="20619-293">For input parameters, the value is bound to the <xref:System.Data.Odbc.OdbcCommand> that is sent to the server.</span></span> <span data-ttu-id="20619-294">Dla danych wyjściowych i parametry wartość zwracaną wartość jest ustawiana po zakończeniu <xref:System.Data.Odbc.OdbcCommand> oraz po <xref:System.Data.Odbc.OdbcDataReader> jest zamknięty.</span><span class="sxs-lookup"><span data-stu-id="20619-294">For output and return-value parameters, the value is set on completion of the <xref:System.Data.Odbc.OdbcCommand> and after the <xref:System.Data.Odbc.OdbcDataReader> is closed.</span></span>  
+  
+ <span data-ttu-id="20619-295">Wartość null parametru jest wysyłany na serwer, użytkownik musi określić <xref:System.DBNull>, niedopuszczania wartości null.</span><span class="sxs-lookup"><span data-stu-id="20619-295">When you send a null parameter value to the server, the user must specify <xref:System.DBNull>, not null.</span></span> <span data-ttu-id="20619-296">Wartość null w systemie jest pusty obiekt, który nie ma wartości.</span><span class="sxs-lookup"><span data-stu-id="20619-296">A null value in the system is an empty object that has no value.</span></span> <span data-ttu-id="20619-297"><xref:System.DBNull> jest używana do reprezentowania wartości null.</span><span class="sxs-lookup"><span data-stu-id="20619-297"><xref:System.DBNull> is used to represent null values.</span></span> <span data-ttu-id="20619-298">Jeśli parametr jest używany do wywołania procedury składowanej z parametrami, które mają przypisane wartości domyślne, ustawienie <xref:System.Data.Odbc.OdbcParameter.Value%2A> na null powoduje, że wartość domyślna ma być używany.</span><span class="sxs-lookup"><span data-stu-id="20619-298">If the parameter is used to call a stored procedure with parameters that have default values, setting <xref:System.Data.Odbc.OdbcParameter.Value%2A> to null causes the default value to be used.</span></span>  
+  
+ <span data-ttu-id="20619-299">Jeśli aplikacja określa typ bazy danych, wiązana wartość jest konwertowana na tego typu, gdy dostawca wysyła dane do serwera.</span><span class="sxs-lookup"><span data-stu-id="20619-299">If the application specifies the database type, the bound value is converted to that type when the provider sends the data to the server.</span></span> <span data-ttu-id="20619-300">Dostawca podejmuje próbę przekonwertowania dowolnego typu wartości, jeśli obsługuje <xref:System.IConvertible> interfejsu.</span><span class="sxs-lookup"><span data-stu-id="20619-300">The provider tries to convert any type of value if it supports the <xref:System.IConvertible> interface.</span></span> <span data-ttu-id="20619-301">Może spowodować błędy konwersji, jeśli określony typ nie jest zgodny z wartością.</span><span class="sxs-lookup"><span data-stu-id="20619-301">Conversion errors may result if the specified type is not compatible with the value.</span></span>  
+  
+ <span data-ttu-id="20619-302">Zarówno <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> można wywnioskować przez ustawienie właściwości <xref:System.Data.Odbc.OdbcParameter.Value%2A>.</span><span class="sxs-lookup"><span data-stu-id="20619-302">Both the <xref:System.Data.Odbc.OdbcParameter.DbType%2A> and <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> properties can be inferred by setting <xref:System.Data.Odbc.OdbcParameter.Value%2A>.</span></span> <span data-ttu-id="20619-303">Jeśli ma to zastosowanie, rozmiar, precision i scale jest również wywnioskować na podstawie <xref:System.Data.Odbc.OdbcParameter.Value%2A> po wykonaniu sparametryzowanych instrukcji.</span><span class="sxs-lookup"><span data-stu-id="20619-303">If applicable, the size, precision, and scale is also inferred from <xref:System.Data.Odbc.OdbcParameter.Value%2A> when the parameterized statement is executed.</span></span> <span data-ttu-id="20619-304">Wywnioskowane wartości nie są widoczne dla użytkownika.</span><span class="sxs-lookup"><span data-stu-id="20619-304">However, inferred values are not exposed to the user.</span></span>  
+  
+ <span data-ttu-id="20619-305"><xref:System.Data.Odbc.OdbcParameter.Value%2A> Właściwości jest zastępowany przez `Update` metody.</span><span class="sxs-lookup"><span data-stu-id="20619-305">The <xref:System.Data.Odbc.OdbcParameter.Value%2A> property is overwritten by the `Update` method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="20619-306">Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.</span><span class="sxs-lookup"><span data-stu-id="20619-306">The following example creates an <xref:System.Data.Odbc.OdbcParameter> and sets some of its properties.</span></span>  
+  
+```vb  
+Public Sub CreateOdbcParameter()  
+    Dim parameter As New OdbcParameter("Description", OdbcType.VarChar, 88)  
+    parameter.Value = "garden hose"  
+End Sub   
+```  
+  
+```csharp  
+public void CreateOdbcParameter()   
+ {  
+    OdbcParameter parameter = new OdbcParameter("Description", OdbcType.VarChar, 88);  
+    parameter.Value = "garden hose";  
+ }  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
