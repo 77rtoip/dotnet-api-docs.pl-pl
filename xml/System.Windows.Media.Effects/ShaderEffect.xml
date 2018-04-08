@@ -1,0 +1,1024 @@
+<Type Name="ShaderEffect" FullName="System.Windows.Media.Effects.ShaderEffect">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="1be85280e5255a74ce6d6e030ac8bef596ddfdce" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public abstract class ShaderEffect : System.Windows.Media.Effects.Effect" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract ShaderEffect extends System.Windows.Media.Effects.Effect" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Media.Effects.ShaderEffect" />
+  <TypeSignature Language="VB.NET" Value="Public MustInherit Class ShaderEffect&#xA;Inherits Effect" />
+  <TypeSignature Language="C++ CLI" Value="public ref class ShaderEffect abstract : System::Windows::Media::Effects::Effect" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.Media.Effects.Effect</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="7b90f-101">Udostępnia efekt mapy bitowej niestandardowych przy użyciu <see cref="T:System.Windows.Media.Effects.PixelShader" />.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="7b90f-101">Provides a custom bitmap effect by using a <see cref="T:System.Windows.Media.Effects.PixelShader" />.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-102">Pochodzić od <xref:System.Windows.Media.Effects.ShaderEffect> do zaimplementowania niestandardowego efektu na podstawie cieniowania piksela.</span><span class="sxs-lookup"><span data-stu-id="7b90f-102">Derive from the <xref:System.Windows.Media.Effects.ShaderEffect> class to implement a custom effect based on a single pixel shader.</span></span>  
+  
+ <span data-ttu-id="7b90f-103">Poniższe kroki przedstawiają sposób tworzenia niestandardowego efektu.</span><span class="sxs-lookup"><span data-stu-id="7b90f-103">The following steps show how to create a custom effect.</span></span>  
+  
+1.  <span data-ttu-id="7b90f-104">Obciążenia <xref:System.Windows.Media.Effects.PixelShader> z wstępnie skompilowanym wysoki poziom cieniowania języka (HLSL) kodu bajtowego.</span><span class="sxs-lookup"><span data-stu-id="7b90f-104">Load a <xref:System.Windows.Media.Effects.PixelShader> from precompiled High Level Shading Language (HLSL) bytecode.</span></span>  
+  
+2.  <span data-ttu-id="7b90f-105">Definiowanie właściwości zależności, które reprezentują parametry efekt i <xref:System.Windows.Media.Brush>— na podstawie danych wejściowych powierzchni.</span><span class="sxs-lookup"><span data-stu-id="7b90f-105">Define dependency properties that represent the parameters of the effect and the <xref:System.Windows.Media.Brush>-based surface inputs.</span></span> <span data-ttu-id="7b90f-106">Użyj jednej z <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> przeciążenia do skojarzenia tych danych wejściowych z zarejestrować numery, które są przywoływane w kodu bajtowego HLSL.</span><span class="sxs-lookup"><span data-stu-id="7b90f-106">Use one of the <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> overloads to associate these inputs with register numbers that are referenced in the HLSL bytecode.</span></span>  
+  
+ <span data-ttu-id="7b90f-107">Liczba próbników jest ograniczony do 4.</span><span class="sxs-lookup"><span data-stu-id="7b90f-107">The number of samplers is limited to 4.</span></span>  
+  
+ <span data-ttu-id="7b90f-108">Korzystając z programu do cieniowania PS 3.0, obowiązują następujące ograniczenia.</span><span class="sxs-lookup"><span data-stu-id="7b90f-108">The following restrictions apply when using a PS 3.0 shader.</span></span>  
+  
+-   <span data-ttu-id="7b90f-109">Po przypisaniu do cieniowania PS 3.0 liczba próbników zwiększa 8.</span><span class="sxs-lookup"><span data-stu-id="7b90f-109">When a PS 3.0 shader is assigned, the number of samplers increases to 8.</span></span> <span data-ttu-id="7b90f-110">Przypisz cieniowania PS 3.0 przed innych programów do cieniowania, aby włączyć rejestrowania próbników 8.</span><span class="sxs-lookup"><span data-stu-id="7b90f-110">Assign the PS 3.0 shader before other shaders to enable registering 8 samplers.</span></span>  
+  
+-   <span data-ttu-id="7b90f-111">Limit stałej rejestru pełnego programu do cieniowania 224 w przypadku elementów przestawnych jest używany.</span><span class="sxs-lookup"><span data-stu-id="7b90f-111">The full shader constant register limit of 224 for floats is used.</span></span> <span data-ttu-id="7b90f-112">Aby uzyskać więcej informacji, zobacz [ps_3_0](http://go.microsoft.com/fwlink/?LinkId=166292).</span><span class="sxs-lookup"><span data-stu-id="7b90f-112">For more information, see [ps_3_0](http://go.microsoft.com/fwlink/?LinkId=166292).</span></span>  
+  
+-   <span data-ttu-id="7b90f-113">Następujące typy danych są obsługiwane w tylko programów do cieniowania PS 3.0.</span><span class="sxs-lookup"><span data-stu-id="7b90f-113">The following data types are supported in PS 3.0 shaders only.</span></span> <span data-ttu-id="7b90f-114">Jeśli są one używane w niższych wersjach programu do cieniowania jest zgłaszany wyjątek.</span><span class="sxs-lookup"><span data-stu-id="7b90f-114">An exception is thrown if these are used in lower shader versions.</span></span>  
+  
+    -   <span data-ttu-id="7b90f-115">`int` i typy możliwe do przekonwertowania na `int`: `uint`, `byte`, `sbyte`, `long`, `ulong`, `short`, `ushort`, `char`</span><span class="sxs-lookup"><span data-stu-id="7b90f-115">`int` and types convertible to `int`: `uint`, `byte`, `sbyte`, `long`, `ulong`, `short`, `ushort`, `char`</span></span>  
+  
+    -   `bool`  
+  
+-   <span data-ttu-id="7b90f-116">Nieprawidłowa cieniowania PS 3.0 jest załadowany na komputerze, który nie ma sprzętu obsługę PS 3.0, programu do cieniowania jest ignorowana.</span><span class="sxs-lookup"><span data-stu-id="7b90f-116">If a valid PS 3.0 shader is loaded on a computer that does not have hardware support for PS 3.0, the shader is ignored.</span></span> <span data-ttu-id="7b90f-117">Jeśli programu do cieniowania jest nieprawidłowy, nie jest wyjątek.</span><span class="sxs-lookup"><span data-stu-id="7b90f-117">If the shader is invalid, no exception is thrown.</span></span>  
+  
+-   <span data-ttu-id="7b90f-118">Jeśli komputer ma więcej niż jednej karty wideo, zachowanie jest zdefiniowana przez najmniej stanie karty wideo.</span><span class="sxs-lookup"><span data-stu-id="7b90f-118">If a computer has more than one video card, the behavior is defined by the least capable video card.</span></span> <span data-ttu-id="7b90f-119">Na przykład jeśli komputer ma dwie karty wideo, z których jedna obsługuje PS 3.0 i jeden z nich nie, zachowanie jest takie same jak, jeśli komputer nie obsługuje PS 3.0.</span><span class="sxs-lookup"><span data-stu-id="7b90f-119">For example, if the computer has two video cards, one of which supports PS 3.0 and one of which does not, the behavior is the same as if the computer does not support PS 3.0.</span></span>  
+  
+-   <span data-ttu-id="7b90f-120">Jeśli komputer obsługuje renderowanie PS 3.0 sprzętu, ale przypisano nieprawidłowy cieniowania PS 3.0, <xref:System.Windows.Media.Effects.PixelShader.InvalidPixelShaderEncountered> zdarzenia.</span><span class="sxs-lookup"><span data-stu-id="7b90f-120">If a computer supports rendering PS 3.0 in hardware, but an invalid PS 3.0 shader is assigned, the <xref:System.Windows.Media.Effects.PixelShader.InvalidPixelShaderEncountered> event is raised.</span></span> <span data-ttu-id="7b90f-121">Przykład nieprawidłowy cieniowania PS 3.0 jest skompilowana przy użyciu `ps_3_sw` flagi.</span><span class="sxs-lookup"><span data-stu-id="7b90f-121">An example of an invalid PS 3.0 shader is one compiled with the `ps_3_sw` flag.</span></span> <span data-ttu-id="7b90f-122"><xref:System.Windows.Media.Effects.ShaderEffect> Klasy akceptuje tylko PS 3.0 programów do cieniowania, które są kompilowane przy użyciu `ps_3_0` flagi przekazywane do fxc.exe.</span><span class="sxs-lookup"><span data-stu-id="7b90f-122">The <xref:System.Windows.Media.Effects.ShaderEffect> class accepts only PS 3.0 shaders that are compiled with the `ps_3_0` flag passed to fxc.exe.</span></span> <span data-ttu-id="7b90f-123">Aby uzyskać więcej informacji, zobacz [narzędzia kompilatora efekt](http://go.microsoft.com/fwlink/?LinkId=166293).</span><span class="sxs-lookup"><span data-stu-id="7b90f-123">For more information, see [Effect-Compiler Tool](http://go.microsoft.com/fwlink/?LinkId=166293).</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="7b90f-124">PS 2.0 programów do cieniowania uruchamiane podczas renderowania w oprogramowaniu.</span><span class="sxs-lookup"><span data-stu-id="7b90f-124">PS 2.0 shaders run when rendering in software.</span></span> <span data-ttu-id="7b90f-125">Jednak nawet jeśli PS 3.0 jest obsługiwany przez sprzętu, PS 3.0 programów do cieniowania nie należy używać podczas renderowania oprogramowania.</span><span class="sxs-lookup"><span data-stu-id="7b90f-125">However, even if PS 3.0 is supported by the system's hardware, PS 3.0 shaders do not run during software rendering.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="7b90f-126">Poniższy przykładowy kod przedstawia sposób pochodzi od <xref:System.Windows.Media.Effects.ShaderEffect> klasy.</span><span class="sxs-lookup"><span data-stu-id="7b90f-126">The following code example shows how to derive from the <xref:System.Windows.Media.Effects.ShaderEffect> class.</span></span>  
+  
+ [!code-csharp[System.Windows.Media.Effects.ShaderEffect#1](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/ThresholdEffect.cs#1)]  
+  
+ <span data-ttu-id="7b90f-127">Poniższy przykład kodu pokazuje programu do cieniowania umożliwiająca poprzedniej <xref:System.Windows.Media.Effects.ShaderEffect> klasy.</span><span class="sxs-lookup"><span data-stu-id="7b90f-127">The following code example shows a shader that corresponds to the previous <xref:System.Windows.Media.Effects.ShaderEffect> class.</span></span>  
+  
+ [!code-csharp[System.Windows.Media.Effects.ShaderEffect#10](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/Threshold.fx#10)]  
+  
+ <span data-ttu-id="7b90f-128">Następujące XAML przedstawia sposób użycia efekt cieniowania niestandardowych.</span><span class="sxs-lookup"><span data-stu-id="7b90f-128">The following XAML shows how to use the custom shader effect.</span></span>  
+  
+ [!code-xaml[System.Windows.Media.Effects.ShaderEffect#1000](~/samples/snippets/csharp/VS_Snippets_Wpf/System.Windows.Media.Effects.ShaderEffect/CS/Window1.xaml#1000)]  
+  
+ ]]></format>
+    </remarks>
+    <permission cref="T:System.Security.Permissions.UIPermission">
+      <span data-ttu-id="7b90f-129">Aby uzyskać dostęp do zasobów interfejsu użytkownika.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="7b90f-129">for full access to UI resources.</span>
+      </span>
+      <span data-ttu-id="7b90f-130">Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></span>
+      <span class="sxs-lookup">
+        <span data-stu-id="7b90f-130">Associated enumeration: <see cref="F:System.Security.Permissions.UIPermissionWindow.AllWindows" /></span>
+      </span>
+    </permission>
+    <altmember cref="T:System.Windows.Media.Effects.Effect" />
+    <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+  </Docs>
+  <Members>
+    <Member MemberName=".ctor">
+      <MemberSignature Language="C#" Value="protected ShaderEffect ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig specialname rtspecialname instance void .ctor() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.#ctor" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub New ()" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; ShaderEffect();" />
+      <MemberType>Constructor</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-131">Inicjuje nowe wystąpienie klasy <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> klasy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-131">Initializes a new instance of the <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> class.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Clone">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.ShaderEffect Clone ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Effects.ShaderEffect Clone() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.Clone" />
+      <MemberSignature Language="VB.NET" Value="Public Function Clone () As ShaderEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Effects::ShaderEffect ^ Clone();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.ShaderEffect</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-132">Tworzy modyfikowalną klonu tego <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> obiekt Tworzenie bezpośrednich kopii wartości tego obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-132">Creates a modifiable clone of this <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> object, making deep copies of this object's values.</span>
+          </span>
+          <span data-ttu-id="7b90f-133">Podczas kopiowania właściwości zależności tego obiektu, ta metoda umożliwia skopiowanie zasobów odniesienia i danych powiązania (które mogą być już rozpoznawane), ale nie animacji lub ich bieżącymi wartościami.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-133">When copying this object's dependency properties, this method copies resource references and data bindings (which may no longer resolve), but not animations or their current values.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-134">Można modyfikować klonu tego wystąpienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-134">A modifiable clone of this instance.</span>
+          </span>
+          <span data-ttu-id="7b90f-135">Zwrócony klon skutecznie jest głęboką kopię bieżącego obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-135">The returned clone is effectively a deep copy of the current object.</span>
+          </span>
+          <span data-ttu-id="7b90f-136">Klonu <see cref="P:System.Windows.Freezable.IsFrozen" /> jest właściwość <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-136">The clone's <see cref="P:System.Windows.Freezable.IsFrozen" /> property is <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-137"><xref:System.Windows.Media.Effects.ShaderEffect.Clone%2A> Metody można użyć do utworzenia kopii można modyfikować zablokowane <xref:System.Windows.Freezable> obiektów.</span><span class="sxs-lookup"><span data-stu-id="7b90f-137">The <xref:System.Windows.Media.Effects.ShaderEffect.Clone%2A> method can be used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects.</span></span> <span data-ttu-id="7b90f-138">Dla wygody, ta metoda zasłania dziedziczonego <xref:System.Windows.Freezable.Clone%2A> metodę w celu zapewnienia silnie typizowaną implementację.</span><span class="sxs-lookup"><span data-stu-id="7b90f-138">For convenience, this method shadows the inherited <xref:System.Windows.Freezable.Clone%2A> method to provide a strongly typed implementation.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Freezable.Clone" />
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">
+          <span data-ttu-id="7b90f-139">Obiekt do klonowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-139">The object to clone.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-140">Sprawia, że wystąpienie klonowania (bezpośrednich kopii) z określonym <see cref="T:System.Windows.Freezable" /> przy użyciu wartości podstawowej właściwości (z systemem innym niż animowane).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-140">Makes the instance a clone (deep copy) of the specified <see cref="T:System.Windows.Freezable" /> using base (non-animated) property values.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValue">
+      <MemberSignature Language="C#" Value="public System.Windows.Media.Effects.ShaderEffect CloneCurrentValue ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Media.Effects.ShaderEffect CloneCurrentValue() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCurrentValue" />
+      <MemberSignature Language="VB.NET" Value="Public Function CloneCurrentValue () As ShaderEffect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Media::Effects::ShaderEffect ^ CloneCurrentValue();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.ShaderEffect</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-141">Tworzy modyfikowalną klonu tego <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> obiekt Tworzenie bezpośrednich kopii wartości bieżących tego obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-141">Creates a modifiable clone of this <see cref="T:System.Windows.Media.Effects.ShaderEffect" /> object, making deep copies of this object's current values.</span>
+          </span>
+          <span data-ttu-id="7b90f-142">Odwołania do zasobu, powiązania danych i animacji nie są kopiowane, ale ich bieżącymi wartościami są kopiowane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-142">Resource references, data bindings, and animations are not copied, but their current values are copied.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-143">Można modyfikować klonowania bieżącego obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-143">A modifiable clone of the current object.</span>
+          </span>
+          <span data-ttu-id="7b90f-144">Sklonowany obiekt <see cref="P:System.Windows.Freezable.IsFrozen" /> właściwość będzie <see langword="false" /> nawet wtedy, gdy źródło <see cref="P:System.Windows.Freezable.IsFrozen" /> właściwość <see langword="true" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-144">The cloned object's <see cref="P:System.Windows.Freezable.IsFrozen" /> property will be <see langword="false" /> even if the source's <see cref="P:System.Windows.Freezable.IsFrozen" /> property was <see langword="true" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-145">Ta metoda służy do tworzenia kopii można modyfikować zablokowane <xref:System.Windows.Freezable> obiektów (lub dowolnej <xref:System.Windows.Freezable> obiektu).</span><span class="sxs-lookup"><span data-stu-id="7b90f-145">This method is used to produce modifiable copies of frozen <xref:System.Windows.Freezable> objects (or any <xref:System.Windows.Freezable> object).</span></span> <span data-ttu-id="7b90f-146">Dla wygody ta metoda zasłania dziedziczone wersji z silnie typizowaną implementację.</span><span class="sxs-lookup"><span data-stu-id="7b90f-146">For convenience, this method shadows the inherited version with a strongly typed implementation.</span></span>  
+  
+ <span data-ttu-id="7b90f-147">Aby uzyskać więcej informacji, zobacz <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>.</span><span class="sxs-lookup"><span data-stu-id="7b90f-147">For more information, see <xref:System.Windows.Freezable.CloneCurrentValue%2A?displayProperty=nameWithType>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="CloneCurrentValueCore">
+      <MemberSignature Language="C#" Value="protected override void CloneCurrentValueCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void CloneCurrentValueCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CloneCurrentValueCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub CloneCurrentValueCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void CloneCurrentValueCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">
+          <span data-ttu-id="7b90f-148">
+            <see cref="T:System.Windows.Freezable" /> Klonowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-148">The <see cref="T:System.Windows.Freezable" /> to be cloned.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-149">Sprawia, że wystąpienie można modyfikować klonowania (bezpośrednich kopii) z określonym <see cref="T:System.Windows.Freezable" /> przy użyciu bieżącej wartości właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-149">Makes the instance a modifiable clone (deep copy) of the specified <see cref="T:System.Windows.Freezable" /> using current property values.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.CloneCurrentValueCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="CreateInstanceCore">
+      <MemberSignature Language="C#" Value="protected override System.Windows.Freezable CreateInstanceCore ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance class System.Windows.Freezable CreateInstanceCore() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.CreateInstanceCore" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Function CreateInstanceCore () As Freezable" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override System::Windows::Freezable ^ CreateInstanceCore();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Freezable</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-150">Tworzy nowe wystąpienie klasy <see cref="T:System.Windows.Freezable" /> klasy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-150">Creates a new instance of the <see cref="T:System.Windows.Freezable" /> derived class.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-151">Nowe wystąpienie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-151">The new instance.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="DdxUvDdyUvRegisterIndex">
+      <MemberSignature Language="C#" Value="protected int DdxUvDdyUvRegisterIndex { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance int32 DdxUvDdyUvRegisterIndex" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" />
+      <MemberSignature Language="VB.NET" Value="Protected Property DdxUvDdyUvRegisterIndex As Integer" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property int DdxUvDdyUvRegisterIndex { int get(); void set(int value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-152">Pobiera lub ustawia wartość wskazującą rejestr cieniowania do użycia na potrzeby pochodne częściowego współrzędnych tekstury względem miejsca na ekranie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-152">Gets or sets a value that indicates the shader register to use for the partial derivatives of the texture coordinates with respect to screen space.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-153">Indeks rejestru, który zawiera pochodne częściowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-153">The index of the register that contains the partial derivatives.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-154">Użyj <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> właściwości w celu określenia rejestru programu do cieniowania, który zawiera pochodne częściowego tekstury koordynuje względem miejsca na ekranie.</span><span class="sxs-lookup"><span data-stu-id="7b90f-154">Use the <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> property to specify the shader register that contains the partial derivatives of the texture coordinates with respect to screen space.</span></span> <span data-ttu-id="7b90f-155">Na przykład jeśli <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> wynosi 4, c4 rejestru programu do cieniowania jest używany.</span><span class="sxs-lookup"><span data-stu-id="7b90f-155">For example, if <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> is set to 4, the shader register c4 is used.</span></span> <span data-ttu-id="7b90f-156">C4 rejestru zawiera cztery pola typu float.</span><span class="sxs-lookup"><span data-stu-id="7b90f-156">Register c4 contains four float fields.</span></span> <span data-ttu-id="7b90f-157">Poniższy kod wysoki poziom cieniowania języka (HLSL) pokazuje, jak rejestr ten jest używany.</span><span class="sxs-lookup"><span data-stu-id="7b90f-157">The following High Level Shading Language (HLSL) code shows how this register is used.</span></span> <span data-ttu-id="7b90f-158">`nextPixelUV` Wartość reprezentuje dalej pikseli z prawej strony.</span><span class="sxs-lookup"><span data-stu-id="7b90f-158">The `nextPixelUV` value represents the next pixel to the right.</span></span>  
+  
+```  
+float4 ddxUvDdyUv : register(c4);  
+SamplerState  sampler : register(S0);  
+...  
+float2 nextPixelUV;  
+nextPixelUV.u = ddxUvDdyUv.x + u;  
+nextPixelUV.v = ddxUvDdyUv.y + v;  
+  
+tex2D(sampler, nextPixelUV);  
+```  
+  
+ <span data-ttu-id="7b90f-159">W poniższej tabeli przedstawiono, jak określona rejestru dla <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> jest wypełnione.</span><span class="sxs-lookup"><span data-stu-id="7b90f-159">The following table shows how the register specified for <xref:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex%2A> is filled.</span></span>  
+  
+|<span data-ttu-id="7b90f-160">Stała rejestru</span><span class="sxs-lookup"><span data-stu-id="7b90f-160">Register Constant</span></span>|<span data-ttu-id="7b90f-161">Wartość pochodnych</span><span class="sxs-lookup"><span data-stu-id="7b90f-161">Derivative Value</span></span>|  
+|-----------------------|----------------------|  
+|<span data-ttu-id="7b90f-162">x składnika</span><span class="sxs-lookup"><span data-stu-id="7b90f-162">x component</span></span>|<span data-ttu-id="7b90f-163">ddx(u)</span><span class="sxs-lookup"><span data-stu-id="7b90f-163">ddx(u)</span></span>|  
+|<span data-ttu-id="7b90f-164">składnik y</span><span class="sxs-lookup"><span data-stu-id="7b90f-164">y component</span></span>|<span data-ttu-id="7b90f-165">ddx(v)</span><span class="sxs-lookup"><span data-stu-id="7b90f-165">ddx(v)</span></span>|  
+|<span data-ttu-id="7b90f-166">składnik z</span><span class="sxs-lookup"><span data-stu-id="7b90f-166">z component</span></span>|<span data-ttu-id="7b90f-167">ddy(u)</span><span class="sxs-lookup"><span data-stu-id="7b90f-167">ddy(u)</span></span>|  
+|<span data-ttu-id="7b90f-168">w części</span><span class="sxs-lookup"><span data-stu-id="7b90f-168">w component</span></span>|<span data-ttu-id="7b90f-169">ddy(v)</span><span class="sxs-lookup"><span data-stu-id="7b90f-169">ddy(v)</span></span>|  
+  
+ <span data-ttu-id="7b90f-170">Współrzędne tekstury są oznaczone jako `(u, v)`.</span><span class="sxs-lookup"><span data-stu-id="7b90f-170">Texture coordinates are denoted as `(u, v)`.</span></span> <span data-ttu-id="7b90f-171">`ddx(u)` jest stałej zależnych częściowego składnika współrzędnych tekstury `u` względem współrzędną x miejsca na ekranie.</span><span class="sxs-lookup"><span data-stu-id="7b90f-171">`ddx(u)` is the constant partial derivative of the texture coordinate component `u` with respect to the screen-space x-coordinate.</span></span> <span data-ttu-id="7b90f-172">`ddy(u)` jest pochodną częściowego współrzędnych tekstury `u` względem współrzędną y miejsca na ekranie.</span><span class="sxs-lookup"><span data-stu-id="7b90f-172">`ddy(u)` is the partial derivative of the texture coordinate `u` with respect to the screen-space y-coordinate.</span></span> <span data-ttu-id="7b90f-173">Podobnie `ddx(v)` i `ddy(v)` są odpowiednie pochodne miejsca na ekranie dla składnika współrzędnych tekstury `v`.</span><span class="sxs-lookup"><span data-stu-id="7b90f-173">Similarly, `ddx(v)` and `ddy(v)` are the corresponding screen-space derivatives for the texture coordinate component `v`.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="7b90f-174">HLSL zawiera instrukcje ddx i ddy obliczania tych wartości, ale te instrukcje nie są dostępne na wszystkich sprzętu właściwość PixelShader 2.0.</span><span class="sxs-lookup"><span data-stu-id="7b90f-174">HLSL has the ddx and ddy instructions to calculate these values, but these instructions are not available on all PixelShader 2.0 hardware.</span></span>  
+  
+ <span data-ttu-id="7b90f-175">Można traktować te stałe w następujący sposób.</span><span class="sxs-lookup"><span data-stu-id="7b90f-175">You may think of these constants in the following way.</span></span> <span data-ttu-id="7b90f-176">Jeśli w prawo w miejsce na ekranie (w kierunku x) kroku następnie 1 piksela `ddx(u)` jest sumą który `u` zmiany w przestrzeni tekstury i `ddx(v)` jest sumą który `v` zmiany w przestrzeni tekstury.</span><span class="sxs-lookup"><span data-stu-id="7b90f-176">If you step 1 pixel to the right in screen space (in the x direction), then `ddx(u)` is the amount that `u` changes in texture space, and `ddx(v)` is the amount that `v` changes in texture space.</span></span> <span data-ttu-id="7b90f-177">Jeśli efekt jest osi wyrównany renderowanego, następnie `ddx(v)` ma wartość 0.</span><span class="sxs-lookup"><span data-stu-id="7b90f-177">If the effect is axis-aligned when it is rendered, then `ddx(v)` is 0.</span></span> <span data-ttu-id="7b90f-178">Jeśli efekt jest obracany, gdy jest on renderowany, następnie `ddx(v)` jest różna od zera.</span><span class="sxs-lookup"><span data-stu-id="7b90f-178">If the effect is rotated when it is rendered, then `ddx(v)` is non-zero.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="7b90f-179">Próbowano ustawić <see cref="P:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" /> właściwości więcej niż jeden raz lub po przetworzeniu początkowego efektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-179">An attempt was made to set the <see cref="P:System.Windows.Media.Effects.ShaderEffect.DdxUvDdyUvRegisterIndex" /> property more than one time or after initial processing of the effect.</span>
+          </span>
+        </exception>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.GetAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">
+          <span data-ttu-id="7b90f-180">Wystąpienie do skopiowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-180">The instance to copy.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-181">Sprawia, że wystąpienie zablokowane klonowania określonego <see cref="T:System.Windows.Freezable" /> przy użyciu wartości podstawowej właściwości (z systemem innym niż animowane).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-181">Makes the instance a frozen clone of the specified <see cref="T:System.Windows.Freezable" /> using base (non-animated) property values.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.GetAsFrozenCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCurrentValueAsFrozenCore">
+      <MemberSignature Language="C#" Value="protected override void GetCurrentValueAsFrozenCore (System.Windows.Freezable sourceFreezable);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void GetCurrentValueAsFrozenCore(class System.Windows.Freezable sourceFreezable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
+      <MemberSignature Language="VB.NET" Value="Protected Overrides Sub GetCurrentValueAsFrozenCore (sourceFreezable As Freezable)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; override void GetCurrentValueAsFrozenCore(System::Windows::Freezable ^ sourceFreezable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sourceFreezable" Type="System.Windows.Freezable" />
+      </Parameters>
+      <Docs>
+        <param name="sourceFreezable">
+          <span data-ttu-id="7b90f-182">
+            <see cref="T:System.Windows.Freezable" /> Do skopiowania i zablokować.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-182">The <see cref="T:System.Windows.Freezable" /> to copy and freeze.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-183">Sprawia, że bieżące wystąpienie zablokowane klonowania określonego <see cref="T:System.Windows.Freezable" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-183">Makes the current instance a frozen clone of the specified <see cref="T:System.Windows.Freezable" />.</span>
+          </span>
+          <span data-ttu-id="7b90f-184">Jeśli obiekt ma właściwości zależności animowany, ich bieżącymi wartościami animowany są kopiowane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-184">If the object has animated dependency properties, their current animated values are copied.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="M:System.Windows.Freezable.GetCurrentValueAsFrozenCore(System.Windows.Freezable)" />
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingBottom">
+      <MemberSignature Language="C#" Value="protected double PaddingBottom { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingBottom" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingBottom" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingBottom As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingBottom { double get(); void set(double value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-185">Pobiera lub ustawia wartość wskazującą, że efektu tekstury danych wyjściowych jest większy niż jego wejściowych tekstury wzdłuż dolnej krawędzi.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-185">Gets or sets a value indicating that the effect's output texture is larger than its input texture along the bottom edge.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-186">Dopełnienie wzdłuż dolnej krawędzi efekt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-186">The padding along the bottom edge of the effect.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7b90f-187">Podana wartość jest mniejsza niż 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-187">The provided value is less than 0.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingLeft">
+      <MemberSignature Language="C#" Value="protected double PaddingLeft { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingLeft" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingLeft" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingLeft As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingLeft { double get(); void set(double value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-188">Pobiera lub ustawia wartość wskazującą, że efektu tekstury danych wyjściowych jest większy niż jego wejściowych tekstury wzdłuż lewej krawędzi.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-188">Gets or sets a value indicating that the effect's output texture is larger than its input texture along the left edge.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-189">Dopełnienie wzdłuż lewej krawędzi efekt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-189">The padding along the left edge of the effect.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7b90f-190">Podana wartość jest mniejsza niż 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-190">The provided value is less than 0.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingRight">
+      <MemberSignature Language="C#" Value="protected double PaddingRight { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingRight" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingRight" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingRight As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingRight { double get(); void set(double value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-191">Pobiera lub ustawia wartość wskazującą, że efektu tekstury danych wyjściowych jest większy niż jego wejściowych tekstury wzdłuż prawej krawędzi.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-191">Gets or sets a value indicating that the effect's output texture is larger than its input texture along the right edge.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-192">Dopełnienie wzdłuż prawej krawędzi efekt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-192">The padding along the right edge of the effect.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7b90f-193">Podana wartość jest mniejsza niż 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-193">The provided value is less than 0.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PaddingTop">
+      <MemberSignature Language="C#" Value="protected double PaddingTop { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance float64 PaddingTop" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PaddingTop" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PaddingTop As Double" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property double PaddingTop { double get(); void set(double value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Double</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-194">Pobiera lub ustawia wartość wskazującą, że efektu tekstury danych wyjściowych jest większy niż jego wejściowych tekstury wzdłuż górnej krawędzi.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-194">Gets or sets a value indicating that the effect's output texture is larger than its input texture along the top edge.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-195">Dopełnienie wzdłuż górnej krawędzi efektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-195">The padding along the top edge of the effect.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <span data-ttu-id="7b90f-196">Podana wartość jest mniejsza niż 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-196">The provided value is less than 0.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShader">
+      <MemberSignature Language="C#" Value="protected System.Windows.Media.Effects.PixelShader PixelShader { get; set; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Media.Effects.PixelShader PixelShader" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Media.Effects.ShaderEffect.PixelShader" />
+      <MemberSignature Language="VB.NET" Value="Protected Property PixelShader As PixelShader" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; property System::Windows::Media::Effects::PixelShader ^ PixelShader { System::Windows::Media::Effects::PixelShader ^ get(); void set(System::Windows::Media::Effects::PixelShader ^ value); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Media.Effects.PixelShader</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-197">Pobiera lub ustawia <see cref="T:System.Windows.Media.Effects.PixelShader" /> dla efektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-197">Gets or sets the <see cref="T:System.Windows.Media.Effects.PixelShader" /> to use for the effect.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="7b90f-198">
+            <see cref="T:System.Windows.Media.Effects.PixelShader" /> Efekt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-198">The <see cref="T:System.Windows.Media.Effects.PixelShader" /> for the effect.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+  
+<a name="dependencyPropertyInfo_PixelShader"></a>   
+## <a name="dependency-property-information"></a><span data-ttu-id="7b90f-199">Informacje dotyczące właściwości zależności</span><span class="sxs-lookup"><span data-stu-id="7b90f-199">Dependency Property Information</span></span>  
+  
+|||  
+|-|-|  
+|<span data-ttu-id="7b90f-200">Pole identyfikatora</span><span class="sxs-lookup"><span data-stu-id="7b90f-200">Identifier field</span></span>|<xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderProperty>|  
+|<span data-ttu-id="7b90f-201">Wartość właściwości metadanych `true`</span><span class="sxs-lookup"><span data-stu-id="7b90f-201">Metadata properties set to `true`</span></span>|<span data-ttu-id="7b90f-202">Brak</span><span class="sxs-lookup"><span data-stu-id="7b90f-202">None</span></span>|  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderConstantCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderConstantCallback (int floatRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderConstantCallback(int32 floatRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function PixelShaderConstantCallback (floatRegisterIndex As Integer) As PropertyChangedCallback" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderConstantCallback(int floatRegisterIndex);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="floatRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="floatRegisterIndex">
+          <span data-ttu-id="7b90f-203">Indeks rejestr cieniowania skojarzone z właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-203">The index of the shader register associated with the dependency property.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-204">Kojarzy wartość właściwości zależności z rejestru stałych zmiennoprzecinkowych cieniowania pikseli.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-204">Associates a dependency property value with a pixel shader's float constant register.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-205">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegata, który kojarzy właściwości zależności i rejestr stała cieniowania określonego przez <paramref name="floatRegisterIndex" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-205">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegate that associates a dependency property and the shader constant register specified by <paramref name="floatRegisterIndex" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-206">Użyj <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> metody podczas rejestrowania właściwości zależności dla stała cieniowania.</span><span class="sxs-lookup"><span data-stu-id="7b90f-206">Use the <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> method when you register a dependency property for a shader constant.</span></span> <span data-ttu-id="7b90f-207"><xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> Konstrukcji — metoda <xref:System.Windows.PropertyChangedCallback> , delegowanie, gdy została wywołana, tworzy skojarzenie między właściwości zależności i rejestr stała cieniowania określonego przez `floatRegisterIndex`.</span><span class="sxs-lookup"><span data-stu-id="7b90f-207">The <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderConstantCallback%2A> method constructs a <xref:System.Windows.PropertyChangedCallback> delegate that, when invoked, creates an association between the dependency property and the shader constant register specified by `floatRegisterIndex`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="7b90f-208">Właściwość zależności jest nieznanego typu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-208">The dependency property is an unknown type.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="7b90f-209">
+            <paramref name="floatRegisterIndex" /> jest większe niż lub równa 32, lub <paramref name="floatRegisterIndex" /> jest mniejszy niż 0.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-209">
+              <paramref name="floatRegisterIndex" /> is greater than or equal to 32, or <paramref name="floatRegisterIndex" /> is less than 0.</span>
+          </span>
+        </exception>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderProperty">
+      <MemberSignature Language="C#" Value="protected static readonly System.Windows.DependencyProperty PixelShaderProperty;" />
+      <MemberSignature Language="ILAsm" Value=".field family static initonly class System.Windows.DependencyProperty PixelShaderProperty" />
+      <MemberSignature Language="DocId" Value="F:System.Windows.Media.Effects.ShaderEffect.PixelShaderProperty" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared ReadOnly PixelShaderProperty As DependencyProperty " />
+      <MemberSignature Language="C++ CLI" Value="protected: static initonly System::Windows::DependencyProperty ^ PixelShaderProperty;" />
+      <MemberType>Field</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-210">Identyfikuje <see cref="P:System.Windows.Media.Effects.ShaderEffect.PixelShader" /> właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-210">Identifies the <see cref="P:System.Windows.Media.Effects.ShaderEffect.PixelShader" /> dependency property.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="PixelShaderSamplerCallback">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-211">Kojarzy wartość właściwości zależności z rejestru Przykłady cieniowania pikseli.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-211">Associates a dependency property value with a pixel shader's sampler register.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="PixelShaderSamplerCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderSamplerCallback (int samplerRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderSamplerCallback(int32 samplerRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function PixelShaderSamplerCallback (samplerRegisterIndex As Integer) As PropertyChangedCallback" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderSamplerCallback(int samplerRegisterIndex);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="samplerRegisterIndex">
+          <span data-ttu-id="7b90f-212">Indeks przykładów programu do cieniowania skojarzone z właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-212">The index of the shader sampler associated with the dependency property.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-213">Kojarzy wartość właściwości zależności z rejestru Przykłady cieniowania pikseli.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-213">Associates a dependency property value with a pixel shader's sampler register.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-214">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegata, który kojarzy właściwości zależności i rejestr Przykłady cieniowania określonego przez <paramref name="samplerRegisterIndex" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-214">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegate that associates a dependency property and the shader sampler register specified by <paramref name="samplerRegisterIndex" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-215">Użyj <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> metody podczas rejestrowania <xref:System.Windows.Media.Brush>-wartości właściwości zależności dla przykładów programu do cieniowania.</span><span class="sxs-lookup"><span data-stu-id="7b90f-215">Use the <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> method when you register a <xref:System.Windows.Media.Brush>-valued dependency property for a shader sampler.</span></span> <span data-ttu-id="7b90f-216"><xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> Konstrukcji — metoda <xref:System.Windows.PropertyChangedCallback> , delegowanie, gdy została wywołana, tworzy skojarzenie między właściwości zależności i rejestr Przykłady cieniowania określonego przez `samplerRegisterIndex`.</span><span class="sxs-lookup"><span data-stu-id="7b90f-216">The <xref:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback%2A> method constructs a <xref:System.Windows.PropertyChangedCallback> delegate that, when invoked, creates an association between the dependency property and the shader sampler register specified by `samplerRegisterIndex`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="PixelShaderSamplerCallback">
+      <MemberSignature Language="C#" Value="protected static System.Windows.PropertyChangedCallback PixelShaderSamplerCallback (int samplerRegisterIndex, System.Windows.Media.Effects.SamplingMode samplingMode);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.PropertyChangedCallback PixelShaderSamplerCallback(int32 samplerRegisterIndex, valuetype System.Windows.Media.Effects.SamplingMode samplingMode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.PixelShaderSamplerCallback(System.Int32,System.Windows.Media.Effects.SamplingMode)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::PropertyChangedCallback ^ PixelShaderSamplerCallback(int samplerRegisterIndex, System::Windows::Media::Effects::SamplingMode samplingMode);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.PropertyChangedCallback</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+        <Parameter Name="samplingMode" Type="System.Windows.Media.Effects.SamplingMode" />
+      </Parameters>
+      <Docs>
+        <param name="samplerRegisterIndex">
+          <span data-ttu-id="7b90f-217">Indeks przykładów programu do cieniowania skojarzone z właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-217">The index of the shader sampler associated with the dependency property.</span>
+          </span>
+        </param>
+        <param name="samplingMode">
+          <span data-ttu-id="7b90f-218">
+            <see cref="T:System.Windows.Media.Effects.SamplingMode" /> Dla przykładów programu do cieniowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-218">The <see cref="T:System.Windows.Media.Effects.SamplingMode" /> for the shader sampler.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-219">Kojarzy wartość właściwości zależności z rejestru Przykłady cieniowania pikseli i <see cref="T:System.Windows.Media.Effects.SamplingMode" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-219">Associates a dependency property value with a pixel shader's sampler register and a <see cref="T:System.Windows.Media.Effects.SamplingMode" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-220">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegata, który kojarzy właściwości zależności i rejestr Przykłady cieniowania określonego przez <paramref name="samplerRegisterIndex" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-220">A <see cref="T:System.Windows.PropertyChangedCallback" /> delegate that associates a dependency property and the shader sampler register specified by <paramref name="samplerRegisterIndex" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="7b90f-221">Użyj <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> metody podczas rejestrowania <xref:System.Windows.Media.Brush>-wartości właściwości zależności dla przykładów programu do cieniowania.</span><span class="sxs-lookup"><span data-stu-id="7b90f-221">Use the <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> method when you register a <xref:System.Windows.Media.Brush>-valued dependency property for a shader sampler.</span></span> <span data-ttu-id="7b90f-222"><xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> Konstrukcji — metoda <xref:System.Windows.PropertyChangedCallback> , delegowanie, gdy została wywołana, tworzy skojarzenie między właściwości zależności i rejestr Przykłady cieniowania określonego przez `samplerRegisterIndex`.</span><span class="sxs-lookup"><span data-stu-id="7b90f-222">The <xref:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty%2A> method constructs a <xref:System.Windows.PropertyChangedCallback> delegate that, when invoked, creates an association between the dependency property and the shader sampler register specified by `samplerRegisterIndex`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="RegisterPixelShaderSamplerProperty">
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="7b90f-223">Kojarzy właściwości zależności z rejestru przykładów programu do cieniowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-223">Associates a dependency property with a shader sampler register.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="RegisterPixelShaderSamplerProperty">
+      <MemberSignature Language="C#" Value="protected static System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty (string dpName, Type ownerType, int samplerRegisterIndex);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty(string dpName, class System.Type ownerType, int32 samplerRegisterIndex) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty(System.String,System.Type,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Protected Shared Function RegisterPixelShaderSamplerProperty (dpName As String, ownerType As Type, samplerRegisterIndex As Integer) As DependencyProperty" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::DependencyProperty ^ RegisterPixelShaderSamplerProperty(System::String ^ dpName, Type ^ ownerType, int samplerRegisterIndex);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dpName" Type="System.String" />
+        <Parameter Name="ownerType" Type="System.Type" />
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="dpName">
+          <span data-ttu-id="7b90f-224">Nazwa właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-224">The name of the dependency property.</span>
+          </span>
+        </param>
+        <param name="ownerType">
+          <span data-ttu-id="7b90f-225">Typ wpływ, jaki ma właściwość zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-225">The type of the effect that has the dependency property.</span>
+          </span>
+        </param>
+        <param name="samplerRegisterIndex">
+          <span data-ttu-id="7b90f-226">Indeks przykładów programu do cieniowania skojarzone z właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-226">The index of the shader sampler associated with the dependency property.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-227">Kojarzy właściwości zależności z rejestru przykładów programu do cieniowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-227">Associates a dependency property with a shader sampler register.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-228">Właściwości zależności skojarzony z próbnikiem programu do cieniowania określonego przez <paramref name="samplerRegisterIndex" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-228">A dependency property associated with the shader sampler specified by <paramref name="samplerRegisterIndex" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="RegisterPixelShaderSamplerProperty">
+      <MemberSignature Language="C#" Value="protected static System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty (string dpName, Type ownerType, int samplerRegisterIndex, System.Windows.Media.Effects.SamplingMode samplingMode);" />
+      <MemberSignature Language="ILAsm" Value=".method familystatic hidebysig class System.Windows.DependencyProperty RegisterPixelShaderSamplerProperty(string dpName, class System.Type ownerType, int32 samplerRegisterIndex, valuetype System.Windows.Media.Effects.SamplingMode samplingMode) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.RegisterPixelShaderSamplerProperty(System.String,System.Type,System.Int32,System.Windows.Media.Effects.SamplingMode)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; static System::Windows::DependencyProperty ^ RegisterPixelShaderSamplerProperty(System::String ^ dpName, Type ^ ownerType, int samplerRegisterIndex, System::Windows::Media::Effects::SamplingMode samplingMode);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyProperty</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dpName" Type="System.String" />
+        <Parameter Name="ownerType" Type="System.Type" />
+        <Parameter Name="samplerRegisterIndex" Type="System.Int32" />
+        <Parameter Name="samplingMode" Type="System.Windows.Media.Effects.SamplingMode" />
+      </Parameters>
+      <Docs>
+        <param name="dpName">
+          <span data-ttu-id="7b90f-229">Nazwa właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-229">The name of the dependency property.</span>
+          </span>
+        </param>
+        <param name="ownerType">
+          <span data-ttu-id="7b90f-230">Typ wpływ, jaki ma właściwość zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-230">The type of the effect that has the dependency property.</span>
+          </span>
+        </param>
+        <param name="samplerRegisterIndex">
+          <span data-ttu-id="7b90f-231">Indeks przykładów programu do cieniowania skojarzone z właściwości zależności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-231">The index of the shader sampler associated with the dependency property.</span>
+          </span>
+        </param>
+        <param name="samplingMode">
+          <span data-ttu-id="7b90f-232">
+            <see cref="T:System.Windows.Media.Effects.SamplingMode" /> Dla przykładów programu do cieniowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-232">The <see cref="T:System.Windows.Media.Effects.SamplingMode" /> for the shader sampler.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-233">Kojarzy właściwości zależności z rejestru przykładów programu do cieniowania i <see cref="T:System.Windows.Media.Effects.SamplingMode" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-233">Associates a dependency property with a shader sampler register and a <see cref="T:System.Windows.Media.Effects.SamplingMode" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="7b90f-234">Właściwości zależności skojarzony z próbnikiem programu do cieniowania określonego przez <paramref name="samplerRegisterIndex" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-234">A dependency property associated with the shader sampler specified by <paramref name="samplerRegisterIndex" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+    <Member MemberName="UpdateShaderValue">
+      <MemberSignature Language="C#" Value="protected void UpdateShaderValue (System.Windows.DependencyProperty dp);" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig instance void UpdateShaderValue(class System.Windows.DependencyProperty dp) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Media.Effects.ShaderEffect.UpdateShaderValue(System.Windows.DependencyProperty)" />
+      <MemberSignature Language="VB.NET" Value="Protected Sub UpdateShaderValue (dp As DependencyProperty)" />
+      <MemberSignature Language="C++ CLI" Value="protected:&#xA; void UpdateShaderValue(System::Windows::DependencyProperty ^ dp);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationCore</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
+      </Parameters>
+      <Docs>
+        <param name="dp">
+          <span data-ttu-id="7b90f-235">Właściwości zależności do zaktualizowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-235">The dependency property to be updated.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="7b90f-236">Powiadamia efekt, że stała cieniowania lub przykłady odpowiadającej właściwości zależności określony powinien zostać zaktualizowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="7b90f-236">Notifies the effect that the shader constant or sampler corresponding to the specified dependency property should be updated.</span>
+          </span>
+        </summary>
+        <remarks>To be added.</remarks>
+        <altmember cref="T:System.Windows.Media.Effects.Effect" />
+        <altmember cref="T:System.Windows.Media.Effects.PixelShader" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

@@ -1,0 +1,2173 @@
+<Type Name="Extensions" FullName="System.Xml.Schema.Extensions">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="e7e34dcb838e574a5bf90abd34b31950b0d4f6ae" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public static class Extensions" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Extensions extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Xml.Schema.Extensions" />
+  <TypeSignature Language="VB.NET" Value="Public Module Extensions" />
+  <TypeSignature Language="C++ CLI" Value="public ref class Extensions abstract sealed" />
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.Linq</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Xml.XDocument</AssemblyName>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="05405-101">Ta klasa zawiera LINQ do XML metody rozszerzenia dla walidacji XSD.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="05405-101">This class contains the LINQ to XML extension methods for XSD validation.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-102">Ta klasa zawiera także metody w celu uzyskania typu infoset sprawdzonych po schema weryfikacji (PSVI) zweryfikowanych węzła XML.</span><span class="sxs-lookup"><span data-stu-id="05405-102">This class also contains methods to get the post-schema-validation infoset (PSVI) of a validated XML node.</span></span>  
+  
+ <span data-ttu-id="05405-103">Podczas sprawdzania poprawności <xref:System.Xml.Linq.XDocument>, <xref:System.Xml.Linq.XElement>, lub <xref:System.Xml.Linq.XAttribute>, można także opcjonalnie wypełnić drzewa XML z typu infoset po schema weryfikacji.</span><span class="sxs-lookup"><span data-stu-id="05405-103">When you validate an <xref:System.Xml.Linq.XDocument>, <xref:System.Xml.Linq.XElement>, or <xref:System.Xml.Linq.XAttribute>, you can also optionally populate the XML tree with the post-schema-validation infoset.</span></span> <span data-ttu-id="05405-104">PSVI informacje są dodawane jako adnotacji typu <xref:System.Xml.Schema.XmlSchemaInfo?displayProperty=nameWithType>.</span><span class="sxs-lookup"><span data-stu-id="05405-104">PSVI information is added as an annotation of type <xref:System.Xml.Schema.XmlSchemaInfo?displayProperty=nameWithType>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="05405-105">XSD w [przykładowy plik XSD: Klienci i zamówienia](http://msdn.microsoft.com/library/8b05efe3-cc5e-4c7b-b322-892dbda41687) zawiera schemat, który może służyć do walidacji dokumentu XML w [przykładowego pliku XML: Klienci i zamówienia (LINQ do XML)](http://msdn.microsoft.com/library/26790c41-5976-4558-a096-d0f67bfc4d92).</span><span class="sxs-lookup"><span data-stu-id="05405-105">The XSD in [Sample XSD File: Customers and Orders](http://msdn.microsoft.com/library/8b05efe3-cc5e-4c7b-b322-892dbda41687) contains a schema that can be used to validate the XML document in [Sample XML File: Customers and Orders (LINQ to XML)](http://msdn.microsoft.com/library/26790c41-5976-4558-a096-d0f67bfc4d92).</span></span> <span data-ttu-id="05405-106">Poniższy przykład ładuje schematu i zarządzania dokumentami, sprawdza poprawność dokumentu, zmieni dokument, aby `xs:key` i `xs:keyref` relacji jest nieprawidłowa, a następnie próbuje wykonać ponownie dokonać weryfikacji.</span><span class="sxs-lookup"><span data-stu-id="05405-106">The following example loads the schema and the document, validates the document, changes the document so that the `xs:key` and `xs:keyref` relationship is not valid, and then attempts to validate again.</span></span>  
+  
+```csharp  
+  
+                XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", "CustomersOrders.xsd");  
+  
+XDocument custOrd = XDocument.Load("CustomersOrders.xml");  
+  
+Console.WriteLine("Validating custOrd");  
+bool errors = false;  
+custOrd.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     });  
+Console.WriteLine("custOrd {0}", errors ? "did not validate" : "validated");  
+  
+// Modify the custOrd tree so that it is no longer valid.  
+custOrd.Root.Element("Orders").Element("Order").Element("CustomerID").Value = "AAAAA";  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating custOrd");  
+errors = false;  
+custOrd.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     });  
+Console.WriteLine("custOrd {0}", errors ? "did not validate" : "validated");  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", "CustomersOrders.xsd")  
+  
+    Console.WriteLine("Validating custOrd")  
+    Dim custOrd As XDocument = XDocument.Load("CustomersOrders.xml")  
+    errors = False  
+    custOrd.Validate(schemas, AddressOf XSDErrors)  
+    Console.WriteLine("custOrd {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating custOrd")  
+    ' Modify the source document so that it will not validate.  
+    custOrd.Root.Element("Orders").Element("Order").Element("CustomerID").Value = "AAAAA"  
+    errors = False  
+    custOrd.Validate(schemas, AddressOf XSDErrors)  
+    Console.WriteLine("custOrd {0}", IIf(errors, "did not validate", "validated"))  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-107">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-107">This example produces the following output:</span></span>  
+  
+```  
+Validating custOrd  
+custOrd validated  
+  
+Validating custOrd  
+The key sequence 'AAAAA' in Keyref fails to refer to some key.  
+custOrd did not validate  
+```  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName="GetSchemaInfo">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="05405-108">Pobiera obiekt typu infoset po schema weryfikacji (PSVI) zweryfikowanych węzła.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-108">Gets the post-schema-validation infoset (PSVI) of a validated node.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-109">Po zweryfikowaniu <xref:System.Xml.Linq.XDocument>, można pobrać typu infoset po schema weryfikacji dla <xref:System.Xml.Linq.XElement> lub <xref:System.Xml.Linq.XAttribute> który znajduje się w dokumencie.</span><span class="sxs-lookup"><span data-stu-id="05405-109">After you have validated an <xref:System.Xml.Linq.XDocument>, you can retrieve the post-schema-validation infoset for an <xref:System.Xml.Linq.XElement> or <xref:System.Xml.Linq.XAttribute> that is contained in the document.</span></span>  
+  
+ <span data-ttu-id="05405-110">Po pobraniu <xref:System.Xml.Schema.IXmlSchemaInfo> obiektu, można użyć <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaAttribute%2A> lub <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaElement%2A> właściwości, aby uzyskać typ częściowego sprawdzania poprawności (<xref:System.Xml.Schema.XmlSchemaElement> lub <xref:System.Xml.Schema.XmlSchemaAttribute>).</span><span class="sxs-lookup"><span data-stu-id="05405-110">After retrieving the <xref:System.Xml.Schema.IXmlSchemaInfo> object, you can use the <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaAttribute%2A> or <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaElement%2A> properties to get a partial validation type (<xref:System.Xml.Schema.XmlSchemaElement> or <xref:System.Xml.Schema.XmlSchemaAttribute>).</span></span> <span data-ttu-id="05405-111">Można używać typów częściowego sprawdzania poprawności można zweryfikować atrybutu lub poddrzewa.</span><span class="sxs-lookup"><span data-stu-id="05405-111">You can use the partial validation types to validate an attribute or a sub-tree.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetSchemaInfo">
+      <MemberSignature Language="C#" Value="public static System.Xml.Schema.IXmlSchemaInfo GetSchemaInfo (this System.Xml.Linq.XAttribute source);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Xml.Schema.IXmlSchemaInfo GetSchemaInfo(class System.Xml.Linq.XAttribute source) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.GetSchemaInfo(System.Xml.Linq.XAttribute)" />
+      <MemberSignature Language="VB.NET" Value="&lt;Extension()&gt;&#xA;Public Function GetSchemaInfo (source As XAttribute) As IXmlSchemaInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static System::Xml::Schema::IXmlSchemaInfo ^ GetSchemaInfo(System::Xml::Linq::XAttribute ^ source);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Schema.IXmlSchemaInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XAttribute" RefType="this" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-112">
+            <see cref="T:System.Xml.Linq.XAttribute" /> Który został wcześniej zweryfikowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-112">An <see cref="T:System.Xml.Linq.XAttribute" /> that has been previously validated.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-113">Pobiera obiekt typu infoset po schema weryfikacji (PSVI) zweryfikowanych atrybutu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-113">Gets the post-schema-validation infoset (PSVI) of a validated attribute.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="05405-114">A <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> zawierający typu infoset po schema weryfikacji dla <see cref="T:System.Xml.Linq.XAttribute" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-114">A <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> that contains the post-schema-validation infoset for an <see cref="T:System.Xml.Linq.XAttribute" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-115">Można użyć <xref:System.Xml.Schema.IXmlSchemaInfo> zwrócona przez tę metodę w celu ustalenia niektórych parametrów atrybutu zweryfikowany.</span><span class="sxs-lookup"><span data-stu-id="05405-115">You can use the <xref:System.Xml.Schema.IXmlSchemaInfo> returned by this method to determine certain characteristics of a validated attribute.</span></span> <span data-ttu-id="05405-116">Na przykład można określić, czy ten atrybut pochodzi z domyślna wartość atrybutu XSD.</span><span class="sxs-lookup"><span data-stu-id="05405-116">For example, you can determine if the attribute came from a default attribute value in an XSD.</span></span>  
+  
+ <span data-ttu-id="05405-117">Możesz użyć <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaAttribute%2A> właściwości do pobrania typ częściowego sprawdzania poprawności (<xref:System.Xml.Schema.XmlSchemaAttribute>).</span><span class="sxs-lookup"><span data-stu-id="05405-117">You use the <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaAttribute%2A> property to get a partial validation type (<xref:System.Xml.Schema.XmlSchemaAttribute>).</span></span> <span data-ttu-id="05405-118">Można go ponownie bez sprawdzania poprawności cały dokument. Sprawdź poprawność atrybutu.</span><span class="sxs-lookup"><span data-stu-id="05405-118">You can use it to revalidate an attribute without validating an entire document.</span></span>  
+  
+ <span data-ttu-id="05405-119">Na przykład ta właściwość zobacz <xref:System.Xml.Schema.Extensions.Validate%2A>.</span><span class="sxs-lookup"><span data-stu-id="05405-119">For an example of this property, see <xref:System.Xml.Schema.Extensions.Validate%2A>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetSchemaInfo">
+      <MemberSignature Language="C#" Value="public static System.Xml.Schema.IXmlSchemaInfo GetSchemaInfo (this System.Xml.Linq.XElement source);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.Xml.Schema.IXmlSchemaInfo GetSchemaInfo(class System.Xml.Linq.XElement source) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.GetSchemaInfo(System.Xml.Linq.XElement)" />
+      <MemberSignature Language="VB.NET" Value="&lt;Extension()&gt;&#xA;Public Function GetSchemaInfo (source As XElement) As IXmlSchemaInfo" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static System::Xml::Schema::IXmlSchemaInfo ^ GetSchemaInfo(System::Xml::Linq::XElement ^ source);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Xml.Schema.IXmlSchemaInfo</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XElement" RefType="this" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-120">
+            <see cref="T:System.Xml.Linq.XElement" /> Który został wcześniej zweryfikowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-120">An <see cref="T:System.Xml.Linq.XElement" /> that has been previously validated.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-121">Pobiera obiekt typu infoset po schema weryfikacji (PSVI) elementu zweryfikowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-121">Gets the post-schema-validation infoset (PSVI) of a validated element.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="05405-122">A <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> zawiera dla obiekt typu infoset po schema weryfikacji (PSVI) <see cref="T:System.Xml.Linq.XElement" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-122">A <see cref="T:System.Xml.Schema.IXmlSchemaInfo" /> that contains the post-schema-validation infoset (PSVI) for an <see cref="T:System.Xml.Linq.XElement" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-123">Można użyć <xref:System.Xml.Schema.IXmlSchemaInfo> zwrócona przez tę metodę w celu ustalenia niektórych parametrów elementu zweryfikowany.</span><span class="sxs-lookup"><span data-stu-id="05405-123">You can use the <xref:System.Xml.Schema.IXmlSchemaInfo> returned by this method to determine certain characteristics of a validated element.</span></span> <span data-ttu-id="05405-124">Na przykład można określić typ schematu dynamicznego elementu.</span><span class="sxs-lookup"><span data-stu-id="05405-124">For example, you can determine the dynamic schema type of the element.</span></span>  
+  
+ <span data-ttu-id="05405-125">Możesz użyć <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaElement%2A> właściwości do pobrania typ częściowego sprawdzania poprawności (<xref:System.Xml.Schema.XmlSchemaElement>).</span><span class="sxs-lookup"><span data-stu-id="05405-125">You use the <xref:System.Xml.Schema.IXmlSchemaInfo.SchemaElement%2A> property to get a partial validation type (<xref:System.Xml.Schema.XmlSchemaElement>).</span></span> <span data-ttu-id="05405-126">Można go ponownie bez sprawdzania poprawności cały dokument. Sprawdź poprawność poddrzewa z elementem w jego katalogu głównego.</span><span class="sxs-lookup"><span data-stu-id="05405-126">You can use it to revalidate a sub-tree with an element at its root without validating an entire document.</span></span>  
+  
+ <span data-ttu-id="05405-127">Na przykład ta właściwość zobacz <xref:System.Xml.Schema.Extensions.Validate%2A>.</span><span class="sxs-lookup"><span data-stu-id="05405-127">For an example of this property, see <xref:System.Xml.Schema.Extensions.Validate%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="05405-128">Poniższy przykład powoduje wypełnienie drzewa z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-128">The following example populates the tree with a PSVI.</span></span> <span data-ttu-id="05405-129">Po sprawdzeniu poprawności Wyświetla wszystkie elementy i atrybuty w drzewie, które nie są prawidłowe, zgodnie z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-129">After validation, it prints all elements and attributes in the tree that are invalid according to the PSVI.</span></span>  
+  
+```csharp  
+  
+                static void DumpInvalidNodes(XElement el)  
+{  
+    if (el.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+        Console.WriteLine("Invalid Element {0}",  
+            el.AncestorsAndSelf()  
+            .InDocumentOrder()  
+            .Aggregate("", (s, i) => s + "/" + i.Name.ToString()));  
+    foreach (XAttribute att in el.Attributes())  
+        if (att.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+            Console.WriteLine("Invalid Attribute {0}",  
+                att  
+                .Parent  
+                .AncestorsAndSelf()  
+                .InDocumentOrder()  
+                .Aggregate("",  
+                    (s, i) => s + "/" + i.Name.ToString()) + "/@" + att.Name.ToString()  
+                );  
+    foreach (XElement child in el.Elements())  
+        DumpInvalidNodes(child);  
+}  
+  
+static void Main(string[] args)  
+{  
+    string xsdMarkup =  
+         @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+   <xsd:simpleType name='GCType'>  
+    <xsd:restriction base='xsd:token'>  
+     <xsd:enumeration value='AAA'/>  
+     <xsd:enumeration value='BBB'/>  
+    </xsd:restriction>  
+   </xsd:simpleType>  
+   <xsd:element name='Root'>  
+    <xsd:complexType>  
+     <xsd:sequence>  
+      <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+       <xsd:complexType>  
+        <xsd:sequence>  
+         <xsd:element name='GrandChild1' type='GCType'/>  
+         <xsd:element name='GrandChild2' type='GCType'/>  
+         <xsd:element name='GrandChild3' type='GCType'/>  
+        </xsd:sequence>  
+       </xsd:complexType>  
+      </xsd:element>  
+     </xsd:sequence>  
+    </xsd:complexType>  
+   </xsd:element>  
+  </xsd:schema>";  
+  
+    XmlSchemaSet schemas = new XmlSchemaSet();  
+    schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+    XDocument doc1 = new XDocument(  
+        new XElement("Root",  
+            new XElement("Child1",  
+                new XElement("GrandChild1", "AAA"),  
+                new XElement("GrandChild2", "ZZZ"),  
+                new XElement("GrandChild3", "ZZZ")  
+            )  
+        )  
+    );  
+  
+    Console.WriteLine("Validating doc1 ...");  
+    bool errors = false;  
+    doc1.Validate(schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+    Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+    DumpInvalidNodes(doc1.Root);  
+}  
+```  
+  
+```vb  
+  
+                Private Sub DumpInvalidNodes(ByVal el As XElement)  
+    If el.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+        Console.WriteLine("Invalid Element {0}", _  
+            el _  
+            .AncestorsAndSelf _  
+            .InDocumentOrder() _  
+            .Aggregate("", _  
+                Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()))  
+    End If  
+    For Each att As XAttribute In el.Attributes()  
+        If att.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+            Console.WriteLine("Invalid Attribute {0}", _  
+                att _  
+                .Parent _  
+                .AncestorsAndSelf() _  
+                .InDocumentOrder() _  
+                .Aggregate("", _  
+                    Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()) + _  
+                    "/@" + att.Name.ToString())  
+        End If  
+    Next  
+    For Each child As XElement In el.Elements()  
+        DumpInvalidNodes(child)  
+    Next  
+End Sub  
+  
+Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+    <?xml version='1.0'?>  
+    <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+        <xsd:simpleType name='GCType'>  
+            <xsd:restriction base='xsd:token'>  
+                <xsd:enumeration value='AAA'/>  
+                <xsd:enumeration value='BBB'/>  
+            </xsd:restriction>  
+        </xsd:simpleType>  
+        <xsd:element name='Root'>  
+            <xsd:complexType>  
+                <xsd:sequence>  
+                    <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+                        <xsd:complexType>  
+                            <xsd:sequence>  
+                                <xsd:element name='GrandChild1' type='GCType'/>  
+                                <xsd:element name='GrandChild2' type='GCType'/>  
+                                <xsd:element name='GrandChild3' type='GCType'/>  
+                            </xsd:sequence>  
+                        </xsd:complexType>  
+                    </xsd:element>  
+                </xsd:sequence>  
+            </xsd:complexType>  
+        </xsd:element>  
+    </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = _  
+    <?xml version='1.0'?>  
+    <Root>  
+        <Child1>  
+            <GrandChild1>AAA</GrandChild1>  
+            <GrandChild2>ZZZ</GrandChild2>  
+            <GrandChild3>ZZZ</GrandChild3>  
+        </Child1>  
+    </Root>  
+  
+    Console.WriteLine("Validating doc1 ...")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+    DumpInvalidNodes(doc1.Root)  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-130">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-130">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1 ...  
+The 'GrandChild2' element is invalid - The value 'ZZZ' is invalid according to its datatype 'GCType' - The Enumeration constraint failed.  
+The 'GrandChild3' element is invalid - The value 'ZZZ' is invalid according to its datatype 'GCType' - The Enumeration constraint failed.  
+doc1 did not validate  
+Invalid Element /Root  
+Invalid Element /Root/Child1  
+Invalid Element /Root/Child1/GrandChild2  
+Invalid Element /Root/Child1/GrandChild3  
+```  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="Validate">
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="05405-131">Sprawdza, czy <see cref="T:System.Xml.Linq.XDocument" />, <see cref="T:System.Xml.Linq.XElement" />, lub <see cref="T:System.Xml.Linq.XAttribute" /> odpowiada XSD w <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-131">Validates that an <see cref="T:System.Xml.Linq.XDocument" />, an <see cref="T:System.Xml.Linq.XElement" />, or an <see cref="T:System.Xml.Linq.XAttribute" /> conforms to an XSD in an <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-132">Użyj tych metod podstawowej <xref:System.Xml.XmlReader> do sprawdzania poprawności względem schematu XSD drzewo składni XML.</span><span class="sxs-lookup"><span data-stu-id="05405-132">These methods use an underlying <xref:System.Xml.XmlReader> to validate the XML tree against an XSD.</span></span>  
+  
+ <span data-ttu-id="05405-133">Błąd weryfikacji i komunikaty ostrzegawcze są obsługiwane przy użyciu <xref:System.Xml.Schema.ValidationEventHandler> delegowanie.</span><span class="sxs-lookup"><span data-stu-id="05405-133">Validation error and warning messages are handled using the <xref:System.Xml.Schema.ValidationEventHandler> delegate.</span></span> <span data-ttu-id="05405-134">W przypadku obsługi zdarzeń do tych metod błędy sprawdzania poprawności są widoczne jako <xref:System.Xml.Schema.XmlSchemaValidationException>.</span><span class="sxs-lookup"><span data-stu-id="05405-134">If no event handler is provided to these methods, validation errors are exposed as an <xref:System.Xml.Schema.XmlSchemaValidationException>.</span></span> <span data-ttu-id="05405-135">Ostrzeżenia dotyczące sprawdzania poprawności, nie powodują <xref:System.Xml.Schema.XmlSchemaValidationException> zostanie wygenerowany.</span><span class="sxs-lookup"><span data-stu-id="05405-135">Validation warnings do not cause an <xref:System.Xml.Schema.XmlSchemaValidationException> to be thrown.</span></span>  
+  
+ <span data-ttu-id="05405-136">Niektóre z tych metod rozszerzenia opcjonalnie zezwolić wypełniania typu infoset po schema weryfikacji (PSVI).</span><span class="sxs-lookup"><span data-stu-id="05405-136">Some of these extension methods optionally allow population of the post-schema-validation infoset (PSVI).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XDocument source, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XDocument source, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XDocument,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XDocument ^ source, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XDocument" RefType="this" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-137">
+            <see cref="T:System.Xml.Linq.XDocument" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-137">The <see cref="T:System.Xml.Linq.XDocument" /> to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-138">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-138">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-139">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-139">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-140">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-140">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-141">Ta metoda sprawdza, czy <see cref="T:System.Xml.Linq.XDocument" /> odpowiada XSD w <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-141">This method validates that an <see cref="T:System.Xml.Linq.XDocument" /> conforms to an XSD in an <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-142">Ta metoda rozszerzenia sprawdza, czy <xref:System.Xml.Linq.XDocument> odpowiada schematu modelu zawartości w <xref:System.Xml.Schema.XmlSchemaSet>.</span><span class="sxs-lookup"><span data-stu-id="05405-142">This extension method validates that the <xref:System.Xml.Linq.XDocument> conforms to the schema content model in <xref:System.Xml.Schema.XmlSchemaSet>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="05405-143">Poniższy przykład tworzy <xref:System.Xml.Schema.XmlSchemaSet>, następnie weryfikuje dwa <xref:System.Xml.Linq.XDocument> obiektów względem zestawu schematu.</span><span class="sxs-lookup"><span data-stu-id="05405-143">The following example creates an <xref:System.Xml.Schema.XmlSchemaSet>, then validates two <xref:System.Xml.Linq.XDocument> objects against the schema set.</span></span> <span data-ttu-id="05405-144">Jeden z dokumentów jest nieprawidłowy, innych nie.</span><span class="sxs-lookup"><span data-stu-id="05405-144">One of the documents is valid, the other is not.</span></span>  
+  
+```csharp  
+  
+                string xsdMarkup =  
+    @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:sequence>  
+          <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+          <xsd:element name='Child2' minOccurs='1' maxOccurs='1'/>  
+         </xsd:sequence>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+XDocument doc1 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "content1"),  
+        new XElement("Child2", "content1")  
+    )  
+);  
+  
+XDocument doc2 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "content1"),  
+        new XElement("Child3", "content1")  
+    )  
+);  
+  
+Console.WriteLine("Validating doc1");  
+bool errors = false;  
+doc1.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     });  
+Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating doc2");  
+errors = false;  
+doc2.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     });  
+Console.WriteLine("doc2 {0}", errors ? "did not validate" : "validated");  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+    <?xml version='1.0'?>  
+    <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+        <xsd:element name='Root'>  
+            <xsd:complexType>  
+                <xsd:sequence>  
+                    <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+                    <xsd:element name='Child2' minOccurs='1' maxOccurs='1'/>  
+                </xsd:sequence>  
+            </xsd:complexType>  
+        </xsd:element>  
+    </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = _  
+    <?xml version='1.0'?>  
+    <Root>  
+        <Child1>content1</Child1>  
+        <Child2>content2</Child2>  
+    </Root>  
+  
+    Dim doc2 As XDocument = _  
+    <?xml version='1.0'?>  
+    <Root>  
+        <Child1>content1</Child1>  
+        <Child3>content1</Child3>  
+    </Root>  
+  
+    Console.WriteLine("Validating doc1")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating doc2")  
+    errors = False  
+    doc2.Validate(schemas, AddressOf XSDErrors)  
+    Console.WriteLine("doc2 {0}", IIf(errors, "did not validate", "validated"))  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-145">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-145">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1  
+doc1 validated  
+  
+Validating doc2  
+The element 'Root' has invalid child element 'Child3'. List of possible elements expected: 'Child2'.  
+doc2 did not validate  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-146">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-146">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XAttribute source, System.Xml.Schema.XmlSchemaObject partialValidationType, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XAttribute source, class System.Xml.Schema.XmlSchemaObject partialValidationType, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XAttribute,System.Xml.Schema.XmlSchemaObject,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XAttribute ^ source, System::Xml::Schema::XmlSchemaObject ^ partialValidationType, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XAttribute" RefType="this" />
+        <Parameter Name="partialValidationType" Type="System.Xml.Schema.XmlSchemaObject" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-147">
+            <see cref="T:System.Xml.Linq.XAttribute" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-147">The <see cref="T:System.Xml.Linq.XAttribute" /> to validate.</span>
+          </span>
+        </param>
+        <param name="partialValidationType">
+          <span data-ttu-id="05405-148">
+            <see cref="T:System.Xml.Schema.XmlSchemaObject" /> , Który określa poddrzewa do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-148">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that specifies the sub-tree to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-149">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-149">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-150">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-150">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-151">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-151">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-152">Ta metoda sprawdza, czy <see cref="T:System.Xml.Linq.XAttribute" /> odpowiada określonym <see cref="T:System.Xml.Schema.XmlSchemaObject" /> i <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-152">This method validates that an <see cref="T:System.Xml.Linq.XAttribute" /> conforms to a specified <see cref="T:System.Xml.Schema.XmlSchemaObject" /> and an <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-153">Ta metoda służy do sprawdzania poprawności, który <xref:System.Xml.Linq.XAttribute> jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-153">You can use this method to validate that an <xref:System.Xml.Linq.XAttribute> conforms to a schema.</span></span> <span data-ttu-id="05405-154">Ta metoda jest zazwyczaj używana, gdy zmieniono atrybutu i chce mieć pewność, że nadal spełnia on schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-154">You typically use this method when you have modified an attribute, and you want to make sure that it still conforms to its schema.</span></span> <span data-ttu-id="05405-155">Można sprawdzić poprawności całego dokumentu, ale zajmuje mniej czasu przetwarzania do sprawdzania poprawności tylko atrybut.</span><span class="sxs-lookup"><span data-stu-id="05405-155">You could validate the entire document, but it takes less processing time to validate just the attribute.</span></span>  
+  
+ <span data-ttu-id="05405-156">W przypadku przekazania `null` dla `validationEventHandler`, ta metoda zgłasza wyjątek na błędy sprawdzania poprawności.</span><span class="sxs-lookup"><span data-stu-id="05405-156">If you pass `null` for `validationEventHandler`, this method raises an exception upon validation errors.</span></span> <span data-ttu-id="05405-157">Ostrzeżenia dotyczące sprawdzania poprawności nie zgłosi wyjątku.</span><span class="sxs-lookup"><span data-stu-id="05405-157">Validation warnings will not raise an exception.</span></span>  
+  
+ <span data-ttu-id="05405-158">Aby sprawdzić poprawność atrybutu, należy użyć wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-158">To validate an attribute, you use an instance of <xref:System.Xml.Schema.XmlSchemaObject>.</span></span> <span data-ttu-id="05405-159">Możesz uzyskać tego wystąpienia na różne sposoby.</span><span class="sxs-lookup"><span data-stu-id="05405-159">You can obtain this instance in various ways.</span></span> <span data-ttu-id="05405-160">Łatwo jest następujący:</span><span class="sxs-lookup"><span data-stu-id="05405-160">An easy way is as follows:</span></span>  
+  
+1.  <span data-ttu-id="05405-161">Zweryfikuj, że dokument jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-161">Validate that a document conforms to a schema.</span></span>  
+  
+2.  <span data-ttu-id="05405-162">Dodaj obiekt typu infoset po schema weryfikacji (PSVI) przez wywołanie metody <xref:System.Xml.Schema.Extensions.Validate%2A> — metoda rozszerzenia.</span><span class="sxs-lookup"><span data-stu-id="05405-162">Add the post-schema-validation infoset (PSVI) by calling the <xref:System.Xml.Schema.Extensions.Validate%2A> extension method.</span></span>  
+  
+3.  <span data-ttu-id="05405-163">Wywołanie <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> — metoda rozszerzenia można pobrać obiektu implementującego <xref:System.Xml.Schema.IXmlSchemaInfo>.</span><span class="sxs-lookup"><span data-stu-id="05405-163">Call the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> extension method to retrieve an object that implements <xref:System.Xml.Schema.IXmlSchemaInfo>.</span></span> <span data-ttu-id="05405-164">Z obiektu pobrane, możesz uzyskać <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-164">From the retrieved object, you can get an <xref:System.Xml.Schema.XmlSchemaObject>.</span></span>  
+  
+    -   <span data-ttu-id="05405-165">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XElement>, będzie typ <xref:System.Xml.Schema.XmlSchemaElement>.</span><span class="sxs-lookup"><span data-stu-id="05405-165">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XElement>, the type will be <xref:System.Xml.Schema.XmlSchemaElement>.</span></span>  
+  
+    -   <span data-ttu-id="05405-166">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XAttribute>, będzie typ <xref:System.Xml.Schema.XmlSchemaAttribute>.</span><span class="sxs-lookup"><span data-stu-id="05405-166">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XAttribute>, the type will be <xref:System.Xml.Schema.XmlSchemaAttribute>.</span></span>  
+  
+ <span data-ttu-id="05405-167">Po utworzeniu wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>, ta metoda służy do sprawdzania poprawności atrybutów.</span><span class="sxs-lookup"><span data-stu-id="05405-167">After you have an instance of an <xref:System.Xml.Schema.XmlSchemaObject>, you can use this method to validate an attribute.</span></span>  
+  
+   
+  
+## Examples  
+  
+```csharp  
+  
+                string xsdMarkup =  
+    @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:simpleContent>  
+          <xsd:extension base='xsd:string'>  
+           <xsd:attribute name='Lang' use='required'>  
+            <xsd:simpleType>  
+             <xsd:restriction base='xsd:token'>  
+              <xsd:enumeration value='C#'/>  
+              <xsd:enumeration value='VB'/>  
+             </xsd:restriction>  
+            </xsd:simpleType>  
+           </xsd:attribute>  
+          </xsd:extension>  
+         </xsd:simpleContent>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+  
+XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+XDocument doc1 = new XDocument(  
+    new XElement("Root",  
+        new XAttribute("Lang", "C#")  
+    )  
+);  
+  
+Console.WriteLine("Validating doc1 ...");  
+bool errors = false;  
+doc1.Validate(schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating Lang attribute ...");  
+XAttribute lang = doc1.Root.Attribute("Lang");  
+  
+errors = false;  
+lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    });  
+Console.WriteLine("lang {0}", errors ? "did not validate" : "validated");  
+  
+// the following makes the Lang attribute invalid according to the schema  
+lang.Value = "VC";  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating Lang attribute ...");  
+  
+errors = false;  
+lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    });  
+Console.WriteLine("lang {0}", errors ? "did not validate" : "validated");  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+      <?xml version='1.0'?>  
+      <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+          <xsd:element name='Root'>  
+              <xsd:complexType>  
+                  <xsd:simpleContent>  
+                      <xsd:extension base='xsd:string'>  
+                          <xsd:attribute name='Lang' use='required'>  
+                              <xsd:simpleType>  
+                                  <xsd:restriction base='xsd:token'>  
+                                      <xsd:enumeration value='C#'/>  
+                                      <xsd:enumeration value='VB'/>  
+                                  </xsd:restriction>  
+                              </xsd:simpleType>  
+                          </xsd:attribute>  
+                      </xsd:extension>  
+                  </xsd:simpleContent>  
+              </xsd:complexType>  
+          </xsd:element>  
+      </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = <?xml version='1.0'?>  
+                            <Root Lang='C#'/>  
+  
+    Console.WriteLine("Validating doc1 ...")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Lang attribute ...")  
+    Dim lang As XAttribute = doc1.Root.Attribute("Lang")  
+  
+    errors = False  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, AddressOf XSDErrors)  
+    Console.WriteLine("lang {0}", IIf(errors, "did not validate", "validated"))  
+  
+    ' the following makes the Lang attribute invalid according to the schema  
+    lang.Value = "VC"  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Lang attribute ...")  
+  
+    errors = False  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, AddressOf XSDErrors)  
+    Console.WriteLine("lang {0}", IIf(errors, "did not validate", "validated"))  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-168">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-168">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1 ...  
+doc1 validated  
+  
+Validating Lang attribute ...  
+lang validated  
+  
+Validating Lang attribute ...  
+The 'Lang' attribute is invalid - The value 'VC' is invalid according to its datatype 'Token' - The Enumeration constraint failed.  
+lang did not validate  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-169">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-169">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XDocument source, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XDocument source, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XDocument,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XDocument ^ source, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler, bool addSchemaInfo);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XDocument" RefType="this" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+        <Parameter Name="addSchemaInfo" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-170">
+            <see cref="T:System.Xml.Linq.XDocument" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-170">The <see cref="T:System.Xml.Linq.XDocument" /> to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-171">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-171">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-172">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-172">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-173">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-173">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <param name="addSchemaInfo">
+          <span data-ttu-id="05405-174">A <see cref="T:System.Boolean" /> oznaczająca, czy wypełnić typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-174">A <see cref="T:System.Boolean" /> indicating whether to populate the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-175">Sprawdza, czy <see cref="T:System.Xml.Linq.XDocument" /> odpowiada XSD w <see cref="T:System.Xml.Schema.XmlSchemaSet" />, opcjonalnie wypełnianie drzewa XML z typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-175">Validates that an <see cref="T:System.Xml.Linq.XDocument" /> conforms to an XSD in an <see cref="T:System.Xml.Schema.XmlSchemaSet" />, optionally populating the XML tree with the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-176">Ta metoda rozszerzenia sprawdza, czy <xref:System.Xml.Linq.XDocument> odpowiada schematu modelu zawartości w <xref:System.Xml.Schema.XmlSchemaSet>.</span><span class="sxs-lookup"><span data-stu-id="05405-176">This extension method validates that the <xref:System.Xml.Linq.XDocument> conforms to the schema content model in <xref:System.Xml.Schema.XmlSchemaSet>.</span></span>  
+  
+ <span data-ttu-id="05405-177">Jeśli `addSchemaInfo` jest `true`, ta metoda powoduje wypełnienie drzewa XML z typu infoset po schema weryfikacji (PSVI).</span><span class="sxs-lookup"><span data-stu-id="05405-177">If `addSchemaInfo` is `true`, this method populates the XML tree with the post-schema-validation infoset (PSVI).</span></span>  
+  
+ <span data-ttu-id="05405-178">Istnieją dwa kroki, aby wypełnianie drzewa XML z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-178">There are two steps to populating the XML tree with the PSVI.</span></span>  
+  
+1.  <span data-ttu-id="05405-179">Najpierw, czy adnotacja została dodana do wszystkich węzłów w drzewie, aby włączyć, aby wywołać <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> lub <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> na element lub atrybut w drzewie.</span><span class="sxs-lookup"><span data-stu-id="05405-179">First, an annotation is added to all nodes in the tree to enable you to call <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> or <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> on an element or attribute in the tree.</span></span>  
+  
+2.  <span data-ttu-id="05405-180">Po drugie domyślne elementy i atrybuty zdefiniowane w XSD zostały dodane do drzewa XML.</span><span class="sxs-lookup"><span data-stu-id="05405-180">Second, default elements and attributes defined in the XSD are added to the XML tree.</span></span> <span data-ttu-id="05405-181">Wywołując jedną z <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> metod, można określić, jeśli określony element lub atrybut został dodany ze schematem XSD jako domyślny element lub atrybut.</span><span class="sxs-lookup"><span data-stu-id="05405-181">By calling one of the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> methods, you can determine if a specific element or attribute was added from the XSD as a default element or attribute.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="05405-182">Poniżej przedstawiono przykład zawierający XSD, który definiuje `Child2` element z `Att1` atrybutu o wartości domyślnej.</span><span class="sxs-lookup"><span data-stu-id="05405-182">The following example contains an XSD that defines the `Child2` element with an `Att1` attribute with a default value.</span></span> <span data-ttu-id="05405-183">Po pomyślnie sprawdzanie poprawności dokumentu, atrybut z wartością domyślną jest dodane do drzewa XML.</span><span class="sxs-lookup"><span data-stu-id="05405-183">After successfully validating the document, the attribute with the default value is added to the XML tree.</span></span> <span data-ttu-id="05405-184">Należy pamiętać, że atrybut domyślny jest dodawane do `doc2`, którego nie można zweryfikować względem schematu.</span><span class="sxs-lookup"><span data-stu-id="05405-184">Note that the default attribute is not added to `doc2`, which does not validate against the schema.</span></span>  
+  
+```csharp  
+  
+                string xsdMarkup =  
+    @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:sequence>  
+          <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+          <xsd:element name='Child2' minOccurs='1' maxOccurs='1'>  
+           <xsd:complexType>  
+            <xsd:simpleContent>  
+             <xsd:extension base='xsd:string'>  
+              <xsd:attribute name='Att1' default='Att1 Default Value'/>  
+             </xsd:extension>  
+            </xsd:simpleContent>  
+           </xsd:complexType>  
+          </xsd:element>  
+         </xsd:sequence>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+XDocument doc1 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "c1"),  
+        new XElement("Child2", "c2")  
+    )  
+);  
+  
+XDocument doc2 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "content1"),  
+        new XElement("Child3", "content1")  
+    )  
+);  
+  
+Console.WriteLine("Validating doc1");  
+bool errors = false;  
+doc1.Validate(schemas, (o, e) =>  
+                           {  
+                               Console.WriteLine("{0}", e.Message);  
+                               errors = true;  
+                           }, true);  
+Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating doc2");  
+errors = false;  
+doc2.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     }, true);  
+Console.WriteLine("doc2 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Contents of doc1:");  
+Console.WriteLine(doc1);  
+  
+Console.WriteLine();  
+Console.WriteLine("Contents of doc2:");  
+Console.WriteLine(doc2);  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+    <?xml version='1.0'?>  
+    <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+        <xsd:element name='Root'>  
+            <xsd:complexType>  
+                <xsd:sequence>  
+                    <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+                    <xsd:element name='Child2' minOccurs='1' maxOccurs='1'>  
+                        <xsd:complexType>  
+                            <xsd:simpleContent>  
+                                <xsd:extension base='xsd:string'>  
+                                    <xsd:attribute name='Att1' default='Att1 Default Value'/>  
+                                </xsd:extension>  
+                            </xsd:simpleContent>  
+                        </xsd:complexType>  
+                    </xsd:element>  
+                </xsd:sequence>  
+            </xsd:complexType>  
+        </xsd:element>  
+    </xsd:schema>  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = <?xml version='1.0'?>  
+                            <Root>  
+                                <Child1>c1</Child1>  
+                                <Child2>c2</Child2>  
+                            </Root>  
+    Dim doc2 As XDocument = <?xml version='1.0'?>  
+                            <Root>  
+                                <Child1>content1</Child1>  
+                                <Child3>content1</Child3>  
+                            </Root>  
+  
+    Console.WriteLine("Validating doc1")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating doc2")  
+    errors = False  
+    doc2.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc2 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Contents of doc1:")  
+    Console.WriteLine(doc1)  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Contents of doc2:")  
+    Console.WriteLine(doc2)  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-185">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-185">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1  
+doc1 validated  
+  
+Validating doc2  
+The element 'Root' has invalid child element 'Child3'. List of possible elements expected: 'Child2'.  
+doc2 did not validate  
+  
+Contents of doc1:  
+<Root>  
+  <Child1>c1</Child1>  
+  <Child2 Att1="Att1 Default Value">c2</Child2>  
+</Root>  
+  
+Contents of doc2:  
+<Root>  
+  <Child1>content1</Child1>  
+  <Child3>content1</Child3>  
+</Root>  
+```  
+  
+ <span data-ttu-id="05405-186">Poniższy przykład powoduje wypełnienie drzewa z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-186">The following example populates the tree with PSVI.</span></span> <span data-ttu-id="05405-187">Po sprawdzeniu poprawności Wyświetla wszystkie elementy i atrybuty w drzewie, które nie są prawidłowe, zgodnie z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-187">After validation, it prints all elements and attributes in the tree that are invalid according to the PSVI.</span></span>  
+  
+```csharp  
+  
+                static void DumpInvalidNodes(XElement el)  
+{  
+    if (el.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+        Console.WriteLine("Invalid Element {0}",  
+            el.AncestorsAndSelf()  
+            .InDocumentOrder()  
+            .Aggregate("", (s, i) => s + "/" + i.Name.ToString()));  
+    foreach (XAttribute att in el.Attributes())  
+        if (att.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+            Console.WriteLine("Invalid Attribute {0}",  
+                att  
+                .Parent  
+                .AncestorsAndSelf()  
+                .InDocumentOrder()  
+                .Aggregate("",  
+                    (s, i) => s + "/" + i.Name.ToString()) + "/@" + att.Name.ToString()  
+                );  
+    foreach (XElement child in el.Elements())  
+        DumpInvalidNodes(child);  
+}  
+  
+static void Main(string[] args)  
+{  
+   string xsdMarkup =  
+        @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+           <xsd:simpleType name='GCType'>  
+            <xsd:restriction base='xsd:token'>  
+             <xsd:enumeration value='AAA'/>  
+             <xsd:enumeration value='BBB'/>  
+            </xsd:restriction>  
+           </xsd:simpleType>  
+           <xsd:element name='Root'>  
+            <xsd:complexType>  
+             <xsd:sequence>  
+              <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+               <xsd:complexType>  
+                <xsd:sequence>  
+                 <xsd:element name='GrandChild1' type='GCType'/>  
+                 <xsd:element name='GrandChild2' type='GCType'/>  
+                 <xsd:element name='GrandChild3' type='GCType'/>  
+                </xsd:sequence>  
+               </xsd:complexType>  
+              </xsd:element>  
+             </xsd:sequence>  
+            </xsd:complexType>  
+           </xsd:element>  
+          </xsd:schema>";  
+  
+    XmlSchemaSet schemas = new XmlSchemaSet();  
+    schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+    XDocument doc1 = new XDocument(  
+        new XElement("Root",  
+            new XElement("Child1",  
+                new XElement("GrandChild1", "AAA"),  
+                new XElement("GrandChild2", "ZZZ"),  
+                new XElement("GrandChild3", "ZZZ")  
+            )  
+        )  
+    );  
+  
+    Console.WriteLine("Validating doc1 ...");  
+    bool errors = false;  
+    doc1.Validate(schemas, (sender, e) =>  
+        {  
+            Console.WriteLine(e.Message);  
+            errors = true;  
+        }, true);  
+    Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+    DumpInvalidNodes(doc1.Root);  
+}  
+```  
+  
+```vb  
+  
+                Private Sub DumpInvalidNodes(ByVal el As XElement)  
+    If el.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+        Console.WriteLine("Invalid Element {0}", _  
+            el _  
+            .AncestorsAndSelf _  
+            .InDocumentOrder() _  
+            .Aggregate("", _  
+                Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()))  
+    End If  
+    For Each att As XAttribute In el.Attributes()  
+        If att.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+            Console.WriteLine("Invalid Attribute {0}", _  
+                att _  
+                .Parent _  
+                .AncestorsAndSelf() _  
+                .InDocumentOrder() _  
+                .Aggregate("", _  
+                    Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()) + _  
+                    "/@" + att.Name.ToString())  
+        End If  
+    Next  
+    For Each child As XElement In el.Elements()  
+        DumpInvalidNodes(child)  
+    Next  
+End Sub  
+  
+Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+        <?xml version='1.0'?>  
+        <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+            <xsd:simpleType name='GCType'>  
+                <xsd:restriction base='xsd:token'>  
+                    <xsd:enumeration value='AAA'/>  
+                    <xsd:enumeration value='BBB'/>  
+                </xsd:restriction>  
+            </xsd:simpleType>  
+            <xsd:element name='Root'>  
+                <xsd:complexType>  
+                    <xsd:sequence>  
+                        <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+                            <xsd:complexType>  
+                                <xsd:sequence>  
+                                    <xsd:element name='GrandChild1' type='GCType'/>  
+                                    <xsd:element name='GrandChild2' type='GCType'/>  
+                                    <xsd:element name='GrandChild3' type='GCType'/>  
+                                </xsd:sequence>  
+                            </xsd:complexType>  
+                        </xsd:element>  
+                    </xsd:sequence>  
+                </xsd:complexType>  
+            </xsd:element>  
+        </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = _  
+        <?xml version='1.0'?>  
+        <Root>  
+            <Child1>  
+                <GrandChild1>AAA</GrandChild1>  
+                <GrandChild2>ZZZ</GrandChild2>  
+                <GrandChild3>ZZZ</GrandChild3>  
+            </Child1>  
+        </Root>  
+  
+    Console.WriteLine("Validating doc1 ...")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+    DumpInvalidNodes(doc1.Root)  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-188">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-188">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1 ...  
+The 'GrandChild2' element is invalid - The value 'ZZZ' is invalid according to its datatype 'GCType' - The Enumeration constraint failed.  
+The 'GrandChild3' element is invalid - The value 'ZZZ' is invalid according to its datatype 'GCType' - The Enumeration constraint failed.  
+doc1 did not validate  
+Invalid Element /Root  
+Invalid Element /Root/Child1  
+Invalid Element /Root/Child1/GrandChild2  
+Invalid Element /Root/Child1/GrandChild3  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-189">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-189">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XElement source, System.Xml.Schema.XmlSchemaObject partialValidationType, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XElement source, class System.Xml.Schema.XmlSchemaObject partialValidationType, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XElement,System.Xml.Schema.XmlSchemaObject,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XElement ^ source, System::Xml::Schema::XmlSchemaObject ^ partialValidationType, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XElement" RefType="this" />
+        <Parameter Name="partialValidationType" Type="System.Xml.Schema.XmlSchemaObject" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-190">
+            <see cref="T:System.Xml.Linq.XElement" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-190">The <see cref="T:System.Xml.Linq.XElement" /> to validate.</span>
+          </span>
+        </param>
+        <param name="partialValidationType">
+          <span data-ttu-id="05405-191">
+            <see cref="T:System.Xml.Schema.XmlSchemaObject" /> , Który określa poddrzewa do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-191">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that specifies the sub-tree to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-192">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-192">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-193">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-193">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-194">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-194">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-195">Ta metoda sprawdza, czy <see cref="T:System.Xml.Linq.XElement" /> poddrzewa odpowiada określonym <see cref="T:System.Xml.Schema.XmlSchemaObject" /> i <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-195">This method validates that an <see cref="T:System.Xml.Linq.XElement" /> sub-tree conforms to a specified <see cref="T:System.Xml.Schema.XmlSchemaObject" /> and an <see cref="T:System.Xml.Schema.XmlSchemaSet" />.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-196">Ta metoda służy Aby sprawdzić, czy poddrzewa (z <xref:System.Xml.Linq.XElement> w głównym) jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-196">You can use this method to validate that a sub-tree (with an <xref:System.Xml.Linq.XElement> at its root) conforms to a schema.</span></span> <span data-ttu-id="05405-197">Ta metoda jest zazwyczaj używana, gdy zmieniono poddrzewa i chce mieć pewność, że nadal spełnia on schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-197">You typically use this method when you have modified a sub-tree, and you want to make sure that it still conforms to its schema.</span></span> <span data-ttu-id="05405-198">Można sprawdzić poprawności całego dokumentu, ale zajmuje mniej czasu przetwarzania, aby sprawdzić poprawność tylko poddrzewa.</span><span class="sxs-lookup"><span data-stu-id="05405-198">You could validate the entire document, but it takes less processing time to validate a just a sub-tree.</span></span>  
+  
+ <span data-ttu-id="05405-199">W przypadku przekazania `null` dla `validationEventHandler`, a następnie ta metoda zgłasza wyjątek na błędy sprawdzania poprawności.</span><span class="sxs-lookup"><span data-stu-id="05405-199">If you pass `null` for `validationEventHandler`, then this method raises an exception upon validation errors.</span></span> <span data-ttu-id="05405-200">Ostrzeżenia dotyczące sprawdzania poprawności nie zgłosi wyjątku.</span><span class="sxs-lookup"><span data-stu-id="05405-200">Validation warnings will not raise an exception.</span></span>  
+  
+ <span data-ttu-id="05405-201">Aby sprawdzić poprawność poddrzewa, używając wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-201">To validate a sub-tree, you use an instance of <xref:System.Xml.Schema.XmlSchemaObject>.</span></span> <span data-ttu-id="05405-202">Możesz uzyskać tego wystąpienia na różne sposoby.</span><span class="sxs-lookup"><span data-stu-id="05405-202">You can obtain this instance in various ways.</span></span> <span data-ttu-id="05405-203">Łatwo jest następujący:</span><span class="sxs-lookup"><span data-stu-id="05405-203">An easy way is as follows:</span></span>  
+  
+1.  <span data-ttu-id="05405-204">Zweryfikuj, że dokument jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-204">Validate that a document conforms to a schema.</span></span>  
+  
+2.  <span data-ttu-id="05405-205">Dodaj obiekt typu infoset po schema weryfikacji (PSVI) przez wywołanie metody <xref:System.Xml.Schema.Extensions.Validate%2A> — metoda rozszerzenia.</span><span class="sxs-lookup"><span data-stu-id="05405-205">Add the post-schema-validation infoset (PSVI) by calling the <xref:System.Xml.Schema.Extensions.Validate%2A> extension method.</span></span>  
+  
+3.  <span data-ttu-id="05405-206">Wywołanie <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> — metoda rozszerzenia można pobrać obiektu implementującego <xref:System.Xml.Schema.IXmlSchemaInfo>.</span><span class="sxs-lookup"><span data-stu-id="05405-206">Call the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> extension method to retrieve an object that implements <xref:System.Xml.Schema.IXmlSchemaInfo>.</span></span> <span data-ttu-id="05405-207">Z obiektu pobrane, możesz uzyskać <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-207">From the retrieved object, you can get an <xref:System.Xml.Schema.XmlSchemaObject>.</span></span>  
+  
+    -   <span data-ttu-id="05405-208">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XElement>, będzie typ <xref:System.Xml.Schema.XmlSchemaElement>.</span><span class="sxs-lookup"><span data-stu-id="05405-208">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XElement>, the type will be <xref:System.Xml.Schema.XmlSchemaElement>.</span></span>  
+  
+    -   <span data-ttu-id="05405-209">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XAttribute>, będzie typ <xref:System.Xml.Schema.XmlSchemaAttribute>.</span><span class="sxs-lookup"><span data-stu-id="05405-209">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XAttribute>, the type will be <xref:System.Xml.Schema.XmlSchemaAttribute>.</span></span>  
+  
+ <span data-ttu-id="05405-210">Po utworzeniu wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>, ta metoda służy do sprawdzania poprawności poddrzewa.</span><span class="sxs-lookup"><span data-stu-id="05405-210">After you have an instance of an <xref:System.Xml.Schema.XmlSchemaObject>, you can use this method to validate an sub-tree.</span></span>  
+  
+   
+  
+## Examples  
+  
+```csharp  
+  
+                string xsdMarkup =  
+    @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:sequence>  
+          <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+           <xsd:complexType>  
+            <xsd:sequence>  
+             <xsd:element name='GrandChild1' minOccurs='1' maxOccurs='1'/>  
+             <xsd:element name='GrandChild2' minOccurs='1' maxOccurs='2'/>  
+            </xsd:sequence>  
+           </xsd:complexType>  
+          </xsd:element>  
+         </xsd:sequence>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+  
+XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+XDocument doc1 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1",  
+            new XElement("GrandChild1", "gc"),  
+            new XElement("GrandChild2", "gc")  
+        )  
+    )  
+);  
+  
+Console.WriteLine("Validating doc1 ...");  
+bool errors = false;  
+doc1.Validate(schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating Child1 after first edit ...");  
+XElement child1 = doc1.Element("Root").Element("Child1");  
+child1.Add(new XElement("GrandChild2", "gc"));  
+errors = false;  
+child1.Validate(child1.GetSchemaInfo().SchemaElement, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    });  
+Console.WriteLine("child1 {0}", errors ? "did not validate" : "validated");  
+  
+// the following makes the Child1 element invalid according to the schema  
+child1.Add(new XElement("GrandChild3", "gc"));  
+Console.WriteLine();  
+Console.WriteLine("Validating Child1 after second edit ...");  
+child1.Validate(child1.GetSchemaInfo().SchemaElement, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    });  
+Console.WriteLine("child1 {0}", errors ? "did not validate" : "validated");  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+  
+    Dim xsdMarkup As XDocument = _  
+        <?xml version='1.0'?>  
+        <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+            <xsd:element name='Root'>  
+                <xsd:complexType>  
+                    <xsd:sequence>  
+                        <xsd:element name='Child1' minOccurs='1' maxOccurs='1'>  
+                            <xsd:complexType>  
+                                <xsd:sequence>  
+                                    <xsd:element name='GrandChild1' minOccurs='1' maxOccurs='1'/>  
+                                    <xsd:element name='GrandChild2' minOccurs='1' maxOccurs='2'/>  
+                                </xsd:sequence>  
+                            </xsd:complexType>  
+                        </xsd:element>  
+                    </xsd:sequence>  
+                </xsd:complexType>  
+            </xsd:element>  
+        </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = _  
+        <?xml version='1.0'?>  
+        <Root>  
+            <Child1>  
+                <GrandChild1>gc</GrandChild1>  
+                <GrandChild2>gc</GrandChild2>  
+            </Child1>  
+        </Root>  
+  
+    Console.WriteLine("Validating doc1 ...")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Child1 after first edit ...")  
+    Dim child1 As XElement = doc1.Element("Root").Element("Child1")  
+    child1.Add(<GrandChild2>gc</GrandChild2>)  
+    errors = False  
+    child1.Validate(child1.GetSchemaInfo().SchemaElement, schemas, AddressOf XSDErrors)  
+    Console.WriteLine("child1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    ' the following makes the Child1 element invalid according to the schema  
+    child1.Add(<GrandChild3>gc</GrandChild3>)  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Child1 after second edit ...")  
+    child1.Validate(child1.GetSchemaInfo().SchemaElement, schemas, AddressOf XSDErrors)  
+    Console.WriteLine("child1 {0}", IIf(errors, "did not validate", "validated"))  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-211">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-211">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1 ...  
+doc1 validated  
+  
+Validating Child1 after first edit ...  
+child1 validated  
+  
+Validating Child1 after second edit ...  
+The element 'Child1' has invalid child element 'GrandChild3'.  
+child1 did not validate  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-212">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-212">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XAttribute source, System.Xml.Schema.XmlSchemaObject partialValidationType, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XAttribute source, class System.Xml.Schema.XmlSchemaObject partialValidationType, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XAttribute,System.Xml.Schema.XmlSchemaObject,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XAttribute ^ source, System::Xml::Schema::XmlSchemaObject ^ partialValidationType, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler, bool addSchemaInfo);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XAttribute" RefType="this" />
+        <Parameter Name="partialValidationType" Type="System.Xml.Schema.XmlSchemaObject" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+        <Parameter Name="addSchemaInfo" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-213">
+            <see cref="T:System.Xml.Linq.XAttribute" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-213">The <see cref="T:System.Xml.Linq.XAttribute" /> to validate.</span>
+          </span>
+        </param>
+        <param name="partialValidationType">
+          <span data-ttu-id="05405-214">
+            <see cref="T:System.Xml.Schema.XmlSchemaObject" /> , Który określa poddrzewa do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-214">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that specifies the sub-tree to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-215">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-215">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-216">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-216">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-217">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-217">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <param name="addSchemaInfo">
+          <span data-ttu-id="05405-218">A <see cref="T:System.Boolean" /> oznaczająca, czy wypełnić typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-218">A <see cref="T:System.Boolean" /> indicating whether to populate the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-219">Sprawdza, czy <see cref="T:System.Xml.Linq.XAttribute" /> odpowiada określonym <see cref="T:System.Xml.Schema.XmlSchemaObject" /> i <see cref="T:System.Xml.Schema.XmlSchemaSet" />, opcjonalnie wypełnianie drzewa XML z typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-219">Validates that an <see cref="T:System.Xml.Linq.XAttribute" /> conforms to a specified <see cref="T:System.Xml.Schema.XmlSchemaObject" /> and an <see cref="T:System.Xml.Schema.XmlSchemaSet" />, optionally populating the XML tree with the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-220">Ta metoda służy do sprawdzania poprawności, który <xref:System.Xml.Linq.XAttribute> jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-220">You can use this method to validate that an <xref:System.Xml.Linq.XAttribute> conforms to a schema.</span></span> <span data-ttu-id="05405-221">Ta metoda jest zazwyczaj używana, gdy zmieniono atrybutu i chce mieć pewność, że nadal spełnia on schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-221">You typically use this method when you have modified an attribute, and you want to make sure that it still conforms to its schema.</span></span> <span data-ttu-id="05405-222">Można sprawdzić poprawności całego dokumentu, ale zajmuje mniej czasu przetwarzania do sprawdzania poprawności tylko atrybut.</span><span class="sxs-lookup"><span data-stu-id="05405-222">You could validate the entire document, but it takes less processing time to validate just the attribute.</span></span>  
+  
+ <span data-ttu-id="05405-223">Jeśli `addSchemaInfo` jest `true`, ta metoda powoduje wypełnienie atrybut z typu infoset po schema weryfikacji (PSVI).</span><span class="sxs-lookup"><span data-stu-id="05405-223">If `addSchemaInfo` is `true`, this method populates the attribute with the post-schema-validation infoset (PSVI).</span></span> <span data-ttu-id="05405-224">Po wypełnieniu drzewa XML z PSVI, należy wywołać <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> zweryfikowanych atrybutu.</span><span class="sxs-lookup"><span data-stu-id="05405-224">After you have populated the XML tree with the PSVI, you can call <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A?displayProperty=nameWithType> on the validated attribute.</span></span> <span data-ttu-id="05405-225">Jest to przydatne podczas pisania kodu, który korzysta z danych zwróconych przez <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A>.</span><span class="sxs-lookup"><span data-stu-id="05405-225">This is useful if you are writing code that relies on data returned by <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A>.</span></span>  
+  
+ <span data-ttu-id="05405-226">W przypadku przekazania `null` dla `validationEventHandler`, a następnie ta metoda zgłasza wyjątek na błędy sprawdzania poprawności.</span><span class="sxs-lookup"><span data-stu-id="05405-226">If you pass `null` for `validationEventHandler`, then this method raises an exception upon validation errors.</span></span> <span data-ttu-id="05405-227">Ostrzeżenia dotyczące sprawdzania poprawności nie zgłosi wyjątku.</span><span class="sxs-lookup"><span data-stu-id="05405-227">Validation warnings will not raise an exception.</span></span>  
+  
+ <span data-ttu-id="05405-228">Aby sprawdzić poprawność atrybutu, należy użyć wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-228">To validate an attribute, you use an instance of <xref:System.Xml.Schema.XmlSchemaObject>.</span></span> <span data-ttu-id="05405-229">Możesz uzyskać tego wystąpienia na różne sposoby.</span><span class="sxs-lookup"><span data-stu-id="05405-229">You can obtain this instance in various ways.</span></span> <span data-ttu-id="05405-230">Łatwo jest następujący:</span><span class="sxs-lookup"><span data-stu-id="05405-230">An easy way is as follows:</span></span>  
+  
+1.  <span data-ttu-id="05405-231">Zweryfikuj, że dokument jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-231">Validate that a document conforms to a schema.</span></span>  
+  
+2.  <span data-ttu-id="05405-232">Dodaj obiekt typu infoset po schema weryfikacji (PSVI) przez wywołanie metody <xref:System.Xml.Schema.Extensions.Validate%2A> — metoda rozszerzenia.</span><span class="sxs-lookup"><span data-stu-id="05405-232">Add the post-schema-validation infoset (PSVI) by calling the <xref:System.Xml.Schema.Extensions.Validate%2A> extension method.</span></span>  
+  
+3.  <span data-ttu-id="05405-233">Wywołanie <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> — metoda rozszerzenia można pobrać obiektu implementującego <xref:System.Xml.Schema.IXmlSchemaInfo>.</span><span class="sxs-lookup"><span data-stu-id="05405-233">Call the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> extension method to retrieve an object that implements <xref:System.Xml.Schema.IXmlSchemaInfo>.</span></span> <span data-ttu-id="05405-234">Z obiektu pobrane, możesz uzyskać <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-234">From the retrieved object, you can get an <xref:System.Xml.Schema.XmlSchemaObject>.</span></span>  
+  
+    -   <span data-ttu-id="05405-235">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XElement>, będzie typ <xref:System.Xml.Schema.XmlSchemaElement>.</span><span class="sxs-lookup"><span data-stu-id="05405-235">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XElement>, the type will be <xref:System.Xml.Schema.XmlSchemaElement>.</span></span>  
+  
+    -   <span data-ttu-id="05405-236">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XAttribute>, będzie typ <xref:System.Xml.Schema.XmlSchemaAttribute>.</span><span class="sxs-lookup"><span data-stu-id="05405-236">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XAttribute>, the type will be <xref:System.Xml.Schema.XmlSchemaAttribute>.</span></span>  
+  
+ <span data-ttu-id="05405-237">Po utworzeniu wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>, ta metoda służy do sprawdzania poprawności atrybutów.</span><span class="sxs-lookup"><span data-stu-id="05405-237">After you have an instance of an <xref:System.Xml.Schema.XmlSchemaObject>, you can use this method to validate an attribute.</span></span>  
+  
+   
+  
+## Examples  
+  
+```csharp  
+  
+                static void DumpInvalidNodes(XElement el)  
+{  
+    if (el.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+        Console.WriteLine("Invalid Element {0}",  
+            el.AncestorsAndSelf()  
+            .InDocumentOrder()  
+            .Aggregate("", (s, i) => s + "/" + i.Name.ToString()));  
+    foreach (XAttribute att in el.Attributes())  
+        if (att.GetSchemaInfo().Validity != XmlSchemaValidity.Valid)  
+            Console.WriteLine("Invalid Attribute {0}",  
+                att  
+                .Parent  
+                .AncestorsAndSelf()  
+                .InDocumentOrder()  
+                .Aggregate("",  
+                    (s, i) => s + "/" + i.Name.ToString()) + "/@" + att.Name.ToString()  
+                );  
+    foreach (XElement child in el.Elements())  
+        DumpInvalidNodes(child);  
+}  
+  
+static void Main(string[] args)  
+{  
+    string xsdMarkup =  
+        @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:simpleContent>  
+          <xsd:extension base='xsd:string'>  
+           <xsd:attribute name='Lang' use='required'>  
+            <xsd:simpleType>  
+             <xsd:restriction base='xsd:token'>  
+              <xsd:enumeration value='C#'/>  
+              <xsd:enumeration value='VB'/>  
+             </xsd:restriction>  
+            </xsd:simpleType>  
+           </xsd:attribute>  
+          </xsd:extension>  
+         </xsd:simpleContent>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+  
+    XmlSchemaSet schemas = new XmlSchemaSet();  
+    schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+    XDocument doc1 = new XDocument(  
+        new XElement("Root",  
+            new XAttribute("Lang", "C#")  
+        )  
+    );  
+  
+    Console.WriteLine("Validating doc1 ...");  
+    bool errors = false;  
+    doc1.Validate(schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+    Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+    DumpInvalidNodes(doc1.Root);  
+  
+    Console.WriteLine();  
+    Console.WriteLine("Validating Lang attribute ...");  
+    XAttribute lang = doc1.Element("Root").Attribute("Lang");  
+  
+    errors = false;  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+    Console.WriteLine("lang {0}", errors ? "did not validate" : "validated");  
+    DumpInvalidNodes(doc1.Root);  
+  
+    // the following makes the Lang attribute invalid according to the schema  
+    lang.Value = "VC";  
+  
+    Console.WriteLine();  
+    Console.WriteLine("Validating Lang attribute ...");  
+  
+    errors = false;  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, (sender, e) =>  
+    {  
+        Console.WriteLine(e.Message);  
+        errors = true;  
+    }, true);  
+    Console.WriteLine("lang {0}", errors ? "did not validate" : "validated");  
+    DumpInvalidNodes(doc1.Root);  
+}  
+```  
+  
+```vb  
+  
+                Private Sub DumpInvalidNodes(ByVal el As XElement)  
+    If el.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+        Console.WriteLine("Invalid Element {0}", _  
+            el _  
+            .AncestorsAndSelf _  
+            .InDocumentOrder() _  
+            .Aggregate("", _  
+                Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()))  
+    End If  
+    For Each att As XAttribute In el.Attributes()  
+        If att.GetSchemaInfo.Validity <> XmlSchemaValidity.Valid Then  
+            Console.WriteLine("Invalid Attribute {0}", _  
+                att _  
+                .Parent _  
+                .AncestorsAndSelf() _  
+                .InDocumentOrder() _  
+                .Aggregate("", _  
+                    Function(ByVal s, ByVal i) s + "/" + i.Name.ToString()) + _  
+                    "/@" + att.Name.ToString())  
+        End If  
+    Next  
+    For Each child As XElement In el.Elements()  
+        DumpInvalidNodes(child)  
+    Next  
+End Sub  
+  
+Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+  
+    Dim xsdMarkup As XDocument = _  
+        <?xml version='1.0'?>  
+        <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+            <xsd:element name='Root'>  
+                <xsd:complexType>  
+                    <xsd:simpleContent>  
+                        <xsd:extension base='xsd:string'>  
+                            <xsd:attribute name='Lang' use='required'>  
+                                <xsd:simpleType>  
+                                    <xsd:restriction base='xsd:token'>  
+                                        <xsd:enumeration value='C#'/>  
+                                        <xsd:enumeration value='VB'/>  
+                                    </xsd:restriction>  
+                                </xsd:simpleType>  
+                            </xsd:attribute>  
+                        </xsd:extension>  
+                    </xsd:simpleContent>  
+                </xsd:complexType>  
+            </xsd:element>  
+        </xsd:schema>  
+  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = <?xml version='1.0'?>  
+                            <Root Lang='C#'/>  
+  
+    Console.WriteLine("Validating doc1 ...")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+    DumpInvalidNodes(doc1.Root)  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Lang attribute ...")  
+    Dim lang As XAttribute = doc1.Element("Root").Attribute("Lang")  
+  
+    errors = False  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("lang {0}", IIf(errors, "did not validate", "validated"))  
+    DumpInvalidNodes(doc1.Root)  
+  
+    ' the following makes the Lang attribute invalid according to the schema  
+    lang.Value = "VC"  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating Lang attribute ...")  
+  
+    errors = False  
+    lang.Validate(lang.GetSchemaInfo().SchemaAttribute, schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("lang {0}", IIf(errors, "did not validate", "validated"))  
+    DumpInvalidNodes(doc1.Root)  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-238">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-238">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1 ...  
+doc1 validated  
+  
+Validating Lang attribute ...  
+lang validated  
+  
+Validating Lang attribute ...  
+The 'Lang' attribute is invalid - The value 'VC' is invalid according to its datatype 'Token' - The Enumeration constraint failed.  
+lang did not validate  
+Invalid Attribute /Root/@Lang  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-239">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-239">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Validate">
+      <MemberSignature Language="C#" Value="public static void Validate (this System.Xml.Linq.XElement source, System.Xml.Schema.XmlSchemaObject partialValidationType, System.Xml.Schema.XmlSchemaSet schemas, System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Validate(class System.Xml.Linq.XElement source, class System.Xml.Schema.XmlSchemaObject partialValidationType, class System.Xml.Schema.XmlSchemaSet schemas, class System.Xml.Schema.ValidationEventHandler validationEventHandler, bool addSchemaInfo) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Xml.Schema.Extensions.Validate(System.Xml.Linq.XElement,System.Xml.Schema.XmlSchemaObject,System.Xml.Schema.XmlSchemaSet,System.Xml.Schema.ValidationEventHandler,System.Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA;[System::Runtime::CompilerServices::Extension]&#xA; static void Validate(System::Xml::Linq::XElement ^ source, System::Xml::Schema::XmlSchemaObject ^ partialValidationType, System::Xml::Schema::XmlSchemaSet ^ schemas, System::Xml::Schema::ValidationEventHandler ^ validationEventHandler, bool addSchemaInfo);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.Linq</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.XDocument</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.Xml.Linq.XElement" RefType="this" />
+        <Parameter Name="partialValidationType" Type="System.Xml.Schema.XmlSchemaObject" />
+        <Parameter Name="schemas" Type="System.Xml.Schema.XmlSchemaSet" />
+        <Parameter Name="validationEventHandler" Type="System.Xml.Schema.ValidationEventHandler" />
+        <Parameter Name="addSchemaInfo" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="source">
+          <span data-ttu-id="05405-240">
+            <see cref="T:System.Xml.Linq.XElement" /> Do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-240">The <see cref="T:System.Xml.Linq.XElement" /> to validate.</span>
+          </span>
+        </param>
+        <param name="partialValidationType">
+          <span data-ttu-id="05405-241">
+            <see cref="T:System.Xml.Schema.XmlSchemaObject" /> , Który określa poddrzewa do sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-241">An <see cref="T:System.Xml.Schema.XmlSchemaObject" /> that specifies the sub-tree to validate.</span>
+          </span>
+        </param>
+        <param name="schemas">
+          <span data-ttu-id="05405-242">
+            <see cref="T:System.Xml.Schema.XmlSchemaSet" /> Na potrzeby sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-242">An <see cref="T:System.Xml.Schema.XmlSchemaSet" /> to validate against.</span>
+          </span>
+        </param>
+        <param name="validationEventHandler">
+          <span data-ttu-id="05405-243">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> zdarzenie występuje, gdy czytnik wystąpią błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-243">A <see cref="T:System.Xml.Schema.ValidationEventHandler" /> for an event that occurs when the reader encounters validation errors.</span>
+          </span>
+          <span data-ttu-id="05405-244">Jeśli <see langword="null" />, zgłasza wyjątek na błędy sprawdzania poprawności.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-244">If <see langword="null" />, throws an exception upon validation errors.</span>
+          </span>
+        </param>
+        <param name="addSchemaInfo">
+          <span data-ttu-id="05405-245">A <see cref="T:System.Boolean" /> oznaczająca, czy wypełnić typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-245">A <see cref="T:System.Boolean" /> indicating whether to populate the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="05405-246">Sprawdza, czy <see cref="T:System.Xml.Linq.XElement" /> poddrzewa odpowiada określonym <see cref="T:System.Xml.Schema.XmlSchemaObject" /> i <see cref="T:System.Xml.Schema.XmlSchemaSet" />, opcjonalnie wypełnianie drzewa XML z typu infoset po schema weryfikacji (PSVI).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-246">Validates that an <see cref="T:System.Xml.Linq.XElement" /> sub-tree conforms to a specified <see cref="T:System.Xml.Schema.XmlSchemaObject" /> and an <see cref="T:System.Xml.Schema.XmlSchemaSet" />, optionally populating the XML tree with the post-schema-validation infoset (PSVI).</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="05405-247">Ta metoda służy Aby sprawdzić, czy poddrzewa (z <xref:System.Xml.Linq.XElement> w katalogu głównym drzewa podrzędnego) jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-247">You can use this method to validate that a sub-tree (with an <xref:System.Xml.Linq.XElement> at the root of the sub-tree) conforms to a schema.</span></span> <span data-ttu-id="05405-248">Ta metoda jest zazwyczaj używana, gdy zmieniono poddrzewa i chce mieć pewność, że nadal spełnia on schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-248">You typically use this method when you have modified a sub-tree, and you want to make sure that it still conforms to its schema.</span></span> <span data-ttu-id="05405-249">Można sprawdzić poprawności całego dokumentu, ale zajmuje mniej czasu przetwarzania, aby sprawdzić poprawność tylko poddrzewa.</span><span class="sxs-lookup"><span data-stu-id="05405-249">You could validate the entire document, but it takes less processing time to validate a just a sub-tree.</span></span>  
+  
+ <span data-ttu-id="05405-250">Jeśli `addSchemaInfo` jest `true`, a następnie ta metoda powoduje wypełnienie drzewa XML z typu infoset po schema weryfikacji (PSVI).</span><span class="sxs-lookup"><span data-stu-id="05405-250">If `addSchemaInfo` is `true`, then this method populates the XML tree with the post-schema-validation infoset (PSVI).</span></span>  
+  
+ <span data-ttu-id="05405-251">Istnieją dwa aspekty wypełnianie drzewa XML z PSVI.</span><span class="sxs-lookup"><span data-stu-id="05405-251">There are two aspects of populating the XML tree with the PSVI.</span></span>  
+  
+ <span data-ttu-id="05405-252">Najpierw, adnotacja została dodana do wszystkich węzłów w drzewie w taki sposób, że można teraz wywołać <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> na element lub atrybut w drzewie.</span><span class="sxs-lookup"><span data-stu-id="05405-252">First, an annotation is added to all nodes in the tree such that you can now call <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> on an element or attribute in the tree.</span></span>  
+  
+ <span data-ttu-id="05405-253">Po drugie domyślne elementy i atrybuty zdefiniowane w XSD zostały dodane do drzewa XML.</span><span class="sxs-lookup"><span data-stu-id="05405-253">Second, default elements and attributes defined in the XSD are added to the XML tree.</span></span> <span data-ttu-id="05405-254">Wywołując jedną z <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> metod, można określić, jeśli określony element lub atrybut został dodany ze schematem XSD jako domyślny element lub atrybut.</span><span class="sxs-lookup"><span data-stu-id="05405-254">By calling one of the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> methods, you can determine if a specific element or attribute was added from the XSD as a default element or attribute.</span></span>  
+  
+ <span data-ttu-id="05405-255">W przypadku przekazania `null` dla `validationEventHandler`, a następnie ta metoda zgłasza wyjątek na błędy sprawdzania poprawności.</span><span class="sxs-lookup"><span data-stu-id="05405-255">If you pass `null` for `validationEventHandler`, then this method raises an exception upon validation errors.</span></span> <span data-ttu-id="05405-256">Ostrzeżenia dotyczące sprawdzania poprawności nie zgłosi wyjątku.</span><span class="sxs-lookup"><span data-stu-id="05405-256">Validation warnings will not raise an exception.</span></span>  
+  
+ <span data-ttu-id="05405-257">Aby sprawdzić poprawność poddrzewa, używając wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-257">To validate a sub-tree, you use an instance of <xref:System.Xml.Schema.XmlSchemaObject>.</span></span> <span data-ttu-id="05405-258">Możesz uzyskać tego wystąpienia na różne sposoby.</span><span class="sxs-lookup"><span data-stu-id="05405-258">You can obtain this instance in various ways.</span></span> <span data-ttu-id="05405-259">Łatwo jest następujący:</span><span class="sxs-lookup"><span data-stu-id="05405-259">An easy way is as follows:</span></span>  
+  
+1.  <span data-ttu-id="05405-260">Zweryfikuj, że dokument jest zgodny ze schematem.</span><span class="sxs-lookup"><span data-stu-id="05405-260">Validate that a document conforms to a schema.</span></span>  
+  
+2.  <span data-ttu-id="05405-261">Dodaj obiekt typu infoset po schema weryfikacji (PSVI) przez wywołanie metody <xref:System.Xml.Schema.Extensions.Validate%2A> — metoda rozszerzenia.</span><span class="sxs-lookup"><span data-stu-id="05405-261">Add the post-schema-validation infoset (PSVI) by calling the <xref:System.Xml.Schema.Extensions.Validate%2A> extension method.</span></span>  
+  
+3.  <span data-ttu-id="05405-262">Wywołanie <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> — metoda rozszerzenia można pobrać obiektu implementującego <xref:System.Xml.Schema.IXmlSchemaInfo>.</span><span class="sxs-lookup"><span data-stu-id="05405-262">Call the <xref:System.Xml.Schema.Extensions.GetSchemaInfo%2A> extension method to retrieve an object that implements <xref:System.Xml.Schema.IXmlSchemaInfo>.</span></span> <span data-ttu-id="05405-263">Z obiektu pobrane, możesz uzyskać <xref:System.Xml.Schema.XmlSchemaObject>.</span><span class="sxs-lookup"><span data-stu-id="05405-263">From the retrieved object, you can get an <xref:System.Xml.Schema.XmlSchemaObject>.</span></span>  
+  
+    -   <span data-ttu-id="05405-264">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XElement>, będzie typ <xref:System.Xml.Schema.XmlSchemaElement>.</span><span class="sxs-lookup"><span data-stu-id="05405-264">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XElement>, the type will be <xref:System.Xml.Schema.XmlSchemaElement>.</span></span>  
+  
+    -   <span data-ttu-id="05405-265">Jeśli otrzymasz <xref:System.Xml.Schema.XmlSchemaObject> dla <xref:System.Xml.Linq.XAttribute>, będzie typ <xref:System.Xml.Schema.XmlSchemaAttribute>.</span><span class="sxs-lookup"><span data-stu-id="05405-265">If you get an <xref:System.Xml.Schema.XmlSchemaObject> for an <xref:System.Xml.Linq.XAttribute>, the type will be <xref:System.Xml.Schema.XmlSchemaAttribute>.</span></span>  
+  
+ <span data-ttu-id="05405-266">Po utworzeniu wystąpienia <xref:System.Xml.Schema.XmlSchemaObject>, ta metoda służy do sprawdzania poprawności poddrzewa.</span><span class="sxs-lookup"><span data-stu-id="05405-266">After you have an instance of an <xref:System.Xml.Schema.XmlSchemaObject>, you can use this method to validate a sub-tree..</span></span>  
+  
+   
+  
+## Examples  
+  
+```csharp  
+  
+                string xsdMarkup =  
+    @"<xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+       <xsd:element name='Root'>  
+        <xsd:complexType>  
+         <xsd:sequence>  
+          <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+          <xsd:element name='Child2' minOccurs='1' maxOccurs='1'>  
+           <xsd:complexType>  
+            <xsd:simpleContent>  
+             <xsd:extension base='xsd:string'>  
+              <xsd:attribute name='Att1' default='Att1 Default Value'/>  
+             </xsd:extension>  
+            </xsd:simpleContent>  
+           </xsd:complexType>  
+          </xsd:element>  
+         </xsd:sequence>  
+        </xsd:complexType>  
+       </xsd:element>  
+      </xsd:schema>";  
+XmlSchemaSet schemas = new XmlSchemaSet();  
+schemas.Add("", XmlReader.Create(new StringReader(xsdMarkup)));  
+  
+XDocument doc1 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "c1"),  
+        new XElement("Child2", "c2")  
+    )  
+);  
+  
+XDocument doc2 = new XDocument(  
+    new XElement("Root",  
+        new XElement("Child1", "content1"),  
+        new XElement("Child3", "content1")  
+    )  
+);  
+  
+Console.WriteLine("Validating doc1");  
+bool errors = false;  
+doc1.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     }, true);  
+Console.WriteLine("doc1 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Validating doc2");  
+errors = false;  
+doc2.Validate(schemas, (o, e) =>  
+                     {  
+                         Console.WriteLine("{0}", e.Message);  
+                         errors = true;  
+                     }, true);  
+Console.WriteLine("doc2 {0}", errors ? "did not validate" : "validated");  
+  
+Console.WriteLine();  
+Console.WriteLine("Contents of doc1:");  
+Console.WriteLine(doc1);  
+  
+Console.WriteLine();  
+Console.WriteLine("Contents of doc2:");  
+Console.WriteLine(doc2);  
+```  
+  
+```vb  
+  
+                Dim errors As Boolean = False  
+  
+Private Sub XSDErrors(ByVal o As Object, ByVal e As ValidationEventArgs)  
+    Console.WriteLine("{0}", e.Message)  
+    errors = True  
+End Sub  
+  
+Sub Main()  
+    Dim xsdMarkup As XDocument = _  
+        <?xml version='1.0'?>  
+        <xsd:schema xmlns:xsd='http://www.w3.org/2001/XMLSchema'>  
+            <xsd:element name='Root'>  
+                <xsd:complexType>  
+                    <xsd:sequence>  
+                        <xsd:element name='Child1' minOccurs='1' maxOccurs='1'/>  
+                        <xsd:element name='Child2' minOccurs='1' maxOccurs='1'>  
+                            <xsd:complexType>  
+                                <xsd:simpleContent>  
+                                    <xsd:extension base='xsd:string'>  
+                                        <xsd:attribute name='Att1' default='Att1 Default Value'/>  
+                                    </xsd:extension>  
+                                </xsd:simpleContent>  
+                            </xsd:complexType>  
+                        </xsd:element>  
+                    </xsd:sequence>  
+                </xsd:complexType>  
+            </xsd:element>  
+        </xsd:schema>  
+    Dim schemas As XmlSchemaSet = New XmlSchemaSet()  
+    schemas.Add("", xsdMarkup.CreateReader)  
+  
+    Dim doc1 As XDocument = _  
+        <?xml version='1.0'?>  
+        <Root>  
+            <Child1>c1</Child1>  
+            <Child2>c2</Child2>  
+        </Root>  
+  
+    Dim doc2 As XDocument = _  
+        <?xml version='1.0'?>  
+        <Root>  
+            <Child1>content1</Child1>  
+            <Child3>content1</Child3>  
+        </Root>  
+  
+    Console.WriteLine("Validating doc1")  
+    errors = False  
+    doc1.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc1 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Validating doc2")  
+    errors = False  
+    doc2.Validate(schemas, AddressOf XSDErrors, True)  
+    Console.WriteLine("doc2 {0}", IIf(errors, "did not validate", "validated"))  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Contents of doc1:")  
+    Console.WriteLine(doc1)  
+  
+    Console.WriteLine()  
+    Console.WriteLine("Contents of doc2:")  
+    Console.WriteLine(doc2)  
+End Sub  
+```  
+  
+ <span data-ttu-id="05405-267">Ten przykład generuje następujące wyniki:</span><span class="sxs-lookup"><span data-stu-id="05405-267">This example produces the following output:</span></span>  
+  
+```  
+Validating doc1  
+doc1 validated  
+  
+Validating doc2  
+The element 'Root' has invalid child element 'Child3'. List of possible elements expected: 'Child2'.  
+doc2 did not validate  
+  
+Contents of doc1:  
+<Root>  
+  <Child1>c1</Child1>  
+  <Child2 Att1="Att1 Default Value">c2</Child2>  
+</Root>  
+  
+Contents of doc2:  
+<Root>  
+  <Child1>content1</Child1>  
+  <Child3>content1</Child3>  
+</Root>  
+```  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Xml.Schema.XmlSchemaValidationException">
+          <span data-ttu-id="05405-268">Zgłaszane błędy sprawdzania poprawności języka definicji schematu XML (XSD).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="05405-268">Thrown for XML Schema Definition Language (XSD) validation errors.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
