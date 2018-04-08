@@ -1,0 +1,544 @@
+<Type Name="AppContext" FullName="System.AppContext">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="de2b5eddaaa2bb43dcc7b608c490b41f3a8c1713" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public static class AppContext" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit AppContext extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.AppContext" />
+  <TypeSignature Language="VB.NET" Value="Public Class AppContext" />
+  <TypeSignature Language="C++ CLI" Value="public ref class AppContext abstract sealed" />
+  <AssemblyInfo>
+    <AssemblyName>System.AppContext</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+    <AssemblyVersion>4.1.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.5.0</AssemblyVersion>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>netstandard</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>System.Runtime</AssemblyName>
+    <AssemblyVersion>4.2.0.0</AssemblyVersion>
+    <AssemblyVersion>4.2.1.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="fd38d-101">Zapewnia to członkom ustawiania i pobierania danych o kontekście aplikacji.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="fd38d-101">Provides members for setting and retrieving data about an application's context.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="fd38d-102"><xref:System.AppContext> Klasa umożliwia autorom biblioteki na mechanizm uniform Wypisz dla nowych funkcji dla użytkowników.</span><span class="sxs-lookup"><span data-stu-id="fd38d-102">The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users.</span></span> <span data-ttu-id="fd38d-103">Definiuje on kontrakt luźno powiązane między składnikami, aby komunikować się rezygnacji z żądania.</span><span class="sxs-lookup"><span data-stu-id="fd38d-103">It establishes a loosely-coupled contract between components in order to communicate an opt-out request.</span></span> <span data-ttu-id="fd38d-104">Ta możliwość jest zwykle ważny w przypadku zmian do istniejących funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-104">This capability is typically important when a change is made to existing functionality.</span></span> <span data-ttu-id="fd38d-105">Z drugiej strony już istnieje niejawna zgody na nowych funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-105">Conversely, there is already an implicit opt-in for new functionality.</span></span>  
+  
+## <a name="appcontext-for-library-developers"></a><span data-ttu-id="fd38d-106">AppContext dla deweloperów biblioteki</span><span class="sxs-lookup"><span data-stu-id="fd38d-106">AppContext for library developers</span></span>  
+ <span data-ttu-id="fd38d-107">Użyj biblioteki <xref:System.AppContext> zmienia klasy do definiowania i ujawnia zgodności, podczas gdy użytkownicy biblioteki można ustawić tych przełączników wpłynąć na zachowanie biblioteki.</span><span class="sxs-lookup"><span data-stu-id="fd38d-107">Libraries use  the <xref:System.AppContext> class to define and expose compatibility switches, while library users can set those switches to affect the library behavior.</span></span> <span data-ttu-id="fd38d-108">Domyślnie udostępnia nowych funkcji w bibliotekach i zmieniają tylko (to znaczy zapewniają funkcje poprzednich) Jeśli jest ustawiona przełącznik.</span><span class="sxs-lookup"><span data-stu-id="fd38d-108">By default, libraries provide the new functionality, and they only alter it (that is, they provide the previous functionality) if the switch is set.</span></span>  <span data-ttu-id="fd38d-109">Dzięki temu biblioteki, aby podać nowe zachowanie dla istniejącego interfejsu API, pozostawiając obsługuje wywołań, które są zależne od poprzednie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-109">This allows libraries to provide new behavior for an existing API while continuing to support callers who depend on the previous behavior.</span></span>  
+  
+### <a name="defining-the-switch-name"></a><span data-ttu-id="fd38d-110">Definiowanie nazwy przełącznika</span><span class="sxs-lookup"><span data-stu-id="fd38d-110">Defining the switch name</span></span>  
+ <span data-ttu-id="fd38d-111">Najczęściej umożliwia konsumentów biblioteki rezygnacji z Zmiana zachowania, jest do definiowania nazwanego przełącznika.</span><span class="sxs-lookup"><span data-stu-id="fd38d-111">The most common way to allow consumers of your library to opt out of a change of behavior is to define a named switch.</span></span>  <span data-ttu-id="fd38d-112">Jego `value` element to pary nazwa/wartość, która składa się z nazwy przełącznika i jego <xref:System.Boolean> wartość.</span><span class="sxs-lookup"><span data-stu-id="fd38d-112">Its `value` element is a name/value pair that consists of the name of a switch and its <xref:System.Boolean> value.</span></span>  <span data-ttu-id="fd38d-113">Domyślnie jest zawsze niejawnie `false`, która udostępnia nowe zachowanie (i sprawia, że nowe zachowanie opcjonalnych domyślnie).</span><span class="sxs-lookup"><span data-stu-id="fd38d-113">By default, the switch is always implicitly `false`, which provides the new behavior (and makes the new behavior opt-in by default).</span></span> <span data-ttu-id="fd38d-114">Ustawienia przełącznika `true` umożliwia, co zapewnia zachowanie starszej wersji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-114">Setting the switch to `true` enables it, which provides the legacy behavior.</span></span> <span data-ttu-id="fd38d-115">Jawne ustawienie przełącznika `false` udostępnia również nowe zachowanie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-115">Explicitly setting the switch to `false` also provides the new behavior.</span></span>  
+  
+ <span data-ttu-id="fd38d-116">Jest na użytek formacie spójnej nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę.</span><span class="sxs-lookup"><span data-stu-id="fd38d-116">It's beneficial to use a consistent format for switch names, since they are a formal contract exposed by a library.</span></span> <span data-ttu-id="fd38d-117">Poniżej przedstawiono dwa formaty oczywiste.</span><span class="sxs-lookup"><span data-stu-id="fd38d-117">The following are two obvious formats.</span></span>  
+  
+-   <span data-ttu-id="fd38d-118">*Przełącznik*.* przestrzeń nazw*.* switchName*</span><span class="sxs-lookup"><span data-stu-id="fd38d-118">*Switch*.*namespace*.*switchname*</span></span>  
+  
+-   <span data-ttu-id="fd38d-119">*Przełącznik*.* Biblioteka*.* switchName*</span><span class="sxs-lookup"><span data-stu-id="fd38d-119">*Switch*.*library*.*switchname*</span></span>  
+  
+ <span data-ttu-id="fd38d-120">Po zdefiniowaniu i udokumentować przełącznika wywołań może być używany za pomocą rejestru, dodając [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu do ich pliku konfiguracji aplikacji lub poprzez wywołanie <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> Metoda programowo.</span><span class="sxs-lookup"><span data-stu-id="fd38d-120">Once you define and document the switch, callers can use it by using the registry, by adding an  [\<AppContextSwitchOverrides>](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) element to their application configuration file, or by calling the  <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> method programmatically.</span></span> <span data-ttu-id="fd38d-121">Zobacz [AppContext dla konsumentów biblioteki](#ForConsumers) sekcji, aby uzyskać więcej informacji dotyczących sposobu wywoływania użycia i ustaw wartość <xref:System.AppContext> konfiguracji przełączników.</span><span class="sxs-lookup"><span data-stu-id="fd38d-121">See the [AppContext for library consumers](#ForConsumers) section for more information about how callers use and set the value of <xref:System.AppContext> configuration switches.</span></span>  
+  
+ <span data-ttu-id="fd38d-122">Po uruchomieniu aplikacji środowisko uruchomieniowe języka wspólnego automatycznie odczytuje ustawienia zgodności w rejestrze i ładuje plik konfiguracji aplikacji, aby wypełnić aplikacji <xref:System.AppContext> wystąpienia.</span><span class="sxs-lookup"><span data-stu-id="fd38d-122">When the common language runtime runs an application, it automatically reads the registry's compatibility settings and loads the application configuration file in order to populate the application's <xref:System.AppContext> instance.</span></span> <span data-ttu-id="fd38d-123">Ponieważ <xref:System.AppContext> wystąpień jest wypełniana programowo przez obiekt wywołujący lub w czasie wykonywania, nie trzeba wykonywać żadnych czynności, takie jak wywołania <xref:System.AppContext.SetSwitch%2A> metody, aby skonfigurować <xref:System.AppContext> wystąpienia.</span><span class="sxs-lookup"><span data-stu-id="fd38d-123">Because the <xref:System.AppContext> instance is populated either programmatically by the caller or by the runtime, you do not have to take any action, such as calling the <xref:System.AppContext.SetSwitch%2A> method,  to configure the <xref:System.AppContext> instance.</span></span>  
+  
+### <a name="checking-the-setting"></a><span data-ttu-id="fd38d-124">Sprawdzanie ustawienie</span><span class="sxs-lookup"><span data-stu-id="fd38d-124">Checking the setting</span></span>  
+ <span data-ttu-id="fd38d-125">Następnie można sprawdzić, jeśli klient został zadeklarowany wartość przełącznika i odpowiednio przez wywołanie act <xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-125">You can then check if a consumer has declared the value of the switch and act appropriately by calling the <xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType> method.</span></span> <span data-ttu-id="fd38d-126">Metoda zwraca `true` Jeśli `switchName` argument zostanie znaleziony, a kiedy metoda zwraca, jego `isEnabled` argument wskazuje wartość przełącznika.</span><span class="sxs-lookup"><span data-stu-id="fd38d-126">The method returns `true` if the `switchName` argument is found, and when the method returns, its `isEnabled` argument indicates the value of the switch.</span></span>  <span data-ttu-id="fd38d-127">W przeciwnym razie metoda zwraca `false`.</span><span class="sxs-lookup"><span data-stu-id="fd38d-127">Otherwise, the method returns `false`.</span></span>  
+  
+### <a name="an-example"></a><span data-ttu-id="fd38d-128">Przykład</span><span class="sxs-lookup"><span data-stu-id="fd38d-128">An example</span></span>  
+ <span data-ttu-id="fd38d-129">Poniższy przykład przedstawia użycie <xref:System.AppContext> klasę, aby umożliwić klientowi wybrać zachowanie oryginalnej metody biblioteki.</span><span class="sxs-lookup"><span data-stu-id="fd38d-129">The following example illustrates the use of the <xref:System.AppContext> class to allow the customer to choose the original behavior of a library method.</span></span>   <span data-ttu-id="fd38d-130">Poniżej znajduje się w wersji 1.0 biblioteki o nazwie `StringLibrary`.</span><span class="sxs-lookup"><span data-stu-id="fd38d-130">The following is version 1.0 of a library named `StringLibrary`.</span></span> <span data-ttu-id="fd38d-131">Definiuje `SubstringStartsAt` metodę, która wykonuje porządkowej porównanie, aby określić indeks początkowy podciągu ciągu większy.</span><span class="sxs-lookup"><span data-stu-id="fd38d-131">It defines a `SubstringStartsAt` method that performs an ordinal comparison to determine the starting index of a substring within a larger string.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
+ [!code-vb[System.AppContext.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]  
+  
+ <span data-ttu-id="fd38d-132">W poniższym przykładzie użyto następnie biblioteki można znaleźć indeks początkowy podciągu "archæ" w "archaeologist".</span><span class="sxs-lookup"><span data-stu-id="fd38d-132">The following example then uses the library to find the starting index of the substring "archæ" in "The archaeologist".</span></span> <span data-ttu-id="fd38d-133">Ponieważ metoda przeprowadza porównanie liczby porządkowej, nie można odnaleźć podciąg.</span><span class="sxs-lookup"><span data-stu-id="fd38d-133">Because the method performs an ordinal comparison, the substring cannot be found.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
+ [!code-vb[System.AppContext.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]  
+  
+ <span data-ttu-id="fd38d-134">Zmiany w wersji 2 biblioteki, jednak `SubstringStartsAt` metodę porównania z uwzględnieniem kultury.</span><span class="sxs-lookup"><span data-stu-id="fd38d-134">Version 2 of the library, however, changes the `SubstringStartsAt` method to use culture-sensitive comparison.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
+ [!code-vb[System.AppContext.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]  
+  
+ <span data-ttu-id="fd38d-135">Gdy aplikacja jest ponownie kompilowana w celu uruchomienia nowej wersji biblioteki, teraz raporty czy podciągu "archæ" znajduje się pod indeksem 4 "archaeologist".</span><span class="sxs-lookup"><span data-stu-id="fd38d-135">When the app is recompiled to run against the new version of the library, it now reports that the substring "archæ" is found at index 4 in "The archaeologist".</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
+ [!code-vb[System.AppContext.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]  
+  
+ <span data-ttu-id="fd38d-136">Ta zmiana może uniemożliwić krytyczne aplikacje, które są zależne od oryginalnego zachowanie, definiując [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) przełącznika.</span><span class="sxs-lookup"><span data-stu-id="fd38d-136">This change can be prevented from breaking the applications that depend on the original behavior by defining an [\<AppContextSwitchOverrides>](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) switch.</span></span> <span data-ttu-id="fd38d-137">W takim przypadku nosi nazwę przełącznika `StringLibrary.DoNotUseCultureSensitiveComparison`.</span><span class="sxs-lookup"><span data-stu-id="fd38d-137">In this case, the switch is named `StringLibrary.DoNotUseCultureSensitiveComparison`.</span></span> <span data-ttu-id="fd38d-138">Wartość domyślną `false`, wskazuje, że biblioteki należy wykonać jego porównanie zależne od kultury w wersji 2.0.</span><span class="sxs-lookup"><span data-stu-id="fd38d-138">Its default value, `false`, indicates that the library should perform its version 2.0 culture-sensitive comparison.</span></span> <span data-ttu-id="fd38d-139">`true` Wskazuje, że biblioteki należy wykonać jego porównanie liczby porządkowej w wersji 1.0.</span><span class="sxs-lookup"><span data-stu-id="fd38d-139">`true` indicates that the library should perform its version 1.0 ordinal comparison.</span></span>  <span data-ttu-id="fd38d-140">Niewielkie zmiany poprzedni kod umożliwia konsumenta biblioteki można ustawić przełącznika tak, aby określić typ porównania, które wykonuje metodę.</span><span class="sxs-lookup"><span data-stu-id="fd38d-140">A slight modification of the previous code allows the library consumer to set the switch to determine the kind of comparison the method performs.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
+ [!code-vb[System.AppContext.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]  
+  
+ <span data-ttu-id="fd38d-141">Jeśli aplikacja może następnie używać następującego pliku konfiguracji do przywrócenia zachowanie w wersji 1.0.</span><span class="sxs-lookup"><span data-stu-id="fd38d-141">If application can then use the following configuration file to restore the version 1.0 behavior.</span></span>  
+  
+```xml  
+  
+<configuration>  
+   <runtime>  
+      <AppContextSwitchOverrides value="StringLibrary.DoNotUseCultureSensitiveComparison=true" />   
+   </runtime>  
+</configuration>  
+  
+```  
+  
+ <span data-ttu-id="fd38d-142">Gdy aplikacja jest uruchamiana z pliku konfiguracji istnieje, tworzy następujące dane wyjściowe:</span><span class="sxs-lookup"><span data-stu-id="fd38d-142">When the application is run with the configuration file present, it produces the following output:</span></span>  
+  
+```  
+'archæ' not found in 'The archaeologist'  
+```  
+  
+<a name="ForConsumers"></a>   
+## <a name="appcontext-for-library-consumers"></a><span data-ttu-id="fd38d-143">AppContext dla konsumentów biblioteki</span><span class="sxs-lookup"><span data-stu-id="fd38d-143">AppContext for library consumers</span></span>  
+ <span data-ttu-id="fd38d-144">Jeśli klient biblioteki, <xref:System.AppContext> klasy pozwala korzystać z biblioteki lub biblioteki metody Wypisz mechanizm dla nowych funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-144">If you are the consumer of a library, the <xref:System.AppContext> class  allows you to take advantage of a library or library method's opt-out mechanism for new functionality.</span></span>   <span data-ttu-id="fd38d-145">Poszczególne metody biblioteki klas, z którym nawiązywane jest definiowanie określonego przełączników, które włączyć lub wyłączyć nowe zachowanie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-145">Individual methods of the class library that you are calling define particular switches that enable or disable a new behavior.</span></span> <span data-ttu-id="fd38d-146">Wartość parametru jest wartością logiczną.</span><span class="sxs-lookup"><span data-stu-id="fd38d-146">The value of the switch  is a Boolean.</span></span> <span data-ttu-id="fd38d-147">Jeśli jest `false`, który zazwyczaj jest to wartość domyślna, nowe zachowanie jest włączone; jeśli jest `true`, nowe zachowanie jest wyłączona, a element członkowski zachowuje się tak jak poprzednio.</span><span class="sxs-lookup"><span data-stu-id="fd38d-147">If it is `false`, which is typically the default value, the new behavior is enabled; if it is `true`, the new behavior is disabled, and the member behaves as it did previously.</span></span>  
+  
+ <span data-ttu-id="fd38d-148">Wartość przełącznika można ustawić w jeden z trzech sposobów:</span><span class="sxs-lookup"><span data-stu-id="fd38d-148">You can set the value of a switch in one of three ways:</span></span>  
+  
+-   <span data-ttu-id="fd38d-149">Wywołując <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> metody w kodzie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-149">By calling the <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> method in your code.</span></span>  <span data-ttu-id="fd38d-150">`switchName` Argument definiuje nazwę przełącznika i `isEnabled` właściwość definiuje wartość przełącznika.</span><span class="sxs-lookup"><span data-stu-id="fd38d-150">The `switchName` argument defines the switch name, and the `isEnabled` property defines the value of the switch.</span></span> <span data-ttu-id="fd38d-151">Ponieważ <xref:System.AppContext> jest Klasa statyczna, jest ona dostępna na podstawie domeny dla poszczególnych aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-151">Because <xref:System.AppContext> is a static class, it is available on a per-application domain basis.</span></span>  
+  
+     <span data-ttu-id="fd38d-152">Wywoływanie <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> ma zakres aplikacji; oznacza to, dotyczy tylko aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-152">Calling the <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> has application scope; that is, it affects only the application.</span></span>  
+  
+-   <span data-ttu-id="fd38d-153">Dodając `<AppContextSwitchOverrides>` elementu [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcji w pliku app.config.</span><span class="sxs-lookup"><span data-stu-id="fd38d-153">By adding an `<AppContextSwitchOverrides>` element to the [\<runtime>](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) section of your app.config file.</span></span> <span data-ttu-id="fd38d-154">Przełącznik ma jeden atrybut, `value`, którego wartość jest ciągiem, który reprezentuje parę klucza i wartości, zawierająca zarówno nazwę przełącznika i jego wartość.</span><span class="sxs-lookup"><span data-stu-id="fd38d-154">The switch has a single attribute, `value`, whose value is a string that represents a key/value pair containing both the switch name and its value.</span></span>  
+  
+     <span data-ttu-id="fd38d-155">Aby zdefiniować wiele przełączników, oddziel każdy przełącznik parę klucza i wartości w [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu `value` atrybutu średnikiem.</span><span class="sxs-lookup"><span data-stu-id="fd38d-155">To define multiple switches, separate each switch's key/value pair in the [\<AppContextSwitchOverrides>](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) element's `value` attribute with a semicolon.</span></span> <span data-ttu-id="fd38d-156">W takim przypadku `<AppContextSwitchOverrides>` element ma następujący format:</span><span class="sxs-lookup"><span data-stu-id="fd38d-156">In that case, the `<AppContextSwitchOverrides>` element has the following format:</span></span>  
+  
+    ```xml  
+    <AppContextSwitchOverrides value="switchName1=value1;switchName2=value2" />  
+    ```  
+  
+     <span data-ttu-id="fd38d-157">Przy użyciu `<AppContextSwitchOverrides>` element, aby zdefiniować ustawienia konfiguracji, ma zakres aplikacji; oznacza to, dotyczy tylko aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-157">Using the `<AppContextSwitchOverrides>` element to define a configuration setting has application scope; that is, it affects only the application.</span></span>  
+
+    > [!NOTE]    
+    > <span data-ttu-id="fd38d-158">Aby uzyskać informacje na temat parametrów zdefiniowanych w programie .NET Framework, zobacz [ \<AppContextSwitchOverrides > elementu](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md).</span><span class="sxs-lookup"><span data-stu-id="fd38d-158">For information on the switches defined by the .NET Framework, see the [\<AppContextSwitchOverrides> element](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md).</span></span>
+
+-   <span data-ttu-id="fd38d-159">Dodając wartość ciągu, której nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze.</span><span class="sxs-lookup"><span data-stu-id="fd38d-159">By adding a string value whose name is the name of the switch to the `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` key in the registry.</span></span> <span data-ttu-id="fd38d-160">Wartość musi być reprezentację ciągu <xref:System.Boolean> może zostać przeanalizowany przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody; oznacza to, musi mieć wartość "Prawda", "prawda", "False" lub "false".</span><span class="sxs-lookup"><span data-stu-id="fd38d-160">Its value must be the string representation of a <xref:System.Boolean> that can be parsed by the <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> method; that is, it must be "True", "true", "False", or "false".</span></span> <span data-ttu-id="fd38d-161">Jeśli środowisko uruchomieniowe napotka wszelkie inne wartości, ignoruje przełącznika.</span><span class="sxs-lookup"><span data-stu-id="fd38d-161">If the runtime encounters any other value, it ignores the switch.</span></span>  
+  
+     <span data-ttu-id="fd38d-162">Aby zdefiniować za pomocą rejestru <xref:System.AppContext> przełącznika ma zasięg maszyny; oznacza to, że ma to wpływ na wszystkie aplikacje uruchomione na maszynie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-162">Using the registry to define an <xref:System.AppContext> switch has machine scope; that is, it affects every application running on the machine.</span></span>  
+  
+ <span data-ttu-id="fd38d-163">Jeśli ustawisz ten sam przełącznik w więcej niż jednym ze sposobów jest kolejność pierwszeństwa, określania, które zastępuje inne:</span><span class="sxs-lookup"><span data-stu-id="fd38d-163">If you set the same switch in more than one way, the order of precedence for determining which setting overrides the others is:</span></span>  
+  
+1.  <span data-ttu-id="fd38d-164">Ustawienie programowe.</span><span class="sxs-lookup"><span data-stu-id="fd38d-164">The programmatic setting.</span></span>  
+  
+2.  <span data-ttu-id="fd38d-165">Ustawienia w pliku konfiguracyjnym aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-165">The setting in the app config file.</span></span>  
+  
+3.  <span data-ttu-id="fd38d-166">Ustawienie rejestru.</span><span class="sxs-lookup"><span data-stu-id="fd38d-166">The registry setting.</span></span>  
+  
+ <span data-ttu-id="fd38d-167">Poniżej przedstawiono prostą aplikację, która przekazuje plik identyfikator URI do <xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-167">The following is a simple application that passes a file URI to the <xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType> method.</span></span>  <span data-ttu-id="fd38d-168">Podczas uruchamiania w .NET Framework 4.6, zgłasza <xref:System.ArgumentException> ponieważ `file://` nie jest już prawidłowy część ścieżki pliku.</span><span class="sxs-lookup"><span data-stu-id="fd38d-168">When run under the .NET Framework 4.6, it throws an <xref:System.ArgumentException> because `file://` is no longer a valid part of a file path.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/ForConsumers1.cs#10)]
+ [!code-vb[System.AppContext.Class#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]  
+  
+ <span data-ttu-id="fd38d-169">Aby przywrócić poprzednich zachowanie metody i uniemożliwić wyjątku, można dodać `Switch.System.IO.UseLegacyPathHandling` przełączyć się do pliku konfiguracji aplikacji, na przykład:</span><span class="sxs-lookup"><span data-stu-id="fd38d-169">To restore the method's previous behavior and prevent the exception, you can add the `Switch.System.IO.UseLegacyPathHandling` switch to the application configuration file for the example:</span></span>  
+  
+```xml  
+<configuration>  
+    <runtime>  
+        <AppContextSwitchOverrides value="Switch.System.IO.UseLegacyPathHandling=true" />    
+    </runtime>  
+</configuration>  
+```  
+## <a name="see-also"></a><span data-ttu-id="fd38d-170">Zobacz także</span><span class="sxs-lookup"><span data-stu-id="fd38d-170">See also</span></span>
+[<span data-ttu-id="fd38d-171">Przełącznik AppContext</span><span class="sxs-lookup"><span data-stu-id="fd38d-171">AppContext switch</span></span>](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)
+
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="BaseDirectory">
+      <MemberSignature Language="C#" Value="public static string BaseDirectory { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property string BaseDirectory" />
+      <MemberSignature Language="DocId" Value="P:System.AppContext.BaseDirectory" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property BaseDirectory As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::String ^ BaseDirectory { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AppContext</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="fd38d-172">Pobiera nazwę ścieżki katalogu podstawowego, używaną do sondowania dla zestawów mechanizm rozpoznawania zestawów.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-172">Gets the pathname of the base directory that the assembly resolver uses to probe for assemblies.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="fd38d-173">Nazwa ścieżki katalogu podstawowego, używaną do sondowania dla zestawów mechanizm rozpoznawania zestawów.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-173">the pathname of the base directory that the assembly resolver uses to probe for assemblies.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="fd38d-174">Jest to dla właściwości domeny aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-174">This is a per application domain property.</span></span> <span data-ttu-id="fd38d-175">Wartość odpowiada <xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType> właściwości bieżącej domeny aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-175">Its value corresponds to the <xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType> property of the current application domain.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetData">
+      <MemberSignature Language="C#" Value="public static object GetData (string name);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig object GetData(string name) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AppContext.GetData(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function GetData (name As String) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::Object ^ GetData(System::String ^ name);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AppContext</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="name">
+          <span data-ttu-id="fd38d-176">Nazwa elementu danych.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-176">The name of the data element.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="fd38d-177">Zwraca wartość elementu danych o podanej nazwie przypisane do bieżącej domeny aplikacji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-177">Returns the value of the named data element assigned to the current application domain.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="fd38d-178">Wartość <paramref name="name" />, jeśli <paramref name="name" /> identyfikuje nazwanej wartości; w przeciwnym razie <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-178">The value of <paramref name="name" />, if <paramref name="name" /> identifies a named value; otherwise, <see langword="null" />.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="SetSwitch">
+      <MemberSignature Language="C#" Value="public static void SetSwitch (string switchName, bool isEnabled);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void SetSwitch(string switchName, bool isEnabled) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AppContext.SetSwitch(System.String,System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub SetSwitch (switchName As String, isEnabled As Boolean)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void SetSwitch(System::String ^ switchName, bool isEnabled);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AppContext</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="switchName" Type="System.String" />
+        <Parameter Name="isEnabled" Type="System.Boolean" />
+      </Parameters>
+      <Docs>
+        <param name="switchName">
+          <span data-ttu-id="fd38d-179">Nazwa przełącznika.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-179">The name of the switch.</span>
+          </span>
+        </param>
+        <param name="isEnabled">
+          <span data-ttu-id="fd38d-180">Wartość parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-180">The value of the switch.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="fd38d-181">Ustawia wartość przełącznika.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-181">Sets the value of a switch.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="fd38d-182"><xref:System.AppContext> Klasa umożliwia autorom biblioteki na mechanizm uniform Wypisz dla nowych funkcji dla użytkowników.</span><span class="sxs-lookup"><span data-stu-id="fd38d-182">The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users.</span></span> <span data-ttu-id="fd38d-183">Definiuje on kontrakt luźno powiązane między składnikami, aby komunikować się rezygnacji z żądania.</span><span class="sxs-lookup"><span data-stu-id="fd38d-183">It establishes a loosely-coupled contract between components in order to communicate an opt-out request.</span></span> <span data-ttu-id="fd38d-184">Ta możliwość jest zwykle ważny w przypadku zmian do istniejących funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-184">This capability is typically important when a change is made to existing functionality.</span></span> <span data-ttu-id="fd38d-185">Z drugiej strony już istnieje niejawna zgody na nowych funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-185">Conversely, there is already an implicit opt-in for new functionality.</span></span>  
+  
+ <span data-ttu-id="fd38d-186"><xref:System.AppContext.SetSwitch%2A> Metoda jest wywoływana przez aplikację (lub biblioteki), aby zadeklarować wartość przełącznika (która jest zawsze <xref:System.Boolean> wartość) definiujący zależnej biblioteki.</span><span class="sxs-lookup"><span data-stu-id="fd38d-186">The <xref:System.AppContext.SetSwitch%2A> method is called by an application (or a library) to declare the value of a switch (which is always a <xref:System.Boolean> value) that a dependent library defines.</span></span> <span data-ttu-id="fd38d-187">Przełącznik jest zawsze niejawnie `false`, która oferuje nowe zachowanie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-187">The switch is always implicitly `false`, which provides the new behavior.</span></span> <span data-ttu-id="fd38d-188">Ustawienia przełącznika `true` umożliwia, co zapewnia zachowanie starszej wersji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-188">Setting the switch to `true` enables it, which provides the legacy behavior.</span></span> <span data-ttu-id="fd38d-189">Jawne ustawienie przełącznika `false` udostępnia również nowe zachowanie.</span><span class="sxs-lookup"><span data-stu-id="fd38d-189">Explicitly setting the switch to `false` also provides the new behavior.</span></span> <span data-ttu-id="fd38d-190">Zależnej biblioteki można następnie sprawdź wartość przełącznika przez wywołanie metody <xref:System.AppContext.TryGetSwitch%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-190">The dependent library can then check the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="fd38d-191">Jest na użytek formacie spójnej nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę.</span><span class="sxs-lookup"><span data-stu-id="fd38d-191">It's beneficial to use a consistent format for switch names, since they are a formal contract exposed by a library.</span></span> <span data-ttu-id="fd38d-192">Poniżej przedstawiono dwa formaty oczywiste.</span><span class="sxs-lookup"><span data-stu-id="fd38d-192">The following are two obvious formats.</span></span>  
+>   
+>  -   <span data-ttu-id="fd38d-193">*Przełącznik*.* przestrzeń nazw*.* switchName*</span><span class="sxs-lookup"><span data-stu-id="fd38d-193">*Switch*.*namespace*.*switchname*</span></span>  
+> -   <span data-ttu-id="fd38d-194">*Przełącznik*.* Biblioteka*.* switchName*</span><span class="sxs-lookup"><span data-stu-id="fd38d-194">*Switch*.*library*.*switchname*</span></span>  
+  
+ <span data-ttu-id="fd38d-195">Poza ustawieniem wartości przełącznika programowo, można również ją ustawić:</span><span class="sxs-lookup"><span data-stu-id="fd38d-195">In addition to setting the value of a switch programmatically, it can also be set:</span></span>  
+  
+-   <span data-ttu-id="fd38d-196">Przez dodanie nazwy przełącznika i wartość do [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) element [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcji pliku konfiguracji aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-196">By adding the switch name and value to the [\<AppContextSwitchOverrides>](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) element in the [\<runtime>](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) section of an application configuration file.</span></span> <span data-ttu-id="fd38d-197">Na przykład poniższe definicje przełącznikiem o nazwie `Libraries.FPLibrary.UseExactFloatingPointComparison` o wartości `False`.</span><span class="sxs-lookup"><span data-stu-id="fd38d-197">For example, the following defines a switch named `Libraries.FPLibrary.UseExactFloatingPointComparison` whose value is `False`.</span></span>  
+  
+    ```xml  
+  
+    <configuration>  
+       <runtime>  
+          <AppContextSwitchOverrides value="Libraries.FPLibrary.UseExactFloatingPointComparison=false" />   
+       </runtime>  
+    </configuration>  
+  
+    ```  
+  
+-   <span data-ttu-id="fd38d-198">Dodając wartość ciągu, której nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze.</span><span class="sxs-lookup"><span data-stu-id="fd38d-198">By adding a string value whose name is the name of the switch to the `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` key in the registry.</span></span> <span data-ttu-id="fd38d-199">Wartość musi być reprezentację ciągu <xref:System.Boolean> może zostać przeanalizowany przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody; oznacza to, musi mieć wartość "Prawda", "prawda", "False" lub "false".</span><span class="sxs-lookup"><span data-stu-id="fd38d-199">Its value must be the string representation of a <xref:System.Boolean> that can be parsed by the <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> method; that is, it must be "True", "true", "False", or "false".</span></span>  
+  
+ <span data-ttu-id="fd38d-200">Jeśli `switchName` już istnieje, jego wartość zostanie zastąpiona `isEnabled` argumentu.</span><span class="sxs-lookup"><span data-stu-id="fd38d-200">If `switchName` already exists, its value is overwritten by the `isEnabled` argument.</span></span>  <span data-ttu-id="fd38d-201">Oznacza to, że najnowsze wywołanie <xref:System.AppContext.SetSwitch%2A> metoda zastępuje wartość zdefiniowana w rejestrze, w pliku konfiguracji aplikacji lub poprzednich wywołań <xref:System.AppContext.SetSwitch%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-201">That is, the most recent call to the <xref:System.AppContext.SetSwitch%2A> method overrides the value defined in the registry, in an app configuration file, or by previous calls to the <xref:System.AppContext.SetSwitch%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="fd38d-202">Następujący wiersz kodu ustawia przełącznik o nazwie `Switch.AmazingLib.ThrowOnException` do `true`, które umożliwia zachowanie starszej wersji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-202">The following line of code sets a switch named `Switch.AmazingLib.ThrowOnException` to `true`, which enables a legacy behavior.</span></span> <span data-ttu-id="fd38d-203">Biblioteki można następnie sprawdź, czy konsumenta biblioteka została ustawiona wartość przełącznika przez wywołanie metody <xref:System.AppContext.TryGetSwitch%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-203">The library can then check whether a library consumer has set the value of the switch by calling the <xref:System.AppContext.TryGetSwitch%2A> method.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#1)]
+ [!code-vb[System.AppContext.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="fd38d-204">
+            <paramref name="switchName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-204">
+              <paramref name="switchName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="fd38d-205">
+            <paramref name="switchName" /> jest <see cref="F:System.String.Empty" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-205">
+              <paramref name="switchName" /> is <see cref="F:System.String.Empty" />.</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.AppContext.TryGetSwitch(System.String,System.Boolean@)" />
+      </Docs>
+    </Member>
+    <Member MemberName="TargetFrameworkName">
+      <MemberSignature Language="C#" Value="public static string TargetFrameworkName { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property string TargetFrameworkName" />
+      <MemberSignature Language="DocId" Value="P:System.AppContext.TargetFrameworkName" />
+      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property TargetFrameworkName As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::String ^ TargetFrameworkName { System::String ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AppContext</AssemblyName>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="fd38d-206">Pobiera nazwę docelowej bieżącej aplikacji wersji platformy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-206">Gets the name of the framework version targeted by the current application.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="fd38d-207">Nazwa docelowej bieżącej aplikacji wersji platformy.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-207">The name of the framework version targeted by the current application.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="fd38d-208">Nazwa docelowej wersji struktury odpowiada wartości <xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType> właściwości.</span><span class="sxs-lookup"><span data-stu-id="fd38d-208">The name of the target framework version corresponds to the value of the <xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="fd38d-209">Listę nazw framework docelowej platformy .NET Framework, zobacz [ &lt;supportedRuntime&gt; Element](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md) elementu.</span><span class="sxs-lookup"><span data-stu-id="fd38d-209">For a list of target framework names for the .NET Framework, see the [&lt;supportedRuntime&gt; Element](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md) element.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="T:System.Runtime.Versioning.TargetFrameworkAttribute" />
+        <altmember cref="P:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName" />
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetSwitch">
+      <MemberSignature Language="C#" Value="public static bool TryGetSwitch (string switchName, out bool isEnabled);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig bool TryGetSwitch(string switchName, [out] bool&amp; isEnabled) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.AppContext.TryGetSwitch(System.String,System.Boolean@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function TryGetSwitch (switchName As String, ByRef isEnabled As Boolean) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool TryGetSwitch(System::String ^ switchName, [Runtime::InteropServices::Out] bool % isEnabled);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.AppContext</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+        <AssemblyVersion>4.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.5.0</AssemblyVersion>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Runtime</AssemblyName>
+        <AssemblyVersion>4.2.0.0</AssemblyVersion>
+        <AssemblyVersion>4.2.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="switchName" Type="System.String" />
+        <Parameter Name="isEnabled" Type="System.Boolean&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="switchName">
+          <span data-ttu-id="fd38d-210">Nazwa przełącznika.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-210">The name of the switch.</span>
+          </span>
+        </param>
+        <param name="isEnabled">
+          <span data-ttu-id="fd38d-211">Po powrocie z tej metody zawiera wartość <c>switchName</c> Jeśli <c>switchName</c> został znaleziony, lub <see langword="false" /> Jeśli <c>switchName</c> nie został znaleziony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-211">When this method returns, contains the value of <c>switchName</c> if <c>switchName</c> was found, or <see langword="false" /> if <c>switchName</c> was not found.</span>
+          </span>
+          <span data-ttu-id="fd38d-212">Ten parametr jest przekazywany niezainicjowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-212">This parameter is passed uninitialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="fd38d-213">Próbuje pobrać wartość przełącznika.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-213">Tries to get the value of a switch.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="fd38d-214">
+            <see langword="true" /> Jeśli <paramref name="switchName" /> została ustawiona i <paramref name="isEnabled" /> argument zawiera wartość przełącznika; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-214">
+              <see langword="true" /> if <paramref name="switchName" /> was set and the <paramref name="isEnabled" /> argument contains the value of the switch; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="fd38d-215"><xref:System.AppContext> Klasa umożliwia autorom biblioteki na mechanizm uniform Wypisz dla nowych funkcji dla użytkowników.</span><span class="sxs-lookup"><span data-stu-id="fd38d-215">The <xref:System.AppContext> class enables library writers to provide a uniform opt-out mechanism for new functionality for their users.</span></span> <span data-ttu-id="fd38d-216">Definiuje on kontrakt luźno powiązane między składnikami, aby komunikować się rezygnacji z żądania.</span><span class="sxs-lookup"><span data-stu-id="fd38d-216">It establishes a loosely-coupled contract between components in order to communicate an opt-out request.</span></span> <span data-ttu-id="fd38d-217">Ta możliwość jest zwykle ważny w przypadku zmian do istniejących funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-217">This capability is typically important when a change is made to existing functionality.</span></span> <span data-ttu-id="fd38d-218">Z drugiej strony już istnieje niejawna zgody na nowych funkcji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-218">Conversely, there is already an implicit opt-in for new functionality.</span></span>  
+  
+ <span data-ttu-id="fd38d-219">Środowisko uruchomieniowe języka wspólnego automatycznie wypełni przełączniki przypisane do <xref:System.AppContext> czytając rejestru i pliku konfiguracji aplikacji.</span><span class="sxs-lookup"><span data-stu-id="fd38d-219">The common language runtime automatically populates the switches assigned to an <xref:System.AppContext> instance by reading the registry and the application's configuration file.</span></span> <span data-ttu-id="fd38d-220">Można zmienić wartości tych parametrów i nowych przełączników, dodawany przez wywołanie <xref:System.AppContext.SetSwitch%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="fd38d-220">The value of these switches can then be overridden, and new switches added, by calling the <xref:System.AppContext.SetSwitch%2A> method.</span></span>  
+  
+ <span data-ttu-id="fd38d-221">Wywołuje biblioteki <xref:System.AppContext.TryGetSwitch%2A> metodę sprawdzania, czy jego konsumentów zadeklarowaniu wartość przełącznika i działa poprawnie na nim.</span><span class="sxs-lookup"><span data-stu-id="fd38d-221">A library calls the <xref:System.AppContext.TryGetSwitch%2A> method to check whether its consumers have declared the value of the switch and then act appropriately on it.</span></span>  <span data-ttu-id="fd38d-222">Jeśli przełącznik nie jest zdefiniowane, nowe funkcje jest domyślnie włączona.</span><span class="sxs-lookup"><span data-stu-id="fd38d-222">By default, if the switch is not defined, the new functionality is enabled..</span></span> <span data-ttu-id="fd38d-223">Jeśli zdefiniowano przełącznika i jego wartość wynosi `false`, nowych funkcji jest włączona.</span><span class="sxs-lookup"><span data-stu-id="fd38d-223">If the switch is defined and its value is `false`, the new functionality is also enabled.</span></span> <span data-ttu-id="fd38d-224">Jeśli jego wartość wynosi `true`, starsze zachowanie jest włączone.</span><span class="sxs-lookup"><span data-stu-id="fd38d-224">If its value is `true`, the legacy behavior is enabled.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="fd38d-225">Poniższy przykład określa, czy klient biblioteki została ustawiona przełącznik o nazwie `Switch.AmazingLib.ThrowOnException`.</span><span class="sxs-lookup"><span data-stu-id="fd38d-225">The following example determines whether a library consumer has set a switch named `Switch.AmazingLib.ThrowOnException`.</span></span>  
+  
+ [!code-csharp[System.AppContext.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#2)]
+ [!code-vb[System.AppContext.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="fd38d-226">
+            <paramref name="switchName" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-226">
+              <paramref name="switchName" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="fd38d-227">
+            <paramref name="switchName" /> jest <see cref="F:System.String.Empty" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="fd38d-227">
+              <paramref name="switchName" /> is <see cref="F:System.String.Empty" />.</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.AppContext.SetSwitch(System.String,System.Boolean)" />
+      </Docs>
+    </Member>
+  </Members>
+</Type>

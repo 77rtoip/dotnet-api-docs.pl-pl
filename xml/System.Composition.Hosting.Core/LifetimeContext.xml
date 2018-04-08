@@ -1,0 +1,337 @@
+<Type Name="LifetimeContext" FullName="System.Composition.Hosting.Core.LifetimeContext">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="e6df31d56ae5b6086311f6e6e39a28e33806ed5c" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public sealed class LifetimeContext : System.Composition.CompositionContext, IDisposable" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit LifetimeContext extends System.Composition.CompositionContext implements class System.IDisposable" />
+  <TypeSignature Language="DocId" Value="T:System.Composition.Hosting.Core.LifetimeContext" />
+  <TypeSignature Language="VB.NET" Value="Public NotInheritable Class LifetimeContext&#xA;Inherits CompositionContext&#xA;Implements IDisposable" />
+  <TypeSignature Language="C++ CLI" Value="public ref class LifetimeContext sealed : System::Composition::CompositionContext, IDisposable" />
+  <AssemblyInfo>
+    <AssemblyName>System.Composition.Hosting</AssemblyName>
+    <AssemblyVersion>1.0.31.0</AssemblyVersion>
+    <AssemblyVersion>1.0.32.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Composition.CompositionContext</BaseTypeName>
+  </Base>
+  <Interfaces>
+    <Interface>
+      <InterfaceName>System.IDisposable</InterfaceName>
+    </Interface>
+  </Interfaces>
+  <Docs>
+    <summary>
+      <span data-ttu-id="8759d-101">Reprezentuje węzeł w drzewie okres istnienia.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="8759d-101">Represents a node in the lifetime tree.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+<span data-ttu-id="8759d-102"><xref:System.Composition.Hosting.Core.LifetimeContext> Obiektu to jednostka udostępniania dla części udostępnionego.</span><span class="sxs-lookup"><span data-stu-id="8759d-102">The <xref:System.Composition.Hosting.Core.LifetimeContext> object is the unit of sharing for shared parts.</span></span> <span data-ttu-id="8759d-103">Formanty usuwania elementów powiązanego, a można pobrać wystąpień, w ramach istniejącej operacji kompozycji lub jako podstawy nowej operacji kompozycji.</span><span class="sxs-lookup"><span data-stu-id="8759d-103">It controls the disposal of bound parts and can be used to retrieve instances, either as part of an existing composition operation or as the basis of a new composition operation.</span></span> <span data-ttu-id="8759d-104">Kontekst poszczególnych okresu istnienia może być oznaczony zawiera elementy, które są ograniczone przez granice udostępniania konkretnego.</span><span class="sxs-lookup"><span data-stu-id="8759d-104">An individual lifetime context can be marked to contain parts that are constrained by particular sharing boundaries.</span></span>
+
+<span data-ttu-id="8759d-105">Ten obiekt zawiera dwie części niezależnie chronionych stanu udostępnionego: udostępnionego wystąpienia, a powiązany wystąpienia.</span><span class="sxs-lookup"><span data-stu-id="8759d-105">This object contains two pieces of independently protected shared state: shared part instances and bound part instances.</span></span> <span data-ttu-id="8759d-106">Wystąpienie część udostępniona jest zwolnić blokady, do odczytu i nie powoduje problemów, jeśli jest ona dodawana do podczas usuwania.</span><span class="sxs-lookup"><span data-stu-id="8759d-106">A shared part instance is lock-free, readable, and does not result in issues if it is added to during disposal.</span></span> <span data-ttu-id="8759d-107">Jest on chroniony sam blokowanie.</span><span class="sxs-lookup"><span data-stu-id="8759d-107">It is protected by being locked itself.</span></span> <span data-ttu-id="8759d-108">W obszarze Ta blokada nieunikniony sposób nosi logiki aktywacji.</span><span class="sxs-lookup"><span data-stu-id="8759d-108">Activation logic is unavoidably called under this lock.</span></span> <span data-ttu-id="8759d-109">Wystąpienie powiązania części zawsze jest chroniony przez blokowanie <see langword="this" />i nigdy nie mają być zapisywane po usuwania.</span><span class="sxs-lookup"><span data-stu-id="8759d-109">A bound part instance is always protected by locking <see langword="this" />, and should never be written to after disposal.</span></span> <span data-ttu-id="8759d-110">Ustawiono wystąpienie powiązania części <see langword="null" /> w obszarze blokady w <xref:System.Composition.Hosting.Core.LifetimeContext.Dispose> metody.</span><span class="sxs-lookup"><span data-stu-id="8759d-110">A bound part instance is set to <see langword="null" /> under a lock in the <xref:System.Composition.Hosting.Core.LifetimeContext.Dispose> method.</span></span> <span data-ttu-id="8759d-111">Jeśli pisania były dozwolone po usuwania wystąpienia powiązanej części, spowoduje jednorazowe części nie został wydany.</span><span class="sxs-lookup"><span data-stu-id="8759d-111">If writing were allowed after disposal for a bound part instance, it would result in disposable parts not being released.</span></span> <span data-ttu-id="8759d-112">Wywołania metody dispose na powiązanej części poza blokady.</span><span class="sxs-lookup"><span data-stu-id="8759d-112">The dispose method on a bound part is called outside of the lock.</span></span> 
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <Member MemberName="AddBoundInstance">
+      <MemberSignature Language="C#" Value="public void AddBoundInstance (IDisposable instance);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void AddBoundInstance(class System.IDisposable instance) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.AddBoundInstance(System.IDisposable)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub AddBoundInstance (instance As IDisposable)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void AddBoundInstance(IDisposable ^ instance);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="instance" Type="System.IDisposable" />
+      </Parameters>
+      <Docs>
+        <param name="instance">
+          <span data-ttu-id="8759d-113">Część.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-113">The part.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="8759d-114">Wiąże okres istnienia jednorazowe części tego kontekstu okres istnienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-114">Binds the lifetime of a disposable part to this lifetime context.</span>
+          </span>
+        </summary>
+        <remarks></remarks>
+        <exception cref="T:System.ObjectDisposedException">
+          <span data-ttu-id="8759d-115">Operacja została wykonana w usuniętym obiekcie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-115">The operation was performed on a disposed object.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="AllocateSharingId">
+      <MemberSignature Language="C#" Value="public static int AllocateSharingId ();" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig int32 AllocateSharingId() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.AllocateSharingId" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function AllocateSharingId () As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static int AllocateSharingId();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="8759d-116">Generuje identyfikator, który może być używana do lokalizowania udostępnionego wystąpienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-116">Generates an identifier that can be used to locate shared part instances.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="8759d-117">Nowy unikatowy identyfikator.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-117">A new unique identifier.</span>
+          </span>
+        </returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Dispose">
+      <MemberSignature Language="C#" Value="public void Dispose ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance void Dispose() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.Dispose" />
+      <MemberSignature Language="VB.NET" Value="Public Sub Dispose ()" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual void Dispose();" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.IDisposable.Dispose</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="8759d-118">Zwalnia kontekstu okres istnienia i wszelkie powiązane z nim wystąpienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-118">Releases the lifetime context and any part instances bound to it.</span>
+          </span>
+        </summary>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="FindContextWithin">
+      <MemberSignature Language="C#" Value="public System.Composition.Hosting.Core.LifetimeContext FindContextWithin (string sharingBoundary);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Composition.Hosting.Core.LifetimeContext FindContextWithin(string sharingBoundary) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.FindContextWithin(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Function FindContextWithin (sharingBoundary As String) As LifetimeContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Composition::Hosting::Core::LifetimeContext ^ FindContextWithin(System::String ^ sharingBoundary);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Composition.Hosting.Core.LifetimeContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sharingBoundary" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="sharingBoundary">
+          <span data-ttu-id="8759d-119">Granicy udostępniania można znaleźć w kontekście okresu istnienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-119">The sharing boundary to find a lifetime context within.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="8759d-120">Umożliwia znalezienie najszerszych kontekstu okres istnienia w wszystkich określonych granic udostępniania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-120">Finds the broadest lifetime context within all of the specified sharing boundaries.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="8759d-121">Kontekst najszerszych okres istnienia w ramach wszystkich określonych granic udostępniania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-121">The broadest lifetime context within all of the specified sharing boundaries.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="8759d-122">Obecnie katalog główny nie może być granicy.</span><span class="sxs-lookup"><span data-stu-id="8759d-122">Currently, the root cannot be a boundary.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetOrCreate">
+      <MemberSignature Language="C#" Value="public object GetOrCreate (int sharingId, System.Composition.Hosting.Core.CompositionOperation operation, System.Composition.Hosting.Core.CompositeActivator creator);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance object GetOrCreate(int32 sharingId, class System.Composition.Hosting.Core.CompositionOperation operation, class System.Composition.Hosting.Core.CompositeActivator creator) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.GetOrCreate(System.Int32,System.Composition.Hosting.Core.CompositionOperation,System.Composition.Hosting.Core.CompositeActivator)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetOrCreate (sharingId As Integer, operation As CompositionOperation, creator As CompositeActivator) As Object" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Object ^ GetOrCreate(int sharingId, System::Composition::Hosting::Core::CompositionOperation ^ operation, System::Composition::Hosting::Core::CompositeActivator ^ creator);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Object</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="sharingId" Type="System.Int32" />
+        <Parameter Name="operation" Type="System.Composition.Hosting.Core.CompositionOperation" />
+        <Parameter Name="creator" Type="System.Composition.Hosting.Core.CompositeActivator" />
+      </Parameters>
+      <Docs>
+        <param name="sharingId">
+          <span data-ttu-id="8759d-123">Identyfikator udostępnionego części.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-123">The ID of the shared part.</span>
+          </span>
+        </param>
+        <param name="operation">
+          <span data-ttu-id="8759d-124">Operacja, w którym można utworzyć strony, jeśli to konieczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-124">An operation in which to create a part, if necessary.</span>
+          </span>
+        </param>
+        <param name="creator">
+          <span data-ttu-id="8759d-125">Aktywatora aktywować nowe wystąpienie części, jeśli to konieczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-125">An activator that can activate a new part instance, if necessary.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="8759d-126">Pobiera wystąpienie część udostępniona, o określonym identyfikatorze, lub jeśli nie można odnaleźć wystąpienia części, tworzy i udostępnia wystąpienie przy użyciu określonego twórcy w obrębie określonej operacji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-126">Retrieves a shared part instance with the specified ID, or if the part instance can not be found, creates and shares a part instance using the specified creator within the specified operation.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="8759d-127">Część nowych lub pobrane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-127">The new or retrieved part.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="8759d-128">Ta metoda jest blokady bez Jeśli część wystąpienie już istnieje.</span><span class="sxs-lookup"><span data-stu-id="8759d-128">This method is lock-free if the part instance already exists.</span></span> <span data-ttu-id="8759d-129">Jeśli musisz można utworzyć wystąpienia części, blokady zostaną wykonane który będzie serializować innych zapisy, które używają tej metody (odczyty równoczesnych będzie nadal bezpieczne i zwolnić blokady).</span><span class="sxs-lookup"><span data-stu-id="8759d-129">If the part instance must be created, a lock will be taken that will serialize other writes that use this method (concurrent reads will continue to be safe and lock-free).</span></span> <span data-ttu-id="8759d-130">Ważne jest, że kompozycji i w związku z tym przejęcie blokady, jest ściśle liścia do głównym w drzewie okres istnienia.</span><span class="sxs-lookup"><span data-stu-id="8759d-130">It is important that the composition, and thus lock acquisition, is strictly leaf-to-root in the lifetime tree.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="8759d-131">Zwraca reprezentację ciągu tego <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-131">Returns the string representation of this <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> object.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="8759d-132">Reprezentacja ciągu <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiektu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-132">The string representation of this <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> object.</span>
+          </span>
+        </returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryGetExport">
+      <MemberSignature Language="C#" Value="public override bool TryGetExport (System.Composition.Hosting.Core.CompositionContract contract, out object export);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool TryGetExport(class System.Composition.Hosting.Core.CompositionContract contract, [out] object&amp; export) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Composition.Hosting.Core.LifetimeContext.TryGetExport(System.Composition.Hosting.Core.CompositionContract,System.Object@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function TryGetExport (contract As CompositionContract, ByRef export As Object) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool TryGetExport(System::Composition::Hosting::Core::CompositionContract ^ contract, [Runtime::InteropServices::Out] System::Object ^ % export);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Composition.Hosting</AssemblyName>
+        <AssemblyVersion>1.0.31.0</AssemblyVersion>
+        <AssemblyVersion>1.0.32.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="contract" Type="System.Composition.Hosting.Core.CompositionContract" />
+        <Parameter Name="export" Type="System.Object&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="contract">
+          <span data-ttu-id="8759d-133">Kontrakt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-133">The contract.</span>
+          </span>
+        </param>
+        <param name="export">
+          <span data-ttu-id="8759d-134">Po powrocie z tej metody zawiera wystąpienie kontraktu, jeśli jest dostępna; w przeciwnym razie <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-134">After this method returns, contains the contract instance if available; otherwise, <see langword="null" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="8759d-135">Pobiera wystąpienie umowy z kontekstu kompozycji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-135">Retrieves a contract instance from the composition context.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="8759d-136">
+            <see langword="true" /> Jeśli pobrano wystąpienie; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="8759d-136">
+              <see langword="true" /> if the instance was retrieved; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks></remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
