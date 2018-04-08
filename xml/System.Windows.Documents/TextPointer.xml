@@ -1,0 +1,1681 @@
+<Type Name="TextPointer" FullName="System.Windows.Documents.TextPointer">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="d374acbfa59bece9a23ff4841ba74263d0c6fa42" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public class TextPointer : System.Windows.Documents.ContentPosition" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TextPointer extends System.Windows.Documents.ContentPosition" />
+  <TypeSignature Language="DocId" Value="T:System.Windows.Documents.TextPointer" />
+  <TypeSignature Language="VB.NET" Value="Public Class TextPointer&#xA;Inherits ContentPosition" />
+  <TypeSignature Language="C++ CLI" Value="public ref class TextPointer : System::Windows::Documents::ContentPosition" />
+  <AssemblyInfo>
+    <AssemblyName>PresentationFramework</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Windows.Documents.ContentPosition</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="be4cd-101">Reprezentuje pozycję w <see cref="T:System.Windows.Documents.FlowDocument" /> lub <see cref="T:System.Windows.Controls.TextBlock" />.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="be4cd-101">Represents a position within a <see cref="T:System.Windows.Documents.FlowDocument" /> or <see cref="T:System.Windows.Controls.TextBlock" />.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-102"><xref:System.Windows.Documents.TextPointer> Klasy wprowadzono następującą terminologią:</span><span class="sxs-lookup"><span data-stu-id="be4cd-102">The <xref:System.Windows.Documents.TextPointer> class introduces the following terminology:</span></span>  
+  
+-   <span data-ttu-id="be4cd-103">Umieść — z założenia, <xref:System.Windows.Documents.TextPointer> zawsze wskazuje *pozycji* w zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-103">Position - Inherently, a <xref:System.Windows.Documents.TextPointer> always points to a *position* in content.</span></span>  <span data-ttu-id="be4cd-104">Takie pozycji, albo można podzielić między znaków w zawartości lub przepływ zawartości elementu tagi, które definiowania struktury zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-104">Such positions either fall between characters in the content, or between flow content element tags that define structure for the content.</span></span>  
+  
+-   <span data-ttu-id="be4cd-105">Bieżące położenie — ponieważ <xref:System.Windows.Documents.TextPointer> zawsze wskazuje pozycję i dlatego wiele operacji, które mogą być wykonywane za pośrednictwem <xref:System.Windows.Documents.TextPointer> są związane z pozycji wskazywanej aktualnie przez <xref:System.Windows.Documents.TextPointer>, dobrym rozwiązaniem jest po prostu odwoływać się do pozycji <xref:System.Windows.Documents.TextPointer> jako *bieżącego położenia*.</span><span class="sxs-lookup"><span data-stu-id="be4cd-105">Current Position - Because a <xref:System.Windows.Documents.TextPointer> always indicates a position, and because many of the operations that can be performed through a <xref:System.Windows.Documents.TextPointer> are relative to the position currently pointed to by the <xref:System.Windows.Documents.TextPointer>, it makes sense to simply refer to the position indicated by a <xref:System.Windows.Documents.TextPointer> as the *current position*.</span></span>  
+  
+-   <span data-ttu-id="be4cd-106">Pozycja wstawiania — *wstawiania* jest położenie, w którym można dodać nowej zawartości bez przerywania wszelkie semantycznego reguły dla skojarzonej zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-106">Insertion Position - An *insertion position* is a position where new content may be added without breaking any semantic rules for the associated content.</span></span>  <span data-ttu-id="be4cd-107">W praktyce wstawiania jest dowolne miejsce w sytuacjach, gdy znajduje się daszek zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-107">In practice, an insertion position is anywhere in content where a caret may be positioned.</span></span>  <span data-ttu-id="be4cd-108">Przykład prawidłowego <xref:System.Windows.Documents.TextPointer> pozycji, która nie jest wstawiania jest pozycją między dwóch sąsiadujących ze sobą <xref:System.Windows.Documents.Paragraph> tagi (oznacza to, że między tagu zamykającego z poprzednim akapicie i otwierający tag następnego akapitu).</span><span class="sxs-lookup"><span data-stu-id="be4cd-108">An example of a valid <xref:System.Windows.Documents.TextPointer> position that is not an insertion position is the position between two adjacent <xref:System.Windows.Documents.Paragraph> tags (that is, between the closing tag of the preceding paragraph and the opening tag of the next paragraph).</span></span>  
+  
+-   <span data-ttu-id="be4cd-109">Symbol — na potrzeby <xref:System.Windows.Documents.TextPointer> operacji obejmujących symbole, następujących jest traktowany jako *symbol*:</span><span class="sxs-lookup"><span data-stu-id="be4cd-109">Symbol - For the purposes of <xref:System.Windows.Documents.TextPointer> operations that involve symbols, any of the following is considered to be a *symbol*:</span></span>  
+  
+    -   <span data-ttu-id="be4cd-110">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-110">An opening or closing tag for a <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+    -   <span data-ttu-id="be4cd-111">A <xref:System.Windows.UIElement> zawartym w elemencie <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-111">A <xref:System.Windows.UIElement> element contained within an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-112">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-112">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+    -   <span data-ttu-id="be4cd-113">Każdy 16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-113">Each 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-114">Kontener tekstu — A *kontenera dopisków fonetycznych* jest element, który stanowi ultimate obramowanie wykonywanego zawartość śródwierszowa; pozycji <xref:System.Windows.Documents.TextPointer> zawsze mieści się w kontenerze tekstu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-114">Text Container - A *text container* is the element that forms the ultimate border for the flow content at hand; the position indicated by a <xref:System.Windows.Documents.TextPointer> always falls within a text container.</span></span>  <span data-ttu-id="be4cd-115">Obecnie kontener tekst musi być albo <xref:System.Windows.Documents.FlowDocument> lub <xref:System.Windows.Controls.TextBlock>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-115">Currently, a text container must be either a <xref:System.Windows.Documents.FlowDocument> or a <xref:System.Windows.Controls.TextBlock>.</span></span>  <span data-ttu-id="be4cd-116">Ogólnie rzecz biorąc, operacji między <xref:System.Windows.Documents.TextPointer> wystąpień w różnych kontenerach nie są obsługiwane.</span><span class="sxs-lookup"><span data-stu-id="be4cd-116">Generally speaking, operations between <xref:System.Windows.Documents.TextPointer> instances in different text containers are not supported.</span></span>  
+  
+-   <span data-ttu-id="be4cd-117">Dokument - zawartości w kontenerze tekstu jest określany jako *dokumentu*, jak w <xref:System.Windows.Documents.TextPointer.IsInSameDocument%2A> — metoda i <xref:System.Windows.Documents.TextPointer.DocumentStart%2A> i <xref:System.Windows.Documents.TextPointer.DocumentEnd%2A> właściwości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-117">Document - The content in a text container is referred to as a *document*, as in the <xref:System.Windows.Documents.TextPointer.IsInSameDocument%2A> method and the <xref:System.Windows.Documents.TextPointer.DocumentStart%2A> and <xref:System.Windows.Documents.TextPointer.DocumentEnd%2A> properties.</span></span>  
+  
+ <span data-ttu-id="be4cd-118"><xref:System.Windows.Documents.TextPointer> Klasy ma na celu ułatwienie przechodzenie i manipulowania nimi zawartość, która jest reprezentowana przez [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] przepływ elementy zawartości; zazwyczaj takie elementy pochodzi od <xref:System.Windows.Documents.TextElement>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-118">The <xref:System.Windows.Documents.TextPointer> class is intended to facilitate traversal and manipulation of content that is represented by [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] flow content elements; in general, such elements derive from <xref:System.Windows.Documents.TextElement>.</span></span>  <span data-ttu-id="be4cd-119">Niektóre operacje, które <xref:System.Windows.Documents.TextPointer> ułatwia są następujące:</span><span class="sxs-lookup"><span data-stu-id="be4cd-119">Some of the operations that <xref:System.Windows.Documents.TextPointer> facilitates include the following:</span></span>  
+  
+-   <span data-ttu-id="be4cd-120">Wykonaj porządkowej porównanie bieżącej pozycji z drugiego określonej pozycji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-120">Perform an ordinal comparison of the current position with a second specified position.</span></span>  <span data-ttu-id="be4cd-121">Zobacz <xref:System.Windows.Documents.TextPointer.CompareTo%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-121">See the <xref:System.Windows.Documents.TextPointer.CompareTo%2A> method.</span></span>  
+  
+-   <span data-ttu-id="be4cd-122">Określ typ zawartości sąsiadujące bieżącą pozycję w określonym kierunku.</span><span class="sxs-lookup"><span data-stu-id="be4cd-122">Determine the type of content adjacent to the current position in a specified direction.</span></span>  <span data-ttu-id="be4cd-123">Zobacz <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> — metoda i <xref:System.Windows.Documents.TextPointerContext> wyliczenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-123">See the <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> method and <xref:System.Windows.Documents.TextPointerContext> enumeration.</span></span>  
+  
+-   <span data-ttu-id="be4cd-124">Pobierz <xref:System.Windows.Documents.TextElement> zakresów lub jest przylegające do bieżącego położenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-124">Get the <xref:System.Windows.Documents.TextElement> that scopes or is adjacent to the current position.</span></span>  <span data-ttu-id="be4cd-125">Zobacz <xref:System.Windows.Documents.Paragraph> i <xref:System.Windows.Documents.TextPointer.GetAdjacentElement%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-125">See <xref:System.Windows.Documents.Paragraph> and the <xref:System.Windows.Documents.TextPointer.GetAdjacentElement%2A> method.</span></span>  
+  
+-   <span data-ttu-id="be4cd-126">Pobierz kontener tekst, który zakresów bieżącego dokumentu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-126">Get the text container that scopes the current document.</span></span>  <span data-ttu-id="be4cd-127">Zobacz <xref:System.Windows.Documents.TextPointer.Parent%2A> właściwości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-127">See the <xref:System.Windows.Documents.TextPointer.Parent%2A> property.</span></span>  
+  
+-   <span data-ttu-id="be4cd-128">Pobierz określoną liczbę znaków poprzedzające lub następujące bieżącego położenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-128">Get a specified number of characters preceding or following the current position.</span></span>  <span data-ttu-id="be4cd-129">Zobacz <xref:System.Windows.Documents.TextPointer.GetTextInRun%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-129">See the <xref:System.Windows.Documents.TextPointer.GetTextInRun%2A> method.</span></span>  
+  
+-   <span data-ttu-id="be4cd-130">Wstaw ciąg znaków w bieżącym położeniu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-130">Insert a string of characters at the current position.</span></span>  <span data-ttu-id="be4cd-131">Zobacz <xref:System.Windows.Documents.TextPointer.InsertTextInRun%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-131">See the <xref:System.Windows.Documents.TextPointer.InsertTextInRun%2A> method.</span></span>  
+  
+-   <span data-ttu-id="be4cd-132">Znajdź wiersz granice zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-132">Find line boundaries in content.</span></span>  <span data-ttu-id="be4cd-133">Zobacz <xref:System.Windows.Documents.TextPointer.GetLineStartPosition%2A> — metoda i <xref:System.Windows.Documents.TextPointer.IsAtLineStartPosition%2A> właściwości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-133">See the <xref:System.Windows.Documents.TextPointer.GetLineStartPosition%2A> method and <xref:System.Windows.Documents.TextPointer.IsAtLineStartPosition%2A> property.</span></span>  
+  
+-   <span data-ttu-id="be4cd-134">Tłumaczenie między <xref:System.Windows.Documents.TextPointer> pozycji i symbol przesunięcia do zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-134">Translate between <xref:System.Windows.Documents.TextPointer> positions and symbol offsets into content.</span></span>  <span data-ttu-id="be4cd-135">Zobacz <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> i <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-135">See the <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> and <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> methods.</span></span>  
+  
+-   <span data-ttu-id="be4cd-136">Testowanie visual trafień przez tłumaczenie między <xref:System.Windows.Documents.TextPointer> pozycji i <xref:System.Windows.Point> reprezentujący współrzędnych względnych.</span><span class="sxs-lookup"><span data-stu-id="be4cd-136">Perform visual hit testing by translating between a <xref:System.Windows.Documents.TextPointer> position and a <xref:System.Windows.Point> representing relative coordinates.</span></span>  
+  
+-   <span data-ttu-id="be4cd-137">Znajdź pobliskich wstawiania lub sprawdź, czy bieżące położenie jest wstawiania.</span><span class="sxs-lookup"><span data-stu-id="be4cd-137">Find a nearby insertion position, or check whether the current position is an insertion position.</span></span>  <span data-ttu-id="be4cd-138">Zobacz <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> i <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A> metod i <xref:System.Windows.Documents.TextPointer.IsAtInsertionPosition%2A> właściwości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-138">See the <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> and <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A> methods and the <xref:System.Windows.Documents.TextPointer.IsAtInsertionPosition%2A> property.</span></span>  
+  
+ <span data-ttu-id="be4cd-139">Położenie i <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> wskazywanym przez <xref:System.Windows.Documents.TextPointer> obiektu są niezmienne.</span><span class="sxs-lookup"><span data-stu-id="be4cd-139">The position and <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> indicated by a <xref:System.Windows.Documents.TextPointer> object are immutable.</span></span>  <span data-ttu-id="be4cd-140">Gdy zawartość jest edytowany lub zmodyfikować pozycji <xref:System.Windows.Documents.TextPointer> nie ulega zmianie względem otaczającego tekstu; zamiast przesunięcie tej pozycji od początku zawartości jest odpowiednio dostosowane do nowej pozycji względnej w zawartość.</span><span class="sxs-lookup"><span data-stu-id="be4cd-140">When content is edited or modified, the position indicated by a <xref:System.Windows.Documents.TextPointer> does not change relative to the surrounding text; rather the offset of that position from the beginning of content is adjusted correspondingly to reflect the new relative position in content.</span></span>  <span data-ttu-id="be4cd-141">Na przykład <xref:System.Windows.Documents.TextPointer> wskazujące pozycji na początku danego akapitu w dalszym ciągu punktu Początek ust nawet wtedy, gdy zawartość zostanie wstawiony lub usunięty przed lub po akapicie.</span><span class="sxs-lookup"><span data-stu-id="be4cd-141">For example, a <xref:System.Windows.Documents.TextPointer> that indicates a position at the beginning of a given paragraph continues to point to the beginning of that paragraph even when content is inserted or deleted before or after the paragraph.</span></span>  
+  
+ <span data-ttu-id="be4cd-142"><xref:System.Windows.Documents.TextPointer> Klasa nie zapewnia żadnych konstruktorów publicznych.</span><span class="sxs-lookup"><span data-stu-id="be4cd-142">The <xref:System.Windows.Documents.TextPointer> class does not provide any public constructors.</span></span>  <span data-ttu-id="be4cd-143">Wystąpienie <xref:System.Windows.Documents.TextPointer> jest tworzona przy użyciu właściwości lub metody innych obiektów (także inne <xref:System.Windows.Documents.TextPointer> obiektów).</span><span class="sxs-lookup"><span data-stu-id="be4cd-143">An instance of <xref:System.Windows.Documents.TextPointer> is created by using properties or methods of other objects (including other <xref:System.Windows.Documents.TextPointer> objects).</span></span> <span data-ttu-id="be4cd-144">Poniższa lista zawiera kilka przykładów metody i właściwości, które tworzą i zwracać <xref:System.Windows.Documents.TextPointer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-144">The following list provides a few examples of methods and properties that create and return a <xref:System.Windows.Documents.TextPointer>.</span></span>  <span data-ttu-id="be4cd-145">Ta lista nie jest wyczerpująca:</span><span class="sxs-lookup"><span data-stu-id="be4cd-145">This list is not exhaustive:</span></span>  
+  
+-   <span data-ttu-id="be4cd-146">Z <xref:System.Windows.Documents.TextRange>: <xref:System.Windows.Documents.TextRange.Start%2A> i <xref:System.Windows.Documents.TextRange.End%2A>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-146">From a <xref:System.Windows.Documents.TextRange>: <xref:System.Windows.Documents.TextRange.Start%2A> and <xref:System.Windows.Documents.TextRange.End%2A>.</span></span>  
+  
+-   <span data-ttu-id="be4cd-147">Z <xref:System.Windows.Documents.TextElement>: <xref:System.Windows.Documents.TextElement.ContentStart%2A>, <xref:System.Windows.Documents.TextElement.ContentEnd%2A>, <xref:System.Windows.Documents.TextElement.ElementStart%2A>, i <xref:System.Windows.Documents.TextElement.ElementEnd%2A>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-147">From a <xref:System.Windows.Documents.TextElement>:  <xref:System.Windows.Documents.TextElement.ContentStart%2A>, <xref:System.Windows.Documents.TextElement.ContentEnd%2A>, <xref:System.Windows.Documents.TextElement.ElementStart%2A>, and <xref:System.Windows.Documents.TextElement.ElementEnd%2A>.</span></span>  
+  
+-   <span data-ttu-id="be4cd-148">Z <xref:System.Windows.Controls.TextBlock> (kontener tekst): <xref:System.Windows.Controls.TextBlock.ContentStart%2A>, <xref:System.Windows.Controls.TextBlock.ContentEnd%2A>, i <xref:System.Windows.Controls.TextBlock.GetPositionFromPoint%2A>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-148">From a <xref:System.Windows.Controls.TextBlock> (text container): <xref:System.Windows.Controls.TextBlock.ContentStart%2A>, <xref:System.Windows.Controls.TextBlock.ContentEnd%2A>, and <xref:System.Windows.Controls.TextBlock.GetPositionFromPoint%2A>.</span></span>  
+  
+-   <span data-ttu-id="be4cd-149">Z <xref:System.Windows.Documents.FlowDocument> (kontener tekst): <xref:System.Windows.Documents.FlowDocument.ContentStart%2A>, i <xref:System.Windows.Documents.FlowDocument.ContentEnd%2A></span><span class="sxs-lookup"><span data-stu-id="be4cd-149">From a <xref:System.Windows.Documents.FlowDocument> (text container): <xref:System.Windows.Documents.FlowDocument.ContentStart%2A>, and <xref:System.Windows.Documents.FlowDocument.ContentEnd%2A></span></span>  
+  
+-   <span data-ttu-id="be4cd-150">Z istniejącego <xref:System.Windows.Documents.TextPointer>: <xref:System.Windows.Documents.TextPointer.DocumentStart%2A>, <xref:System.Windows.Documents.TextPointer.DocumentEnd%2A>, <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A>, i <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-150">From an existing <xref:System.Windows.Documents.TextPointer>: <xref:System.Windows.Documents.TextPointer.DocumentStart%2A>, <xref:System.Windows.Documents.TextPointer.DocumentEnd%2A>, <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A>, and <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-151">W poniższym przykładzie pokazano sposób użycia <xref:System.Windows.Documents.TextPointer> można znaleźć pozycji tylko wewnątrz pierwszy <xref:System.Windows.Documents.Run> elementu w kontenerze określony tekst.</span><span class="sxs-lookup"><span data-stu-id="be4cd-151">The following example demonstrates how to use a <xref:System.Windows.Documents.TextPointer> to find a position just inside of the first <xref:System.Windows.Documents.Run> element in a specified text container.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_TextPointer1](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_textpointer1)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_TextPointer1](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_textpointer1)]  
+  
+ <span data-ttu-id="be4cd-152">Poniższy przykład implementuje algorytmu simplistic Znajdź przy użyciu <xref:System.Windows.Documents.TextPointer> urządzenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-152">The following example implements a simplistic find algorithm using <xref:System.Windows.Documents.TextPointer> facilities.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_TextPointer2](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_textpointer2)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_TextPointer2](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_textpointer2)]  
+  
+ ]]></format>
+    </remarks>
+    <altmember cref="T:System.Windows.Documents.TextRange" />
+    <altmember cref="T:System.Windows.Documents.TextPointerContext" />
+    <altmember cref="T:System.Windows.Documents.TextElement" />
+  </Docs>
+  <Members>
+    <Member MemberName="CompareTo">
+      <MemberSignature Language="C#" Value="public int CompareTo (System.Windows.Documents.TextPointer position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 CompareTo(class System.Windows.Documents.TextPointer position) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.CompareTo(System.Windows.Documents.TextPointer)" />
+      <MemberSignature Language="VB.NET" Value="Public Function CompareTo (position As TextPointer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int CompareTo(System::Windows::Documents::TextPointer ^ position);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="position" Type="System.Windows.Documents.TextPointer" />
+      </Parameters>
+      <Docs>
+        <param name="position">
+          <span data-ttu-id="be4cd-153">A <see cref="T:System.Windows.Documents.TextPointer" /> , który określa położenie do porównania z bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-153">A <see cref="T:System.Windows.Documents.TextPointer" /> that specifies a position to compare to the current position.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-154">Wykonuje porządkowej porównanie położenia określonego przez bieżący <see cref="T:System.Windows.Documents.TextPointer" /> i określić drugi <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-154">Performs an ordinal comparison between the positions specified by the current <see cref="T:System.Windows.Documents.TextPointer" /> and a second specified <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-155">– 1, gdy bieżący <see cref="T:System.Windows.Documents.TextPointer" /> poprzedza <paramref name="position" />; 0, jeśli lokalizacje są takie same; + 1, jeśli bieżący <see cref="T:System.Windows.Documents.TextPointer" /> następuje <paramref name="position" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-155">–1 if the current <see cref="T:System.Windows.Documents.TextPointer" /> precedes <paramref name="position" />; 0 if the locations are the same; +1 if the current <see cref="T:System.Windows.Documents.TextPointer" /> follows <paramref name="position" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-156">Wartość -1 wskazuje, że pozycja określona przez bieżące <xref:System.Windows.Documents.TextPointer> poprzedza pozycja określona przez `position`.</span><span class="sxs-lookup"><span data-stu-id="be4cd-156">A value of –1 indicates that the position specified by the current <xref:System.Windows.Documents.TextPointer> precedes the position specified by `position`.</span></span>  <span data-ttu-id="be4cd-157">Wartość 0 wskazuje, że wskazany pozycje są takie same.</span><span class="sxs-lookup"><span data-stu-id="be4cd-157">A value of 0 indicates that the indicated positions are equal.</span></span>  <span data-ttu-id="be4cd-158">Wartość dodatnią + 1 oznacza, że pozycja określona przez bieżące <xref:System.Windows.Documents.TextPointer> następuje pozycja określona przez `position`.</span><span class="sxs-lookup"><span data-stu-id="be4cd-158">A value of positive +1 indicates that the position specified by the current <xref:System.Windows.Documents.TextPointer> follows the position specified by `position`.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-159">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-159">The following example demonstrates a use for this method.</span></span>  <span data-ttu-id="be4cd-160">W tym przykładzie <xref:System.Windows.Documents.TextPointer.CompareTo%2A> metoda jest używana w połączeniu z <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> metody, aby sprawdzić, czy określony <xref:System.Windows.Documents.TextElement> jest pusta.</span><span class="sxs-lookup"><span data-stu-id="be4cd-160">In the example, the <xref:System.Windows.Documents.TextPointer.CompareTo%2A> method is used in conjunction with the <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> method to test whether a specified <xref:System.Windows.Documents.TextElement> is empty.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetInsertionPosition](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getinsertionposition)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetInsertionPosition](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getinsertionposition)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="be4cd-161">
+            <paramref name="position" /> Określa położenie poza kontener tekst skojarzony z bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-161">
+              <paramref name="position" /> specifies a position outside of the text container associated with the current position.</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.Windows.Documents.TextPointer.IsInSameDocument(System.Windows.Documents.TextPointer)" />
+      </Docs>
+    </Member>
+    <Member MemberName="DeleteTextInRun">
+      <MemberSignature Language="C#" Value="public int DeleteTextInRun (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 DeleteTextInRun(int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.DeleteTextInRun(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function DeleteTextInRun (count As Integer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int DeleteTextInRun(int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">
+          <span data-ttu-id="be4cd-162">Liczba znaków do usunięcia, zaczynając od bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-162">The number of characters to delete, starting at the current position.</span>
+          </span>
+          <span data-ttu-id="be4cd-163">Określ wartość dodatnią, aby usunąć znaki, które należy wykonać bieżącej pozycji; Określ wartość ujemną, aby usunąć znaki, które należy poprzedzić bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-163">Specify a positive value to delete characters that follow the current position; specify a negative value to delete characters that precede the current position.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-164">Usuwa określoną liczbę znaków od pozycji bieżącej <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-164">Deletes the specified number of characters from the position indicated by the current <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-165">Liczba znaków w rzeczywistości usunięty.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-165">The number of characters actually deleted.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-166">Określ wartość dodatnią, aby usunąć znaki, które należy wykonać bieżącej pozycji (podobnie jak w <xref:System.Windows.Documents.LogicalDirection.Forward?displayProperty=nameWithType>); określ wartość ujemną, aby usunąć znaki, które należy poprzedzić bieżącego położenia (podobnie jak w <xref:System.Windows.Documents.LogicalDirection.Backward?displayProperty=nameWithType>).</span><span class="sxs-lookup"><span data-stu-id="be4cd-166">Specify a positive value to delete characters that follow the current position (as in <xref:System.Windows.Documents.LogicalDirection.Forward?displayProperty=nameWithType>); specify a negative value to delete characters that precede the current position (as in <xref:System.Windows.Documents.LogicalDirection.Backward?displayProperty=nameWithType>).</span></span>  
+  
+ <span data-ttu-id="be4cd-167">Liczba znaków w rzeczywistości usunięty może być mniejsza niż liczba określona przez `count`.</span><span class="sxs-lookup"><span data-stu-id="be4cd-167">The number of characters actually deleted may be less than the number specified by `count`.</span></span>  <span data-ttu-id="be4cd-168">Dzieje się tak w przypadku których `count` określa więcej znaków niż istnieje do usunięcia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-168">This happens in cases where `count` specifies more characters than exist to be deleted.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="be4cd-169">Metoda jest wywoływana w miejscu, w których tekst nie jest dozwolone.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-169">The method is called at a position where text is not allowed.</span>
+          </span>
+        </exception>
+        <altmember cref="Overload:System.Windows.Documents.TextPointer.GetTextInRun" />
+        <altmember cref="M:System.Windows.Documents.TextPointer.InsertTextInRun(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="DocumentEnd">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer DocumentEnd { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Documents.TextPointer DocumentEnd" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.DocumentEnd" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DocumentEnd As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Documents::TextPointer ^ DocumentEnd { System::Windows::Documents::TextPointer ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-170">Pobiera <see cref="T:System.Windows.Documents.TextPointer" /> na końcu zawartości kontenera tekstowego skojarzonego z bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-170">Gets a <see cref="T:System.Windows.Documents.TextPointer" /> at the end of content in the text container associated with the current position.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-171">A <see cref="T:System.Windows.Documents.TextPointer" /> na końcu zawartości kontenera tekstowego skojarzonego z bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-171">A <see cref="T:System.Windows.Documents.TextPointer" /> at the end of content in the text container associated with the current position.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-172"><xref:System.Windows.Documents.TextPointer.Parent%2A> Dla zwróconego <xref:System.Windows.Documents.TextPointer> jest zawsze kontenerze tekstu (<xref:System.Windows.Controls.TextBlock> lub <xref:System.Windows.Documents.FlowDocument>), a nie <xref:System.Windows.Documents.TextElement>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-172">The <xref:System.Windows.Documents.TextPointer.Parent%2A> for the returned <xref:System.Windows.Documents.TextPointer> is always a text container (<xref:System.Windows.Controls.TextBlock> or <xref:System.Windows.Documents.FlowDocument>), rather than a <xref:System.Windows.Documents.TextElement>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.DocumentStart" />
+      </Docs>
+    </Member>
+    <Member MemberName="DocumentStart">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer DocumentStart { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Documents.TextPointer DocumentStart" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.DocumentStart" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property DocumentStart As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Documents::TextPointer ^ DocumentStart { System::Windows::Documents::TextPointer ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-173">Pobiera <see cref="T:System.Windows.Documents.TextPointer" /> na początku zawartości kontenera tekstowego skojarzonego z bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-173">Gets a <see cref="T:System.Windows.Documents.TextPointer" /> at the beginning of content in the text container associated with the current position.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-174">A <see cref="T:System.Windows.Documents.TextPointer" /> na początku zawartości kontenera tekstowego skojarzonego z bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-174">A <see cref="T:System.Windows.Documents.TextPointer" /> at the beginning of content in the text container associated with the current position.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-175">Użyj pozycji zwracane przez tę właściwość jako pozycji linii bazowej, w którym do pracy z przesunięciem względną do innych pozycji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-175">Use the position returned by this property as a baseline position from which to work with relative offsets to other positions.</span></span>  <span data-ttu-id="be4cd-176"><xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> i <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> metody umożliwiają tłumaczenie między i pozycji przesunięcia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-176">The <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> and <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> methods provide a way to translate between positions and position offsets.</span></span>  
+  
+ <span data-ttu-id="be4cd-177"><xref:System.Windows.Documents.TextPointer.Parent%2A> Dla zwróconego <xref:System.Windows.Documents.TextPointer> jest zawsze kontenerze tekstu (<xref:System.Windows.Controls.TextBlock> lub <xref:System.Windows.Documents.FlowDocument>), a nie <xref:System.Windows.Documents.TextElement>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-177">The <xref:System.Windows.Documents.TextPointer.Parent%2A> for the returned <xref:System.Windows.Documents.TextPointer> is always a text container (<xref:System.Windows.Controls.TextBlock> or <xref:System.Windows.Documents.FlowDocument>), rather than a <xref:System.Windows.Documents.TextElement>.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.DocumentEnd" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetAdjacentElement">
+      <MemberSignature Language="C#" Value="public System.Windows.DependencyObject GetAdjacentElement (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.DependencyObject GetAdjacentElement(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetAdjacentElement(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetAdjacentElement (direction As LogicalDirection) As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::DependencyObject ^ GetAdjacentElement(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-178">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa kierunek logicznej wyszukiwania dla elementu sąsiadujących ze sobą.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-178">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to search for an adjacent element.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-179">Zwraca element, jeśli obramowania bieżącej <see cref="T:System.Windows.Documents.TextPointer" /> w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-179">Returns the element, if any, that borders the current <see cref="T:System.Windows.Documents.TextPointer" /> in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-180">Element sąsiadujących ze sobą w określonym <paramref name="direction" />, lub <see langword="null" /> Jeśli sąsiadujących ze sobą nie zawiera żadnego elementu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-180">The adjacent element in the specified <paramref name="direction" />, or <see langword="null" /> if no adjacent element exists.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-181">Zwrócony element jest zwykle <xref:System.Windows.Documents.TextElement>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-181">The returned element is typically a <xref:System.Windows.Documents.TextElement>.</span></span>  <span data-ttu-id="be4cd-182">A <xref:System.Windows.UIElement> może być zwracany podczas <xref:System.Windows.Documents.TextPointer> wskazuje położenie wewnątrz <xref:System.Windows.Documents.BlockUIContainer> element lub <xref:System.Windows.Documents.InlineUIContainer> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-182">A <xref:System.Windows.UIElement> can be returned when the <xref:System.Windows.Documents.TextPointer> indicates a position inside a <xref:System.Windows.Documents.BlockUIContainer> element or an <xref:System.Windows.Documents.InlineUIContainer> element.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.Parent" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetCharacterRect">
+      <MemberSignature Language="C#" Value="public System.Windows.Rect GetCharacterRect (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Windows.Rect GetCharacterRect(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetCharacterRect(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetCharacterRect (direction As LogicalDirection) As Rect" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Rect GetCharacterRect(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.GetCharacterRect(System.Windows.Documents.LogicalDirection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Rect</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-183">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w którym można znaleźć zawartości obwiedni.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-183">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to find a content bounding box.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-184">Zwraca obwiedni (<see cref="T:System.Windows.Rect" />) dla zawartości, która obramowania bieżącej <see cref="T:System.Windows.Documents.TextPointer" /> w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-184">Returns a bounding box (<see cref="T:System.Windows.Rect" />) for content that borders the current <see cref="T:System.Windows.Documents.TextPointer" /> in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-185">Obwiedni zawartości ograniczająca bieżącego <see cref="T:System.Windows.Documents.TextPointer" /> w określonym kierunku lub <see cref="P:System.Windows.Rect.Empty" /> Jeśli bieżąca, informacje o układzie prawidłowy jest niedostępny.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-185">A bounding box for content that borders the current <see cref="T:System.Windows.Documents.TextPointer" /> in the specified direction, or <see cref="P:System.Windows.Rect.Empty" /> if current, valid layout information is unavailable.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-186"><xref:System.Windows.Documents.TextElement> krawędziach nie są uznawane za zawartości na potrzeby tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-186"><xref:System.Windows.Documents.TextElement> edges are not considered content for the purposes of this method.</span></span>  <span data-ttu-id="be4cd-187">Jeśli <xref:System.Windows.Documents.TextPointer> jest umieszczony przed <xref:System.Windows.Documents.TextElement> krawędzi, zwracana wartość jest obwiednią Następna z systemem innym niż<xref:System.Windows.Documents.TextElement> zawartości w określonym kierunku.</span><span class="sxs-lookup"><span data-stu-id="be4cd-187">If the <xref:System.Windows.Documents.TextPointer> is positioned before a <xref:System.Windows.Documents.TextElement> edge, the return value is a bounding box for the next non-<xref:System.Windows.Documents.TextElement> content in the specified direction.</span></span>  <span data-ttu-id="be4cd-188">Jeśli brak zawartości w określonym kierunku zerowej szerokości <xref:System.Windows.Rect> jest zwracany za wysokości dopasowania wysokości żadnych poprzedzających zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-188">If there is no content in the specified direction, a zero-width <xref:System.Windows.Rect> is returned with a height matching the height of any preceding content.</span></span>  
+  
+ <span data-ttu-id="be4cd-189">Operacja wykonywana przez tę metodę zależy od prawidłowy układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-189">The operation performed by this method depends on a valid layout.</span></span>  <span data-ttu-id="be4cd-190">Jeśli to konieczne, ta metoda próbuje automatycznie ponownie wygenerować układzie prawidłowe przed wykonaniem operacji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-190">When necessary, this method attempts to automatically regenerate a valid layout before proceeding with the operation.</span></span>  <span data-ttu-id="be4cd-191">Trwa ponowne generowanie układu może być dość kosztowna operacja.</span><span class="sxs-lookup"><span data-stu-id="be4cd-191">Regenerating a layout can be a relatively expensive operation.</span></span>  <span data-ttu-id="be4cd-192">Użyj <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> właściwość do sprawdzenia układu prawidłowe przed wykonaniem operacji, które może ponownie wygenerować układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-192">Use the <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> property to check for a valid layout before performing operations that may regenerate the layout.</span></span>  <span data-ttu-id="be4cd-193">Aby uzyskać więcej informacji, zobacz [układu](~/docs/framework/wpf/advanced/layout.md).</span><span class="sxs-lookup"><span data-stu-id="be4cd-193">For more information, see [Layout](~/docs/framework/wpf/advanced/layout.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.HasValidLayout" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetInsertionPosition">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetInsertionPosition (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetInsertionPosition(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetInsertionPosition (direction As LogicalDirection) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetInsertionPosition(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-194">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w których będą poszukiwane najbliższego wstawiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-194">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to search for the closest insertion position.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-195">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> do najbliższego wstawiania w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-195">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the closest insertion position in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-196">A <see cref="T:System.Windows.Documents.TextPointer" /> do najbliższego wstawiania w określonym kierunku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-196">A <see cref="T:System.Windows.Documents.TextPointer" /> to the closest insertion position in the specified direction.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-197">Pozycja wstawiania jest położenie, w którym można dodać nowej zawartości bez przerywania wszelkie semantycznego reguły dla skojarzonej zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-197">An insertion position is a position where new content may be added without breaking any semantic rules for the associated content.</span></span>  <span data-ttu-id="be4cd-198">W praktyce wstawiania jest dowolne miejsce w sytuacjach, gdy znajduje się daszek zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-198">In practice, an insertion position is anywhere in content where a caret may be positioned.</span></span>  <span data-ttu-id="be4cd-199">Przykład prawidłowego <xref:System.Windows.Documents.TextPointer> pozycji, która nie jest wstawiania jest pozycją między dwóch sąsiadujących ze sobą <xref:System.Windows.Documents.Paragraph> tagi (oznacza to, że między tagu zamykającego z poprzednim akapicie i otwierający tag następnego akapitu).</span><span class="sxs-lookup"><span data-stu-id="be4cd-199">An example of a valid <xref:System.Windows.Documents.TextPointer> position that is not an insertion position is the position between two adjacent <xref:System.Windows.Documents.Paragraph> tags (that is, between the closing tag of the preceding paragraph and the opening tag of the next paragraph).</span></span>  
+  
+ <span data-ttu-id="be4cd-200">Jeśli <xref:System.Windows.Documents.TextPointer> już wskazuje prawidłowy wstawiania, lecz tag zamykający dla niepustej sekwencji formatowania bezpośrednio następuje tej pozycji w określonym kierunku, a następnie <xref:System.Windows.Documents.TextPointer> zwróconych przez to metody jest dostosowana do wskaż wstawiania Umieść zaraz po zamknięciu formatowania sekwencji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-200">If the <xref:System.Windows.Documents.TextPointer> already points to a valid insertion position, but the closing tag for a non-empty formatting sequence directly follows that position in the given direction, then the <xref:System.Windows.Documents.TextPointer> returned by this method is adjusted to point to the insertion position just after the close of the formatting sequence.</span></span> <span data-ttu-id="be4cd-201">Rozważmy na przykład sekwencji znaczników `<Bold>a</Bold>b`.</span><span class="sxs-lookup"><span data-stu-id="be4cd-201">For example, consider the markup sequence `<Bold>a</Bold>b`.</span></span> <span data-ttu-id="be4cd-202">Należy pamiętać, że istnieją dwie pozycje wstawiania między literami `a` i `b` — poprzedzającym zamknięcia `Bold` tag, a drugi, bezpośrednio po upływie `Bold` tagu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-202">Note that there are two insertion positions between the letters `a` and `b` — one that precedes the closing `Bold` tag, and one directly following the closing `Bold` tag.</span></span> <span data-ttu-id="be4cd-203">Jeśli <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> jest wywoływana na <xref:System.Windows.Documents.TextPointer> do położenia bezpośrednio po literę `a` i przed zamknięcia `Bold` tag i z `direction` z <xref:System.Windows.Documents.LogicalDirection.Forward>, zwracana <xref:System.Windows.Documents.TextPointer> jest dostosowana do wskaż Pozycja tuż przed literą `b`, po upływie `Bold` tagu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-203">If <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> is called on a <xref:System.Windows.Documents.TextPointer> to the position directly after the letter `a` and before of the closing `Bold` tag, and with a `direction` of <xref:System.Windows.Documents.LogicalDirection.Forward>, the returned <xref:System.Windows.Documents.TextPointer> is adjusted to point to the position just before the letter `b`, after the closing `Bold` tag.</span></span> <span data-ttu-id="be4cd-204">Podobne dostosowań do otwarcia tagów formatowania podczas pracy w przeciwnym kierunku logiczne.</span><span class="sxs-lookup"><span data-stu-id="be4cd-204">A similar adjustment is made for opening formatting tags when working in the opposite logical direction.</span></span> <span data-ttu-id="be4cd-205">Ta metoda jest przeznaczona do pozwalają Uściślanie między pozycje wstawiania w podobnych przypadków.</span><span class="sxs-lookup"><span data-stu-id="be4cd-205">This method is intended to provide a means of disambiguation between insertion positions in similar cases.</span></span>  
+  
+ <span data-ttu-id="be4cd-206">Ta metoda umożliwia również można selektywnie punkty wstawienia, gdy uczestniczy sekwencji strukturalnych tagów.</span><span class="sxs-lookup"><span data-stu-id="be4cd-206">This method can also be used to be selective about insertion points when a sequence of structural tags is involved.</span></span> <span data-ttu-id="be4cd-207">Na przykład, gdy na pozycji od zamknięcia i otwarcia tagów akapitu, kierunku parametru może służyć do wybierz najbliższy punkt wstawiania na początku następujący ustęp (określając <xref:System.Windows.Documents.LogicalDirection.Forward?displayProperty=nameWithType>) lub na końcu poprzedniego (akapitu określając <xref:System.Windows.Documents.LogicalDirection.Backward?displayProperty=nameWithType>).</span><span class="sxs-lookup"><span data-stu-id="be4cd-207">For example, when at a position between closing and opening paragraph tags, the direction parameter can be used to select the closest insertion point at the beginning of the following paragraph (by specifying <xref:System.Windows.Documents.LogicalDirection.Forward?displayProperty=nameWithType>) or at the end of the preceding paragraph (by specifying <xref:System.Windows.Documents.LogicalDirection.Backward?displayProperty=nameWithType>).</span></span>  
+  
+ <span data-ttu-id="be4cd-208">Gdy wskaźnik myszy znajduje się już w wstawiania i nie ma żadnych sąsiadujących znaczników formatowania w określonym `direction`, zwracana <xref:System.Windows.Documents.TextPointer> wskazuje na tym samym miejscu wywołujący <xref:System.Windows.Documents.TextPointer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-208">If the pointer is already at insertion position, and there are no adjacent formatting tags in the specified `direction`, the returned <xref:System.Windows.Documents.TextPointer> points to the same position as the calling <xref:System.Windows.Documents.TextPointer>.</span></span>  
+  
+ <span data-ttu-id="be4cd-209">Istnieje możliwość, czy nie prawidłowy wstawiania istnieje względem pozycji wskazywanej przez <xref:System.Windows.Documents.TextPointer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-209">It is possible that no valid insertion position exists relative to the position pointed to by a <xref:System.Windows.Documents.TextPointer>.</span></span>  <span data-ttu-id="be4cd-210">Może to nastąpić, jeśli przywoływanej zawartości jest strukturalnie niekompletne, jak pusta tabela lub listy.</span><span class="sxs-lookup"><span data-stu-id="be4cd-210">This can happen if the referenced content is structurally incomplete, as in an empty table or list.</span></span>  <span data-ttu-id="be4cd-211">W takich przypadkach, ta metoda po prostu zwraca <xref:System.Windows.Documents.TextPointer> na tym samym miejscu <xref:System.Windows.Documents.TextPointer> z którego ta metoda została wywołana.</span><span class="sxs-lookup"><span data-stu-id="be4cd-211">In such cases, this method simply returns a <xref:System.Windows.Documents.TextPointer> to the same position as the <xref:System.Windows.Documents.TextPointer> from which this method was called.</span></span>  <span data-ttu-id="be4cd-212">Ta metoda zawsze zwraca prawidłową <xref:System.Windows.Documents.TextPointer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-212">This method always returns a valid <xref:System.Windows.Documents.TextPointer>.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-213">Ten przykład przedstawia sposób użycia <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> , aby sprawdzić, czy określony <xref:System.Windows.Documents.TextElement> jest pusta drukowania zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-213">This example shows how to use the <xref:System.Windows.Documents.TextPointer.GetInsertionPosition%2A> method to check whether a specified <xref:System.Windows.Documents.TextElement> is empty of printable content.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetInsertionPosition](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getinsertionposition)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetInsertionPosition](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getinsertionposition)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetNextInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetLineStartPosition">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-214">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> na początku wiersza, który został określony względem bieżącej <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-214">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the beginning of a line that is specified relative to the current <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetLineStartPosition">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetLineStartPosition (int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetLineStartPosition(int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetLineStartPosition(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetLineStartPosition (count As Integer) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetLineStartPosition(int count);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="count">
+          <span data-ttu-id="be4cd-215">Liczba znaczników linii początkowej można pominąć w przypadku określenia wiersza, dla którego ma zostać zwrócona pozycji początkowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-215">The number of start-of-line markers to skip when determining the line for which to return the starting position.</span>
+          </span>
+          <span data-ttu-id="be4cd-216">Wartości ujemne określić poprzednich wierszy, 0 określa bieżącego wiersza i określ liczbę wartości dodatnich kolejne wiersze.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-216">Negative values specify preceding lines, 0 specifies the current line, and positive values specify following lines.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-217">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> na początku wiersza, który został określony względem bieżącej <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-217">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the beginning of a line that is specified relative to the current <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-218">A <see cref="T:System.Windows.Documents.TextPointer" /> wskazujące na początku określonego wiersza (z <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> ustawioną <see cref="F:System.Windows.Documents.LogicalDirection.Forward" />), lub <see langword="null" /> określonego wiersza jest spoza zakresu lub w przeciwnym razie nie można odnaleźć.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-218">A <see cref="T:System.Windows.Documents.TextPointer" /> pointing to the beginning of the specified line (with the <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> set to <see cref="F:System.Windows.Documents.LogicalDirection.Forward" />), or <see langword="null" /> if the specified line is out of range or otherwise cannot be located.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-219">Jeśli <xref:System.Windows.Documents.TextPointer> punktów niejednoznaczne pozycji, na przykład między dwoma liniami wiersza w kierunku określony przez <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> został wybrany jako względną wiersza początkowego.</span><span class="sxs-lookup"><span data-stu-id="be4cd-219">If the <xref:System.Windows.Documents.TextPointer> points to an ambiguous position, for example, between two lines, the line in the direction specified by <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> is selected as the relative starting line.</span></span>  
+  
+ <span data-ttu-id="be4cd-220">Operacja wykonywana przez tę metodę zależy od prawidłowy układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-220">The operation performed by this method depends on a valid layout.</span></span>  <span data-ttu-id="be4cd-221">Jeśli to konieczne, ta metoda próbuje automatycznie ponownie wygenerować układzie prawidłowe przed wykonaniem operacji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-221">When necessary, this method attempts to automatically regenerate a valid layout before proceeding with the operation.</span></span>  <span data-ttu-id="be4cd-222">Trwa ponowne generowanie układu może być dość kosztowna operacja.</span><span class="sxs-lookup"><span data-stu-id="be4cd-222">Regenerating a layout can be a relatively expensive operation.</span></span>  <span data-ttu-id="be4cd-223">Użyj <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> do sprawdzenia układu prawidłowe przed wykonaniem operacji, które może ponownie wygenerować układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-223">Use <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> to check for a valid layout before performing operations that may regenerate the layout.</span></span>  <span data-ttu-id="be4cd-224">Aby uzyskać więcej informacji, zobacz [układu](~/docs/framework/wpf/advanced/layout.md).</span><span class="sxs-lookup"><span data-stu-id="be4cd-224">For more information, see [Layout](~/docs/framework/wpf/advanced/layout.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetLineStartPosition">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetLineStartPosition (int count, out int actualCount);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetLineStartPosition(int32 count, [out] int32&amp; actualCount) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetLineStartPosition(System.Int32,System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetLineStartPosition (count As Integer, ByRef actualCount As Integer) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetLineStartPosition(int count, [Runtime::InteropServices::Out] int % actualCount);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="count" Type="System.Int32" />
+        <Parameter Name="actualCount" Type="System.Int32&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="count">
+          <span data-ttu-id="be4cd-225">Liczba znaczników linii początkowej można pominąć w przypadku określenia wiersza, dla którego ma zostać zwrócona pozycji początkowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-225">The number of start-of-line markers to skip when determining the line for which to return the starting position.</span>
+          </span>
+          <span data-ttu-id="be4cd-226">Wartości ujemne określić poprzednich wierszy, 0 określa bieżącego wiersza i określ liczbę wartości dodatnich kolejne wiersze.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-226">Negative values specify preceding lines, 0 specifies the current line, and positive values specify following lines.</span>
+          </span>
+        </param>
+        <param name="actualCount">
+          <span data-ttu-id="be4cd-227">Gdy metoda zwróci wartość, zawiera rzeczywistą liczbę znaczników początek wiersza, które zostały pominięte podczas określania wiersza, dla którego ma zostać zwrócona pozycji początkowej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-227">When this method returns, contains the actual number of start-of-line markers that were skipped when determining the line for which to return the starting position.</span>
+          </span>
+          <span data-ttu-id="be4cd-228">Ta wartość może być mniejsza niż <c>liczba</c> Jeśli początek lub koniec zawartości napotkano przed określoną liczbę wierszy są pomijane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-228">This value may be less than <c>count</c> if the beginning or end of content is encountered before the specified number of lines are skipped.</span>
+          </span>
+          <span data-ttu-id="be4cd-229">Ten parametr jest przekazywany niezainicjowany.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-229">This parameter is passed uninitialized.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-230">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> na początku wiersza, który został określony względem bieżącej <see cref="T:System.Windows.Documents.TextPointer" />i w raportach, ile wierszy zostały pominięte.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-230">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the beginning of a line that is specified relative to the current <see cref="T:System.Windows.Documents.TextPointer" />, and reports how many lines were skipped.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-231">A <see cref="T:System.Windows.Documents.TextPointer" /> wskazujące na początku określonego wiersza (z <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> ustawioną <see cref="F:System.Windows.Documents.LogicalDirection.Forward" />), lub do początku wiersza najbliżej określonego wiersza, jeśli określony wiersz jest poza zakresem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-231">A <see cref="T:System.Windows.Documents.TextPointer" /> pointing to the beginning of the specified line (with the <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> set to <see cref="F:System.Windows.Documents.LogicalDirection.Forward" />), or to the beginning of the line closest to the specified line if the specified line is out of range.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-232">Jeśli <xref:System.Windows.Documents.TextPointer> punktów niejednoznaczne pozycji, na przykład między dwoma liniami wiersza w kierunku określony przez <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> właściwość został wybrany jako względną wiersza początkowego.</span><span class="sxs-lookup"><span data-stu-id="be4cd-232">If the <xref:System.Windows.Documents.TextPointer> points to an ambiguous position, for example, between two lines, the line in the direction specified by the <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> property is selected as the relative starting line.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNextContextPosition">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetNextContextPosition (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetNextContextPosition(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetNextContextPosition(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetNextContextPosition (direction As LogicalDirection) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetNextContextPosition(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-233">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w których będą poszukiwane następny symbol.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-233">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to search for the next symbol.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-234">Zwraca wskaźnik do następny symbol w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-234">Returns a pointer to the next symbol in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-235">A <see cref="T:System.Windows.Documents.TextPointer" /> na następny symbol w kierunku żądanej lub <see langword="null" /> Jeśli bieżące <see cref="T:System.Windows.Documents.TextPointer" /> obramowania początek lub koniec zawartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-235">A <see cref="T:System.Windows.Documents.TextPointer" /> to the next symbol in the requested direction, or <see langword="null" /> if the current <see cref="T:System.Windows.Documents.TextPointer" /> borders the start or end of content.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-236">Jedną z następujących czynności jest uznawane za symbolu:</span><span class="sxs-lookup"><span data-stu-id="be4cd-236">Any of the following is considered to be a symbol:</span></span>  
+  
+-   <span data-ttu-id="be4cd-237">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-237">An opening or closing tag for a <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-238">A <xref:System.Windows.UIElement> element zawarty w <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-238">A <xref:System.Windows.UIElement> element contained in an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-239">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-239">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+-   <span data-ttu-id="be4cd-240">16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-240">A 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+ <span data-ttu-id="be4cd-241">Jeśli następny symbol jest skategoryzowany jako <xref:System.Windows.Documents.TextPointerContext.EmbeddedElement>, <xref:System.Windows.Documents.TextPointerContext.ElementStart>, lub <xref:System.Windows.Documents.TextPointerContext.ElementEnd> (określonej za pomocą <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> — metoda), a następnie <xref:System.Windows.Documents.TextPointer> zwróconych przez to metoda jest zaawansowane dokładnie jeden symbol od bieżącego położenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-241">If the next symbol is categorized as <xref:System.Windows.Documents.TextPointerContext.EmbeddedElement>, <xref:System.Windows.Documents.TextPointerContext.ElementStart>, or <xref:System.Windows.Documents.TextPointerContext.ElementEnd> (as identified by the <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> method), then the <xref:System.Windows.Documents.TextPointer> returned by this method is advanced by exactly one symbol from the current position.</span></span>  
+  
+ <span data-ttu-id="be4cd-242">Jeśli następny symbol jest skategoryzowany jako <xref:System.Windows.Documents.TextPointerContext.Text>, a następnie <xref:System.Windows.Documents.TextPointer> zwróconych przez to metody jest zaawansowane poza tekst, aby następny symbol nietekstowych (czyli następnej pozycji where <xref:System.Windows.Documents.TextPointerContext> nie jest <xref:System.Windows.Documents.TextPointerContext.Text>).</span><span class="sxs-lookup"><span data-stu-id="be4cd-242">If the next symbol is categorized as <xref:System.Windows.Documents.TextPointerContext.Text>, then the <xref:System.Windows.Documents.TextPointer> returned by this method is advanced past the text to the next non-text symbol (that is, the next position where the <xref:System.Windows.Documents.TextPointerContext> is not <xref:System.Windows.Documents.TextPointerContext.Text>).</span></span>  <span data-ttu-id="be4cd-243">Liczba dokładne symbol przekroczyła może zostać obliczona wcześniej przez wywołanie metody <xref:System.Windows.Documents.TextPointer.GetTextRunLength%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-243">The exact symbol count crossed can be calculated in advance by calling the <xref:System.Windows.Documents.TextPointer.GetTextRunLength%2A> method.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-244">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-244">The following example demonstrates a use for this method.</span></span>  <span data-ttu-id="be4cd-245">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetNextContextPosition%2A> w połączeniu z metody <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> metodę, aby przechodzić między nimi i wyodrębniać symbole w określonym <xref:System.Windows.Documents.TextElement>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-245">The example uses the <xref:System.Windows.Documents.TextPointer.GetNextContextPosition%2A> method in conjunction with the <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> method to traverse and extract the symbols in a specified <xref:System.Windows.Documents.TextElement>.</span></span>  
+  
+ <span data-ttu-id="be4cd-246">Chociaż przykładzie mogą być używane do wyodrębnienia [!INCLUDE[TLA#tla_titlexaml](~/includes/tlasharptla-titlexaml-md.md)] struktury zawartości danego <xref:System.Windows.Documents.TextElement>, jest przeznaczona wyłącznie w celach ilustracyjnych i nie powinna być używana w kodzie produkcyjnym.</span><span class="sxs-lookup"><span data-stu-id="be4cd-246">While the example can be used to extract a [!INCLUDE[TLA#tla_titlexaml](~/includes/tlasharptla-titlexaml-md.md)] structure for the contents of a given <xref:System.Windows.Documents.TextElement>, it is intended for illustrative purposes only, and should not be used in production code.</span></span>  <span data-ttu-id="be4cd-247">Zobacz <xref:System.Xml> przestrzeń nazw dla bogaty zestaw typy przeznaczone do pracy z i przetwarzania kodu XML.</span><span class="sxs-lookup"><span data-stu-id="be4cd-247">See the <xref:System.Xml> namespace for a rich set of types designed for working with and processing XML.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetNextContextPosition](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getnextcontextposition)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetNextContextPosition](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getnextcontextposition)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="GetNextInsertionPosition">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetNextInsertionPosition (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetNextInsertionPosition(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetNextInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetNextInsertionPosition (direction As LogicalDirection) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetNextInsertionPosition(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-248">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w których będą poszukiwane dalej wstawiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-248">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to search for the next insertion position.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-249">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> do następnego wstawiania w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-249">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the next insertion position in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-250">A <see cref="T:System.Windows.Documents.TextPointer" /> , które identyfikują dalej wstawiania w kierunku żądanej lub <see langword="null" /> w przypadku nieodnalezienia nie dalej wstawiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-250">A <see cref="T:System.Windows.Documents.TextPointer" /> that identifies the next insertion position in the requested direction, or <see langword="null" /> if no next insertion position can be found.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-251">*Wstawiania* jest położenie, w którym można dodać nowej zawartości bez przerywania wszelkie semantycznego reguły dla skojarzonej zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-251">An *insertion position* is a position where new content may be added without breaking any semantic rules for the associated content.</span></span>  <span data-ttu-id="be4cd-252">W praktyce wstawiania jest dowolne miejsce w sytuacjach, gdy znajduje się daszek zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-252">In practice, an insertion position is anywhere in content where a caret may be positioned.</span></span>  <span data-ttu-id="be4cd-253">Przykład prawidłowego <xref:System.Windows.Documents.TextPointer> pozycji, która nie jest wstawiania jest pozycją między dwóch sąsiadujących ze sobą <xref:System.Windows.Documents.Paragraph> tagi (oznacza to, że między tagu zamykającego z poprzednim akapicie i otwierający tag następnego akapitu).</span><span class="sxs-lookup"><span data-stu-id="be4cd-253">An example of a valid <xref:System.Windows.Documents.TextPointer> position that is not an insertion position is the position between two adjacent <xref:System.Windows.Documents.Paragraph> tags (that is, between the closing tag of the preceding paragraph and the opening tag of the next paragraph).</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-254">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-254">The following example demonstrates a use for this method.</span></span> <span data-ttu-id="be4cd-255">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A> metody przechodzenia przez granice elementu zawartości, aby określić liczbę <xref:System.Windows.Documents.Paragraph> elementy stanowią między dwiema określony <xref:System.Windows.Documents.TextPointer> wystąpień.</span><span class="sxs-lookup"><span data-stu-id="be4cd-255">The example uses the <xref:System.Windows.Documents.TextPointer.GetNextInsertionPosition%2A> method to traverse content element boundaries in order to count the number of <xref:System.Windows.Documents.Paragraph> elements present between two specified <xref:System.Windows.Documents.TextPointer> instances.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetNextInsertionPosition](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getnextinsertionposition)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetNextInsertionPosition](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getnextinsertionposition)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetOffsetToPosition">
+      <MemberSignature Language="C#" Value="public int GetOffsetToPosition (System.Windows.Documents.TextPointer position);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetOffsetToPosition(class System.Windows.Documents.TextPointer position) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetOffsetToPosition(System.Windows.Documents.TextPointer)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetOffsetToPosition (position As TextPointer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetOffsetToPosition(System::Windows::Documents::TextPointer ^ position);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="position" Type="System.Windows.Documents.TextPointer" />
+      </Parameters>
+      <Docs>
+        <param name="position">
+          <span data-ttu-id="be4cd-256">A <see cref="T:System.Windows.Documents.TextPointer" /> Określa, w stanie znaleźć odległość (w symboli).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-256">A <see cref="T:System.Windows.Documents.TextPointer" /> that specifies a position to find the distance (in symbols) to.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-257">Zwraca liczbę symbole między bieżącą <see cref="T:System.Windows.Documents.TextPointer" /> i określić drugi <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-257">Returns the count of symbols between the current <see cref="T:System.Windows.Documents.TextPointer" /> and a second specified <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-258">Względne liczbę symboli między bieżącą <see cref="T:System.Windows.Documents.TextPointer" /> i <paramref name="position" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-258">The relative number of symbols between the current <see cref="T:System.Windows.Documents.TextPointer" /> and <paramref name="position" />.</span>
+          </span>
+          <span data-ttu-id="be4cd-259">Ujemna wartość oznacza, że bieżący <see cref="T:System.Windows.Documents.TextPointer" /> następuje pozycja określona przez <paramref name="position" />, 0 wskazuje, że pozycje są takie same i dodatnią wartość wskazuje, że bieżące <see cref="T:System.Windows.Documents.TextPointer" /> poprzedza pozycja określona przez <paramref name="position" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-259">A negative value indicates that the current <see cref="T:System.Windows.Documents.TextPointer" /> follows the position specified by <paramref name="position" />, 0 indicates that the positions are equal, and a positive value indicates that the current <see cref="T:System.Windows.Documents.TextPointer" /> precedes the position specified by <paramref name="position" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-260">Jedną z następujących czynności jest uznawane za symbolu:</span><span class="sxs-lookup"><span data-stu-id="be4cd-260">Any of the following is considered to be a symbol:</span></span>  
+  
+-   <span data-ttu-id="be4cd-261">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-261">An opening or closing tag for a <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-262">A <xref:System.Windows.UIElement> element zawarty w <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-262">A <xref:System.Windows.UIElement> element contained in an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-263">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-263">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+-   <span data-ttu-id="be4cd-264">16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-264">A 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-265">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-265">The following example demonstrates a use for this method.</span></span> <span data-ttu-id="be4cd-266">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> metody do znalezienia przesunięcia dla dwóch <xref:System.Windows.Documents.TextPointer> wystąpienia, a następnie używa tych informacji do zapisywania i przywracania zaznaczenie w <xref:System.Windows.Controls.RichTextBox>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-266">The example uses the <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> method to find the offsets for two <xref:System.Windows.Documents.TextPointer> instances, and then uses this information to save and restore the selection in a <xref:System.Windows.Controls.RichTextBox>.</span></span>  <span data-ttu-id="be4cd-267">W przykładzie założono, że zawartość <xref:System.Windows.Controls.RichTextBox> nie uległy zmianie od wyboru zapisywanie i przywracanie zaznaczenia.</span><span class="sxs-lookup"><span data-stu-id="be4cd-267">The example assumes that the contents of the <xref:System.Windows.Controls.RichTextBox> have not changed between a selection save and a selection restore.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetOffsetToPosition](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getoffsettoposition)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetOffsetToPosition](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getoffsettoposition)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="be4cd-268">
+            <paramref name="position" /> Określa położenie poza kontener tekst skojarzony z bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-268">
+              <paramref name="position" /> specifies a position outside of the text container associated with the current position.</span>
+          </span>
+        </exception>
+        <altmember cref="Overload:System.Windows.Documents.TextPointer.GetPositionAtOffset" />
+        <altmember cref="M:System.Windows.Documents.TextPointer.IsInSameDocument(System.Windows.Documents.TextPointer)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPointerContext">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointerContext GetPointerContext (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Windows.Documents.TextPointerContext GetPointerContext(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetPointerContext(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetPointerContext (direction As LogicalDirection) As TextPointerContext" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointerContext GetPointerContext(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.GetPointerContext(System.Windows.Documents.LogicalDirection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointerContext</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-269">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w którym można określić kategorię dla zawartości sąsiadujących ze sobą.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-269">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to determine the category for adjacent content.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-270">Zwraca wskaźnik kategorii, dla zawartości przylegające do bieżącego <see cref="T:System.Windows.Documents.TextPointer" /> w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-270">Returns a category indicator for the content adjacent to the current <see cref="T:System.Windows.Documents.TextPointer" /> in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-271">Jeden z <see cref="T:System.Windows.Documents.TextPointerContext" /> wartości, które wskazuje, że kategoria sąsiadujących zawartości w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-271">One of the <see cref="T:System.Windows.Documents.TextPointerContext" /> values that indicates the category for adjacent content in the specified logical direction.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Examples  
+ <span data-ttu-id="be4cd-272">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-272">The following example demonstrates a use for this method.</span></span> <span data-ttu-id="be4cd-273">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> metody do zaimplementowania algorytm obliczania saldo otwierające i zamykające znaczniki elementów między dwiema określony <xref:System.Windows.Documents.TextPointer> pozycji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-273">The example uses the <xref:System.Windows.Documents.TextPointer.GetPointerContext%2A> method to implement an algorithm for calculating the balance of opening and closing element tags between two specified <xref:System.Windows.Documents.TextPointer> positions.</span></span>  <span data-ttu-id="be4cd-274">Każdy element tagu początkowego jest traktowane jako + 1, a każdy element tagu zamykającego jest traktowane jako -1.</span><span class="sxs-lookup"><span data-stu-id="be4cd-274">Each opening element tag is counted as +1, and each closing element tag is counted as –1.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetOffsetToPosition2](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getoffsettoposition2)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetOffsetToPosition2](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getoffsettoposition2)]  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetPositionAtOffset">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-275">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> pozycji przez określone przesunięcie w symbolach, począwszy od zawartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-275">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the position indicated by the specified offset, in symbols, from the beginning of content.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetPositionAtOffset">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetPositionAtOffset (int offset);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetPositionAtOffset(int32 offset) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetPositionAtOffset(System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetPositionAtOffset (offset As Integer) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetPositionAtOffset(int offset);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="offset">
+          <span data-ttu-id="be4cd-276">Przesunięcie w symbolach, dla której obliczana i zwraca położenie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-276">An offset, in symbols, for which to calculate and return the position.</span>
+          </span>
+          <span data-ttu-id="be4cd-277">Jeśli przesunięcie jest ujemna, pozycja jest obliczana w kierunku logicznej przeciwne wskazaną przez <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-277">If the offset is negative, the position is calculated in the logical direction opposite of that indicated by the <see cref="P:System.Windows.Documents.TextPointer.LogicalDirection" /> property.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-278">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> przez określone przesunięcie w symbolach, począwszy od bieżącej pozycji <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-278">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the position indicated by the specified offset, in symbols, from the beginning of the current <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-279">A <see cref="T:System.Windows.Documents.TextPointer" /> pozycji przez określone przesunięcie lub <see langword="null" /> w przypadku nieodnalezienia nie odpowiedniej pozycji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-279">A <see cref="T:System.Windows.Documents.TextPointer" /> to the position indicated by the specified offset, or <see langword="null" /> if no corresponding position can be found.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-280">Jedną z następujących czynności jest uznawane za symbolu:</span><span class="sxs-lookup"><span data-stu-id="be4cd-280">Any of the following is considered to be a symbol:</span></span>  
+  
+-   <span data-ttu-id="be4cd-281">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-281">An opening or closing tag for the <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-282">A <xref:System.Windows.UIElement> element zawarty w <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-282">A <xref:System.Windows.UIElement> element contained in an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-283">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-283">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+-   <span data-ttu-id="be4cd-284">16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-284">A 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-285">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-285">The following example demonstrates a use for this method.</span></span> <span data-ttu-id="be4cd-286">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> metody użycia dwóch metod, co do obliczenia przesunięcia do określonej pozycji względem dowolnego hostingu akapitu, a drugi do zwrócenia <xref:System.Windows.Documents.TextPointer> do określone przesunięcie w określonym akapicie.</span><span class="sxs-lookup"><span data-stu-id="be4cd-286">The example uses the <xref:System.Windows.Documents.TextPointer.GetPositionAtOffset%2A> method to implement a pair of methods, one to calculate the offset to a specified position relative to any hosting paragraph, and the other to return a <xref:System.Windows.Documents.TextPointer> to a specified offset in a specified paragraph.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetPositionAtOffset](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_getpositionatoffset)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetPositionAtOffset](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_getpositionatoffset)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetOffsetToPosition(System.Windows.Documents.TextPointer)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetPositionAtOffset">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer GetPositionAtOffset (int offset, System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer GetPositionAtOffset(int32 offset, valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetPositionAtOffset(System.Int32,System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetPositionAtOffset (offset As Integer, direction As LogicalDirection) As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ GetPositionAtOffset(int offset, System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="offset" Type="System.Int32" />
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="offset">
+          <span data-ttu-id="be4cd-287">Przesunięcie w symbolach, dla której obliczana i zwraca położenie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-287">An offset, in symbols, for which to calculate and return the position.</span>
+          </span>
+          <span data-ttu-id="be4cd-288">Jeśli przesunięcie jest ujemna, zwracana <see cref="T:System.Windows.Documents.TextPointer" /> poprzedza bieżącego <see cref="T:System.Windows.Documents.TextPointer" />; w przeciwnym razie wynika z.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-288">If the offset is negative, the returned <see cref="T:System.Windows.Documents.TextPointer" /> precedes the current <see cref="T:System.Windows.Documents.TextPointer" />; otherwise, it follows.</span>
+          </span>
+        </param>
+        <param name="direction">
+          <span data-ttu-id="be4cd-289">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa kierunek logicznej zwróconego elementu <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-289">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction of the returned <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-290">Zwraca <see cref="T:System.Windows.Documents.TextPointer" /> przez określone przesunięcie w symbolach, począwszy od bieżącej pozycji <see cref="T:System.Windows.Documents.TextPointer" /> i w określonym kierunku.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-290">Returns a <see cref="T:System.Windows.Documents.TextPointer" /> to the position indicated by the specified offset, in symbols, from the beginning of the current <see cref="T:System.Windows.Documents.TextPointer" /> and in the specified direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-291">A <see cref="T:System.Windows.Documents.TextPointer" /> pozycji przez określone przesunięcie lub <see langword="null" /> Jeśli przesunięcie rozciąga się poza koniec zawartości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-291">A <see cref="T:System.Windows.Documents.TextPointer" /> to the position indicated by the specified offset, or <see langword="null" /> if the offset extends past the end of the content.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-292">Jedną z następujących czynności jest uznawane za symbolu:</span><span class="sxs-lookup"><span data-stu-id="be4cd-292">Any of the following is considered to be a symbol:</span></span>  
+  
+-   <span data-ttu-id="be4cd-293">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-293">An opening or closing tag for the <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-294">A <xref:System.Windows.UIElement> element zawarty w <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-294">A <xref:System.Windows.UIElement> element contained in an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-295">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-295">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+-   <span data-ttu-id="be4cd-296">16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-296">A 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetOffsetToPosition(System.Windows.Documents.TextPointer)" />
+      </Docs>
+    </Member>
+    <MemberGroup MemberName="GetTextInRun">
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-297">Zwraca tekst obok bieżącej <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-297">Returns text adjacent to the current <see cref="T:System.Windows.Documents.TextPointer" />.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="GetTextInRun">
+      <MemberSignature Language="C#" Value="public string GetTextInRun (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance string GetTextInRun(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetTextInRun(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTextInRun (direction As LogicalDirection) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::String ^ GetTextInRun(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.GetTextInRun(System.Windows.Documents.LogicalDirection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-298">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w którym można znaleźć i zwracać dowolnym sąsiadującym tekstem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-298">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to find and return any adjacent text.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-299">Zwraca ciąg zawierający tekst obok bieżącej <see cref="T:System.Windows.Documents.TextPointer" /> w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-299">Returns a string containing any text adjacent to the current <see cref="T:System.Windows.Documents.TextPointer" /> in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-300">Ciąg zawierający dowolnym sąsiadującym tekstem w określonym kierunku logiczne, lub <see cref="F:System.String.Empty" /> w przypadku nieodnalezienia nie sąsiadującym tekstem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-300">A string containing any adjacent text in the specified logical direction, or <see cref="F:System.String.Empty" /> if no adjacent text can be found.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-301">Ta metoda zwraca tylko nieprzerwaną serii tekstu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-301">This method returns only uninterrupted runs of text.</span></span>  <span data-ttu-id="be4cd-302">Nic nie zostanie zwrócone, jeśli żadnego typu symbolu innego niż <xref:System.Windows.Documents.TextPointerContext.Text> sąsiaduje z bieżącej <xref:System.Windows.Documents.TextPointer> w określonym kierunku.</span><span class="sxs-lookup"><span data-stu-id="be4cd-302">Nothing is returned if any symbol type other than <xref:System.Windows.Documents.TextPointerContext.Text> is adjacent to the current <xref:System.Windows.Documents.TextPointer> in the specified direction.</span></span>  <span data-ttu-id="be4cd-303">Podobnie tekstu jest zwracana tylko do następny symbol nietekstowych.</span><span class="sxs-lookup"><span data-stu-id="be4cd-303">Similarly, text is returned only up to the next non-text symbol.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-304">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-304">The following example demonstrates a use for this method.</span></span> <span data-ttu-id="be4cd-305">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.GetTextInRun%2A> metody do zaimplementowania ekstraktor zwykły tekst.</span><span class="sxs-lookup"><span data-stu-id="be4cd-305">The example uses the <xref:System.Windows.Documents.TextPointer.GetTextInRun%2A> method to implement a simple text extractor.</span></span>  <span data-ttu-id="be4cd-306">Metoda zwraca złączony ciąg dla całego tekstu między dwiema określony <xref:System.Windows.Documents.TextPointer> wystąpień.</span><span class="sxs-lookup"><span data-stu-id="be4cd-306">The method returns a string concatenation of all text between two specified <xref:System.Windows.Documents.TextPointer> instances.</span></span>  
+  
+ <span data-ttu-id="be4cd-307">Gdy na przykład można wyodrębnić tekst między dwiema <xref:System.Windows.Documents.TextPointer> wystąpień, jego jest przeznaczona wyłącznie w celach ilustracyjnych i nie powinna być używana w kodzie produkcyjnym.</span><span class="sxs-lookup"><span data-stu-id="be4cd-307">While the example can be used to extract any text between two <xref:System.Windows.Documents.TextPointer> instances, it is intended for illustrative purposes only, and should not be used in production code.</span></span>  <span data-ttu-id="be4cd-308">Użyj <xref:System.Windows.Documents.TextRange.Text%2A?displayProperty=nameWithType> właściwości zamiast tego.</span><span class="sxs-lookup"><span data-stu-id="be4cd-308">Use the <xref:System.Windows.Documents.TextRange.Text%2A?displayProperty=nameWithType> property instead.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_GetTextInRun](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_gettextinrun)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_GetTextInRun](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_gettextinrun)]  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.DeleteTextInRun(System.Int32)" />
+        <altmember cref="M:System.Windows.Documents.TextPointer.InsertTextInRun(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTextInRun">
+      <MemberSignature Language="C#" Value="public int GetTextInRun (System.Windows.Documents.LogicalDirection direction, char[] textBuffer, int startIndex, int count);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTextInRun(valuetype System.Windows.Documents.LogicalDirection direction, char[] textBuffer, int32 startIndex, int32 count) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetTextInRun(System.Windows.Documents.LogicalDirection,System.Char[],System.Int32,System.Int32)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTextInRun (direction As LogicalDirection, textBuffer As Char(), startIndex As Integer, count As Integer) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTextInRun(System::Windows::Documents::LogicalDirection direction, cli::array &lt;char&gt; ^ textBuffer, int startIndex, int count);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.GetTextInRun(System.Windows.Documents.LogicalDirection,System.Char[],System.Int32,System.Int32)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+        <Parameter Name="textBuffer" Type="System.Char[]" />
+        <Parameter Name="startIndex" Type="System.Int32" />
+        <Parameter Name="count" Type="System.Int32" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-309">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w którym można znaleźć i skopiować dowolnym sąsiadującym tekstem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-309">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to find and copy any adjacent text.</span>
+          </span>
+        </param>
+        <param name="textBuffer">
+          <span data-ttu-id="be4cd-310">Bufor, do którego jest skopiowany tekst.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-310">A buffer into which any text is copied.</span>
+          </span>
+        </param>
+        <param name="startIndex">
+          <span data-ttu-id="be4cd-311">Indeks do <c>textBuffer</c> od której ma rozpocząć pisanie skopiowany tekst.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-311">An index into <c>textBuffer</c> at which to begin writing copied text.</span>
+          </span>
+        </param>
+        <param name="count">
+          <span data-ttu-id="be4cd-312">Maksymalna liczba znaków do skopiowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-312">The maximum number of characters to copy.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-313">Kopiuje określoną maksymalną liczbę znaków z dowolnym sąsiadującym tekstem w określonym kierunku do tablicy znaków dostarczony przez obiekt wywołujący.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-313">Copies the specified maximum number of characters from any adjacent text in the specified direction into a caller-supplied character array.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-314">Liczba znaków, które faktycznie kopiowane do <paramref name="textBuffer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-314">The number of characters actually copied into <paramref name="textBuffer" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-315">Ta metoda zwraca tylko nieprzerwaną serii tekstu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-315">This method returns only uninterrupted runs of text.</span></span>  <span data-ttu-id="be4cd-316">Nic nie zostanie zwrócone, jeśli żadnego typu symbolu innego niż <xref:System.Windows.Documents.TextPointerContext.Text> sąsiaduje z bieżącej <xref:System.Windows.Documents.TextPointer> w określonym kierunku.</span><span class="sxs-lookup"><span data-stu-id="be4cd-316">Nothing is returned if any symbol type other than <xref:System.Windows.Documents.TextPointerContext.Text> is adjacent to the current <xref:System.Windows.Documents.TextPointer> in the specified direction.</span></span>  <span data-ttu-id="be4cd-317">Podobnie tekstu jest zwracana tylko do następny symbol nietekstowych.</span><span class="sxs-lookup"><span data-stu-id="be4cd-317">Similarly, text is returned only up to the next non-text symbol.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="be4cd-318">
+            <paramref name="startIndex" /> jest mniejsza niż 0 lub większą niż <see cref="P:System.Array.Length" /> właściwość <paramref name="textBuffer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-318">
+              <paramref name="startIndex" /> is less than 0 or greater than the <see cref="P:System.Array.Length" /> property of <paramref name="textBuffer" />.</span>
+          </span>
+          <span data-ttu-id="be4cd-319">—lub—</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-319">-or-</span>
+          </span>
+          <span data-ttu-id="be4cd-320">
+            <paramref name="count" /> jest mniejsza niż 0 lub większą niż pozostałe miejsce w <paramref name="textBuffer" /> (<paramref name="textBuffer" />.<see cref="P:System.Array.Length" /></span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-320">
+              <paramref name="count" /> is less than 0 or greater than the remaining space in <paramref name="textBuffer" /> (<paramref name="textBuffer" />.<see cref="P:System.Array.Length" /></span>
+          </span>
+          <span data-ttu-id="be4cd-321">minus <paramref name="startIndex" />).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-321">minus <paramref name="startIndex" />).</span>
+          </span>
+        </exception>
+        <altmember cref="M:System.Windows.Documents.TextPointer.DeleteTextInRun(System.Int32)" />
+        <altmember cref="M:System.Windows.Documents.TextPointer.InsertTextInRun(System.String)" />
+      </Docs>
+    </Member>
+    <Member MemberName="GetTextRunLength">
+      <MemberSignature Language="C#" Value="public int GetTextRunLength (System.Windows.Documents.LogicalDirection direction);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance int32 GetTextRunLength(valuetype System.Windows.Documents.LogicalDirection direction) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.GetTextRunLength(System.Windows.Documents.LogicalDirection)" />
+      <MemberSignature Language="VB.NET" Value="Public Function GetTextRunLength (direction As LogicalDirection) As Integer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; int GetTextRunLength(System::Windows::Documents::LogicalDirection direction);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.GetTextRunLength(System.Windows.Documents.LogicalDirection)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Int32</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="direction" Type="System.Windows.Documents.LogicalDirection" />
+      </Parameters>
+      <Docs>
+        <param name="direction">
+          <span data-ttu-id="be4cd-322">Jeden z <see cref="T:System.Windows.Documents.LogicalDirection" /> wartości, które określa logicznej kierunek, w którym można określić liczbę znaków.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-322">One of the <see cref="T:System.Windows.Documents.LogicalDirection" /> values that specifies the logical direction in which to count the number of characters.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-323">Zwraca liczbę znaków Unicode między bieżącą <see cref="T:System.Windows.Documents.TextPointer" /> i następny symbol nietekstowych w określonym kierunku logiczne.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-323">Returns the number of Unicode characters between the current <see cref="T:System.Windows.Documents.TextPointer" /> and the next non-text symbol, in the specified logical direction.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-324">Liczba znaków Unicode między bieżącą <see cref="T:System.Windows.Documents.TextPointer" /> i następny symbol nietekstowych.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-324">The number of Unicode characters between the current <see cref="T:System.Windows.Documents.TextPointer" /> and the next non-text symbol.</span>
+          </span>
+          <span data-ttu-id="be4cd-325">Ta liczba może być 0, jeśli nie ma żadnego tekstu sąsiadujących ze sobą.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-325">This number may be 0 if there is no adjacent text.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-326">Jedną z następujących czynności jest uznawane za symbolu:</span><span class="sxs-lookup"><span data-stu-id="be4cd-326">Any of the following is considered to be a symbol:</span></span>  
+  
+-   <span data-ttu-id="be4cd-327">Otwieranie lub tagu zamykającego <xref:System.Windows.Documents.TextElement> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-327">An opening or closing tag for the <xref:System.Windows.Documents.TextElement> element.</span></span>  
+  
+-   <span data-ttu-id="be4cd-328">A <xref:System.Windows.UIElement> element zawarty w <xref:System.Windows.Documents.InlineUIContainer> lub <xref:System.Windows.Documents.BlockUIContainer>.</span><span class="sxs-lookup"><span data-stu-id="be4cd-328">A <xref:System.Windows.UIElement> element contained in an <xref:System.Windows.Documents.InlineUIContainer> or <xref:System.Windows.Documents.BlockUIContainer>.</span></span>  <span data-ttu-id="be4cd-329">Uwaga takich <xref:System.Windows.UIElement> jest zawsze traktowanych jak dokładnie jeden symbol; zawartość dodatkowych ani elementów zawartych w <xref:System.Windows.UIElement> nie są liczone jako symbole.</span><span class="sxs-lookup"><span data-stu-id="be4cd-329">Note that such a <xref:System.Windows.UIElement> is always counted as exactly one symbol; any additional content or elements contained by the <xref:System.Windows.UIElement> are not counted as symbols.</span></span>  
+  
+-   <span data-ttu-id="be4cd-330">16-bitowych [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] znak wewnątrz tekstu <xref:System.Windows.Documents.Run> elementu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-330">A 16-bit [!INCLUDE[TLA#tla_unicode](~/includes/tlasharptla-unicode-md.md)] character inside of a text <xref:System.Windows.Documents.Run> element.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="HasValidLayout">
+      <MemberSignature Language="C#" Value="public bool HasValidLayout { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool HasValidLayout" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.HasValidLayout" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property HasValidLayout As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool HasValidLayout { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Windows.Documents.ITextPointer.HasValidLayout</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-331">Pobiera wartość wskazującą, czy kontener tekst skojarzony z bieżącą pozycję ma prawidłową układ (aktualne).</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-331">Gets a value that indicates whether the text container associated with the current position has a valid (up-to-date) layout.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-332">
+            <see langword="true" /> Jeśli układ są aktualne i prawidłowe; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-332">
+              <see langword="true" /> if the layout is current and valid; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-333">W razie potrzeby operacje, które są zależne od prawidłowy układu (takich jak <xref:System.Windows.Documents.TextPointer.GetLineStartPosition%2A> metody <xref:System.Windows.Documents.TextPointer.GetCharacterRect%2A> metody i <xref:System.Windows.Documents.TextPointer.IsAtLineStartPosition%2A> właściwości) próbować automatycznie ponownie wygenerować układzie prawidłowe przed wykonaniem operacji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-333">When necessary, operations that depend on a valid layout (such as the <xref:System.Windows.Documents.TextPointer.GetLineStartPosition%2A> method, <xref:System.Windows.Documents.TextPointer.GetCharacterRect%2A> method, and <xref:System.Windows.Documents.TextPointer.IsAtLineStartPosition%2A> property) attempt to automatically regenerate a valid layout before proceeding with the operation.</span></span>  <span data-ttu-id="be4cd-334">Trwa ponowne generowanie układu może być dość kosztowna operacja.</span><span class="sxs-lookup"><span data-stu-id="be4cd-334">Regenerating a layout can be a relatively expensive operation.</span></span>  <span data-ttu-id="be4cd-335">Tej właściwości należy użyć, aby sprawdzić układ prawidłowe przed wykonaniem operacji, które może ponownie wygenerować układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-335">Use this property to check for a valid layout before performing operations that may regenerate the layout.</span></span>  <span data-ttu-id="be4cd-336">Aby uzyskać więcej informacji, zobacz [układu](~/docs/framework/wpf/advanced/layout.md).</span><span class="sxs-lookup"><span data-stu-id="be4cd-336">For more information, see [Layout](~/docs/framework/wpf/advanced/layout.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertLineBreak">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer InsertLineBreak ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer InsertLineBreak() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.InsertLineBreak" />
+      <MemberSignature Language="VB.NET" Value="Public Function InsertLineBreak () As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ InsertLineBreak();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-337">Wstawia podział wiersza w bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-337">Inserts a line break at the current position.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-338">A <see cref="T:System.Windows.Documents.TextPointer" /> pozycjonowane natychmiast po <see cref="T:System.Windows.Documents.LineBreak" /> element wstawiony przez tę metodę.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-338">A <see cref="T:System.Windows.Documents.TextPointer" /> positioned immediately after the <see cref="T:System.Windows.Documents.LineBreak" /> element inserted by this method.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertParagraphBreak">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.TextPointer InsertParagraphBreak ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance class System.Windows.Documents.TextPointer InsertParagraphBreak() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.InsertParagraphBreak" />
+      <MemberSignature Language="VB.NET" Value="Public Function InsertParagraphBreak () As TextPointer" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Windows::Documents::TextPointer ^ InsertParagraphBreak();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.TextPointer</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-339">Wstawia podział akapitu w bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-339">Inserts a paragraph break at the current position.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-340">A <see cref="T:System.Windows.Documents.TextPointer" /> na początku (<see cref="P:System.Windows.Documents.TextElement.ContentStart" />) nowy akapit.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-340">A <see cref="T:System.Windows.Documents.TextPointer" /> to the beginning (<see cref="P:System.Windows.Documents.TextElement.ContentStart" />) of the new paragraph.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-341">Jeśli ta metoda jest wywoływana, gdy bieżące położenie jest wewnątrz istniejącego <xref:System.Windows.Documents.Paragraph> elementu, istniejące akapitu oraz zawartość zawiera są podzielone na dwa akapity w bieżącym położeniu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-341">If this method is called when the current position is inside of an existing <xref:System.Windows.Documents.Paragraph> element, the existing paragraph and any content it contains are split into two paragraphs at the current position.</span></span>  <span data-ttu-id="be4cd-342">Jeśli ta metoda jest wywoływana, gdy bieżąca pozycja nie znajduje się wewnątrz istniejącego akapitu, jest wstawiany akapitu nowy, pusty.</span><span class="sxs-lookup"><span data-stu-id="be4cd-342">If this method is called when the current position is not inside of an existing paragraph, a new, empty paragraph is inserted.</span></span>  <span data-ttu-id="be4cd-343">Jeśli ta metoda jest wywoływana na pozycji nie nadaje się do dzielenia lub wstawianie akapitu (na przykład, jeśli bieżące położenie jest wewnątrz <xref:System.Windows.Documents.Hyperlink> element), jest zgłaszany wyjątek.</span><span class="sxs-lookup"><span data-stu-id="be4cd-343">If this method is called at a position unsuitable for splitting or inserting a paragraph (for example, if the current position is inside of a <xref:System.Windows.Documents.Hyperlink> element), an exception is thrown.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="be4cd-344">Ta metoda jest wywoływana na pozycji nie można podzielić, aby pomieścić nowy akapit, takich jak w zakresie <see cref="T:System.Windows.Documents.Hyperlink" /> lub <see cref="T:System.Windows.Documents.InlineUIContainer" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-344">This method is called on a position that cannot be split to accommodate a new paragraph, such as in the scope of a <see cref="T:System.Windows.Documents.Hyperlink" /> or <see cref="T:System.Windows.Documents.InlineUIContainer" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="InsertTextInRun">
+      <MemberSignature Language="C#" Value="public void InsertTextInRun (string textData);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void InsertTextInRun(string textData) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.InsertTextInRun(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Public Sub InsertTextInRun (textData As String)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; void InsertTextInRun(System::String ^ textData);" />
+      <MemberType>Method</MemberType>
+      <Implements>
+        <InterfaceMember>M:System.Windows.Documents.ITextPointer.InsertTextInRun(System.String)</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="textData" Type="System.String" />
+      </Parameters>
+      <Docs>
+        <param name="textData">
+          <span data-ttu-id="be4cd-345">Tekst do wstawienia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-345">The text to insert.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-346">Wstawia określony tekst w tekście <see cref="T:System.Windows.Documents.Run" /> w bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-346">Inserts the specified text into the text <see cref="T:System.Windows.Documents.Run" /> at the current position.</span>
+          </span>
+        </summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-347">Jeśli <xref:System.Windows.Documents.TextPointer> jest poza zakresem przez <xref:System.Windows.Documents.Run> elementu <xref:System.Windows.Documents.Run> dodaje się wraz z programem `textData`.</span><span class="sxs-lookup"><span data-stu-id="be4cd-347">If the <xref:System.Windows.Documents.TextPointer> is not scoped by a <xref:System.Windows.Documents.Run> element, a <xref:System.Windows.Documents.Run> is inserted along with the `textData`.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">
+          <span data-ttu-id="be4cd-348">Bieżąca pozycja nie znajduje się w <see cref="T:System.Windows.Documents.Run" /> elementu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-348">The current position is not within a <see cref="T:System.Windows.Documents.Run" /> element.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="be4cd-349">
+            <paramref name="textData" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-349">
+              <paramref name="textData" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="IsAtInsertionPosition">
+      <MemberSignature Language="C#" Value="public bool IsAtInsertionPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsAtInsertionPosition" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.IsAtInsertionPosition" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsAtInsertionPosition As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsAtInsertionPosition { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Windows.Documents.ITextPointer.IsAtInsertionPosition</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-350">Pobiera wartość wskazującą, czy bieżące położenie jest wstawiania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-350">Gets a value that indicates whether the current position is an insertion position.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-351">
+            <see langword="true" /> Jeśli bieżące położenie jest wstawiania; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-351">
+              <see langword="true" /> if the current position is an insertion position; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-352">Pozycja wstawiania jest położenie, w którym można dodać nowej zawartości bez przerywania wszelkie semantycznego reguły dla skojarzonej zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-352">An insertion position is a position where new content may be added without breaking any semantic rules for the associated content.</span></span>  <span data-ttu-id="be4cd-353">W praktyce wstawiania jest dowolne miejsce w sytuacjach, gdy znajduje się daszek zawartości.</span><span class="sxs-lookup"><span data-stu-id="be4cd-353">In practice, an insertion position is anywhere in content where a caret may be positioned.</span></span>  <span data-ttu-id="be4cd-354">Przykład prawidłowego <xref:System.Windows.Documents.TextPointer> pozycji, która nie jest wstawiania jest pozycją między dwóch sąsiadujących ze sobą <xref:System.Windows.Documents.Paragraph> tagi (oznacza to, że między tagu zamykającego z poprzednim akapicie i otwierający tag następnego akapitu).</span><span class="sxs-lookup"><span data-stu-id="be4cd-354">An example of a valid <xref:System.Windows.Documents.TextPointer> position that is not an insertion position is the position between two adjacent <xref:System.Windows.Documents.Paragraph> tags (that is, between the closing tag of the preceding paragraph and the opening tag of the next paragraph).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+        <altmember cref="M:System.Windows.Documents.TextPointer.GetNextInsertionPosition(System.Windows.Documents.LogicalDirection)" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsAtLineStartPosition">
+      <MemberSignature Language="C#" Value="public bool IsAtLineStartPosition { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance bool IsAtLineStartPosition" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.IsAtLineStartPosition" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsAtLineStartPosition As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsAtLineStartPosition { bool get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-355">Pobiera wartość wskazującą, czy bieżące położenie jest na początku wiersza.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-355">Gets a value that indicates whether the current position is at the beginning of a line.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-356">
+            <see langword="true" /> Jeśli bieżące położenie jest na początku wiersza; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-356">
+              <see langword="true" /> if the current position is at the beginning of a line; otherwise, <see langword="false" />.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-357">Jeśli <xref:System.Windows.Documents.TextPointer> punktów niejednoznaczne pozycji, na przykład między dwoma liniami wiersza w kierunku określony przez <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> właściwość został wybrany jako względną wiersza początkowego.</span><span class="sxs-lookup"><span data-stu-id="be4cd-357">If the <xref:System.Windows.Documents.TextPointer> points to an ambiguous position, for example, between two lines, the line in the direction specified by the <xref:System.Windows.Documents.TextPointer.LogicalDirection%2A> property is selected as the relative starting line.</span></span>  
+  
+ <span data-ttu-id="be4cd-358">Operacja wykonywana przez tę właściwość zależy od prawidłowy układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-358">The operation performed by this property depends on a valid layout.</span></span>  <span data-ttu-id="be4cd-359">Jeśli to konieczne, ta metoda próbuje automatycznie ponownie wygenerować układzie prawidłowe przed wykonaniem operacji.</span><span class="sxs-lookup"><span data-stu-id="be4cd-359">When necessary, this method attempts to automatically regenerate a valid layout before proceeding with the operation.</span></span>  <span data-ttu-id="be4cd-360">Trwa ponowne generowanie układu może być dość kosztowna operacja.</span><span class="sxs-lookup"><span data-stu-id="be4cd-360">Regenerating a layout can be a relatively expensive operation.</span></span>  <span data-ttu-id="be4cd-361">Użyj <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> właściwość do sprawdzenia układu prawidłowe przed wykonaniem operacji, które może ponownie wygenerować układu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-361">Use the <xref:System.Windows.Documents.TextPointer.HasValidLayout%2A> property to check for a valid layout before performing operations that may regenerate the layout.</span></span>  <span data-ttu-id="be4cd-362">Aby uzyskać więcej informacji, zobacz [układu](~/docs/framework/wpf/advanced/layout.md).</span><span class="sxs-lookup"><span data-stu-id="be4cd-362">For more information, see [Layout](~/docs/framework/wpf/advanced/layout.md).</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.IsAtLineStartPosition" />
+      </Docs>
+    </Member>
+    <Member MemberName="IsInSameDocument">
+      <MemberSignature Language="C#" Value="public bool IsInSameDocument (System.Windows.Documents.TextPointer textPosition);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool IsInSameDocument(class System.Windows.Documents.TextPointer textPosition) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.IsInSameDocument(System.Windows.Documents.TextPointer)" />
+      <MemberSignature Language="VB.NET" Value="Public Function IsInSameDocument (textPosition As TextPointer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool IsInSameDocument(System::Windows::Documents::TextPointer ^ textPosition);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="textPosition" Type="System.Windows.Documents.TextPointer" />
+      </Parameters>
+      <Docs>
+        <param name="textPosition">
+          <span data-ttu-id="be4cd-363">A <see cref="T:System.Windows.Documents.TextPointer" /> , który określa położenie do porównania z bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-363">A <see cref="T:System.Windows.Documents.TextPointer" /> that specifies a position to compare to the current position.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="be4cd-364">Wskazuje, czy określona pozycja jest w tym samym kontenerze tekstu jako bieżącego położenia.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-364">Indicates whether the specified position is in the same text container as the current position.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-365">
+            <see langword="true" /> Jeśli <paramref name="textPosition" /> wskazuje pozycję, który znajduje się w tym samym kontenerze tekstu jako bieżącego położenia; w przeciwnym razie <see langword="false" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-365">
+              <see langword="true" /> if <paramref name="textPosition" /> indicates a position that is in the same text container as the current position; otherwise, <see langword="false" />.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-366">Większość operacji obejmujących wiele <xref:System.Windows.Documents.TextPointer> wystąpienia są prawidłowe tylko, jeśli wystąpienia danego wskazują miejsca, w których znajdują się w tym samym zakresie tekstu w kontenerze.</span><span class="sxs-lookup"><span data-stu-id="be4cd-366">Most operations that involve multiple <xref:System.Windows.Documents.TextPointer> instances are only valid if the instances in question indicate positions that are in the same text container scope.</span></span>  <span data-ttu-id="be4cd-367">Na przykład <xref:System.Windows.Documents.TextPointer.CompareTo%2A> i <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> nie można używać metod <xref:System.Windows.Documents.TextPointer> do położenia poza kontener tekst skojarzony z bieżącym położeniu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-367">For example the <xref:System.Windows.Documents.TextPointer.CompareTo%2A> and <xref:System.Windows.Documents.TextPointer.GetOffsetToPosition%2A> methods cannot be used with a <xref:System.Windows.Documents.TextPointer> to a position outside of the text container associated with the current position.</span></span>  <span data-ttu-id="be4cd-368">Ta metoda służy do sprawdzenia, czy określonej <xref:System.Windows.Documents.TextPointer> jest zgodny z bieżącą pozycję w takich operacjach.</span><span class="sxs-lookup"><span data-stu-id="be4cd-368">Use this method to verify that a specified <xref:System.Windows.Documents.TextPointer> is compatible with the current position for such operations.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="be4cd-369">W poniższym przykładzie pokazano użycie tej metody.</span><span class="sxs-lookup"><span data-stu-id="be4cd-369">The following example demonstrates a use for this method.</span></span>  <span data-ttu-id="be4cd-370">W przykładzie użyto <xref:System.Windows.Documents.TextPointer.IsInSameDocument%2A> , aby sprawdzić, czy określony <xref:System.Windows.Documents.TextPointer> znajduje się między dwoma innymi określony <xref:System.Windows.Documents.TextPointer> wystąpień w sytuacji, gdy nie ma żadnej gwarancji, że wszystkie trzy pozycje należą do tego samego kontenera tekstu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-370">The example uses the <xref:System.Windows.Documents.TextPointer.IsInSameDocument%2A> method to check whether a specified <xref:System.Windows.Documents.TextPointer> is positioned between two other specified <xref:System.Windows.Documents.TextPointer> instances in a situation when there is no guarantee that all three positions belong to the same text container.</span></span>  
+  
+ [!code-csharp[TextPointer_Snippets#_TextPointer_IsInSameDocument](~/samples/snippets/csharp/VS_Snippets_Wpf/TextPointer_Snippets/CSharp/Window1.xaml.cs#_textpointer_isinsamedocument)]
+ [!code-vb[TextPointer_Snippets#_TextPointer_IsInSameDocument](~/samples/snippets/visualbasic/VS_Snippets_Wpf/TextPointer_Snippets/visualbasic/window1.xaml.vb#_textpointer_isinsamedocument)]  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="be4cd-371">
+            <paramref name="textPosition" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-371">
+              <paramref name="textPosition" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="LogicalDirection">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.LogicalDirection LogicalDirection { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.Windows.Documents.LogicalDirection LogicalDirection" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.LogicalDirection" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property LogicalDirection As LogicalDirection" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Documents::LogicalDirection LogicalDirection { System::Windows::Documents::LogicalDirection get(); };" />
+      <MemberType>Property</MemberType>
+      <Implements>
+        <InterfaceMember>P:System.Windows.Documents.ITextPointer.LogicalDirection</InterfaceMember>
+      </Implements>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.LogicalDirection</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-372">Pobiera kierunek logiczne skojarzone z bieżącą pozycję, który służy do odróżniania zawartości skojarzonej z bieżącą pozycję.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-372">Gets the logical direction associated with the current position which is used to disambiguate content associated with the current position.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-373">
+            <see cref="T:System.Windows.Documents.LogicalDirection" /> Wartość, która jest skojarzona z bieżącym położeniu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-373">The <see cref="T:System.Windows.Documents.LogicalDirection" /> value that is associated with the current position.</span>
+          </span>
+        </value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="be4cd-374">Jak ta właściwość jest używana, na przykład <xref:System.Windows.Documents.LogicalDirection> z <xref:System.Windows.Documents.TextPointer> zwrócony przez testu trafienia metoda daje trafień, który jest między znakami tekstu.</span><span class="sxs-lookup"><span data-stu-id="be4cd-374">As an example of how this property is used, the <xref:System.Windows.Documents.LogicalDirection> of the <xref:System.Windows.Documents.TextPointer> returned by a hit test method gives a hit that is between two characters of text.</span></span> <span data-ttu-id="be4cd-375">Logiczne direction Określa, które dwóch znaków faktycznie został trafiony — po lewej lub prawej.</span><span class="sxs-lookup"><span data-stu-id="be4cd-375">The logical direction specifies which of the two characters was actually hit—the left or the right.</span></span>  
+  
+ ]]></format>
+        </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Paragraph">
+      <MemberSignature Language="C#" Value="public System.Windows.Documents.Paragraph Paragraph { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.Documents.Paragraph Paragraph" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.Paragraph" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Paragraph As Paragraph" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::Documents::Paragraph ^ Paragraph { System::Windows::Documents::Paragraph ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.Documents.Paragraph</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-376">Pobiera akapicie zakresów bieżącą pozycję, jeśli istnieje.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-376">Gets the paragraph that scopes the current position, if any.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-377">
+            <see cref="T:System.Windows.Documents.Paragraph" /> Który zakresów bieżącego położenia lub <see langword="null" /> Jeśli istnieje nie takie akapitu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-377">The <see cref="T:System.Windows.Documents.Paragraph" /> that scopes the current position, or <see langword="null" /> if no such paragraph exists.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.Parent" />
+      </Docs>
+    </Member>
+    <Member MemberName="Parent">
+      <MemberSignature Language="C#" Value="public System.Windows.DependencyObject Parent { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance class System.Windows.DependencyObject Parent" />
+      <MemberSignature Language="DocId" Value="P:System.Windows.Documents.TextPointer.Parent" />
+      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Parent As DependencyObject" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Windows::DependencyObject ^ Parent { System::Windows::DependencyObject ^ get(); };" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Windows.DependencyObject</ReturnType>
+      </ReturnValue>
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-378">Pobiera logicznej nadrzędnej, czy bieżące położenie zakresów.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-378">Gets the logical parent that scopes the current position.</span>
+          </span>
+        </summary>
+        <value>
+          <span data-ttu-id="be4cd-379">Logiczne nadrzędnej, czy bieżące położenie zakresów.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-379">The logical parent that scopes the current position.</span>
+          </span>
+        </value>
+        <remarks>To be added.</remarks>
+        <altmember cref="P:System.Windows.Documents.TextPointer.Paragraph" />
+      </Docs>
+    </Member>
+    <Member MemberName="ToString">
+      <MemberSignature Language="C#" Value="public override string ToString ();" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance string ToString() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Windows.Documents.TextPointer.ToString" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function ToString () As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override System::String ^ ToString();" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>PresentationFramework</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>
+          <span data-ttu-id="be4cd-380">Ten typ lub element członkowski obsługuje [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] infrastrukturę i nie jest przeznaczona do użycia bezpośrednio w kodzie.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-380">This type or member supports the [!INCLUDE[TLA#tla_winclient](~/includes/tlasharptla-winclient-md.md)] infrastructure and is not intended to be used directly from your code.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="be4cd-381">Ciąg reprezentujący obiekt.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="be4cd-381">The string that represents the object.</span>
+          </span>
+        </returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
