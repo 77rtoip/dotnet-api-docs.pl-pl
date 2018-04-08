@@ -1,0 +1,569 @@
+<Type Name="StronglyTypedResourceBuilder" FullName="System.Resources.Tools.StronglyTypedResourceBuilder">
+  <Metadata>
+    <Meta Name="ms.openlocfilehash" Value="7be7f3118763d30ffd080582491bdf7c07503c21" />
+    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.translationtype" Value="MT" />
+    <Meta Name="ms.contentlocale" Value="pl-PL" />
+    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
+  </Metadata>
+  <TypeSignature Language="C#" Value="public static class StronglyTypedResourceBuilder" />
+  <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit StronglyTypedResourceBuilder extends System.Object" />
+  <TypeSignature Language="DocId" Value="T:System.Resources.Tools.StronglyTypedResourceBuilder" />
+  <TypeSignature Language="VB.NET" Value="Public Class StronglyTypedResourceBuilder" />
+  <TypeSignature Language="C++ CLI" Value="public ref class StronglyTypedResourceBuilder abstract sealed" />
+  <AssemblyInfo>
+    <AssemblyName>System.Design</AssemblyName>
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>
+  </AssemblyInfo>
+  <Base>
+    <BaseTypeName>System.Object</BaseTypeName>
+  </Base>
+  <Interfaces />
+  <Docs>
+    <summary>
+      <span data-ttu-id="5af55-101">Zapewnia obsługę jednoznacznie zasobów.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="5af55-101">Provides support for strongly typed resources.</span>
+      </span>
+      <span data-ttu-id="5af55-102">Klasa ta nie może być dziedziczona.</span>
+      <span class="sxs-lookup">
+        <span data-stu-id="5af55-102">This class cannot be inherited.</span>
+      </span>
+    </summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-103">Zazwyczaj zasobów oddzielne kodu z zawartości wewnątrz aplikacji.</span><span class="sxs-lookup"><span data-stu-id="5af55-103">Typically, resources separate code from content within an application.</span></span> <span data-ttu-id="5af55-104">Tworzenie i korzystanie z tych zasobów ułatwia tworzenie aplikacji możliwych do zlokalizowania.</span><span class="sxs-lookup"><span data-stu-id="5af55-104">Creating and consuming these resources makes it easier to develop localizable applications.</span></span> <span data-ttu-id="5af55-105">W programie .NET Framework, zasoby są zazwyczaj używane przy użyciu <xref:System.Resources.ResourceManager> klasy, która zawiera metody, które zapewniają dostęp do zasobów określonej kultury w czasie wykonywania.</span><span class="sxs-lookup"><span data-stu-id="5af55-105">In the .NET Framework, resources are usually consumed by using the <xref:System.Resources.ResourceManager> class, which contains methods that provide access to culture-specific resources at run time.</span></span> <span data-ttu-id="5af55-106">Aby uzyskać więcej informacji na temat tworzenia i korzystanie z zasobów, zobacz [zasobów w aplikacjach pulpitu](http://msdn.microsoft.com/library/8ad495d4-2941-40cf-bf64-e82e85825890).</span><span class="sxs-lookup"><span data-stu-id="5af55-106">For more information about creating and consuming resources, see [Resources in Desktop Apps](http://msdn.microsoft.com/library/8ad495d4-2941-40cf-bf64-e82e85825890).</span></span>  
+  
+ <span data-ttu-id="5af55-107">Obsługa zasobu o jednoznacznie jest funkcją kompilacji, która hermetyzuje dostęp do zasobów przez utworzenie klas, które zawierają zestaw statycznych, tylko do odczytu (`get`) właściwości.</span><span class="sxs-lookup"><span data-stu-id="5af55-107">Strongly typed resource support is a compile-time feature that encapsulates access to resources by creating classes that contain a set of static, read-only (`get`) properties.</span></span> <span data-ttu-id="5af55-108">Zapewnia to alternatywny sposób, aby używać zasobów zamiast wywoływać metodę <xref:System.Resources.ResourceManager.GetString%2A?displayProperty=nameWithType> i <xref:System.Resources.ResourceManager.GetObject%2A?displayProperty=nameWithType> metody.</span><span class="sxs-lookup"><span data-stu-id="5af55-108">This provides an alternative way to consume resources instead of calling the <xref:System.Resources.ResourceManager.GetString%2A?displayProperty=nameWithType> and <xref:System.Resources.ResourceManager.GetObject%2A?displayProperty=nameWithType> methods.</span></span>  
+  
+ <span data-ttu-id="5af55-109">Podstawowe funkcje obsługi zasobu o jednoznacznie są udostępniane przez <xref:System.Resources.Tools.StronglyTypedResourceBuilder> klasy (a także `/str` opcji wiersza polecenia w [Resgen.exe (Generator pliku zasobów)](~/docs/framework/tools/resgen-exe-resource-file-generator.md)).</span><span class="sxs-lookup"><span data-stu-id="5af55-109">The basic functionality for strongly typed resource support is provided by the <xref:System.Resources.Tools.StronglyTypedResourceBuilder> class (as well as the `/str` command-line option in the [Resgen.exe (Resource File Generator)](~/docs/framework/tools/resgen-exe-resource-file-generator.md)).</span></span> <span data-ttu-id="5af55-110">Dane wyjściowe <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> metoda jest klasa, która zawiera jednoznacznie właściwości, które odpowiada zasoby, do których odwołuje się parametr wejściowy.</span><span class="sxs-lookup"><span data-stu-id="5af55-110">The output of the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> method is a class that contains strongly typed properties that match the resources that are referenced in the input parameter.</span></span> <span data-ttu-id="5af55-111">Ta klasa umożliwia dostęp tylko do odczytu z zasobami, które są dostępne w pliku przetworzone.</span><span class="sxs-lookup"><span data-stu-id="5af55-111">This class provides read-only access to the resources that are available in the file processed.</span></span>  
+  
+   
+  
+## Examples  
+ <span data-ttu-id="5af55-112">Poniższy przykład generuje klasę o nazwie `DemoResources` który jest napisany w języku C# lub Visual Basic (w zależności od kodu źródłowego w tym przykładzie).</span><span class="sxs-lookup"><span data-stu-id="5af55-112">The following example generates a class named `DemoResources` that is written in C# or Visual Basic (depending on the example's source code).</span></span> <span data-ttu-id="5af55-113">Ta klasa jest w `DemoApp` przestrzeni nazw i ma właściwości, które zwracają mapy bitowej logo i nazwę aplikacji.</span><span class="sxs-lookup"><span data-stu-id="5af55-113">This class is in the `DemoApp` namespace and has properties that return the bitmap of a logo and the name of an application.</span></span> <span data-ttu-id="5af55-114">Przykład wywołania `CreateResourceFile` metodę w celu utworzenia plików resw niezbędne i wymaga się, że plik mapy bitowej o nazwie Logo.bmp można znaleźć w tym przykładzie w bieżącym katalogu.</span><span class="sxs-lookup"><span data-stu-id="5af55-114">The example calls a `CreateResourceFile` method to create the necessary .resw file and requires that a bitmap file named Logo.bmp be found in the example's current directory.</span></span> <span data-ttu-id="5af55-115">Przykład kodu wykorzystuje następujący plik zasobu o nazwie demo.resx:</span><span class="sxs-lookup"><span data-stu-id="5af55-115">The code example uses the following resource file, named demo.resx:</span></span>  
+  
+ [!code-csharp[System.Resources.Tools.StronglyTypedResourceBuilder.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.tools.stronglytypedresourcebuilder.class/cs/example1.cs#1)]
+ [!code-vb[System.Resources.Tools.StronglyTypedResourceBuilder.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.tools.stronglytypedresourcebuilder.class/vb/example1.vb#1)]  
+  
+ <span data-ttu-id="5af55-116">Kod aplikacji można użyć klasy w następujący sposób:</span><span class="sxs-lookup"><span data-stu-id="5af55-116">Your application code can then use the class as follows:</span></span>  
+  
+ [!code-csharp[System.Resources.Tools.StronglyTypedResourceBuilder.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.resources.tools.stronglytypedresourcebuilder.class/cs/demoresources.cs#2)]
+ [!code-vb[System.Resources.Tools.StronglyTypedResourceBuilder.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.resources.tools.stronglytypedresourcebuilder.class/vb/demoresources.vb#2)]  
+  
+ ]]></format>
+    </remarks>
+  </Docs>
+  <Members>
+    <MemberGroup MemberName="Create">
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <Docs>
+        <summary>
+          <span data-ttu-id="5af55-117">Generuje plik klasy, który zawiera jednoznacznie właściwości, które odpowiada zasoby, które są określone w parametrze wejściowym.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-117">Generates a class file that contains strongly typed properties that match the resources that are specified in the input parameter.</span>
+          </span>
+        </summary>
+      </Docs>
+    </MemberGroup>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.CodeDom.CodeCompileUnit Create (System.Collections.IDictionary resourceList, string baseName, string generatedCodeNamespace, System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, out string[] unmatchable);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.CodeDom.CodeCompileUnit Create(class System.Collections.IDictionary resourceList, string baseName, string generatedCodeNamespace, class System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, [out] string[]&amp; unmatchable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.Tools.StronglyTypedResourceBuilder.Create(System.Collections.IDictionary,System.String,System.String,System.CodeDom.Compiler.CodeDomProvider,System.Boolean,System.String[]@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (resourceList As IDictionary, baseName As String, generatedCodeNamespace As String, codeProvider As CodeDomProvider, internalClass As Boolean, ByRef unmatchable As String()) As CodeCompileUnit" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::CodeDom::CodeCompileUnit ^ Create(System::Collections::IDictionary ^ resourceList, System::String ^ baseName, System::String ^ generatedCodeNamespace, System::CodeDom::Compiler::CodeDomProvider ^ codeProvider, bool internalClass, [Runtime::InteropServices::Out] cli::array &lt;System::String ^&gt; ^ % unmatchable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.CodeDom.CodeCompileUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resourceList" Type="System.Collections.IDictionary" />
+        <Parameter Name="baseName" Type="System.String" />
+        <Parameter Name="generatedCodeNamespace" Type="System.String" />
+        <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
+        <Parameter Name="internalClass" Type="System.Boolean" />
+        <Parameter Name="unmatchable" Type="System.String[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="resourceList">
+          <span data-ttu-id="5af55-118">
+            <see cref="T:System.Collections.IDictionary" /> Kolekcji, gdzie każda para klucza i wartości wpisu słownika jest nazwa zasobu oraz wartości zasobu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-118">An <see cref="T:System.Collections.IDictionary" /> collection where each dictionary entry key/value pair is the name of a resource and the value of the resource.</span>
+          </span>
+        </param>
+        <param name="baseName">
+          <span data-ttu-id="5af55-119">Nazwa klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-119">The name of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="generatedCodeNamespace">
+          <span data-ttu-id="5af55-120">Przestrzeń nazw klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-120">The namespace of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="codeProvider">
+          <span data-ttu-id="5af55-121">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> klasy, która zapewnia język, w którym zostanie wygenerowana klasa.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-121">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> class that provides the language in which the class will be generated.</span>
+          </span>
+        </param>
+        <param name="internalClass">
+          <span data-ttu-id="5af55-122">
+            <see langword="true" /> Aby wygenerować Wewnętrzna klasa; <see langword="false" /> do generowania klasy publicznej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-122">
+              <see langword="true" /> to generate an internal class; <see langword="false" /> to generate a public class.</span>
+          </span>
+        </param>
+        <param name="unmatchable">
+          <span data-ttu-id="5af55-123">Tablica, która zawiera nazwę każdego zasobu, dla którego nie można wygenerować właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-123">An array that contains each resource name for which a property cannot be generated.</span>
+          </span>
+          <span data-ttu-id="5af55-124">Zazwyczaj nie można wygenerować właściwości, ponieważ nazwa zasobu nie jest prawidłowym identyfikatorem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-124">Typically, a property cannot be generated because the resource name is not a valid identifier.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5af55-125">Generuje plik klasy, który zawiera jednoznacznie właściwości, które odpowiada zasoby w określonej kolekcji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-125">Generates a class file that contains strongly typed properties that match the resources referenced in the specified collection.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="5af55-126">A <see cref="T:System.CodeDom.CodeCompileUnit" /> kontenera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-126">A <see cref="T:System.CodeDom.CodeCompileUnit" /> container.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-127">Użyj <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> do generowania klasy, która udostępnia otokę jednoznacznie, tylko do odczytu na dostęp do zasobów, które są zawarte w `resourceList` parametru.</span><span class="sxs-lookup"><span data-stu-id="5af55-127">Use the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> method to generate a class that provides a strongly typed, read-only wrapper to access the resources that are contained in the `resourceList` parameter.</span></span>  
+  
+ <span data-ttu-id="5af55-128"><xref:System.Resources.Tools.StronglyTypedResourceBuilder> Klasy ignoruje dowolną nazwę zasobu, który zaczyna się od znaków "$" lub ">>".</span><span class="sxs-lookup"><span data-stu-id="5af55-128">The <xref:System.Resources.Tools.StronglyTypedResourceBuilder> class ignores any resource name that begins with the characters "$" or ">>".</span></span> <span data-ttu-id="5af55-129">Nazwy zasobów "Kultura" i "ResourceManager" są nieprawidłowe identyfikatory.</span><span class="sxs-lookup"><span data-stu-id="5af55-129">The resource names "Culture" and "ResourceManager" are invalid identifiers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="5af55-130">
+            <paramref name="resourceList" />, <paramref name="basename" />, lub <paramref name="codeProvider" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-130">
+              <paramref name="resourceList" />, <paramref name="basename" />, or <paramref name="codeProvider" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="5af55-131">Nazwa węzła zasobu nie odpowiada jego kluczowi w <paramref name="resourceList" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-131">A resource node name does not match its key in <paramref name="resourceList" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.CodeDom.CodeCompileUnit Create (string resxFile, string baseName, string generatedCodeNamespace, System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, out string[] unmatchable);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.CodeDom.CodeCompileUnit Create(string resxFile, string baseName, string generatedCodeNamespace, class System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, [out] string[]&amp; unmatchable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.Tools.StronglyTypedResourceBuilder.Create(System.String,System.String,System.String,System.CodeDom.Compiler.CodeDomProvider,System.Boolean,System.String[]@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (resxFile As String, baseName As String, generatedCodeNamespace As String, codeProvider As CodeDomProvider, internalClass As Boolean, ByRef unmatchable As String()) As CodeCompileUnit" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::CodeDom::CodeCompileUnit ^ Create(System::String ^ resxFile, System::String ^ baseName, System::String ^ generatedCodeNamespace, System::CodeDom::Compiler::CodeDomProvider ^ codeProvider, bool internalClass, [Runtime::InteropServices::Out] cli::array &lt;System::String ^&gt; ^ % unmatchable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.CodeDom.CodeCompileUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resxFile" Type="System.String" />
+        <Parameter Name="baseName" Type="System.String" />
+        <Parameter Name="generatedCodeNamespace" Type="System.String" />
+        <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
+        <Parameter Name="internalClass" Type="System.Boolean" />
+        <Parameter Name="unmatchable" Type="System.String[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="resxFile">
+          <span data-ttu-id="5af55-132">Nazwa pliku .resx używane jako dane wejściowe.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-132">The name of a .resx file used as input.</span>
+          </span>
+        </param>
+        <param name="baseName">
+          <span data-ttu-id="5af55-133">Nazwa klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-133">The name of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="generatedCodeNamespace">
+          <span data-ttu-id="5af55-134">Przestrzeń nazw klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-134">The namespace of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="codeProvider">
+          <span data-ttu-id="5af55-135">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> klasy, która zapewnia język, w którym zostanie wygenerowana klasa.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-135">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> class that provides the language in which the class will be generated.</span>
+          </span>
+        </param>
+        <param name="internalClass">
+          <span data-ttu-id="5af55-136">
+            <see langword="true" /> Aby wygenerować Wewnętrzna klasa; <see langword="false" /> do generowania klasy publicznej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-136">
+              <see langword="true" /> to generate an internal class; <see langword="false" /> to generate a public class.</span>
+          </span>
+        </param>
+        <param name="unmatchable">
+          <span data-ttu-id="5af55-137">A <see cref="T:System.String" /> tablica, która zawiera nazwę każdego zasobu, dla którego nie można wygenerować właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-137">A <see cref="T:System.String" /> array that contains each resource name for which a property cannot be generated.</span>
+          </span>
+          <span data-ttu-id="5af55-138">Zazwyczaj nie można wygenerować właściwości, ponieważ nazwa zasobu nie jest prawidłowym identyfikatorem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-138">Typically, a property cannot be generated because the resource name is not a valid identifier.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5af55-139">Generuje plik klasy, który zawiera jednoznacznie właściwości, które odpowiada zasobów w pliku .resx określony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-139">Generates a class file that contains strongly typed properties that match the resources in the specified .resx file.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="5af55-140">A <see cref="T:System.CodeDom.CodeCompileUnit" /> kontenera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-140">A <see cref="T:System.CodeDom.CodeCompileUnit" /> container.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-141">Użyj <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> do generowania klasy, która zapewnia jednoznacznie, tylko do odczytu dostęp do zasobów, które są zawarte w `resxFile` parametru.</span><span class="sxs-lookup"><span data-stu-id="5af55-141">Use the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> method to generate a class that provides strongly typed, read-only access to the resources that are contained in the `resxFile` parameter.</span></span>  
+  
+ <span data-ttu-id="5af55-142"><xref:System.Resources.Tools.StronglyTypedResourceBuilder> Klasy ignoruje dowolną nazwę zasobu, który zaczyna się od znaków "$" lub ">>".</span><span class="sxs-lookup"><span data-stu-id="5af55-142">The <xref:System.Resources.Tools.StronglyTypedResourceBuilder> class ignores any resource name that begins with the characters "$" or ">>".</span></span> <span data-ttu-id="5af55-143">Nazwy zasobów "Kultura" i "ResourceManager" są nieprawidłowe identyfikatory.</span><span class="sxs-lookup"><span data-stu-id="5af55-143">The resource names "Culture" and "ResourceManager" are invalid identifiers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="5af55-144">
+            <paramref name="basename" /> lub <paramref name="codeProvider" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-144">
+              <paramref name="basename" /> or <paramref name="codeProvider" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.CodeDom.CodeCompileUnit Create (System.Collections.IDictionary resourceList, string baseName, string generatedCodeNamespace, string resourcesNamespace, System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, out string[] unmatchable);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.CodeDom.CodeCompileUnit Create(class System.Collections.IDictionary resourceList, string baseName, string generatedCodeNamespace, string resourcesNamespace, class System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, [out] string[]&amp; unmatchable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.Tools.StronglyTypedResourceBuilder.Create(System.Collections.IDictionary,System.String,System.String,System.String,System.CodeDom.Compiler.CodeDomProvider,System.Boolean,System.String[]@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (resourceList As IDictionary, baseName As String, generatedCodeNamespace As String, resourcesNamespace As String, codeProvider As CodeDomProvider, internalClass As Boolean, ByRef unmatchable As String()) As CodeCompileUnit" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::CodeDom::CodeCompileUnit ^ Create(System::Collections::IDictionary ^ resourceList, System::String ^ baseName, System::String ^ generatedCodeNamespace, System::String ^ resourcesNamespace, System::CodeDom::Compiler::CodeDomProvider ^ codeProvider, bool internalClass, [Runtime::InteropServices::Out] cli::array &lt;System::String ^&gt; ^ % unmatchable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.CodeDom.CodeCompileUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resourceList" Type="System.Collections.IDictionary" />
+        <Parameter Name="baseName" Type="System.String" />
+        <Parameter Name="generatedCodeNamespace" Type="System.String" />
+        <Parameter Name="resourcesNamespace" Type="System.String" />
+        <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
+        <Parameter Name="internalClass" Type="System.Boolean" />
+        <Parameter Name="unmatchable" Type="System.String[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="resourceList">
+          <span data-ttu-id="5af55-145">
+            <see cref="T:System.Collections.IDictionary" /> Kolekcji, gdzie każda para klucza i wartości wpisu słownika jest nazwa zasobu oraz wartości zasobu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-145">An <see cref="T:System.Collections.IDictionary" /> collection where each dictionary entry key/value pair is the name of a resource and the value of the resource.</span>
+          </span>
+        </param>
+        <param name="baseName">
+          <span data-ttu-id="5af55-146">Nazwa klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-146">The name of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="generatedCodeNamespace">
+          <span data-ttu-id="5af55-147">Przestrzeń nazw klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-147">The namespace of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="resourcesNamespace">
+          <span data-ttu-id="5af55-148">Przestrzeń nazw zasobów, które ma zostać wygenerowane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-148">The namespace of the resource to be generated.</span>
+          </span>
+        </param>
+        <param name="codeProvider">
+          <span data-ttu-id="5af55-149">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> obiekt, który zawiera język, w którym zostanie wygenerowana klasa.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-149">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> object that provides the language in which the class will be generated.</span>
+          </span>
+        </param>
+        <param name="internalClass">
+          <span data-ttu-id="5af55-150">
+            <see langword="true" /> Aby wygenerować Wewnętrzna klasa; <see langword="false" /> do generowania klasy publicznej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-150">
+              <see langword="true" /> to generate an internal class; <see langword="false" /> to generate a public class.</span>
+          </span>
+        </param>
+        <param name="unmatchable">
+          <span data-ttu-id="5af55-151">A <see cref="T:System.String" /> tablica, która zawiera nazwę każdego zasobu, dla którego nie można wygenerować właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-151">A <see cref="T:System.String" /> array that contains each resource name for which a property cannot be generated.</span>
+          </span>
+          <span data-ttu-id="5af55-152">Zazwyczaj nie można wygenerować właściwości, ponieważ nazwa zasobu nie jest prawidłowym identyfikatorem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-152">Typically, a property cannot be generated because the resource name is not a valid identifier.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5af55-153">Generuje plik klasy, który zawiera jednoznacznie właściwości, które odpowiada zasoby w określonej kolekcji.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-153">Generates a class file that contains strongly typed properties that match the resources referenced in the specified collection.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="5af55-154">A <see cref="T:System.CodeDom.CodeCompileUnit" /> kontenera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-154">A <see cref="T:System.CodeDom.CodeCompileUnit" /> container.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-155">To przeciążenie umożliwia używanie `resourcesNamespace` parametr, aby określić przestrzeń nazw dla wygenerowanego zasobów.</span><span class="sxs-lookup"><span data-stu-id="5af55-155">This overload enables you to use the `resourcesNamespace` parameter to specify the namespace for the generated resources.</span></span> <span data-ttu-id="5af55-156">W takim przypadku wygenerowany kod wygląda następująco:</span><span class="sxs-lookup"><span data-stu-id="5af55-156">In this case, the generated code appears as follows:</span></span>  
+  
+```  
+System.Resources.ResourceManager rm = new System.Resources.ResourceManager("<resourceNamespace>.<baseName>",typeof(baseName).Assembly);  
+```  
+  
+ <span data-ttu-id="5af55-157">W większości przypadków nie trzeba wywołać tę metodę w kodzie aplikacji.</span><span class="sxs-lookup"><span data-stu-id="5af55-157">In most cases, you do not need to call this method from your application code.</span></span>  
+  
+ <span data-ttu-id="5af55-158"><xref:System.Resources.Tools.StronglyTypedResourceBuilder> Klasy ignoruje dowolną nazwę zasobu, który zaczyna się od znaków "$" lub ">>".</span><span class="sxs-lookup"><span data-stu-id="5af55-158">The <xref:System.Resources.Tools.StronglyTypedResourceBuilder> class ignores any resource name that begins with the characters "$" or ">>".</span></span> <span data-ttu-id="5af55-159">Nazwy zasobów "Kultura" i "ResourceManager" są nieprawidłowe identyfikatory.</span><span class="sxs-lookup"><span data-stu-id="5af55-159">The resource names "Culture" and "ResourceManager" are invalid identifiers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="5af55-160">
+            <paramref name="resourceList" />, <paramref name="basename" />, lub <paramref name="codeProvider" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-160">
+              <paramref name="resourceList" />, <paramref name="basename" />, or <paramref name="codeProvider" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+        <exception cref="T:System.ArgumentException">
+          <span data-ttu-id="5af55-161">Nazwa węzła zasobu nie odpowiada jego kluczowi w <paramref name="resourceList" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-161">A resource node name does not match its key in <paramref name="resourceList" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="Create">
+      <MemberSignature Language="C#" Value="public static System.CodeDom.CodeCompileUnit Create (string resxFile, string baseName, string generatedCodeNamespace, string resourcesNamespace, System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, out string[] unmatchable);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig class System.CodeDom.CodeCompileUnit Create(string resxFile, string baseName, string generatedCodeNamespace, string resourcesNamespace, class System.CodeDom.Compiler.CodeDomProvider codeProvider, bool internalClass, [out] string[]&amp; unmatchable) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.Tools.StronglyTypedResourceBuilder.Create(System.String,System.String,System.String,System.String,System.CodeDom.Compiler.CodeDomProvider,System.Boolean,System.String[]@)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function Create (resxFile As String, baseName As String, generatedCodeNamespace As String, resourcesNamespace As String, codeProvider As CodeDomProvider, internalClass As Boolean, ByRef unmatchable As String()) As CodeCompileUnit" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::CodeDom::CodeCompileUnit ^ Create(System::String ^ resxFile, System::String ^ baseName, System::String ^ generatedCodeNamespace, System::String ^ resourcesNamespace, System::CodeDom::Compiler::CodeDomProvider ^ codeProvider, bool internalClass, [Runtime::InteropServices::Out] cli::array &lt;System::String ^&gt; ^ % unmatchable);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.CodeDom.CodeCompileUnit</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="resxFile" Type="System.String" />
+        <Parameter Name="baseName" Type="System.String" />
+        <Parameter Name="generatedCodeNamespace" Type="System.String" />
+        <Parameter Name="resourcesNamespace" Type="System.String" />
+        <Parameter Name="codeProvider" Type="System.CodeDom.Compiler.CodeDomProvider" />
+        <Parameter Name="internalClass" Type="System.Boolean" />
+        <Parameter Name="unmatchable" Type="System.String[]&amp;" RefType="out" />
+      </Parameters>
+      <Docs>
+        <param name="resxFile">
+          <span data-ttu-id="5af55-162">Nazwa pliku .resx używane jako dane wejściowe.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-162">The name of a .resx file used as input.</span>
+          </span>
+        </param>
+        <param name="baseName">
+          <span data-ttu-id="5af55-163">Nazwa klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-163">The name of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="generatedCodeNamespace">
+          <span data-ttu-id="5af55-164">Przestrzeń nazw klasy do wygenerowania.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-164">The namespace of the class to be generated.</span>
+          </span>
+        </param>
+        <param name="resourcesNamespace">
+          <span data-ttu-id="5af55-165">Przestrzeń nazw zasobów, które ma zostać wygenerowane.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-165">The namespace of the resource to be generated.</span>
+          </span>
+        </param>
+        <param name="codeProvider">
+          <span data-ttu-id="5af55-166">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> klasy, która zapewnia język, w którym zostanie wygenerowana klasa.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-166">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> class that provides the language in which the class will be generated.</span>
+          </span>
+        </param>
+        <param name="internalClass">
+          <span data-ttu-id="5af55-167">
+            <see langword="true" /> Aby wygenerować Wewnętrzna klasa; <see langword="false" /> do generowania klasy publicznej.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-167">
+              <see langword="true" /> to generate an internal class; <see langword="false" /> to generate a public class.</span>
+          </span>
+        </param>
+        <param name="unmatchable">
+          <span data-ttu-id="5af55-168">A <see cref="T:System.String" /> tablica, która zawiera nazwę każdego zasobu, dla którego nie można wygenerować właściwości.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-168">A <see cref="T:System.String" /> array that contains each resource name for which a property cannot be generated.</span>
+          </span>
+          <span data-ttu-id="5af55-169">Zazwyczaj nie można wygenerować właściwości, ponieważ nazwa zasobu nie jest prawidłowym identyfikatorem.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-169">Typically, a property cannot be generated because the resource name is not a valid identifier.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5af55-170">Generuje plik klasy, który zawiera jednoznacznie właściwości, które odpowiada zasobów w pliku .resx określony.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-170">Generates a class file that contains strongly typed properties that match the resources in the specified .resx file.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="5af55-171">A <see cref="T:System.CodeDom.CodeCompileUnit" /> kontenera.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-171">A <see cref="T:System.CodeDom.CodeCompileUnit" /> container.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-172">Użyj <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> do generowania klasy, która zapewnia jednoznacznie, tylko do odczytu dostęp do zasobów, które są zawarte w `resxFile` parametru.</span><span class="sxs-lookup"><span data-stu-id="5af55-172">Use the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.Create%2A> method to generate a class that provides strongly typed, read-only access to the resources that are contained in the `resxFile` parameter.</span></span>  
+  
+ <span data-ttu-id="5af55-173"><xref:System.Resources.Tools.StronglyTypedResourceBuilder> Klasy ignoruje dowolną nazwę zasobu, który zaczyna się od znaków "$" lub ">>".</span><span class="sxs-lookup"><span data-stu-id="5af55-173">The <xref:System.Resources.Tools.StronglyTypedResourceBuilder> class ignores any resource name that begins with the characters "$" or ">>".</span></span> <span data-ttu-id="5af55-174">Nazwy zasobów "Kultura" i "ResourceManager" są nieprawidłowe identyfikatory.</span><span class="sxs-lookup"><span data-stu-id="5af55-174">The resource names "Culture" and "ResourceManager" are invalid identifiers.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="5af55-175">
+            <paramref name="basename" /> lub <paramref name="codeProvider" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-175">
+              <paramref name="basename" /> or <paramref name="codeProvider" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+    <Member MemberName="VerifyResourceName">
+      <MemberSignature Language="C#" Value="public static string VerifyResourceName (string key, System.CodeDom.Compiler.CodeDomProvider provider);" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig string VerifyResourceName(string key, class System.CodeDom.Compiler.CodeDomProvider provider) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName(System.String,System.CodeDom.Compiler.CodeDomProvider)" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Function VerifyResourceName (key As String, provider As CodeDomProvider) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static System::String ^ VerifyResourceName(System::String ^ key, System::CodeDom::Compiler::CodeDomProvider ^ provider);" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Design</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="key" Type="System.String" />
+        <Parameter Name="provider" Type="System.CodeDom.Compiler.CodeDomProvider" />
+      </Parameters>
+      <Docs>
+        <param name="key">
+          <span data-ttu-id="5af55-176">Ciąg, aby sprawdzić, a w razie potrzeby Konwertuj na prawidłową nazwę zasobu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-176">The string to verify and, if necessary, convert to a valid resource name.</span>
+          </span>
+        </param>
+        <param name="provider">
+          <span data-ttu-id="5af55-177">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> obiekt, który określa języka docelowego.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-177">A <see cref="T:System.CodeDom.Compiler.CodeDomProvider" /> object that specifies the target language to use.</span>
+          </span>
+        </param>
+        <summary>
+          <span data-ttu-id="5af55-178">Generuje ciąg prawidłowego zasobu na podstawie określonego ciągu wejściowego i dostawcy kodu.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-178">Generates a valid resource string based on the specified input string and code provider.</span>
+          </span>
+        </summary>
+        <returns>
+          <span data-ttu-id="5af55-179">Prawidłową nazwę zasobu pochodną <paramref name="key" /> parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-179">A valid resource name derived from the <paramref name="key" /> parameter.</span>
+          </span>
+          <span data-ttu-id="5af55-180">Nieprawidłowy tokenów są zamieniane na znak podkreślenia (_) lub <see langword="null" /> Jeśli ciąg pochodnej nadal zawiera nieprawidłowe znaki zgodnie z językiem określonym przez <paramref name="provider" /> parametru.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-180">Any invalid tokens are replaced with the underscore (_) character, or <see langword="null" /> if the derived string still contains invalid characters according to the language specified by the <paramref name="provider" /> parameter.</span>
+          </span>
+        </returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <span data-ttu-id="5af55-181">Jeśli `key` parametr jest prawidłowy ciąg znaków, jest zwracany ten ciąg.</span><span class="sxs-lookup"><span data-stu-id="5af55-181">If the `key` parameter is a valid string of characters, that string is returned.</span></span> <span data-ttu-id="5af55-182">Jeśli `key` parametr jest nieprawidłowy ciąg lub ciąg, który zawiera nieprawidłowe znaki <xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> metoda próbuje wygenerować prawidłowy ciąg na podstawie `key` i `provider` parametrów.</span><span class="sxs-lookup"><span data-stu-id="5af55-182">If the `key` parameter is an invalid string or a string that contains invalid characters, the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> method attempts to generate a valid string based on the `key` and `provider` parameters.</span></span> <span data-ttu-id="5af55-183">Jeśli można wygenerować prawidłowy ciąg, że zostanie zwrócony ciąg; w przeciwnym razie `null` jest zwracany.</span><span class="sxs-lookup"><span data-stu-id="5af55-183">If a valid string can be generated, that string is returned; otherwise, `null` is returned.</span></span>  
+  
+ <span data-ttu-id="5af55-184">Jeśli `key` parametr jest pustym ciągiem (""), zostanie zwrócony ciąg składający się z jednego podkreślenia (_).</span><span class="sxs-lookup"><span data-stu-id="5af55-184">If the `key` parameter is an empty string (""), a string that consists of a single underscore character (_) is returned.</span></span> <span data-ttu-id="5af55-185">Jeśli `key` parametr nie jest ciągiem pustym <xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> metoda porównuje każdego znaku w ciągu do zestawu nieprawidłowy tokeny na podstawie języka określonego przez `provider` parametru.</span><span class="sxs-lookup"><span data-stu-id="5af55-185">If the `key` parameter is not an empty string, the <xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> method compares each character in the string to a set of invalid tokens based on the language specified by the `provider` parameter.</span></span> <span data-ttu-id="5af55-186">Dowolny nieprawidłowy znak w ciągu jest zastępowany się od znaku podkreślenia.</span><span class="sxs-lookup"><span data-stu-id="5af55-186">Any invalid character in the string is replaced with an underscore character.</span></span> <span data-ttu-id="5af55-187">Znaki, które zostaną zastąpione podkreślenia są następujące:</span><span class="sxs-lookup"><span data-stu-id="5af55-187">The characters that will be replaced with an underscore are as follows:</span></span>  
+  
+ <span data-ttu-id="5af55-188">"" (miejsca), U + 00A0 (twardej spacji) "." (okres), "," (przecinek), ";" (średnik), "&#124;", "~", "@", '#', '%', "^", "&", "\*", "+", "-", '/', "\\","\<", ">","?", "[", "]", "(",")", "{", "}", "" "(cudzysłów)," "(apostrof),": ", i"! ".</span><span class="sxs-lookup"><span data-stu-id="5af55-188">' ' (space), U+00A0 (non-breaking space), '.' (period), ',' (comma), ';' (semicolon), '&#124;', '~', '@', '#', '%', '^', '&', '\*', '+', '-', '/', '\\', '\<', '>', '?', '[', ']', '(', ')', '{', '}', '"' (quote), ''' (apostrophe), ':', and '!'.</span></span>  
+  
+> [!NOTE]
+>  <span data-ttu-id="5af55-189">Zasoby jednoznacznie nie zezwala na używanie słów kluczowych języka (takich jak `if`, `for`i tak dalej) jako klucza nazwy zasobu.</span><span class="sxs-lookup"><span data-stu-id="5af55-189">Strongly typed resources do not allow the use of language keywords (such as `if`, `for`, and so on) as resource key names.</span></span> <span data-ttu-id="5af55-190">Jednak <xref:System.CodeDom> wzorca projektowego umożliwia używanie słów kluczowych języka, prefiksu — słowo kluczowe znakiem podkreślenia.</span><span class="sxs-lookup"><span data-stu-id="5af55-190">However, the <xref:System.CodeDom> design pattern allows the use of language keywords by prefixing the keyword with the underscore character.</span></span> <span data-ttu-id="5af55-191"><xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> Wywołania metody <xref:System.CodeDom.Compiler.ICodeGenerator.CreateValidIdentifier%2A> metodę, aby wymusić ten projekt.</span><span class="sxs-lookup"><span data-stu-id="5af55-191">The <xref:System.Resources.Tools.StronglyTypedResourceBuilder.VerifyResourceName%2A> method calls the <xref:System.CodeDom.Compiler.ICodeGenerator.CreateValidIdentifier%2A> method to enforce this design.</span></span> <span data-ttu-id="5af55-192">Na przykład, jeśli używasz nazwę zasobu która jest taka sama jak słowem kluczowym języka, takich jak `for`, nazwa jest wyświetlana jako `_for` w klasie zasobu o jednoznacznie wygenerowany.</span><span class="sxs-lookup"><span data-stu-id="5af55-192">For example, if you use a resource name that is the same as a language keyword, such as `for`, the name appears as `_for` in the generated strongly typed resource class.</span></span>  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException">
+          <span data-ttu-id="5af55-193">
+            <paramref name="key" /> lub <paramref name="provider" /> jest <see langword="null" />.</span>
+          <span class="sxs-lookup">
+            <span data-stu-id="5af55-193">
+              <paramref name="key" /> or <paramref name="provider" /> is <see langword="null" />.</span>
+          </span>
+        </exception>
+      </Docs>
+    </Member>
+  </Members>
+</Type>
