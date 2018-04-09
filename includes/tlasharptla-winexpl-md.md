@@ -1,0 +1,1 @@
+<span data-ttu-id="46c95-101">Eksplorator Microsoft Windows</span><span class="sxs-lookup"><span data-stu-id="46c95-101">Microsoft Windows Explorer</span></span>

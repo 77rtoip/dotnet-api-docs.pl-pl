@@ -1,0 +1,1 @@
+<span data-ttu-id="ce4c6-101">Automatyzacja interfejsu użytkownika</span><span class="sxs-lookup"><span data-stu-id="ce4c6-101">UI Automation</span></span>

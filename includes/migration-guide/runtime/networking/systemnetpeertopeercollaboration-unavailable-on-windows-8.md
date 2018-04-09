@@ -1,0 +1,11 @@
+### <a name="systemnetpeertopeercollaboration-unavailable-on-windows-8"></a><span data-ttu-id="c4eaa-101">System.Net.PeerToPeer.Collaboration niedostępne w systemie Windows 8</span><span class="sxs-lookup"><span data-stu-id="c4eaa-101">System.Net.PeerToPeer.Collaboration unavailable on Windows 8</span></span>
+
+|   |   |
+|---|---|
+|<span data-ttu-id="c4eaa-102">Szczegóły</span><span class="sxs-lookup"><span data-stu-id="c4eaa-102">Details</span></span>|<span data-ttu-id="c4eaa-103">Przestrzeń nazw System.Net.PeerToPeer.Collaboration jest niedostępna w systemie Windows 8 lub nowszym.</span><span class="sxs-lookup"><span data-stu-id="c4eaa-103">The System.Net.PeerToPeer.Collaboration namespace is unavailable on Windows 8 or above.</span></span>|
+|<span data-ttu-id="c4eaa-104">Sugestia</span><span class="sxs-lookup"><span data-stu-id="c4eaa-104">Suggestion</span></span>|<span data-ttu-id="c4eaa-105">Aplikacje, które obsługują systemu Windows 8 lub nowszym należy zaktualizować, aby nie są zależne od tej przestrzeni nazw lub jego elementów członkowskich.</span><span class="sxs-lookup"><span data-stu-id="c4eaa-105">Apps that support Windows 8 or above must be updated to not depend on this namespace or its members.</span></span>|
+|<span data-ttu-id="c4eaa-106">Zakres</span><span class="sxs-lookup"><span data-stu-id="c4eaa-106">Scope</span></span>|<span data-ttu-id="c4eaa-107">Główne</span><span class="sxs-lookup"><span data-stu-id="c4eaa-107">Major</span></span>|
+|<span data-ttu-id="c4eaa-108">Wersja</span><span class="sxs-lookup"><span data-stu-id="c4eaa-108">Version</span></span>|<span data-ttu-id="c4eaa-109">4.5</span><span class="sxs-lookup"><span data-stu-id="c4eaa-109">4.5</span></span>|
+|<span data-ttu-id="c4eaa-110">Typ</span><span class="sxs-lookup"><span data-stu-id="c4eaa-110">Type</span></span>|<span data-ttu-id="c4eaa-111">Środowisko uruchomieniowe</span><span class="sxs-lookup"><span data-stu-id="c4eaa-111">Runtime</span></span>|
+|<span data-ttu-id="c4eaa-112">Dotyczy interfejsów API</span><span class="sxs-lookup"><span data-stu-id="c4eaa-112">Affected APIs</span></span>|<ul><li><xref:System.Net.PeerToPeer.Collaboration?displayProperty=nameWithType></li></ul>|
+

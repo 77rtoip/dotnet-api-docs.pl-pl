@@ -1,0 +1,1 @@
+<span data-ttu-id="ab3b3-101">Ten typ obsługuje infrastrukturę programu .NET Framework i nie jest przeznaczony do użycia bezpośrednio w kodzie.</span><span class="sxs-lookup"><span data-stu-id="ab3b3-101">This type supports the .NET Framework infrastructure and is not intended to be used directly from your code.</span></span>

@@ -1,0 +1,1 @@
+<span data-ttu-id="b196a-101">Architektura .NET Native</span><span class="sxs-lookup"><span data-stu-id="b196a-101">.NET Native</span></span>

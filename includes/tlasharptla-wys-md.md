@@ -1,0 +1,1 @@
+<span data-ttu-id="e2b58-101">„what you see is what you get” (WYSIWYG)</span><span class="sxs-lookup"><span data-stu-id="e2b58-101">"what you see is what you get" (WYSIWYG)</span></span>

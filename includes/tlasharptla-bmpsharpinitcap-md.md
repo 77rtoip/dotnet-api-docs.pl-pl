@@ -1,0 +1,1 @@
+<span data-ttu-id="c971b-101">Mapa bitowa (BMP)</span><span class="sxs-lookup"><span data-stu-id="c971b-101">Bitmap (BMP)</span></span>

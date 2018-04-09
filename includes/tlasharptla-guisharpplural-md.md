@@ -1,0 +1,1 @@
+<span data-ttu-id="eccf6-101">graficzne interfejsy użytkownika (GUI)</span><span class="sxs-lookup"><span data-stu-id="eccf6-101">graphical user interfaces (GUIs)</span></span>

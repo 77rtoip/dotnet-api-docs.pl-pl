@@ -1,0 +1,1 @@
+<span data-ttu-id="bba78-101">katalog pliku graficznego (IFD)</span><span class="sxs-lookup"><span data-stu-id="bba78-101">image file directory (IFD)</span></span>

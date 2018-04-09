@@ -1,0 +1,1 @@
+<span data-ttu-id="57a2b-101">Microsoft Build Engine (MSBuild)</span><span class="sxs-lookup"><span data-stu-id="57a2b-101">Microsoft build engine (MSBuild)</span></span>

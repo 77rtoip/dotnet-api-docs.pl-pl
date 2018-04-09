@@ -1,0 +1,1 @@
+<span data-ttu-id="93c3c-101">Visual Studio — Zarządzanie cyklem życia aplikacji</span><span class="sxs-lookup"><span data-stu-id="93c3c-101">Visual Studio Application Lifecycle Management</span></span>

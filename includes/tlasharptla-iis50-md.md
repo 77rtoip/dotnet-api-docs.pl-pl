@@ -1,0 +1,1 @@
+<span data-ttu-id="05ebd-101">Microsoft Internet Information Services (IIS) 5.0</span><span class="sxs-lookup"><span data-stu-id="05ebd-101">Microsoft Internet Information Services (IIS) 5.0</span></span>

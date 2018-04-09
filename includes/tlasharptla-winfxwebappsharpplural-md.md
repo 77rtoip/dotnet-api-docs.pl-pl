@@ -1,0 +1,1 @@
+<span data-ttu-id="d3891-101">Aplikacje przeglądarki XAML (XBAP)</span><span class="sxs-lookup"><span data-stu-id="d3891-101">XAML browser applications (XBAPs)</span></span>

@@ -1,0 +1,1 @@
+<span data-ttu-id="d8c0a-101">Na przykład:</span><span class="sxs-lookup"><span data-stu-id="d8c0a-101">For an example of</span></span>

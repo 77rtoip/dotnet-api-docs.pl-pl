@@ -1,0 +1,1 @@
+<span data-ttu-id="acd07-101">.NET Framework 4.6.2</span><span class="sxs-lookup"><span data-stu-id="acd07-101">.NET Framework 4.6.2</span></span>

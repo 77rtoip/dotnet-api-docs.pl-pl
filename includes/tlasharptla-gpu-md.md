@@ -1,0 +1,1 @@
+<span data-ttu-id="65d37-101">procesor graficzny (GPU)</span><span class="sxs-lookup"><span data-stu-id="65d37-101">graphics processing unit (GPU)</span></span>

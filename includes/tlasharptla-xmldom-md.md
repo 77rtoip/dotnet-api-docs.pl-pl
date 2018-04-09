@@ -1,0 +1,1 @@
+<span data-ttu-id="87a1e-101">XML Document Object Model (DOM)</span><span class="sxs-lookup"><span data-stu-id="87a1e-101">XML Document Object Model (DOM)</span></span>

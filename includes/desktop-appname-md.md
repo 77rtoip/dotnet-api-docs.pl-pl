@@ -1,0 +1,1 @@
+<span data-ttu-id="aab03-101">komputer stacjonarny</span><span class="sxs-lookup"><span data-stu-id="aab03-101">desktop</span></span>

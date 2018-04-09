@@ -1,0 +1,1 @@
+ <span data-ttu-id="7c81c-101">Identyfikator</span><span class="sxs-lookup"><span data-stu-id="7c81c-101">ID</span></span> 
