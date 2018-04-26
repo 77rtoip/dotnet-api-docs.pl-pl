@@ -1,1 +1,0 @@
-Aby uzyskać więcej informacji, zobacz [Specyfikacja języka C#](~/docs/csharp/language-reference/language-specification/index.md). Specyfikacja języka jest ostatecznym źródłem informacji o składni i użyciu języka C#.

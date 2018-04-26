@@ -1,1 +1,0 @@
-globalna pamięć podręczna zestawów (GAC)
