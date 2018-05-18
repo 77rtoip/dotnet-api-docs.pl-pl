@@ -1,843 +1,417 @@
-<Type Name="CancellationToken" FullName="System.Threading.CancellationToken">
-  <TypeSignature Language="C#" Value="public struct CancellationToken" />
-  <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit CancellationToken extends System.ValueType" />
-  <TypeSignature Language="DocId" Value="T:System.Threading.CancellationToken" />
-  <TypeSignature Language="VB.NET" Value="Public Structure CancellationToken" />
-  <TypeSignature Language="C++ CLI" Value="public value class CancellationToken" />
-  <AssemblyInfo>
-    <AssemblyName>System.Threading.Tasks</AssemblyName>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-    <AssemblyVersion>4.0.10.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>mscorlib</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Runtime</AssemblyName>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.ValueType</BaseTypeName>
-  </Base>
-  <Interfaces />
-  <Attributes>
-    <Attribute>
-      <AttributeName>System.Diagnostics.DebuggerDisplay("IsCancellationRequested = {IsCancellationRequested}")</AttributeName>
-    </Attribute>
-    <Attribute>
-      <AttributeName>System.Runtime.InteropServices.ComVisible(false)</AttributeName>
-    </Attribute>
-  </Attributes>
-  <Docs>
-    <summary><span data-ttu-id="e3c3f-101">Propaguje powiadomienie, że operacje powinny być anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-101">Propagates notification that operations should be canceled.</span></span></summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-102">A <xref:System.Threading.CancellationToken> umożliwia anulowanie współpracy między wątkami, elementy robocze puli wątków, lub <xref:System.Threading.Tasks.Task> obiektów.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-102">A <xref:System.Threading.CancellationToken> enables cooperative cancellation between threads, thread pool work items, or <xref:System.Threading.Tasks.Task> objects.</span></span> <span data-ttu-id="e3c3f-103">Utwórz token anulowania przez utworzenie wystąpienia <xref:System.Threading.CancellationTokenSource> obiektu, który zarządza anulowanie tokenów pobierane z jego <xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType> właściwości.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-103">You create a cancellation token by instantiating a <xref:System.Threading.CancellationTokenSource> object, which manages cancellation tokens retrieved from its <xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType> property.</span></span> <span data-ttu-id="e3c3f-104">Token anulowania można następnie przekazać do dowolną liczbę wątków, zadania lub operacje, które powinny być przesyłane powiadomienia o anulowaniu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-104">You then  pass the cancellation token to any number of threads, tasks, or operations that should receive notice of cancellation.</span></span> <span data-ttu-id="e3c3f-105">Token nie można zainicjować anulowania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-105">The token cannot be used to initiate cancellation.</span></span> <span data-ttu-id="e3c3f-106">Gdy wywołuje obiekt będący właścicielem <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>, <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> ma ustawioną właściwość w każdej kopii token anulowania `true`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-106">When the owning object calls <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType>, the <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> property on every copy of the cancellation token is set to `true`.</span></span> <span data-ttu-id="e3c3f-107">Obiekty, które odbierają powiadomienia mogą odpowiadać w jakikolwiek sposób jest odpowiedni.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-107">The objects that receive the notification can respond in whatever manner is appropriate.</span></span>  
-  
- <span data-ttu-id="e3c3f-108">Więcej informacji i kod przykłady można znaleźć [anulowanie w zarządzanych wątkach](~/docs/standard/threading/cancellation-in-managed-threads.md).</span><span class="sxs-lookup"><span data-stu-id="e3c3f-108">For more information and code examples see [Cancellation in Managed Threads](~/docs/standard/threading/cancellation-in-managed-threads.md).</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="e3c3f-109">W poniższym przykładzie użyto generator liczb losowych, co pozwoliłoby na emulowanie aplikacji zbierania danych, która odczytuje 10 wartości całkowitej z 11 instrumencie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-109">The following example uses a random number generator to emulate a data collection application that reads 10 integral values from eleven different instruments.</span></span> <span data-ttu-id="e3c3f-110">Wartość zerowa wskazuje, że pomiar ma nie dla jednego dokumentu, obliczane w takim przypadku można anulować operację i nie oznacza ogólne.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-110">A value of zero indicates that the measurement has failed for one instrument, in which case the operation should be cancelled and no overall mean should be computed.</span></span>  
-  
- <span data-ttu-id="e3c3f-111">Aby obsłużyć możliwe anulowanie operacji, tworzy przykładzie <xref:System.Threading.CancellationTokenSource> obiekt, który generuje token anulowania, który jest przekazywany do <xref:System.Threading.Tasks.TaskFactory> obiektu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-111">To handle the possible cancellation of the operation, the example instantiates a <xref:System.Threading.CancellationTokenSource> object that generates a cancellation token which is passed to a <xref:System.Threading.Tasks.TaskFactory> object.</span></span> <span data-ttu-id="e3c3f-112"><xref:System.Threading.Tasks.TaskFactory> Obiektu z kolei przekazuje token anulowania do poszczególnych zadań odpowiedzialne za zbieranie odczyty dla określonego dokumentu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-112">The <xref:System.Threading.Tasks.TaskFactory> object in turn passes the cancellation token to each of the tasks responsible for collecting readings for a particular instrument.</span></span> <span data-ttu-id="e3c3f-113"><xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> Metoda jest wywoływana, aby upewnić się, że średnia jest obliczana tylko wtedy, gdy wszystkie odczyty zebrano zostały pomyślnie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-113">The <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> method is called to ensure that the mean is computed only after all readings have been gathered successfully.</span></span> <span data-ttu-id="e3c3f-114">Jeśli zadanie ma nie, ponieważ zostało anulowane, wywołanie <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> metoda zgłasza wyjątek.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-114">If a task has not because it has been cancelled, the call to the <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> method throws an exception.</span></span>  
-  
- [!code-csharp[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/cs/cancel1.cs#1)]
- [!code-vb[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/vb/cancel1.vb#1)]  
-  
- ]]></format>
-    </remarks>
-    <threadsafe><span data-ttu-id="e3c3f-115">Wszystkie publiczne i chronione elementy członkowskie <see cref="T:System.Threading.CancellationToken" /> są wątkowo i mogą być używane jednocześnie wiele wątków.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-115">All public and protected members of <see cref="T:System.Threading.CancellationToken" /> are thread-safe and may be used concurrently from multiple threads.</span></span></threadsafe>
-  </Docs>
-  <Members>
-    <Member MemberName=".ctor">
-      <MemberSignature Language="C#" Value="public CancellationToken (bool canceled);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig specialname rtspecialname instance void .ctor(bool canceled) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.#ctor(System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Sub New (canceled As Boolean)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; CancellationToken(bool canceled);" />
-      <MemberType>Constructor</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Parameters>
-        <Parameter Name="canceled" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="canceled"><span data-ttu-id="e3c3f-116">Stan anulowane dla tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-116">The canceled state for the token.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-117">Inicjuje <see cref="T:System.Threading.CancellationToken" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-117">Initializes the <see cref="T:System.Threading.CancellationToken" />.</span></span></summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-118">Tokeny utworzone za pomocą tego konstruktora pozostanie w stanie Anulowane określony przez `canceled` parametru.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-118">Tokens created with this constructor will remain in the canceled state specified by the `canceled` parameter.</span></span> <span data-ttu-id="e3c3f-119">Jeśli `canceled` jest `false`, oba <xref:System.Threading.CancellationToken.CanBeCanceled%2A> i <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> będzie `false`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-119">If `canceled` is `false`, both <xref:System.Threading.CancellationToken.CanBeCanceled%2A> and <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> will be `false`.</span></span>  
-  
- <span data-ttu-id="e3c3f-120">Jeśli `canceled` jest `true`, oba <xref:System.Threading.CancellationToken.CanBeCanceled%2A> i <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> będzie `true`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-120">If `canceled` is `true`, both <xref:System.Threading.CancellationToken.CanBeCanceled%2A> and <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> will be `true`.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="CanBeCanceled">
-      <MemberSignature Language="C#" Value="public bool CanBeCanceled { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool CanBeCanceled" />
-      <MemberSignature Language="DocId" Value="P:System.Threading.CancellationToken.CanBeCanceled" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property CanBeCanceled As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool CanBeCanceled { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-121">Pobiera informację, czy token ten może być w stanie anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-121">Gets whether this token is capable of being in the canceled state.</span></span></summary>
-        <value>
-          <span data-ttu-id="e3c3f-122"><see langword="true" /> Jeśli ten token jest może być w stanie anulowane; w przeciwnym razie <see langword="false" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-122"><see langword="true" /> if this token is capable of being in the canceled state; otherwise, <see langword="false" />.</span></span></value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-123">Jeśli <xref:System.Threading.CancellationToken.CanBeCanceled%2A> zwraca `false`, to zagwarantować, że token nigdy nie przechodzi w stan Anulowane, oznacza to, że <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> nigdy nie zwróci `true`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-123">If <xref:System.Threading.CancellationToken.CanBeCanceled%2A> returns `false`, it is guaranteed that the token will never transition into a canceled state, meaning that <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> will never return `true`.</span></span> <span data-ttu-id="e3c3f-124">Zwraca token anulowania, którego nie można anulować statycznych <xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType> właściwości.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-124">A cancellation token that cannot be canceled is returned by the static <xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType> property.</span></span>  
-  
- <span data-ttu-id="e3c3f-125">Ta właściwość opcjonalnie służy do określenia, czy token anulowania może być anulowana przed badania wartość <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> właściwości w celu określenia, czy zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-125">You can optionally use this property to determine whether a cancellation token can be canceled before examing the value of the <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> property to determine whether it has been canceled.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Equals">
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-126">Określa, czy bieżący <see cref="T:System.Threading.CancellationToken" /> wystąpienie jest równe określonej tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-126">Determines whether the current <see cref="T:System.Threading.CancellationToken" /> instance is equal to the specified token.</span></span></summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Equals">
-      <MemberSignature Language="C#" Value="public override bool Equals (object other);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool Equals(object other) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Equals(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Function Equals (other As Object) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool Equals(System::Object ^ other);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="other" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="other"><span data-ttu-id="e3c3f-127">Drugi obiekt do porównania z tym wystąpieniem.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-127">The other object to compare with this instance.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-128">Określa, czy bieżący <see cref="T:System.Threading.CancellationToken" /> wystąpienie jest równe określonej <see cref="T:System.Object" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-128">Determines whether the current <see cref="T:System.Threading.CancellationToken" /> instance is equal to the specified <see cref="T:System.Object" />.</span></span></summary>
-        <returns>
-          <span data-ttu-id="e3c3f-129"><see langword="true" /> Jeśli <paramref name="other" /> jest <see cref="T:System.Threading.CancellationToken" /> i dwa wystąpienia są takie same; w przeciwnym razie <see langword="false" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-129"><see langword="true" /> if <paramref name="other" /> is a <see cref="T:System.Threading.CancellationToken" /> and if the two instances are equal; otherwise, <see langword="false" />.</span></span> <span data-ttu-id="e3c3f-130">Zobacz sekcję Spostrzeżenia, aby uzyskać więcej informacji.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-130">See the Remarks section for more information.</span></span> </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-## Remarks  
-
-<span data-ttu-id="e3c3f-131">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</span><span class="sxs-lookup"><span data-stu-id="e3c3f-131">Two cancellation tokens are equal if any one of the following conditions is true:</span></span> 
-
-- <span data-ttu-id="e3c3f-132">Są one powiązane z tym samym <xref:System.Threading.CancellationTokenSource>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-132">They are associated with the same <xref:System.Threading.CancellationTokenSource>.</span></span>
-
-- <span data-ttu-id="e3c3f-133">Ich obu skonstruowane z publicznego <xref:System.Threading.CancellationToken> konstruktorów i ich <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> wartości są równe.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-133">They were both constructed from public <xref:System.Threading.CancellationToken> constructors, and their <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> values are equal.</span></span>
-
-- <span data-ttu-id="e3c3f-134">Wartość oba tokeny anulowania jest <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-134">The value of both cancellation tokens is <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span></span>
-
-       ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-135">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-135">An associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Equals">
-      <MemberSignature Language="C#" Value="public bool Equals (System.Threading.CancellationToken other);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance bool Equals(valuetype System.Threading.CancellationToken other) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Equals (other As CancellationToken) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; bool Equals(System::Threading::CancellationToken other);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="other" Type="System.Threading.CancellationToken" />
-      </Parameters>
-      <Docs>
-        <param name="other"><span data-ttu-id="e3c3f-136">Druga <see cref="T:System.Threading.CancellationToken" /> do porównania z tym wystąpieniem.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-136">The other <see cref="T:System.Threading.CancellationToken" /> to compare with this instance.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-137">Określa, czy bieżący <see cref="T:System.Threading.CancellationToken" /> wystąpienie jest równe określonej tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-137">Determines whether the current <see cref="T:System.Threading.CancellationToken" /> instance is equal to the specified token.</span></span></summary>
-        <returns>
-          <span data-ttu-id="e3c3f-138"><see langword="true" /> Jeśli wystąpienia są równe; w przeciwnym razie <see langword="false" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-138"><see langword="true" /> if the instances are equal; otherwise, <see langword="false" />.</span></span> <span data-ttu-id="e3c3f-139">Zobacz sekcję Spostrzeżenia, aby uzyskać więcej informacji.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-139">See the Remarks section for more information.</span></span> </returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-## Remarks  
-
-<span data-ttu-id="e3c3f-140">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</span><span class="sxs-lookup"><span data-stu-id="e3c3f-140">Two cancellation tokens are equal if any one of the following conditions is true:</span></span> 
-
-- <span data-ttu-id="e3c3f-141">Są one powiązane z tym samym <xref:System.Threading.CancellationTokenSource>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-141">They are associated with the same <xref:System.Threading.CancellationTokenSource>.</span></span>
-
-- <span data-ttu-id="e3c3f-142">Ich obu skonstruowane z publicznego <xref:System.Threading.CancellationToken> konstruktorów i ich <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> wartości są równe.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-142">They were both constructed from public <xref:System.Threading.CancellationToken> constructors, and their <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> values are equal.</span></span>
-
-- <span data-ttu-id="e3c3f-143">Wartość oba tokeny anulowania jest <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-143">The value of both cancellation tokens is <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span></span>
-
-       ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="GetHashCode">
-      <MemberSignature Language="C#" Value="public override int GetHashCode ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance int32 GetHashCode() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.GetHashCode" />
-      <MemberSignature Language="VB.NET" Value="Public Overrides Function GetHashCode () As Integer" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; override int GetHashCode();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int32</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-144">Pełni rolę funkcji skrótu dla <see cref="T:System.Threading.CancellationToken" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-144">Serves as a hash function for a <see cref="T:System.Threading.CancellationToken" />.</span></span></summary>
-        <returns><span data-ttu-id="e3c3f-145">Wartość skrótu dla bieżącego <see cref="T:System.Threading.CancellationToken" /> wystąpienia.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-145">A hash code for the current <see cref="T:System.Threading.CancellationToken" /> instance.</span></span></returns>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="IsCancellationRequested">
-      <MemberSignature Language="C#" Value="public bool IsCancellationRequested { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance bool IsCancellationRequested" />
-      <MemberSignature Language="DocId" Value="P:System.Threading.CancellationToken.IsCancellationRequested" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property IsCancellationRequested As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property bool IsCancellationRequested { bool get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-146">Pobiera czy zażądano anulowania tego tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-146">Gets whether cancellation has been requested for this token.</span></span></summary>
-        <value>
-          <span data-ttu-id="e3c3f-147"><see langword="true" /> Jeśli ma anulowania żądanie dla tego tokena; w przeciwnym razie <see langword="false" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-147"><see langword="true" /> if cancellation has been requested for this token; otherwise, <see langword="false" />.</span></span></value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-148">Ta właściwość wskazuje, czy ten token, za pomocą tokenu początkowo tworzona w stanie anulowane lub za pośrednictwem wywołania zażądano anulowania <xref:System.Threading.CancellationTokenSource.Cancel%2A> na skojarzonym token <xref:System.Threading.CancellationTokenSource>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-148">This property indicates whether cancellation has been requested for this token, either through the token initially being constructed in a canceled state, or through calling <xref:System.Threading.CancellationTokenSource.Cancel%2A> on the token's associated <xref:System.Threading.CancellationTokenSource>.</span></span>  
-  
- <span data-ttu-id="e3c3f-149">Jeśli ta właściwość jest `true`, tylko gwarantuje, że zażądano anulowania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-149">If this property is `true`, it only guarantees that cancellation has been requested.</span></span> <span data-ttu-id="e3c3f-150">Nie gwarantuje co zarejestrowaną usługę programu obsługi zakończenie wykonywania ani anulowania żądania zostało ukończone, propagowania na wszystkich zarejestrowanych programów obsługi.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-150">It does not guarantee that every registered handler has finished executing, nor that cancellation requests have finished propagating to all registered handlers.</span></span> <span data-ttu-id="e3c3f-151">Dodatkowe synchronizacji mogą być wymagane, szczególnie w sytuacjach, w którym powiązane obiekty zostały anulowane jednocześnie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-151">Additional synchronization may be required, particularly in situations where related objects are being canceled concurrently.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="e3c3f-152">Poniżej przedstawiono prosty przykład, która wykonuje proces serwera do <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> zwraca właściwość `true`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-152">The following is a simple example that executes a server process until the <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> property returns `true`.</span></span>  
-  
- [!code-csharp[System.Threading.Tasks.CancellationToken.IsCancellationRequested#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Tasks.CancellationToken.IsCancellationRequested/cs/cancellation.cs#12)]
- [!code-vb[System.Threading.Tasks.CancellationToken.IsCancellationRequested#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Tasks.CancellationToken.IsCancellationRequested/vb/cancelthreads.vb#12)]  
-  
- <span data-ttu-id="e3c3f-153">Przykład tworzy <xref:System.Threading.CancellationTokenSource> obiektu, który kontroluje dostęp do tokena anulowania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-153">The example instantiates a <xref:System.Threading.CancellationTokenSource> object, which controls access to the cancellation token.</span></span> <span data-ttu-id="e3c3f-154">Definiuje dwie procedury wątku.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-154">It then defines two thread procedures.</span></span> <span data-ttu-id="e3c3f-155">Pierwszy jest zdefiniowany jako wyrażenie lambda, pul klawiatury, a następnie wywołuje po naciśnięciu klawisza "C", <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType> można ustawić token anulowania do anulowania stanu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-155">The first is defined as a lambda expression that pools the keyboard and, when the "C" key is pressed, calls <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType> to set the cancellation token to the cancelled state.</span></span> <span data-ttu-id="e3c3f-156">Drugim jest metodą sparametryzowane `ServerClass.StaticMethod`, który wykonuje pętli do <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> właściwość jest `true`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-156">The second is a parameterized method, `ServerClass.StaticMethod`, that executes a loop until the <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> property is `true`.</span></span>  
-  
- <span data-ttu-id="e3c3f-157">Wątku głównego następnie uruchamia dwoma wątkami i bloków do wątku, który wykonuje `ServerClass.StaticMethod` kończy metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-157">The main thread then starts the two threads and blocks until the thread that executes the `ServerClass.StaticMethod` method terminates.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="None">
-      <MemberSignature Language="C#" Value="public static System.Threading.CancellationToken None { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property valuetype System.Threading.CancellationToken None" />
-      <MemberSignature Language="DocId" Value="P:System.Threading.CancellationToken.None" />
-      <MemberSignature Language="VB.NET" Value="Public Shared ReadOnly Property None As CancellationToken" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static property System::Threading::CancellationToken None { System::Threading::CancellationToken get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.CancellationToken</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-158">Zwraca pustą <see cref="T:System.Threading.CancellationToken" /> wartość.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-158">Returns an empty <see cref="T:System.Threading.CancellationToken" /> value.</span></span></summary>
-        <value><span data-ttu-id="e3c3f-159">Token anulowania puste.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-159">An empty cancellation token.</span></span></value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-160">Nie można anulować token anulowania zwracane przez tę właściwość; oznacza to, że jego <xref:System.Threading.CancellationToken.CanBeCanceled%2A> jest właściwość `false`.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-160">The cancellation token returned by this property cannot be canceled; that is, its <xref:System.Threading.CancellationToken.CanBeCanceled%2A> property is `false`.</span></span>  
-  
- <span data-ttu-id="e3c3f-161">Można również użyć języka C# [default(CancellationToken)](~/docs/csharp/language-reference/keywords/default.md) instrukcji, aby utworzyć token anulowania puste.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-161">You can also use the C#  [default(CancellationToken)](~/docs/csharp/language-reference/keywords/default.md) statement to create an empty cancellation token.</span></span> 
-
- <span data-ttu-id="e3c3f-162">Dwa puste anulowanie tokenów zawsze są takie same.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-162">Two empty cancellation tokens are always equal.</span></span>
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="op_Equality">
-      <MemberSignature Language="C#" Value="public static bool operator == (System.Threading.CancellationToken left, System.Threading.CancellationToken right);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Equality(valuetype System.Threading.CancellationToken left, valuetype System.Threading.CancellationToken right) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Operator == (left As CancellationToken, right As CancellationToken) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool operator ==(System::Threading::CancellationToken left, System::Threading::CancellationToken right);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="left" Type="System.Threading.CancellationToken" />
-        <Parameter Name="right" Type="System.Threading.CancellationToken" />
-      </Parameters>
-      <Docs>
-        <param name="left"><span data-ttu-id="e3c3f-163">Pierwsze wystąpienie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-163">The first instance.</span></span></param>
-        <param name="right"><span data-ttu-id="e3c3f-164">Drugie wystąpienie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-164">The second instance.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-165">Określa, czy dwa <see cref="T:System.Threading.CancellationToken" /> wystąpienia są takie same.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-165">Determines whether two <see cref="T:System.Threading.CancellationToken" /> instances are equal.</span></span></summary>
-        <returns>
-          <span data-ttu-id="e3c3f-166"><see langword="true" /> Jeśli wystąpienia są równe; w przeciwnym razie <see langword="false" /> sekcji uwag, aby uzyskać więcej informacji.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-166"><see langword="true" /> if the instances are equal; otherwise, <see langword="false" /> See the Remarks section for more information.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-## Remarks  
-
-<span data-ttu-id="e3c3f-167">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</span><span class="sxs-lookup"><span data-stu-id="e3c3f-167">Two cancellation tokens are equal if any one of the following conditions is true:</span></span> 
-
-- <span data-ttu-id="e3c3f-168">Są one powiązane z tym samym <xref:System.Threading.CancellationTokenSource>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-168">They are associated with the same <xref:System.Threading.CancellationTokenSource>.</span></span>
-
-- <span data-ttu-id="e3c3f-169">Ich obu skonstruowane z publicznego <xref:System.Threading.CancellationToken> konstruktorów i ich <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> wartości są równe.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-169">They were both constructed from public <xref:System.Threading.CancellationToken> constructors, and their <xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType> values are equal.</span></span>
-
-- <span data-ttu-id="e3c3f-170">Wartość oba tokeny anulowania jest <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-170">The value of both cancellation tokens is <xref:System.Threading.CancellationToken.None?displayProperty=nameWithType>.</span></span>
-       ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-171">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-171">An associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="op_Inequality">
-      <MemberSignature Language="C#" Value="public static bool operator != (System.Threading.CancellationToken left, System.Threading.CancellationToken right);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig specialname bool op_Inequality(valuetype System.Threading.CancellationToken left, valuetype System.Threading.CancellationToken right) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Operator != (left As CancellationToken, right As CancellationToken) As Boolean" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static bool operator !=(System::Threading::CancellationToken left, System::Threading::CancellationToken right);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Boolean</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="left" Type="System.Threading.CancellationToken" />
-        <Parameter Name="right" Type="System.Threading.CancellationToken" />
-      </Parameters>
-      <Docs>
-        <param name="left"><span data-ttu-id="e3c3f-172">Pierwsze wystąpienie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-172">The first instance.</span></span></param>
-        <param name="right"><span data-ttu-id="e3c3f-173">Drugie wystąpienie.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-173">The second instance.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-174">Określa, czy dwa <see cref="T:System.Threading.CancellationToken" /> wystąpień nie są takie same.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-174">Determines whether two <see cref="T:System.Threading.CancellationToken" /> instances are not equal.</span></span></summary>
-        <returns>
-          <span data-ttu-id="e3c3f-175"><see langword="true" /> Jeśli wystąpienia nie są równe; w przeciwnym razie <see langword="false" />.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-175"><see langword="true" /> if the instances are not equal; otherwise, <see langword="false" />.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-## Remarks  
-
-<span data-ttu-id="e3c3f-176">Definicję równości <xref:System.Threading.CancellationToken.Equals%2A> metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-176">For the definition of equality, see the <xref:System.Threading.CancellationToken.Equals%2A> method.</span></span> 
-       ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-177">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-177">An associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-      </Docs>
-    </Member>
-    <MemberGroup MemberName="Register">
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-178">Rejestruje delegata, który zostanie wywołana podczas to <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-178">Registers a delegate that will be called when this <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></summary>
-      </Docs>
-    </MemberGroup>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public System.Threading.CancellationTokenRegistration Register (Action callback);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.CancellationTokenRegistration Register(class System.Action callback) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Register(System.Action)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Register (callback As Action) As CancellationTokenRegistration" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::CancellationTokenRegistration Register(Action ^ callback);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.CancellationTokenRegistration</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="callback" Type="System.Action" />
-      </Parameters>
-      <Docs>
-        <param name="callback"><span data-ttu-id="e3c3f-179">Delegowaną, która ma zostać wykonana po <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-179">The delegate to be executed when the <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-180">Rejestruje delegata, który zostanie wywołana podczas to <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-180">Registers a delegate that will be called when this <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></summary>
-        <returns><span data-ttu-id="e3c3f-181"><see cref="T:System.Threading.CancellationTokenRegistration" /> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-181">The <see cref="T:System.Threading.CancellationTokenRegistration" /> instance that can be used to unregister the callback.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-182">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-182">If this token is already in the canceled state, the delegate will be run immediately and synchronously.</span></span> <span data-ttu-id="e3c3f-183">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-183">Any exception the delegate generates will be propagated out of this method call.</span></span>  
-  
- <span data-ttu-id="e3c3f-184">Bieżący <xref:System.Threading.ExecutionContext> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-184">The current <xref:System.Threading.ExecutionContext> is captured along with the delegate and will be used when executing it.</span></span> 
-
- <span data-ttu-id="e3c3f-185">Bieżące <xref:System.Threading.SynchronizationContext> nie są przechwytywane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-185">The current <xref:System.Threading.SynchronizationContext> is not captured.</span></span>
- 
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-186">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-186">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="e3c3f-187"><paramref name="callback" /> ma wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-187"><paramref name="callback" /> is null.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public System.Threading.CancellationTokenRegistration Register (Action callback, bool useSynchronizationContext);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.CancellationTokenRegistration Register(class System.Action callback, bool useSynchronizationContext) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Register (callback As Action, useSynchronizationContext As Boolean) As CancellationTokenRegistration" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::CancellationTokenRegistration Register(Action ^ callback, bool useSynchronizationContext);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.CancellationTokenRegistration</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="callback" Type="System.Action" />
-        <Parameter Name="useSynchronizationContext" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="callback"><span data-ttu-id="e3c3f-188">Delegowaną, która ma zostać wykonana po <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-188">The delegate to be executed when the <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></param>
-        <param name="useSynchronizationContext"><span data-ttu-id="e3c3f-189">Wartość, która wskazuje, czy do przechwycenia bieżącego <see cref="T:System.Threading.SynchronizationContext" /> i używać go podczas wywoływania <c>wywołania zwrotnego</c>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-189">A value that indicates whether to capture the current <see cref="T:System.Threading.SynchronizationContext" /> and use it when invoking the <c>callback</c>.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-190">Rejestruje delegata, który zostanie wywołana podczas to <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-190">Registers a delegate that will be called when this <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></summary>
-        <returns><span data-ttu-id="e3c3f-191"><see cref="T:System.Threading.CancellationTokenRegistration" /> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-191">The <see cref="T:System.Threading.CancellationTokenRegistration" /> instance that can be used to unregister the callback.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-192">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-192">If this token is already in the canceled state, the delegate will be run immediately and synchronously.</span></span> <span data-ttu-id="e3c3f-193">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-193">Any exception the delegate generates will be propagated out of this method call.</span></span>  
-  
- <span data-ttu-id="e3c3f-194">Bieżący <xref:System.Threading.ExecutionContext> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-194">The current <xref:System.Threading.ExecutionContext> is captured along with the delegate and will be used when executing it.</span></span> 
-
- <span data-ttu-id="e3c3f-195">Jeśli `useSynchronizationContext` jest `true`, bieżący <xref:System.Threading.SynchronizationContext>, jeśli jeden istnieje, jest również przechwytywany wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-195">If `useSynchronizationContext` is `true`, the current <xref:System.Threading.SynchronizationContext>, if one exists, is also captured along with the delegate and will be used when executing it.</span></span> <span data-ttu-id="e3c3f-196">W przeciwnym razie <xref:System.Threading.SynchronizationContext> nie są przechwytywane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-196">Otherwise, <xref:System.Threading.SynchronizationContext> is not captured.</span></span>
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-197">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-197">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="e3c3f-198"><paramref name="callback" /> ma wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-198"><paramref name="callback" /> is null.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public System.Threading.CancellationTokenRegistration Register (Action&lt;object&gt; callback, object state);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.CancellationTokenRegistration Register(class System.Action`1&lt;object&gt; callback, object state) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Register (callback As Action(Of Object), state As Object) As CancellationTokenRegistration" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::CancellationTokenRegistration Register(Action&lt;System::Object ^&gt; ^ callback, System::Object ^ state);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.CancellationTokenRegistration</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="callback" Type="System.Action&lt;System.Object&gt;" />
-        <Parameter Name="state" Type="System.Object" />
-      </Parameters>
-      <Docs>
-        <param name="callback"><span data-ttu-id="e3c3f-199">Delegowaną, która ma zostać wykonana po <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-199">The delegate to be executed when the <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></param>
-        <param name="state"><span data-ttu-id="e3c3f-200">Stan do przekazania do <c>wywołania zwrotnego</c> po wywołaniu obiektu delegowanego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-200">The state to pass to the <c>callback</c> when the delegate is invoked.</span></span> <span data-ttu-id="e3c3f-201">Może to być wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-201">This may be null.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-202">Rejestruje delegata, który zostanie wywołana podczas to <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-202">Registers a delegate that will be called when this <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></summary>
-        <returns><span data-ttu-id="e3c3f-203"><see cref="T:System.Threading.CancellationTokenRegistration" /> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-203">The <see cref="T:System.Threading.CancellationTokenRegistration" /> instance that can be used to unregister the callback.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-204">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-204">If this token is already in the canceled state, the delegate will be run immediately and synchronously.</span></span> <span data-ttu-id="e3c3f-205">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-205">Any exception the delegate generates will be propagated out of this method call.</span></span>  
-  
- <span data-ttu-id="e3c3f-206">Bieżący <xref:System.Threading.ExecutionContext> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-206">The current <xref:System.Threading.ExecutionContext> is captured along with the delegate and will be used when executing it.</span></span> 
-
- <span data-ttu-id="e3c3f-207">Bieżące <xref:System.Threading.SynchronizationContext> nie są przechwytywane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-207">The current <xref:System.Threading.SynchronizationContext> is not captured.</span></span>
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-208">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-208">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="e3c3f-209"><paramref name="callback" /> ma wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-209"><paramref name="callback" /> is null.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="Register">
-      <MemberSignature Language="C#" Value="public System.Threading.CancellationTokenRegistration Register (Action&lt;object&gt; callback, object state, bool useSynchronizationContext);" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance valuetype System.Threading.CancellationTokenRegistration Register(class System.Action`1&lt;object&gt; callback, object state, bool useSynchronizationContext) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)" />
-      <MemberSignature Language="VB.NET" Value="Public Function Register (callback As Action(Of Object), state As Object, useSynchronizationContext As Boolean) As CancellationTokenRegistration" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; System::Threading::CancellationTokenRegistration Register(Action&lt;System::Object ^&gt; ^ callback, System::Object ^ state, bool useSynchronizationContext);" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.CancellationTokenRegistration</ReturnType>
-      </ReturnValue>
-      <Parameters>
-        <Parameter Name="callback" Type="System.Action&lt;System.Object&gt;" />
-        <Parameter Name="state" Type="System.Object" />
-        <Parameter Name="useSynchronizationContext" Type="System.Boolean" />
-      </Parameters>
-      <Docs>
-        <param name="callback"><span data-ttu-id="e3c3f-210">Delegowaną, która ma zostać wykonana po <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-210">The delegate to be executed when the <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></param>
-        <param name="state"><span data-ttu-id="e3c3f-211">Stan do przekazania do <c>wywołania zwrotnego</c> po wywołaniu obiektu delegowanego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-211">The state to pass to the <c>callback</c> when the delegate is invoked.</span></span> <span data-ttu-id="e3c3f-212">Może to być wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-212">This may be null.</span></span></param>
-        <param name="useSynchronizationContext"><span data-ttu-id="e3c3f-213">Wartość logiczna, która wskazuje, czy do przechwycenia bieżącego <see cref="T:System.Threading.SynchronizationContext" /> i używać go podczas wywoływania <c>wywołania zwrotnego</c>.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-213">A Boolean value that indicates whether to capture the current <see cref="T:System.Threading.SynchronizationContext" /> and use it when invoking the <c>callback</c>.</span></span></param>
-        <summary><span data-ttu-id="e3c3f-214">Rejestruje delegata, który zostanie wywołana podczas to <see cref="T:System.Threading.CancellationToken" /> zostało anulowane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-214">Registers a delegate that will be called when this <see cref="T:System.Threading.CancellationToken" /> is canceled.</span></span></summary>
-        <returns><span data-ttu-id="e3c3f-215"><see cref="T:System.Threading.CancellationTokenRegistration" /> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-215">The <see cref="T:System.Threading.CancellationTokenRegistration" /> instance that can be used to unregister the callback.</span></span></returns>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-216">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-216">If this token is already in the canceled state, the delegate will be run immediately and synchronously.</span></span> <span data-ttu-id="e3c3f-217">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-217">Any exception the delegate generates will be propagated out of this method call.</span></span>  
-  
- <span data-ttu-id="e3c3f-218">Bieżący <xref:System.Threading.ExecutionContext> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-218">The current <xref:System.Threading.ExecutionContext> is captured along with the delegate and will be used when executing it.</span></span> 
-
- <span data-ttu-id="e3c3f-219">Jeśli `useSynchronizationContext` jest `true`, bieżący <xref:System.Threading.SynchronizationContext>, jeśli jeden istnieje, jest również przechwytywany wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-219">If `useSynchronizationContext` is `true`, the current <xref:System.Threading.SynchronizationContext>, if one exists, is also captured along with the delegate and will be used when executing it.</span></span> <span data-ttu-id="e3c3f-220">W przeciwnym razie <xref:System.Threading.SynchronizationContext> nie są przechwytywane.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-220">Otherwise, <xref:System.Threading.SynchronizationContext> is not captured.</span></span>
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-221">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-221">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-        <exception cref="T:System.ArgumentNullException">
-          <span data-ttu-id="e3c3f-222"><paramref name="callback" /> ma wartość null.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-222"><paramref name="callback" /> is null.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="ThrowIfCancellationRequested">
-      <MemberSignature Language="C#" Value="public void ThrowIfCancellationRequested ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig instance void ThrowIfCancellationRequested() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Threading.CancellationToken.ThrowIfCancellationRequested" />
-      <MemberSignature Language="VB.NET" Value="Public Sub ThrowIfCancellationRequested ()" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; void ThrowIfCancellationRequested();" />
-      <MemberType>Method</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Void</ReturnType>
-      </ReturnValue>
-      <Parameters />
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-223">Zgłasza wyjątek <see cref="T:System.OperationCanceledException" /> gdyby ten token ma żądanie anulowania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-223">Throws a <see cref="T:System.OperationCanceledException" /> if this token has had cancellation requested.</span></span></summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-224">Ta metoda zapewnia równoważne funkcje:</span><span class="sxs-lookup"><span data-stu-id="e3c3f-224">This method provides functionality equivalent to:</span></span>  
-  
- <span data-ttu-id="e3c3f-225">C#</span><span class="sxs-lookup"><span data-stu-id="e3c3f-225">C#</span></span>  
-  
-```csharp  
-if (token.IsCancellationRequested)   
-    throw new OperationCanceledException(token);  
-```  
-  
-```vb  
-If token.IsCancellationRequested Then  
-    Throw New OperationCanceledException(token)  
-End If  
-```  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.OperationCanceledException"><span data-ttu-id="e3c3f-226">Token miał żądanie anulowania.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-226">The token has had cancellation requested.</span></span></exception>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-227">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-227">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-      </Docs>
-    </Member>
-    <Member MemberName="WaitHandle">
-      <MemberSignature Language="C#" Value="public System.Threading.WaitHandle WaitHandle { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance class System.Threading.WaitHandle WaitHandle" />
-      <MemberSignature Language="DocId" Value="P:System.Threading.CancellationToken.WaitHandle" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property WaitHandle As WaitHandle" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property System::Threading::WaitHandle ^ WaitHandle { System::Threading::WaitHandle ^ get(); };" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Threading.Tasks</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-        <AssemblyVersion>4.0.10.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>mscorlib</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Runtime</AssemblyName>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Threading.WaitHandle</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary><span data-ttu-id="e3c3f-228">Pobiera <see cref="T:System.Threading.WaitHandle" /> który jest sygnalizowane po anulowaniu tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-228">Gets a <see cref="T:System.Threading.WaitHandle" /> that is signaled when the token is canceled.</span></span></summary>
-        <value><span data-ttu-id="e3c3f-229">A <see cref="T:System.Threading.WaitHandle" /> który jest sygnalizowane po anulowaniu tokenu.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-229">A <see cref="T:System.Threading.WaitHandle" /> that is signaled when the token is canceled.</span></span></value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="e3c3f-230">Uzyskiwanie dostępu do tej właściwości spowoduje, że <xref:System.Threading.WaitHandle> zostać utworzone.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-230">Accessing this property causes a <xref:System.Threading.WaitHandle> to be instantiated.</span></span> <span data-ttu-id="e3c3f-231">Zaleca się do użycia tylko tej właściwości, gdy jest to konieczne, a następnie usuwania skojarzonego <xref:System.Threading.CancellationTokenSource> wystąpienia w możliwie najkrótszym (disposing źródło zlikwiduje ta dojścia przydzielonego).</span><span class="sxs-lookup"><span data-stu-id="e3c3f-231">It is preferable to only use this property when necessary, and to then dispose the associated <xref:System.Threading.CancellationTokenSource> instance at the earliest opportunity (disposing the source will dispose of this allocated handle).</span></span> <span data-ttu-id="e3c3f-232">Nie można zamknąć lub usunięty bezpośrednio dojście.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-232">The handle should not be closed or disposed directly.</span></span>  
-  
- ]]></format>
-        </remarks>
-        <exception cref="T:System.ObjectDisposedException"><span data-ttu-id="e3c3f-233">Skojarzony <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</span><span class="sxs-lookup"><span data-stu-id="e3c3f-233">The associated <see cref="T:System.Threading.CancellationTokenSource" /> has been disposed.</span></span></exception>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="CancellationToken.xml" source-language="en-US" target-language="pl-PL">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-b857fe3" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">2eccf4de-4b1c-4706-8cb3-f46682ccfb7219b22c264e9da195fc5b91af5de567dc3b839021.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">19b22c264e9da195fc5b91af5de567dc3b839021</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">b15b8cf0f6dbc1504057c88969d9ef4b790891fe</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">05/11/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7.2,netframework-4.7,netstandard-1.0,netstandard-1.1,netstandard-1.2,netstandard-1.3,netstandard-1.4,netstandard-1.6,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Threading.CancellationToken">
+          <source>Propagates notification that operations should be canceled.</source>
+          <target state="translated">Propaguje powiadomienie, że operacje powinny być anulowane.</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>A <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> enables cooperative cancellation between threads, thread pool work items, or <ph id="ph2">&lt;xref:System.Threading.Tasks.Task&gt;</ph> objects.</source>
+          <target state="translated">A <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> umożliwia anulowanie współpracy między wątkami, elementy robocze puli wątków, lub <ph id="ph2">&lt;xref:System.Threading.Tasks.Task&gt;</ph> obiektów.</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>You create a cancellation token by instantiating a <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> object, which manages cancellation tokens retrieved from its <ph id="ph2">&lt;xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">Utwórz token anulowania przez utworzenie wystąpienia <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> obiektu, który zarządza anulowanie tokenów pobierane z jego <ph id="ph2">&lt;xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType&gt;</ph> właściwości.</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>You then  pass the cancellation token to any number of threads, tasks, or operations that should receive notice of cancellation.</source>
+          <target state="translated">Token anulowania można następnie przekazać do dowolną liczbę wątków, zadania lub operacje, które powinny być przesyłane powiadomienia o anulowaniu.</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>The token cannot be used to initiate cancellation.</source>
+          <target state="translated">Token nie można zainicjować anulowania.</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>When the owning object calls <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType&gt;</ph>, the <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> property on every copy of the cancellation token is set to <ph id="ph3">`true`</ph>.</source>
+          <target state="translated">Gdy wywołuje obiekt będący właścicielem <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType&gt;</ph>, <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> ma ustawioną właściwość w każdej kopii token anulowania <ph id="ph3">`true`</ph>.</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>The objects that receive the notification can respond in whatever manner is appropriate.</source>
+          <target state="translated">Obiekty, które odbierają powiadomienia mogą odpowiadać w jakikolwiek sposób jest odpowiedni.</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>For more information and code examples see <bpt id="p1">[</bpt>Cancellation in Managed Threads<ept id="p1">](~/docs/standard/threading/cancellation-in-managed-threads.md)</ept>.</source>
+          <target state="translated">Więcej informacji i kod przykłady można znaleźć <bpt id="p1">[</bpt>anulowanie w zarządzanych wątkach<ept id="p1">](~/docs/standard/threading/cancellation-in-managed-threads.md)</ept>.</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>The following example uses a random number generator to emulate a data collection application that reads 10 integral values from eleven different instruments.</source>
+          <target state="translated">W poniższym przykładzie użyto generator liczb losowych, co pozwoliłoby na emulowanie aplikacji zbierania danych, która odczytuje 10 wartości całkowitej z 11 instrumencie.</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>A value of zero indicates that the measurement has failed for one instrument, in which case the operation should be cancelled and no overall mean should be computed.</source>
+          <target state="translated">Wartość zerowa wskazuje, że pomiar ma nie dla jednego dokumentu, obliczane w takim przypadku można anulować operację i nie oznacza ogólne.</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>To handle the possible cancellation of the operation, the example instantiates a <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> object that generates a cancellation token which is passed to a <ph id="ph2">&lt;xref:System.Threading.Tasks.TaskFactory&gt;</ph> object.</source>
+          <target state="translated">Aby obsłużyć możliwe anulowanie operacji, tworzy przykładzie <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> obiekt, który generuje token anulowania, który jest przekazywany do <ph id="ph2">&lt;xref:System.Threading.Tasks.TaskFactory&gt;</ph> obiektu.</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>The <ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory&gt;</ph> object in turn passes the cancellation token to each of the tasks responsible for collecting readings for a particular instrument.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory&gt;</ph> Obiektu z kolei przekazuje token anulowania do poszczególnych zadań odpowiedzialne za zbieranie odczyty dla określonego dokumentu.</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>The <ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType&gt;</ph> method is called to ensure that the mean is computed only after all readings have been gathered successfully.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType&gt;</ph> Metoda jest wywoływana, aby upewnić się, że średnia jest obliczana tylko wtedy, gdy wszystkie odczyty zebrano zostały pomyślnie.</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>If a task has not because it has been cancelled, the call to the <ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType&gt;</ph> method throws an exception.</source>
+          <target state="translated">Jeśli zadanie ma nie, ponieważ zostało anulowane, wywołanie <ph id="ph1">&lt;xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType&gt;</ph> metoda zgłasza wyjątek.</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Threading.CancellationToken">
+          <source>All public and protected members of <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> are thread-safe and may be used concurrently from multiple threads.</source>
+          <target state="translated">Wszystkie publiczne i chronione elementy członkowskie <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> są wątkowo i mogą być używane jednocześnie wiele wątków.</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.#ctor(System.Boolean)">
+          <source>The canceled state for the token.</source>
+          <target state="translated">Stan anulowane dla tokenu.</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.#ctor(System.Boolean)">
+          <source>Initializes the <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph>.</source>
+          <target state="translated">Inicjuje <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.#ctor(System.Boolean)">
+          <source>Tokens created with this constructor will remain in the canceled state specified by the <ph id="ph1">`canceled`</ph> parameter.</source>
+          <target state="translated">Tokeny utworzone za pomocą tego konstruktora pozostanie w stanie Anulowane określony przez <ph id="ph1">`canceled`</ph> parametru.</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.#ctor(System.Boolean)">
+          <source>If <ph id="ph1">`canceled`</ph> is <ph id="ph2">`false`</ph>, both <ph id="ph3">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> and <ph id="ph4">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> will be <ph id="ph5">`false`</ph>.</source>
+          <target state="translated">Jeśli <ph id="ph1">`canceled`</ph> jest <ph id="ph2">`false`</ph>, oba <ph id="ph3">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> i <ph id="ph4">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> będzie <ph id="ph5">`false`</ph>.</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.#ctor(System.Boolean)">
+          <source>If <ph id="ph1">`canceled`</ph> is <ph id="ph2">`true`</ph>, both <ph id="ph3">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> and <ph id="ph4">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> will be <ph id="ph5">`true`</ph>.</source>
+          <target state="translated">Jeśli <ph id="ph1">`canceled`</ph> jest <ph id="ph2">`true`</ph>, oba <ph id="ph3">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> i <ph id="ph4">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> będzie <ph id="ph5">`true`</ph>.</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" uid="P:System.Threading.CancellationToken.CanBeCanceled">
+          <source>Gets whether this token is capable of being in the canceled state.</source>
+          <target state="translated">Pobiera informację, czy token ten może być w stanie anulowane.</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.CanBeCanceled">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if this token is capable of being in the canceled state; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli ten token jest może być w stanie anulowane; w przeciwnym razie <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.CanBeCanceled">
+          <source>If <ph id="ph1">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> returns <ph id="ph2">`false`</ph>, it is guaranteed that the token will never transition into a canceled state, meaning that <ph id="ph3">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> will never return <ph id="ph4">`true`</ph>.</source>
+          <target state="translated">Jeśli <ph id="ph1">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> zwraca <ph id="ph2">`false`</ph>, to zagwarantować, że token nigdy nie przechodzi w stan Anulowane, oznacza to, że <ph id="ph3">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> nigdy nie zwróci <ph id="ph4">`true`</ph>.</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.CanBeCanceled">
+          <source>A cancellation token that cannot be canceled is returned by the static <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType&gt;</ph> property.</source>
+          <target state="translated">Zwraca token anulowania, którego nie można anulować statycznych <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None%2A?displayProperty=nameWithType&gt;</ph> właściwości.</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.CanBeCanceled">
+          <source>You can optionally use this property to determine whether a cancellation token can be canceled before examing the value of the <ph id="ph1">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> property to determine whether it has been canceled.</source>
+          <target state="translated">Ta właściwość opcjonalnie służy do określenia, czy token anulowania może być anulowana przed badania wartość <ph id="ph1">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> właściwości w celu określenia, czy zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" uid="T:System.Threading.CancellationToken">
+          <source>Determines whether the current <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instance is equal to the specified token.</source>
+          <target state="translated">Określa, czy bieżący <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpienie jest równe określonej tokenu.</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>The other object to compare with this instance.</source>
+          <target state="translated">Drugi obiekt do porównania z tym wystąpieniem.</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>Determines whether the current <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instance is equal to the specified <ph id="ph2">&lt;see cref="T:System.Object" /&gt;</ph>.</source>
+          <target state="translated">Określa, czy bieżący <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpienie jest równe określonej <ph id="ph2">&lt;see cref="T:System.Object" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if <ph id="ph2">&lt;paramref name="other" /&gt;</ph> is a <ph id="ph3">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> and if the two instances are equal; otherwise, <ph id="ph4">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli <ph id="ph2">&lt;paramref name="other" /&gt;</ph> jest <ph id="ph3">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> i dwa wystąpienia są takie same; w przeciwnym razie <ph id="ph4">&lt;see langword="false" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>See the Remarks section for more information.</source>
+          <target state="translated">Zobacz sekcję Spostrzeżenia, aby uzyskać więcej informacji.</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>Two cancellation tokens are equal if any one of the following conditions is true:</source>
+          <target state="translated">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>They are associated with the same <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</source>
+          <target state="translated">Są one powiązane z tym samym <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>They were both constructed from public <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> constructors, and their <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> values are equal.</source>
+          <target state="translated">Ich obu skonstruowane z publicznego <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> konstruktorów i ich <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> wartości są równe.</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>The value of both cancellation tokens is <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</source>
+          <target state="translated">Wartość oba tokeny anulowania jest <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Object)">
+          <source>An associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>The other <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> to compare with this instance.</source>
+          <target state="translated">Druga <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> do porównania z tym wystąpieniem.</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>Determines whether the current <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instance is equal to the specified token.</source>
+          <target state="translated">Określa, czy bieżący <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpienie jest równe określonej tokenu.</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the instances are equal; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli wystąpienia są równe; w przeciwnym razie <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>See the Remarks section for more information.</source>
+          <target state="translated">Zobacz sekcję Spostrzeżenia, aby uzyskać więcej informacji.</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>Two cancellation tokens are equal if any one of the following conditions is true:</source>
+          <target state="translated">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>They are associated with the same <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</source>
+          <target state="translated">Są one powiązane z tym samym <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>They were both constructed from public <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> constructors, and their <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> values are equal.</source>
+          <target state="translated">Ich obu skonstruowane z publicznego <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> konstruktorów i ich <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> wartości są równe.</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Equals(System.Threading.CancellationToken)">
+          <source>The value of both cancellation tokens is <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</source>
+          <target state="translated">Wartość oba tokeny anulowania jest <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.GetHashCode">
+          <source>Serves as a hash function for a <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph>.</source>
+          <target state="translated">Pełni rolę funkcji skrótu dla <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.GetHashCode">
+          <source>A hash code for the current <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instance.</source>
+          <target state="translated">Wartość skrótu dla bieżącego <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpienia.</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>Gets whether cancellation has been requested for this token.</source>
+          <target state="translated">Pobiera czy zażądano anulowania tego tokenu.</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if cancellation has been requested for this token; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli ma anulowania żądanie dla tego tokena; w przeciwnym razie <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>This property indicates whether cancellation has been requested for this token, either through the token initially being constructed in a canceled state, or through calling <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A&gt;</ph> on the token's associated <ph id="ph2">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</source>
+          <target state="translated">Ta właściwość wskazuje, czy ten token, za pomocą tokenu początkowo tworzona w stanie anulowane lub za pośrednictwem wywołania zażądano anulowania <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A&gt;</ph> na skojarzonym token <ph id="ph2">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>If this property is <ph id="ph1">`true`</ph>, it only guarantees that cancellation has been requested.</source>
+          <target state="translated">Jeśli ta właściwość jest <ph id="ph1">`true`</ph>, tylko gwarantuje, że zażądano anulowania.</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>It does not guarantee that every registered handler has finished executing, nor that cancellation requests have finished propagating to all registered handlers.</source>
+          <target state="translated">Nie gwarantuje co zarejestrowaną usługę programu obsługi zakończenie wykonywania ani anulowania żądania zostało ukończone, propagowania na wszystkich zarejestrowanych programów obsługi.</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>Additional synchronization may be required, particularly in situations where related objects are being canceled concurrently.</source>
+          <target state="translated">Dodatkowe synchronizacji mogą być wymagane, szczególnie w sytuacjach, w którym powiązane obiekty zostały anulowane jednocześnie.</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>The following is a simple example that executes a server process until the <ph id="ph1">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> property returns <ph id="ph2">`true`</ph>.</source>
+          <target state="translated">Poniżej przedstawiono prosty przykład, która wykonuje proces serwera do <ph id="ph1">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> zwraca właściwość <ph id="ph2">`true`</ph>.</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>The example instantiates a <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> object, which controls access to the cancellation token.</source>
+          <target state="translated">Przykład tworzy <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> obiektu, który kontroluje dostęp do tokena anulowania.</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>It then defines two thread procedures.</source>
+          <target state="translated">Definiuje dwie procedury wątku.</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>The first is defined as a lambda expression that pools the keyboard and, when the "C" key is pressed, calls <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType&gt;</ph> to set the cancellation token to the cancelled state.</source>
+          <target state="translated">Pierwszy jest zdefiniowany jako wyrażenie lambda, pul klawiatury, a następnie wywołuje po naciśnięciu klawisza "C", <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType&gt;</ph> można ustawić token anulowania do anulowania stanu.</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>The second is a parameterized method, <ph id="ph1">`ServerClass.StaticMethod`</ph>, that executes a loop until the <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> property is <ph id="ph3">`true`</ph>.</source>
+          <target state="translated">Drugim jest metodą sparametryzowane <ph id="ph1">`ServerClass.StaticMethod`</ph>, który wykonuje pętli do <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested%2A&gt;</ph> właściwość jest <ph id="ph3">`true`</ph>.</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.IsCancellationRequested">
+          <source>The main thread then starts the two threads and blocks until the thread that executes the <ph id="ph1">`ServerClass.StaticMethod`</ph> method terminates.</source>
+          <target state="translated">Wątku głównego następnie uruchamia dwoma wątkami i bloków do wątku, który wykonuje <ph id="ph1">`ServerClass.StaticMethod`</ph> kończy metody.</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="P:System.Threading.CancellationToken.None">
+          <source>Returns an empty <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> value.</source>
+          <target state="translated">Zwraca pustą <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wartość.</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.None">
+          <source>An empty cancellation token.</source>
+          <target state="translated">Token anulowania puste.</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.None">
+          <source>The cancellation token returned by this property cannot be canceled; that is, its <ph id="ph1">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> property is <ph id="ph2">`false`</ph>.</source>
+          <target state="translated">Nie można anulować token anulowania zwracane przez tę właściwość; oznacza to, że jego <ph id="ph1">&lt;xref:System.Threading.CancellationToken.CanBeCanceled%2A&gt;</ph> jest właściwość <ph id="ph2">`false`</ph>.</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.None">
+          <source>You can also use the C#  <bpt id="p1">[</bpt>default(CancellationToken)<ept id="p1">](~/docs/csharp/language-reference/keywords/default.md)</ept> statement to create an empty cancellation token.</source>
+          <target state="translated">Można również użyć języka C# <bpt id="p1">[</bpt>default(CancellationToken)<ept id="p1">](~/docs/csharp/language-reference/keywords/default.md)</ept> instrukcji, aby utworzyć token anulowania puste.</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.None">
+          <source>Two empty cancellation tokens are always equal.</source>
+          <target state="translated">Dwa puste anulowanie tokenów zawsze są takie same.</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>The first instance.</source>
+          <target state="translated">Pierwsze wystąpienie.</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>The second instance.</source>
+          <target state="translated">Drugie wystąpienie.</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>Determines whether two <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instances are equal.</source>
+          <target state="translated">Określa, czy dwa <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpienia są takie same.</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the instances are equal; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph> See the Remarks section for more information.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli wystąpienia są równe; w przeciwnym razie <ph id="ph2">&lt;see langword="false" /&gt;</ph> sekcji uwag, aby uzyskać więcej informacji.</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>Two cancellation tokens are equal if any one of the following conditions is true:</source>
+          <target state="translated">Dwa anulowanie tokenów są takie same, jeśli spełniony jest jeden z następujących warunków:</target>       </trans-unit>
+        <trans-unit id="168" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>They are associated with the same <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</source>
+          <target state="translated">Są one powiązane z tym samym <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="169" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>They were both constructed from public <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> constructors, and their <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> values are equal.</source>
+          <target state="translated">Ich obu skonstruowane z publicznego <ph id="ph1">&lt;xref:System.Threading.CancellationToken&gt;</ph> konstruktorów i ich <ph id="ph2">&lt;xref:System.Threading.CancellationToken.IsCancellationRequested?displayProperty=nameWithType&gt;</ph> wartości są równe.</target>       </trans-unit>
+        <trans-unit id="170" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>The value of both cancellation tokens is <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</source>
+          <target state="translated">Wartość oba tokeny anulowania jest <ph id="ph1">&lt;xref:System.Threading.CancellationToken.None?displayProperty=nameWithType&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="171" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Equality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>An associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="172" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>The first instance.</source>
+          <target state="translated">Pierwsze wystąpienie.</target>       </trans-unit>
+        <trans-unit id="173" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>The second instance.</source>
+          <target state="translated">Drugie wystąpienie.</target>       </trans-unit>
+        <trans-unit id="174" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>Determines whether two <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> instances are not equal.</source>
+          <target state="translated">Określa, czy dwa <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> wystąpień nie są takie same.</target>       </trans-unit>
+        <trans-unit id="175" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source><ph id="ph1">&lt;see langword="true" /&gt;</ph> if the instances are not equal; otherwise, <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</source>
+          <target state="translated"><ph id="ph1">&lt;see langword="true" /&gt;</ph> Jeśli wystąpienia nie są równe; w przeciwnym razie <ph id="ph2">&lt;see langword="false" /&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="176" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>For the definition of equality, see the <ph id="ph1">&lt;xref:System.Threading.CancellationToken.Equals%2A&gt;</ph> method.</source>
+          <target state="translated">Definicję równości <ph id="ph1">&lt;xref:System.Threading.CancellationToken.Equals%2A&gt;</ph> metody.</target>       </trans-unit>
+        <trans-unit id="177" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.op_Inequality(System.Threading.CancellationToken,System.Threading.CancellationToken)">
+          <source>An associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="178" translate="yes" xml:space="preserve" uid="T:System.Threading.CancellationToken">
+          <source>Registers a delegate that will be called when this <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Rejestruje delegata, który zostanie wywołana podczas to <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="179" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>The delegate to be executed when the <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Delegowaną, która ma zostać wykonana po <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="180" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>Registers a delegate that will be called when this <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Rejestruje delegata, który zostanie wywołana podczas to <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="181" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> instance that can be used to unregister the callback.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</target>       </trans-unit>
+        <trans-unit id="182" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>If this token is already in the canceled state, the delegate will be run immediately and synchronously.</source>
+          <target state="translated">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</target>       </trans-unit>
+        <trans-unit id="183" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>Any exception the delegate generates will be propagated out of this method call.</source>
+          <target state="translated">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</target>       </trans-unit>
+        <trans-unit id="184" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> is captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Bieżący <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="185" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> is not captured.</source>
+          <target state="translated">Bieżące <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> nie są przechwytywane.</target>       </trans-unit>
+        <trans-unit id="186" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="187" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action)">
+          <source><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> is null.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> ma wartość null.</target>       </trans-unit>
+        <trans-unit id="188" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>The delegate to be executed when the <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Delegowaną, która ma zostać wykonana po <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="189" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>A value that indicates whether to capture the current <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> and use it when invoking the <bpt id="p1">&lt;c&gt;</bpt>callback<ept id="p1">&lt;/c&gt;</ept>.</source>
+          <target state="translated">Wartość, która wskazuje, czy do przechwycenia bieżącego <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> i używać go podczas wywoływania <bpt id="p1">&lt;c&gt;</bpt>wywołania zwrotnego<ept id="p1">&lt;/c&gt;</ept>.</target>       </trans-unit>
+        <trans-unit id="190" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>Registers a delegate that will be called when this <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Rejestruje delegata, który zostanie wywołana podczas to <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="191" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> instance that can be used to unregister the callback.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</target>       </trans-unit>
+        <trans-unit id="192" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>If this token is already in the canceled state, the delegate will be run immediately and synchronously.</source>
+          <target state="translated">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</target>       </trans-unit>
+        <trans-unit id="193" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>Any exception the delegate generates will be propagated out of this method call.</source>
+          <target state="translated">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</target>       </trans-unit>
+        <trans-unit id="194" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> is captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Bieżący <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="195" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>If <ph id="ph1">`useSynchronizationContext`</ph> is <ph id="ph2">`true`</ph>, the current <ph id="ph3">&lt;xref:System.Threading.SynchronizationContext&gt;</ph>, if one exists, is also captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Jeśli <ph id="ph1">`useSynchronizationContext`</ph> jest <ph id="ph2">`true`</ph>, bieżący <ph id="ph3">&lt;xref:System.Threading.SynchronizationContext&gt;</ph>, jeśli jeden istnieje, jest również przechwytywany wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="196" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>Otherwise, <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> is not captured.</source>
+          <target state="translated">W przeciwnym razie <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> nie są przechwytywane.</target>       </trans-unit>
+        <trans-unit id="197" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="198" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action,System.Boolean)">
+          <source><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> is null.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> ma wartość null.</target>       </trans-unit>
+        <trans-unit id="199" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The delegate to be executed when the <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Delegowaną, która ma zostać wykonana po <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="200" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The state to pass to the <bpt id="p1">&lt;c&gt;</bpt>callback<ept id="p1">&lt;/c&gt;</ept> when the delegate is invoked.</source>
+          <target state="translated">Stan do przekazania do <bpt id="p1">&lt;c&gt;</bpt>wywołania zwrotnego<ept id="p1">&lt;/c&gt;</ept> po wywołaniu obiektu delegowanego.</target>       </trans-unit>
+        <trans-unit id="201" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>This may be null.</source>
+          <target state="translated">Może to być wartość null.</target>       </trans-unit>
+        <trans-unit id="202" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>Registers a delegate that will be called when this <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Rejestruje delegata, który zostanie wywołana podczas to <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="203" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> instance that can be used to unregister the callback.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</target>       </trans-unit>
+        <trans-unit id="204" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>If this token is already in the canceled state, the delegate will be run immediately and synchronously.</source>
+          <target state="translated">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</target>       </trans-unit>
+        <trans-unit id="205" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>Any exception the delegate generates will be propagated out of this method call.</source>
+          <target state="translated">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</target>       </trans-unit>
+        <trans-unit id="206" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> is captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Bieżący <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="207" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> is not captured.</source>
+          <target state="translated">Bieżące <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> nie są przechwytywane.</target>       </trans-unit>
+        <trans-unit id="208" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="209" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object)">
+          <source><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> is null.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> ma wartość null.</target>       </trans-unit>
+        <trans-unit id="210" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>The delegate to be executed when the <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Delegowaną, która ma zostać wykonana po <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="211" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>The state to pass to the <bpt id="p1">&lt;c&gt;</bpt>callback<ept id="p1">&lt;/c&gt;</ept> when the delegate is invoked.</source>
+          <target state="translated">Stan do przekazania do <bpt id="p1">&lt;c&gt;</bpt>wywołania zwrotnego<ept id="p1">&lt;/c&gt;</ept> po wywołaniu obiektu delegowanego.</target>       </trans-unit>
+        <trans-unit id="212" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>This may be null.</source>
+          <target state="translated">Może to być wartość null.</target>       </trans-unit>
+        <trans-unit id="213" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>A Boolean value that indicates whether to capture the current <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> and use it when invoking the <bpt id="p1">&lt;c&gt;</bpt>callback<ept id="p1">&lt;/c&gt;</ept>.</source>
+          <target state="translated">Wartość logiczna, która wskazuje, czy do przechwycenia bieżącego <ph id="ph1">&lt;see cref="T:System.Threading.SynchronizationContext" /&gt;</ph> i używać go podczas wywoływania <bpt id="p1">&lt;c&gt;</bpt>wywołania zwrotnego<ept id="p1">&lt;/c&gt;</ept>.</target>       </trans-unit>
+        <trans-unit id="214" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>Registers a delegate that will be called when this <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> is canceled.</source>
+          <target state="translated">Rejestruje delegata, który zostanie wywołana podczas to <ph id="ph1">&lt;see cref="T:System.Threading.CancellationToken" /&gt;</ph> zostało anulowane.</target>       </trans-unit>
+        <trans-unit id="215" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>The <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> instance that can be used to unregister the callback.</source>
+          <target state="translated"><ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenRegistration" /&gt;</ph> Wystąpienia, który może służyć do wyrejestrowania wywołania zwrotnego.</target>       </trans-unit>
+        <trans-unit id="216" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>If this token is already in the canceled state, the delegate will be run immediately and synchronously.</source>
+          <target state="translated">Jeśli token ten jest już w stanie anulowane, delegat będą uruchamiane natychmiast.</target>       </trans-unit>
+        <trans-unit id="217" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>Any exception the delegate generates will be propagated out of this method call.</source>
+          <target state="translated">Wszystkie wyjątki, delegat generowanego przez będzie propagowane poza wywołanie tej metody.</target>       </trans-unit>
+        <trans-unit id="218" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>The current <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> is captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Bieżący <ph id="ph1">&lt;xref:System.Threading.ExecutionContext&gt;</ph> przechwytywania wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="219" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>If <ph id="ph1">`useSynchronizationContext`</ph> is <ph id="ph2">`true`</ph>, the current <ph id="ph3">&lt;xref:System.Threading.SynchronizationContext&gt;</ph>, if one exists, is also captured along with the delegate and will be used when executing it.</source>
+          <target state="translated">Jeśli <ph id="ph1">`useSynchronizationContext`</ph> jest <ph id="ph2">`true`</ph>, bieżący <ph id="ph3">&lt;xref:System.Threading.SynchronizationContext&gt;</ph>, jeśli jeden istnieje, jest również przechwytywany wraz z obiektem delegowanym i będą używane podczas jej wykonywania.</target>       </trans-unit>
+        <trans-unit id="220" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>Otherwise, <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> is not captured.</source>
+          <target state="translated">W przeciwnym razie <ph id="ph1">&lt;xref:System.Threading.SynchronizationContext&gt;</ph> nie są przechwytywane.</target>       </trans-unit>
+        <trans-unit id="221" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="222" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.Register(System.Action{System.Object},System.Object,System.Boolean)">
+          <source><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> is null.</source>
+          <target state="translated"><ph id="ph1">&lt;paramref name="callback" /&gt;</ph> ma wartość null.</target>       </trans-unit>
+        <trans-unit id="223" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+          <source>Throws a <ph id="ph1">&lt;see cref="T:System.OperationCanceledException" /&gt;</ph> if this token has had cancellation requested.</source>
+          <target state="translated">Zgłasza wyjątek <ph id="ph1">&lt;see cref="T:System.OperationCanceledException" /&gt;</ph> gdyby ten token ma żądanie anulowania.</target>       </trans-unit>
+        <trans-unit id="224" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+          <source>This method provides functionality equivalent to:</source>
+          <target state="translated">Ta metoda zapewnia równoważne funkcje:</target>       </trans-unit>
+        <trans-unit id="225" translate="yes" xml:space="preserve" extradata="MT" uid="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+          <source>C#</source>
+          <target state="translated">C#</target>       </trans-unit>
+        <trans-unit id="226" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+          <source>The token has had cancellation requested.</source>
+          <target state="translated">Token miał żądanie anulowania.</target>       </trans-unit>
+        <trans-unit id="227" translate="yes" xml:space="preserve" uid="M:System.Threading.CancellationToken.ThrowIfCancellationRequested">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+        <trans-unit id="228" translate="yes" xml:space="preserve" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>Gets a <ph id="ph1">&lt;see cref="T:System.Threading.WaitHandle" /&gt;</ph> that is signaled when the token is canceled.</source>
+          <target state="translated">Pobiera <ph id="ph1">&lt;see cref="T:System.Threading.WaitHandle" /&gt;</ph> który jest sygnalizowane po anulowaniu tokenu.</target>       </trans-unit>
+        <trans-unit id="229" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>A <ph id="ph1">&lt;see cref="T:System.Threading.WaitHandle" /&gt;</ph> that is signaled when the token is canceled.</source>
+          <target state="translated">A <ph id="ph1">&lt;see cref="T:System.Threading.WaitHandle" /&gt;</ph> który jest sygnalizowane po anulowaniu tokenu.</target>       </trans-unit>
+        <trans-unit id="230" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>Accessing this property causes a <ph id="ph1">&lt;xref:System.Threading.WaitHandle&gt;</ph> to be instantiated.</source>
+          <target state="translated">Uzyskiwanie dostępu do tej właściwości spowoduje, że <ph id="ph1">&lt;xref:System.Threading.WaitHandle&gt;</ph> zostać utworzone.</target>       </trans-unit>
+        <trans-unit id="231" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>It is preferable to only use this property when necessary, and to then dispose the associated <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> instance at the earliest opportunity (disposing the source will dispose of this allocated handle).</source>
+          <target state="translated">Zaleca się do użycia tylko tej właściwości, gdy jest to konieczne, a następnie usuwania skojarzonego <ph id="ph1">&lt;xref:System.Threading.CancellationTokenSource&gt;</ph> wystąpienia w możliwie najkrótszym (disposing źródło zlikwiduje ta dojścia przydzielonego).</target>       </trans-unit>
+        <trans-unit id="232" translate="yes" xml:space="preserve" extradata="MT" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>The handle should not be closed or disposed directly.</source>
+          <target state="translated">Nie można zamknąć lub usunięty bezpośrednio dojście.</target>       </trans-unit>
+        <trans-unit id="233" translate="yes" xml:space="preserve" uid="P:System.Threading.CancellationToken.WaitHandle">
+          <source>The associated <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> has been disposed.</source>
+          <target state="translated">Skojarzony <ph id="ph1">&lt;see cref="T:System.Threading.CancellationTokenSource" /&gt;</ph> został usunięty.</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

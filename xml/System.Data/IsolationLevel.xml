@@ -1,358 +1,219 @@
-<Type Name="IsolationLevel" FullName="System.Data.IsolationLevel">
-  <TypeSignature Language="C#" Value="public enum IsolationLevel" />
-  <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed IsolationLevel extends System.Enum" />
-  <TypeSignature Language="DocId" Value="T:System.Data.IsolationLevel" />
-  <TypeSignature Language="VB.NET" Value="Public Enum IsolationLevel" />
-  <TypeSignature Language="C++ CLI" Value="public enum class IsolationLevel" />
-  <AssemblyInfo>
-    <AssemblyName>System.Data.Common</AssemblyName>
-    <AssemblyVersion>4.1.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.0.0</AssemblyVersion>
-    <AssemblyVersion>4.2.1.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>System.Data</AssemblyName>
-    <AssemblyVersion>2.0.5.0</AssemblyVersion>
-    <AssemblyVersion>4.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <AssemblyInfo>
-    <AssemblyName>netstandard</AssemblyName>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-  </AssemblyInfo>
-  <Base>
-    <BaseTypeName>System.Enum</BaseTypeName>
-  </Base>
-  <Docs>
-    <summary><span data-ttu-id="266c6-101">Określa zachowanie blokowanie transakcji dla połączenia.</span><span class="sxs-lookup"><span data-stu-id="266c6-101">Specifies the transaction locking behavior for the connection.</span></span></summary>
-    <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="266c6-102"><xref:System.Data.IsolationLevel> Wartości są używane przez dostawcę danych .NET Framework podczas wykonywania transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-102">The <xref:System.Data.IsolationLevel> values are used by a .NET Framework data provider when performing a transaction.</span></span>  
-  
- <span data-ttu-id="266c6-103"><xref:System.Data.IsolationLevel> Nadal obowiązują do momentu jawnie zmieniony, ale można ją zmienić w dowolnym momencie.</span><span class="sxs-lookup"><span data-stu-id="266c6-103">The <xref:System.Data.IsolationLevel> remains in effect until explicitly changed, but it can be changed at any time.</span></span> <span data-ttu-id="266c6-104">Nowa wartość jest używana w czasie wykonywania nie czas analizy.</span><span class="sxs-lookup"><span data-stu-id="266c6-104">The new value is used at execution time, not parse time.</span></span> <span data-ttu-id="266c6-105">Po zmianie podczas transakcji, oczekiwane zachowanie serwera jest zastosowanie nowy poziom blokowania instrukcje wszystkich pozostałych.</span><span class="sxs-lookup"><span data-stu-id="266c6-105">If changed during a transaction, the expected behavior of the server is to apply the new locking level to all statements remaining.</span></span>  
-  
-   
-  
-## Examples  
- <span data-ttu-id="266c6-106">Ta aplikacja przedstawiono sposób użycia <xref:System.Data.IsolationLevel> w <xref:System.Data.Common.DbTransaction>.</span><span class="sxs-lookup"><span data-stu-id="266c6-106">This application demonstrates how to use <xref:System.Data.IsolationLevel> in <xref:System.Data.Common.DbTransaction>.</span></span> <span data-ttu-id="266c6-107">Przykładowe pokazują, które z poniższych zachowań są dozwolone w izolacji różnych poziomów:</span><span class="sxs-lookup"><span data-stu-id="266c6-107">The sample will demonstrate which of the following behaviors are allowed in the different isolation levels:</span></span>  
-  
--   <span data-ttu-id="266c6-108">Odczytów.</span><span class="sxs-lookup"><span data-stu-id="266c6-108">Dirty reads.</span></span>  
-  
--   <span data-ttu-id="266c6-109">Odczytuje non powtarzalne.</span><span class="sxs-lookup"><span data-stu-id="266c6-109">Non-repeatable reads.</span></span>  
-  
--   <span data-ttu-id="266c6-110">Fantomów.</span><span class="sxs-lookup"><span data-stu-id="266c6-110">Phantoms.</span></span>  
-  
- <span data-ttu-id="266c6-111">Ta aplikacja będzie wykonywany w następujących poziomów izolacji:</span><span class="sxs-lookup"><span data-stu-id="266c6-111">This application will execute in the following isolation levels:</span></span>  
-  
--   <span data-ttu-id="266c6-112">ReadUncommitted</span><span class="sxs-lookup"><span data-stu-id="266c6-112">ReadUncommitted</span></span>  
-  
--   <span data-ttu-id="266c6-113">Wartość ReadCommitted</span><span class="sxs-lookup"><span data-stu-id="266c6-113">ReadCommitted</span></span>  
-  
--   <span data-ttu-id="266c6-114">RepeatableRead</span><span class="sxs-lookup"><span data-stu-id="266c6-114">RepeatableRead</span></span>  
-  
--   <span data-ttu-id="266c6-115">Możliwy do serializacji</span><span class="sxs-lookup"><span data-stu-id="266c6-115">Serializable</span></span>  
-  
--   <span data-ttu-id="266c6-116">Migawka</span><span class="sxs-lookup"><span data-stu-id="266c6-116">Snapshot</span></span>  
-  
- <span data-ttu-id="266c6-117">Klasa PhantomReadThreads pokazuje umożliwia zachowanie odczytu Fantom, jeśli określonej transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-117">The PhantomReadThreads class demonstrates if the specific transaction allows the Phantom Read behavior.</span></span> <span data-ttu-id="266c6-118">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</span><span class="sxs-lookup"><span data-stu-id="266c6-118">If the transaction allows the behavior, the threads will operate in the following order:</span></span>  
-  
--   <span data-ttu-id="266c6-119">W pierwszym wątkiem wybierz products(All).</span><span class="sxs-lookup"><span data-stu-id="266c6-119">In first thread, select the products(All).</span></span>  
-  
--   <span data-ttu-id="266c6-120">W drugim wątku wstawić nowego produktu.</span><span class="sxs-lookup"><span data-stu-id="266c6-120">In the second thread, insert a new product.</span></span>  
-  
--   <span data-ttu-id="266c6-121">Zatwierdzić transakcji w drugim wątku.</span><span class="sxs-lookup"><span data-stu-id="266c6-121">Commit the transaction in second thread.</span></span>  
-  
--   <span data-ttu-id="266c6-122">Wybierz produkty, ponownie.</span><span class="sxs-lookup"><span data-stu-id="266c6-122">Select the products again.</span></span>  
-  
--   <span data-ttu-id="266c6-123">Zatwierdzić transakcji w pierwszym wątkiem.</span><span class="sxs-lookup"><span data-stu-id="266c6-123">Commit the transaction in first thread.</span></span>  
-  
- <span data-ttu-id="266c6-124">Jeśli transakcja umożliwia zachowanie, tych dwóch operacji Select otrzyma różne wyniki.</span><span class="sxs-lookup"><span data-stu-id="266c6-124">If the transaction allows the behavior, the two Select operations will get the different results.</span></span>  
-  
- <span data-ttu-id="266c6-125">Klasa NonrepeatableReadThreads pokazuje umożliwia zachowanie zanieczyszczonych odczytu, jeśli określonej transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-125">The NonrepeatableReadThreads class demonstrates if the specific transaction allows the Nonrepeatable Read behavior.</span></span> <span data-ttu-id="266c6-126">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</span><span class="sxs-lookup"><span data-stu-id="266c6-126">If the transaction allows the behavior, the threads will operate in the following order:</span></span>  
-  
--   <span data-ttu-id="266c6-127">W pierwszym wątkiem wybierz product(ProductId=1).</span><span class="sxs-lookup"><span data-stu-id="266c6-127">In first thread, select the product(ProductId=1).</span></span>  
-  
--   <span data-ttu-id="266c6-128">W drugim wątku zaktualizuj value(ProductId=1) ilość.</span><span class="sxs-lookup"><span data-stu-id="266c6-128">In the second thread, update the Quantity value(ProductId=1).</span></span>  
-  
--   <span data-ttu-id="266c6-129">Zatwierdzić transakcji w drugim wątku.</span><span class="sxs-lookup"><span data-stu-id="266c6-129">Commit the transaction in second thread.</span></span>  
-  
--   <span data-ttu-id="266c6-130">Wybierz ponownie produkt.</span><span class="sxs-lookup"><span data-stu-id="266c6-130">Select the product again.</span></span>  
-  
--   <span data-ttu-id="266c6-131">Zatwierdzić transakcji w pierwszym wątkiem.</span><span class="sxs-lookup"><span data-stu-id="266c6-131">Commit the transaction in first thread.</span></span>  
-  
- <span data-ttu-id="266c6-132">Jeśli transakcja umożliwia zachowanie, tych dwóch operacji Select otrzyma różne wyniki.</span><span class="sxs-lookup"><span data-stu-id="266c6-132">If the transaction allows the behavior, the two Select operations will get the different results.</span></span>  
-  
- <span data-ttu-id="266c6-133">Klasa ExchangeValuesThreads pokazano różnicę między transakcji Serializable i migawki.</span><span class="sxs-lookup"><span data-stu-id="266c6-133">The ExchangeValuesThreads class demonstrates the difference between the Serializable and Snapshot transaction.</span></span> <span data-ttu-id="266c6-134">Dla transakcji serializacji wątków będzie działać w następującej kolejności:</span><span class="sxs-lookup"><span data-stu-id="266c6-134">For the Serializable transaction, threads will operate in the following order:</span></span>  
-  
--   <span data-ttu-id="266c6-135">W pierwszym wątkiem uzyskać ceny product(ProductId=2) i przechowywać w zmiennej.</span><span class="sxs-lookup"><span data-stu-id="266c6-135">In first thread, get the Price of product(ProductId=2) and store in the variable.</span></span>  
-  
--   <span data-ttu-id="266c6-136">W pierwszym wątkiem Zaktualizuj cenę product(ProductId=1) cenę product(ProductId=2).</span><span class="sxs-lookup"><span data-stu-id="266c6-136">In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).</span></span>  
-  
--   <span data-ttu-id="266c6-137">Zatwierdzić transakcji w pierwszym wątkiem.</span><span class="sxs-lookup"><span data-stu-id="266c6-137">Commit the transaction in first thread.</span></span>  
-  
--   <span data-ttu-id="266c6-138">W drugim wątku Pobierz cenę product(ProductId=1) i magazynu w zmiennej.</span><span class="sxs-lookup"><span data-stu-id="266c6-138">In second thread, get the Price of product(ProductId=1) and store in the variable.</span></span>  
-  
--   <span data-ttu-id="266c6-139">W drugim wątku Zaktualizuj cenę product(ProductId=2) cena product(ProductId=1).</span><span class="sxs-lookup"><span data-stu-id="266c6-139">In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).</span></span>  
-  
--   <span data-ttu-id="266c6-140">Zatwierdzić transakcji w drugim wątku.</span><span class="sxs-lookup"><span data-stu-id="266c6-140">Commit the transaction in second thread.</span></span>  
-  
- <span data-ttu-id="266c6-141">Teraz wartości ceny (ProductId = 1 i ProductId = 2) są jako takie same jak oryginalne cen Product(ProductId=2).</span><span class="sxs-lookup"><span data-stu-id="266c6-141">Now the values of the Price(ProductId=1 and ProductId=2) are as same as the original Price of Product(ProductId=2).</span></span>  
-  
- <span data-ttu-id="266c6-142">Dla transakcji migawki wątków będzie działać w następującej kolejności:</span><span class="sxs-lookup"><span data-stu-id="266c6-142">For the Snapshot transaction, threads will operate in the following order:</span></span>  
-  
--   <span data-ttu-id="266c6-143">W pierwszym wątkiem uzyskać ceny product(ProductId=2) i przechowywać w zmiennej;</span><span class="sxs-lookup"><span data-stu-id="266c6-143">In first thread, get the Price of product(ProductId=2) and store in the variable;</span></span>  
-  
--   <span data-ttu-id="266c6-144">W pierwszym wątkiem Zaktualizuj cenę product(ProductId=1) cenę product(ProductId=2).</span><span class="sxs-lookup"><span data-stu-id="266c6-144">In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).</span></span>  
-  
--   <span data-ttu-id="266c6-145">W drugim wątku Pobierz ceny product(ProductId=1) z migawki i przechowywać w zmiennej.</span><span class="sxs-lookup"><span data-stu-id="266c6-145">In second thread, get the Price of product(ProductId=1) from the snapshot and store in the variable.</span></span>  
-  
--   <span data-ttu-id="266c6-146">W drugim wątku Zaktualizuj cenę product(ProductId=2) cena product(ProductId=1).</span><span class="sxs-lookup"><span data-stu-id="266c6-146">In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).</span></span>  
-  
--   <span data-ttu-id="266c6-147">Zatwierdzić transakcji w drugim wątku.</span><span class="sxs-lookup"><span data-stu-id="266c6-147">Commit the transaction in second thread.</span></span>  
-  
--   <span data-ttu-id="266c6-148">Zatwierdzić transakcji w pierwszym wątkiem.</span><span class="sxs-lookup"><span data-stu-id="266c6-148">Commit the transaction in first thread.</span></span>  
-  
- <span data-ttu-id="266c6-149">Teraz wymiany ceny produktów (ProductId = 1 i ProductId = 2).</span><span class="sxs-lookup"><span data-stu-id="266c6-149">Now exchange the Price of products(ProductId=1 and ProductId=2).</span></span>  
-  
- <span data-ttu-id="266c6-150">Klasa DirtyReadThreads pokazuje umożliwia zachowanie odczytu z zanieczyszczeniu, jeśli określonej transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-150">The DirtyReadThreads class demonstrates if the specific transaction allows the Dirty Read behavior.</span></span> <span data-ttu-id="266c6-151">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</span><span class="sxs-lookup"><span data-stu-id="266c6-151">If the transaction allows the behavior, the threads will operate in the following order:</span></span>  
-  
--   <span data-ttu-id="266c6-152">W pierwszym wątkiem rozpocząć transakcji, a następnie dodaj value(ProductId=1) ilość.</span><span class="sxs-lookup"><span data-stu-id="266c6-152">In first thread, begin a transaction and add the Quantity value(ProductId=1).</span></span>  
-  
--   <span data-ttu-id="266c6-153">W drugim wątku odczytać wartości ilości, a następnie ponownie Dodaj wartość.</span><span class="sxs-lookup"><span data-stu-id="266c6-153">In the second thread, read the Quantity value and add the value again.</span></span>  
-  
--   <span data-ttu-id="266c6-154">Zatwierdzić transakcji w drugim wątku.</span><span class="sxs-lookup"><span data-stu-id="266c6-154">Commit the transaction in second thread.</span></span>  
-  
--   <span data-ttu-id="266c6-155">Wycofywanie transakcji w pierwszym wątkiem.</span><span class="sxs-lookup"><span data-stu-id="266c6-155">Roll back the transaction in first thread.</span></span>  
-  
- <span data-ttu-id="266c6-156">Transakcja umożliwia zachowanie, dwukrotnie zostaną dodane ilości wartości.</span><span class="sxs-lookup"><span data-stu-id="266c6-156">If the transaction allows the behavior, the Quantity value will be added twice.</span></span>  
-  
- <span data-ttu-id="266c6-157">C# i Visual Basic projektów z tym przykładowym kodzie można znaleźć w [przykłady kodu dewelopera](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4).</span><span class="sxs-lookup"><span data-stu-id="266c6-157">C# and Visual Basic projects with this code sample can be found on [Developer Code Samples](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&f%5B0%5D.Type=SearchText&ac=4).</span></span>  
-  
- [!code-csharp[system_data_IsolationLevel#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/system_data_isolationlevel/cs/source.cs#1)]
- [!code-vb[system_data_IsolationLevel#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/system_data_isolationlevel/vb/source.vb#1)]  
-  
- ]]></format>
-    </remarks>
-  </Docs>
-  <Members>
-    <Member MemberName="Chaos">
-      <MemberSignature Language="C#" Value="Chaos" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel Chaos = int32(16)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.Chaos" />
-      <MemberSignature Language="VB.NET" Value="Chaos" />
-      <MemberSignature Language="C++ CLI" Value="Chaos" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>16</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-158">Nie można zastąpić oczekiwanie na więcej wysokiej izolowanych transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-158">The pending changes from more highly isolated transactions cannot be overwritten.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="ReadCommitted">
-      <MemberSignature Language="C#" Value="ReadCommitted" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel ReadCommitted = int32(4096)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.ReadCommitted" />
-      <MemberSignature Language="VB.NET" Value="ReadCommitted" />
-      <MemberSignature Language="C++ CLI" Value="ReadCommitted" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>4096</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-159">Udostępnione blokady są przechowywane dane są odczytywane w celu uniknięcia odczytów, ale dane można zmienić przed zakończeniem transakcji-powtarzalne odczyty lub fantomu danych.</span><span class="sxs-lookup"><span data-stu-id="266c6-159">Shared locks are held while the data is being read to avoid dirty reads, but the data can be changed before the end of the transaction, resulting in non-repeatable reads or phantom data.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="ReadUncommitted">
-      <MemberSignature Language="C#" Value="ReadUncommitted" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel ReadUncommitted = int32(256)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.ReadUncommitted" />
-      <MemberSignature Language="VB.NET" Value="ReadUncommitted" />
-      <MemberSignature Language="C++ CLI" Value="ReadUncommitted" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>256</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-160">Odczyt niezatwierdzonych jest to możliwe, co oznacza, że nie blokady współużytkowane są wydawane i są honorowane nie blokady na wyłączność.</span><span class="sxs-lookup"><span data-stu-id="266c6-160">A dirty read is possible, meaning that no shared locks are issued and no exclusive locks are honored.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="RepeatableRead">
-      <MemberSignature Language="C#" Value="RepeatableRead" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel RepeatableRead = int32(65536)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.RepeatableRead" />
-      <MemberSignature Language="VB.NET" Value="RepeatableRead" />
-      <MemberSignature Language="C++ CLI" Value="RepeatableRead" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>65536</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-161">Blokady są umieszczane na wszystkie dane, które jest używane w zapytaniu, uniemożliwia innym użytkownikom aktualizowanie danych.</span><span class="sxs-lookup"><span data-stu-id="266c6-161">Locks are placed on all data that is used in a query, preventing other users from updating the data.</span></span> <span data-ttu-id="266c6-162">Zapobiega-powtarzalnego odczytu, ale fantom wiersze są nadal możliwe.</span><span class="sxs-lookup"><span data-stu-id="266c6-162">Prevents non-repeatable reads but phantom rows are still possible.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="Serializable">
-      <MemberSignature Language="C#" Value="Serializable" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel Serializable = int32(1048576)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.Serializable" />
-      <MemberSignature Language="VB.NET" Value="Serializable" />
-      <MemberSignature Language="C++ CLI" Value="Serializable" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>1048576</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-163">Zakres jest zablokować <see cref="T:System.Data.DataSet" />, inni użytkownicy z aktualizacji lub wstawianie wierszy do zestawu danych, aż do ukończenia transakcji.</span><span class="sxs-lookup"><span data-stu-id="266c6-163">A range lock is placed on the <see cref="T:System.Data.DataSet" />, preventing other users from updating or inserting rows into the dataset until the transaction is complete.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="Snapshot">
-      <MemberSignature Language="C#" Value="Snapshot" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel Snapshot = int32(16777216)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.Snapshot" />
-      <MemberSignature Language="VB.NET" Value="Snapshot" />
-      <MemberSignature Language="C++ CLI" Value="Snapshot" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>16777216</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-164">Zmniejsza blokuje dzięki przechowywaniu wersji danych jednej aplikacji mogą odczytywać, podczas gdy inny jest zmodyfikowanie tych samych danych.</span><span class="sxs-lookup"><span data-stu-id="266c6-164">Reduces blocking by storing a version of data that one application can read while another is modifying the same data.</span></span> <span data-ttu-id="266c6-165">Wskazuje, że z jednej transakcji nie może zostać wyświetlone zmiany wprowadzone w innych transakcjach nawet wtedy, gdy użytkownik requery.</span><span class="sxs-lookup"><span data-stu-id="266c6-165">Indicates that from one transaction you cannot see changes made in other transactions, even if you requery.</span></span></summary>
-      </Docs>
-    </Member>
-    <Member MemberName="Unspecified">
-      <MemberSignature Language="C#" Value="Unspecified" />
-      <MemberSignature Language="ILAsm" Value=".field public static literal valuetype System.Data.IsolationLevel Unspecified = int32(-1)" />
-      <MemberSignature Language="DocId" Value="F:System.Data.IsolationLevel.Unspecified" />
-      <MemberSignature Language="VB.NET" Value="Unspecified" />
-      <MemberSignature Language="C++ CLI" Value="Unspecified" />
-      <MemberType>Field</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Data.Common</AssemblyName>
-        <AssemblyVersion>4.1.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.0.0</AssemblyVersion>
-        <AssemblyVersion>4.2.1.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>System.Data</AssemblyName>
-        <AssemblyVersion>2.0.5.0</AssemblyVersion>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <AssemblyInfo>
-        <AssemblyName>netstandard</AssemblyName>
-        <AssemblyVersion>2.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Data.IsolationLevel</ReturnType>
-      </ReturnValue>
-      <MemberValue>-1</MemberValue>
-      <Docs>
-        <summary><span data-ttu-id="266c6-166">Poziom izolacji inny niż określony jest używany, ale nie może być określony poziom.</span><span class="sxs-lookup"><span data-stu-id="266c6-166">A different isolation level than the one specified is being used, but the level cannot be determined.</span></span></summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <span data-ttu-id="266c6-167">Korzystając z <xref:System.Data.Odbc.OdbcTransaction>, jeśli nie ustawisz <xref:System.Data.IsolationLevel> lub możesz ustawić <xref:System.Data.IsolationLevel> do `Unspecified`, transakcja jest wykonywana zgodnie z poziomu izolacji, który jest określany przez sterownik, który jest używany.</span><span class="sxs-lookup"><span data-stu-id="266c6-167">When using <xref:System.Data.Odbc.OdbcTransaction>, if you do not set <xref:System.Data.IsolationLevel> or you set <xref:System.Data.IsolationLevel> to `Unspecified`, the transaction executes according to the isolation level that is determined by the driver that is being used.</span></span>  
-  
- ]]></format>
-        </remarks>
-      </Docs>
-    </Member>
-  </Members>
-</Type>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" original="IsolationLevel.xml" source-language="en-US" target-language="pl-PL">
+    <header>
+      <tool tool-id="mdxliff" tool-name="mdxliff" tool-version="1.0-efd8310" tool-company="Microsoft" />
+      <xliffext:skl_file_name xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">5e05b5b2-d481-4262-b7b7-7de7ac2afe07fd1598b6f019ec4266a4507137cb374b09d7767b.skl</xliffext:skl_file_name>
+      <xliffext:version xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">1.2</xliffext:version>
+      <xliffext:ms.openlocfilehash xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">fd1598b6f019ec4266a4507137cb374b09d7767b</xliffext:ms.openlocfilehash>
+      <xliffext:ms.sourcegitcommit xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">df6cf590aa3087f6c7c202712eee781c6a3c8f96</xliffext:ms.sourcegitcommit>
+      <xliffext:ms.lasthandoff xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">05/07/2018</xliffext:ms.lasthandoff>
+      <xliffext:moniker_ids xmlns:xliffext="urn:microsoft:content:schema:xliffextensions">netcore-1.0,netcore-1.1,netcore-2.0,netcore-2.1,netframework-4.5.1,netframework-4.5.2,netframework-4.5,netframework-4.6.1,netframework-4.6.2,netframework-4.6,netframework-4.7.1,netframework-4.7.2,netframework-4.7,netstandard-2.0,xamarinandroid-7.1,xamarinios-10.8,xamarinmac-3.0</xliffext:moniker_ids>
+    </header>
+    <body>
+      <group id="content" extype="content">
+        <trans-unit id="101" translate="yes" xml:space="preserve" uid="T:System.Data.IsolationLevel">
+          <source>Specifies the transaction locking behavior for the connection.</source>
+          <target state="translated">Określa zachowanie blokowanie transakcji dla połączenia.</target>       </trans-unit>
+        <trans-unit id="102" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The <ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> values are used by a .NET Framework data provider when performing a transaction.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> Wartości są używane przez dostawcę danych .NET Framework podczas wykonywania transakcji.</target>       </trans-unit>
+        <trans-unit id="103" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The <ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> remains in effect until explicitly changed, but it can be changed at any time.</source>
+          <target state="translated"><ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> Nadal obowiązują do momentu jawnie zmieniony, ale można ją zmienić w dowolnym momencie.</target>       </trans-unit>
+        <trans-unit id="104" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The new value is used at execution time, not parse time.</source>
+          <target state="translated">Nowa wartość jest używana w czasie wykonywania nie czas analizy.</target>       </trans-unit>
+        <trans-unit id="105" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If changed during a transaction, the expected behavior of the server is to apply the new locking level to all statements remaining.</source>
+          <target state="translated">Po zmianie podczas transakcji, oczekiwane zachowanie serwera jest zastosowanie nowy poziom blokowania instrukcje wszystkich pozostałych.</target>       </trans-unit>
+        <trans-unit id="106" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>This application demonstrates how to use <ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> in <ph id="ph2">&lt;xref:System.Data.Common.DbTransaction&gt;</ph>.</source>
+          <target state="translated">Ta aplikacja przedstawiono sposób użycia <ph id="ph1">&lt;xref:System.Data.IsolationLevel&gt;</ph> w <ph id="ph2">&lt;xref:System.Data.Common.DbTransaction&gt;</ph>.</target>       </trans-unit>
+        <trans-unit id="107" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The sample will demonstrate which of the following behaviors are allowed in the different isolation levels:</source>
+          <target state="translated">Przykładowe pokazują, które z poniższych zachowań są dozwolone w izolacji różnych poziomów:</target>       </trans-unit>
+        <trans-unit id="108" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Dirty reads.</source>
+          <target state="translated">Odczytów.</target>       </trans-unit>
+        <trans-unit id="109" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Non-repeatable reads.</source>
+          <target state="translated">Odczytuje non powtarzalne.</target>       </trans-unit>
+        <trans-unit id="110" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Phantoms.</source>
+          <target state="translated">Fantomów.</target>       </trans-unit>
+        <trans-unit id="111" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>This application will execute in the following isolation levels:</source>
+          <target state="translated">Ta aplikacja będzie wykonywany w następujących poziomów izolacji:</target>       </trans-unit>
+        <trans-unit id="112" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>ReadUncommitted</source>
+          <target state="translated">ReadUncommitted</target>       </trans-unit>
+        <trans-unit id="113" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>ReadCommitted</source>
+          <target state="translated">Wartość ReadCommitted</target>       </trans-unit>
+        <trans-unit id="114" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>RepeatableRead</source>
+          <target state="translated">RepeatableRead</target>       </trans-unit>
+        <trans-unit id="115" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Serializable</source>
+          <target state="translated">Możliwy do serializacji</target>       </trans-unit>
+        <trans-unit id="116" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Snapshot</source>
+          <target state="translated">Migawka</target>       </trans-unit>
+        <trans-unit id="117" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The PhantomReadThreads class demonstrates if the specific transaction allows the Phantom Read behavior.</source>
+          <target state="translated">Klasa PhantomReadThreads pokazuje umożliwia zachowanie odczytu Fantom, jeśli określonej transakcji.</target>       </trans-unit>
+        <trans-unit id="118" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the threads will operate in the following order:</source>
+          <target state="translated">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</target>       </trans-unit>
+        <trans-unit id="119" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, select the products(All).</source>
+          <target state="translated">W pierwszym wątkiem wybierz products(All).</target>       </trans-unit>
+        <trans-unit id="120" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In the second thread, insert a new product.</source>
+          <target state="translated">W drugim wątku wstawić nowego produktu.</target>       </trans-unit>
+        <trans-unit id="121" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in second thread.</source>
+          <target state="translated">Zatwierdzić transakcji w drugim wątku.</target>       </trans-unit>
+        <trans-unit id="122" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Select the products again.</source>
+          <target state="translated">Wybierz produkty, ponownie.</target>       </trans-unit>
+        <trans-unit id="123" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in first thread.</source>
+          <target state="translated">Zatwierdzić transakcji w pierwszym wątkiem.</target>       </trans-unit>
+        <trans-unit id="124" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the two Select operations will get the different results.</source>
+          <target state="translated">Jeśli transakcja umożliwia zachowanie, tych dwóch operacji Select otrzyma różne wyniki.</target>       </trans-unit>
+        <trans-unit id="125" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The NonrepeatableReadThreads class demonstrates if the specific transaction allows the Nonrepeatable Read behavior.</source>
+          <target state="translated">Klasa NonrepeatableReadThreads pokazuje umożliwia zachowanie zanieczyszczonych odczytu, jeśli określonej transakcji.</target>       </trans-unit>
+        <trans-unit id="126" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the threads will operate in the following order:</source>
+          <target state="translated">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</target>       </trans-unit>
+        <trans-unit id="127" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, select the product(ProductId=1).</source>
+          <target state="translated">W pierwszym wątkiem wybierz product(ProductId=1).</target>       </trans-unit>
+        <trans-unit id="128" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In the second thread, update the Quantity value(ProductId=1).</source>
+          <target state="translated">W drugim wątku zaktualizuj value(ProductId=1) ilość.</target>       </trans-unit>
+        <trans-unit id="129" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in second thread.</source>
+          <target state="translated">Zatwierdzić transakcji w drugim wątku.</target>       </trans-unit>
+        <trans-unit id="130" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Select the product again.</source>
+          <target state="translated">Wybierz ponownie produkt.</target>       </trans-unit>
+        <trans-unit id="131" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in first thread.</source>
+          <target state="translated">Zatwierdzić transakcji w pierwszym wątkiem.</target>       </trans-unit>
+        <trans-unit id="132" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the two Select operations will get the different results.</source>
+          <target state="translated">Jeśli transakcja umożliwia zachowanie, tych dwóch operacji Select otrzyma różne wyniki.</target>       </trans-unit>
+        <trans-unit id="133" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The ExchangeValuesThreads class demonstrates the difference between the Serializable and Snapshot transaction.</source>
+          <target state="translated">Klasa ExchangeValuesThreads pokazano różnicę między transakcji Serializable i migawki.</target>       </trans-unit>
+        <trans-unit id="134" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>For the Serializable transaction, threads will operate in the following order:</source>
+          <target state="translated">Dla transakcji serializacji wątków będzie działać w następującej kolejności:</target>       </trans-unit>
+        <trans-unit id="135" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, get the Price of product(ProductId=2) and store in the variable.</source>
+          <target state="translated">W pierwszym wątkiem uzyskać ceny product(ProductId=2) i przechowywać w zmiennej.</target>       </trans-unit>
+        <trans-unit id="136" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).</source>
+          <target state="translated">W pierwszym wątkiem Zaktualizuj cenę product(ProductId=1) cenę product(ProductId=2).</target>       </trans-unit>
+        <trans-unit id="137" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in first thread.</source>
+          <target state="translated">Zatwierdzić transakcji w pierwszym wątkiem.</target>       </trans-unit>
+        <trans-unit id="138" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In second thread, get the Price of product(ProductId=1) and store in the variable.</source>
+          <target state="translated">W drugim wątku Pobierz cenę product(ProductId=1) i magazynu w zmiennej.</target>       </trans-unit>
+        <trans-unit id="139" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).</source>
+          <target state="translated">W drugim wątku Zaktualizuj cenę product(ProductId=2) cena product(ProductId=1).</target>       </trans-unit>
+        <trans-unit id="140" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in second thread.</source>
+          <target state="translated">Zatwierdzić transakcji w drugim wątku.</target>       </trans-unit>
+        <trans-unit id="141" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Now the values of the Price(ProductId=1 and ProductId=2) are as same as the original Price of Product(ProductId=2).</source>
+          <target state="translated">Teraz wartości ceny (ProductId = 1 i ProductId = 2) są jako takie same jak oryginalne cen Product(ProductId=2).</target>       </trans-unit>
+        <trans-unit id="142" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>For the Snapshot transaction, threads will operate in the following order:</source>
+          <target state="translated">Dla transakcji migawki wątków będzie działać w następującej kolejności:</target>       </trans-unit>
+        <trans-unit id="143" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, get the Price of product(ProductId=2) and store in the variable;</source>
+          <target state="translated">W pierwszym wątkiem uzyskać ceny product(ProductId=2) i przechowywać w zmiennej;</target>       </trans-unit>
+        <trans-unit id="144" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, update the Price of product(ProductId=1) with the price of product(ProductId=2).</source>
+          <target state="translated">W pierwszym wątkiem Zaktualizuj cenę product(ProductId=1) cenę product(ProductId=2).</target>       </trans-unit>
+        <trans-unit id="145" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In second thread, get the Price of product(ProductId=1) from the snapshot and store in the variable.</source>
+          <target state="translated">W drugim wątku Pobierz ceny product(ProductId=1) z migawki i przechowywać w zmiennej.</target>       </trans-unit>
+        <trans-unit id="146" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In second thread, update the Price of product(ProductId=2) with the price of product(ProductId=1).</source>
+          <target state="translated">W drugim wątku Zaktualizuj cenę product(ProductId=2) cena product(ProductId=1).</target>       </trans-unit>
+        <trans-unit id="147" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in second thread.</source>
+          <target state="translated">Zatwierdzić transakcji w drugim wątku.</target>       </trans-unit>
+        <trans-unit id="148" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in first thread.</source>
+          <target state="translated">Zatwierdzić transakcji w pierwszym wątkiem.</target>       </trans-unit>
+        <trans-unit id="149" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Now exchange the Price of products(ProductId=1 and ProductId=2).</source>
+          <target state="translated">Teraz wymiany ceny produktów (ProductId = 1 i ProductId = 2).</target>       </trans-unit>
+        <trans-unit id="150" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>The DirtyReadThreads class demonstrates if the specific transaction allows the Dirty Read behavior.</source>
+          <target state="translated">Klasa DirtyReadThreads pokazuje umożliwia zachowanie odczytu z zanieczyszczeniu, jeśli określonej transakcji.</target>       </trans-unit>
+        <trans-unit id="151" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the threads will operate in the following order:</source>
+          <target state="translated">Jeśli transakcja umożliwia zachowanie, wątki będzie działać w następującej kolejności:</target>       </trans-unit>
+        <trans-unit id="152" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In first thread, begin a transaction and add the Quantity value(ProductId=1).</source>
+          <target state="translated">W pierwszym wątkiem rozpocząć transakcji, a następnie dodaj value(ProductId=1) ilość.</target>       </trans-unit>
+        <trans-unit id="153" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>In the second thread, read the Quantity value and add the value again.</source>
+          <target state="translated">W drugim wątku odczytać wartości ilości, a następnie ponownie Dodaj wartość.</target>       </trans-unit>
+        <trans-unit id="154" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Commit the transaction in second thread.</source>
+          <target state="translated">Zatwierdzić transakcji w drugim wątku.</target>       </trans-unit>
+        <trans-unit id="155" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>Roll back the transaction in first thread.</source>
+          <target state="translated">Wycofywanie transakcji w pierwszym wątkiem.</target>       </trans-unit>
+        <trans-unit id="156" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>If the transaction allows the behavior, the Quantity value will be added twice.</source>
+          <target state="translated">Transakcja umożliwia zachowanie, dwukrotnie zostaną dodane ilości wartości.</target>       </trans-unit>
+        <trans-unit id="157" translate="yes" xml:space="preserve" extradata="MT" uid="T:System.Data.IsolationLevel">
+          <source>C# and Visual Basic projects with this code sample can be found on <bpt id="p1">[</bpt>Developer Code Samples<ept id="p1">](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&amp;f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&amp;f%5B0%5D.Type=SearchText&amp;ac=4)</ept>.</source>
+          <target state="translated">C# i Visual Basic projektów z tym przykładowym kodzie można znaleźć w <bpt id="p1">[</bpt>przykłady kodu dewelopera<ept id="p1">](https://code.msdn.microsoft.com/site/search?query=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&amp;f%5B0%5D.Value=How%20to%20use%20IsolationLevel%20Enumeration%20in%20DbTransaction&amp;f%5B0%5D.Type=SearchText&amp;ac=4)</ept>.</target>       </trans-unit>
+        <trans-unit id="158" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.Chaos">
+          <source>The pending changes from more highly isolated transactions cannot be overwritten.</source>
+          <target state="translated">Nie można zastąpić oczekiwanie na więcej wysokiej izolowanych transakcji.</target>       </trans-unit>
+        <trans-unit id="159" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.ReadCommitted">
+          <source>Shared locks are held while the data is being read to avoid dirty reads, but the data can be changed before the end of the transaction, resulting in non-repeatable reads or phantom data.</source>
+          <target state="translated">Udostępnione blokady są przechowywane dane są odczytywane w celu uniknięcia odczytów, ale dane można zmienić przed zakończeniem transakcji-powtarzalne odczyty lub fantomu danych.</target>       </trans-unit>
+        <trans-unit id="160" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.ReadUncommitted">
+          <source>A dirty read is possible, meaning that no shared locks are issued and no exclusive locks are honored.</source>
+          <target state="translated">Odczyt niezatwierdzonych jest to możliwe, co oznacza, że nie blokady współużytkowane są wydawane i są honorowane nie blokady na wyłączność.</target>       </trans-unit>
+        <trans-unit id="161" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.RepeatableRead">
+          <source>Locks are placed on all data that is used in a query, preventing other users from updating the data.</source>
+          <target state="translated">Blokady są umieszczane na wszystkie dane, które jest używane w zapytaniu, uniemożliwia innym użytkownikom aktualizowanie danych.</target>       </trans-unit>
+        <trans-unit id="162" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.RepeatableRead">
+          <source>Prevents non-repeatable reads but phantom rows are still possible.</source>
+          <target state="translated">Zapobiega-powtarzalnego odczytu, ale fantom wiersze są nadal możliwe.</target>       </trans-unit>
+        <trans-unit id="163" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.Serializable">
+          <source>A range lock is placed on the <ph id="ph1">&lt;see cref="T:System.Data.DataSet" /&gt;</ph>, preventing other users from updating or inserting rows into the dataset until the transaction is complete.</source>
+          <target state="translated">Zakres jest zablokować <ph id="ph1">&lt;see cref="T:System.Data.DataSet" /&gt;</ph>, inni użytkownicy z aktualizacji lub wstawianie wierszy do zestawu danych, aż do ukończenia transakcji.</target>       </trans-unit>
+        <trans-unit id="164" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.Snapshot">
+          <source>Reduces blocking by storing a version of data that one application can read while another is modifying the same data.</source>
+          <target state="translated">Zmniejsza blokuje dzięki przechowywaniu wersji danych jednej aplikacji mogą odczytywać, podczas gdy inny jest zmodyfikowanie tych samych danych.</target>       </trans-unit>
+        <trans-unit id="165" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.Snapshot">
+          <source>Indicates that from one transaction you cannot see changes made in other transactions, even if you requery.</source>
+          <target state="translated">Wskazuje, że z jednej transakcji nie może zostać wyświetlone zmiany wprowadzone w innych transakcjach nawet wtedy, gdy użytkownik requery.</target>       </trans-unit>
+        <trans-unit id="166" translate="yes" xml:space="preserve" uid="F:System.Data.IsolationLevel.Unspecified">
+          <source>A different isolation level than the one specified is being used, but the level cannot be determined.</source>
+          <target state="translated">Poziom izolacji inny niż określony jest używany, ale nie może być określony poziom.</target>       </trans-unit>
+        <trans-unit id="167" translate="yes" xml:space="preserve" extradata="MT" uid="F:System.Data.IsolationLevel.Unspecified">
+          <source>When using <ph id="ph1">&lt;xref:System.Data.Odbc.OdbcTransaction&gt;</ph>, if you do not set <ph id="ph2">&lt;xref:System.Data.IsolationLevel&gt;</ph> or you set <ph id="ph3">&lt;xref:System.Data.IsolationLevel&gt;</ph> to <ph id="ph4">`Unspecified`</ph>, the transaction executes according to the isolation level that is determined by the driver that is being used.</source>
+          <target state="translated">Korzystając z <ph id="ph1">&lt;xref:System.Data.Odbc.OdbcTransaction&gt;</ph>, jeśli nie ustawisz <ph id="ph2">&lt;xref:System.Data.IsolationLevel&gt;</ph> lub możesz ustawić <ph id="ph3">&lt;xref:System.Data.IsolationLevel&gt;</ph> do <ph id="ph4">`Unspecified`</ph>, transakcja jest wykonywana zgodnie z poziomu izolacji, który jest określany przez sterownik, który jest używany.</target>       </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
