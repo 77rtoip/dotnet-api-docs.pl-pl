@@ -1,1 +1,0 @@
-<span data-ttu-id="94437-101">Zintegrowane środowisko projektowe (IDE)</span><span class="sxs-lookup"><span data-stu-id="94437-101">Integrated Development Environment (IDE)</span></span>

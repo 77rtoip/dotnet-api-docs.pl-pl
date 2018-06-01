@@ -1,2 +1,0 @@
-> [!WARNING]
-> <span data-ttu-id="f9233-101">Serializacja binarna, może być niebezpieczne.</span><span class="sxs-lookup"><span data-stu-id="f9233-101">Binary serialization can be dangerous.</span></span> <span data-ttu-id="f9233-102">Nie można deserializować danych z niezaufanego źródła i nigdy nie obustronne dane serializowane systemów nie pod kontrolą.</span><span class="sxs-lookup"><span data-stu-id="f9233-102">Never deserialize data from an untrusted source and never round-trip serialized data to systems not under your control.</span></span>

@@ -1,1 +1,0 @@
-<span data-ttu-id="d302b-101">Technologie pomocnicze</span><span class="sxs-lookup"><span data-stu-id="d302b-101">Assistive technologies</span></span>

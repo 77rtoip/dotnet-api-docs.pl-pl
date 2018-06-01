@@ -1,1 +1,0 @@
-<span data-ttu-id="cba59-101">Notatnik firmy Microsoft</span><span class="sxs-lookup"><span data-stu-id="cba59-101">Microsoft Notepad</span></span>

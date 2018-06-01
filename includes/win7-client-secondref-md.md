@@ -1,1 +1,0 @@
-<span data-ttu-id="e469d-101">Windows°7</span><span class="sxs-lookup"><span data-stu-id="e469d-101">Windows°7</span></span>

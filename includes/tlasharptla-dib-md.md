@@ -1,1 +1,0 @@
-<span data-ttu-id="f420a-101">mapa bitowa niezależna od urządzenia (DIB)</span><span class="sxs-lookup"><span data-stu-id="f420a-101">device-independent bitmap (DIB)</span></span>
