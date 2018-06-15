@@ -1,10 +1,11 @@
 <Namespace Name="System.Xml">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5f4356b45fc380f4d1fd7b6734a2bfd0b92e7cb9" />
-    <Meta Name="ms.sourcegitcommit" Value="df6cf590aa3087f6c7c202712eee781c6a3c8f96" />
-    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.openlocfilehash" Value="b9d93fd68b550f524fd02f3cb0af6df61ab8e864" />
+    <Meta Name="ms.sourcegitcommit" Value="81d387351cc43c342755705908f4a5eb8af153d3" />
+    <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="05/10/2018" />
+    <Meta Name="ms.lasthandoff" Value="06/05/2018" />
+    <Meta Name="ms.locfileid" Value="34758853" />
   </Metadata>
   <Docs>
     <summary>
@@ -50,9 +51,9 @@
   
 -   Jeśli zapomnisz określić `await` — słowo kluczowe podczas wywoływania metody asynchronicznej, wyniki są deterministyczna: może pojawić się w wyniku oczekiwano lub wystąpił wyjątek.  
   
--   Gdy <xref:System.Xml.XmlReader> odczytuje obiekt węzła duży, może pamięci podręcznej tylko wartość tekstową z częściowa i zwracać węzeł tekstowy, dlatego podczas pobierania <xref:System.Xml.XmlReader.Value%2A?displayProperty=nameWithType> właściwość może zostać zablokowany przez operację We/Wy. Użyj <xref:System.Xml.XmlReader.GetValueAsync%2A> metody do pobierania wartości tekstowej w trybie asynchronicznym, lub użyj <xref:System.Xml.XmlReader.ReadValueChunkAsync%2A> bloku metody odczytać dużych tekstu w fragmentów.  
+-   Gdy <xref:System.Xml.XmlReader> odczytuje obiekt węzła duży, może pamięci podręcznej tylko wartość tekstową z częściowa i zwracać węzeł tekstowy, dlatego podczas pobierania <xref:System.Xml.XmlReader.Value%2A?displayProperty=nameWithType> właściwość może zostać zablokowany przez operację We/Wy. Użyj <xref:System.Xml.XmlReader.GetValueAsync%2A?displayProperty=nameWithType> metody do pobierania wartości tekstowej w trybie asynchronicznym, lub użyj <xref:System.Xml.XmlReader.ReadValueChunkAsync%2A?displayProperty=nameWithType> bloku metody odczytać dużych tekstu w fragmentów.  
   
--   Jeśli używasz <xref:System.Xml.XmlWriter> obiekt, należy wywołać <xref:System.Xml.XmlWriter.FlushAsync%2A> metoda przed wywołaniem <xref:System.Xml.XmlWriter.Close%2A> celu unikania blokowania operacji We/Wy.  
+-   Jeśli używasz <xref:System.Xml.XmlWriter> obiekt, należy wywołać <xref:System.Xml.XmlWriter.FlushAsync%2A?displayProperty=nameWithType> metoda przed wywołaniem <xref:System.Xml.XmlWriter.Close%2A?displayProperty=nameWithType> celu unikania blokowania operacji We/Wy.  
   
 <a name="diff"></a>   
 ## <a name="differences-from-the-w3c-specs"></a>Różnice z specyfikacji W3C  
@@ -64,7 +65,7 @@
   
  Na przykład następujący schemat zawiera elementy, które mają taką samą nazwę, ale różne typy w tym samym modelu zawartości i grupy podstawienia są używane. Powinno to spowodować błąd, ale <xref:System.Xml> kompiluje i sprawdza poprawność schematu bez błędów.  
   
-```  
+```xml  
 <?xml version="1.0" encoding="utf-8" ?>   
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">  
   
@@ -106,7 +107,7 @@
   
  Na przykład w poniższym schemacie model zawartości jest niejednoznaczne i powinno spowodować błąd kompilacji, ale <xref:System.Xml> kompiluje schematu bez błędów.  
   
-```  
+```xml  
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">  
   
   <xs:element name="e1" type="xs:int"/>  
@@ -125,7 +126,7 @@
   
  Jeśli użytkownik próbuje zweryfikować następujących XML względem schematu powyżej, sprawdzania poprawności zakończy się niepowodzeniem z następującym komunikatem: "element 'e3' ma nieprawidłowy element"e2"." i <xref:System.Xml.Schema.XmlSchemaValidationException> zostanie wygenerowany wyjątek.  
   
-```  
+```xml  
 <e3>  
   <e2>1</e2>  
   <e2>2</e2>  
@@ -134,7 +135,7 @@
   
  Aby obejść ten problem, można wymienić deklaracji elementu w pliku XSD. Na przykład:  
   
-```  
+```xml  
 <xs:sequence>  
   <xs:element ref="e1" minOccurs="0" maxOccurs="1"/>  
   <xs:element name="e2" type="xs:int" minOccurs="0" maxOccurs="1"/>  
@@ -143,7 +144,7 @@
   
  staje się to:  
   
-```  
+```xml  
 <xs:sequence>  
   <xs:element name="e2" type="xs:int" minOccurs="0" maxOccurs="1"/>  
   <xs:element ref="e1" minOccurs="0" maxOccurs="1"/>  
@@ -152,7 +153,7 @@
   
  Oto inny przykład tego samego problemu:  
   
-```  
+```xml  
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">  
    <xs:element name="e1" type="xs:string"/>  
    <xs:element name="e2" type="xs:string" substitutionGroup="e1"/>  
@@ -167,17 +168,17 @@
 </xs:schema>  
 ```  
   
- Jeśli użytkownik próbuje zweryfikować następujących XML względem schematu powyżej, sprawdzanie poprawności zakończy się niepowodzeniem z powodu następującego wyjątku: "nieobsługiwany wyjątek: System.Xml.Schema.XmlSchemaValidationException: element el"e2"jest nieprawidłowy — wartość"abc"jest nieprawidłowa uwzględnieniu jego typu danych 'http://www.w3.org/2001/XMLSchema:int"— ciąg"abc"nie jest prawidłową wartość Int32." \  
+ Jeśli użytkownik próbuje zweryfikować następujących XML względem schematu powyżej, sprawdzanie poprawności zakończy się niepowodzeniem z powodu następującego wyjątku: "nieobsługiwany wyjątek: System.Xml.Schema.XmlSchemaValidationException: element el"e2"jest nieprawidłowy — wartość"abc"jest nieprawidłowa uwzględnieniu jego typu danych 'http://www.w3.org/2001/XMLSchema:int"— ciąg"abc"nie jest prawidłową wartość Int32."
   
-```  
+```xml  
 <e3><e2>abc</e2></e3>  
 ```  
   
 <a name="security"></a>   
 ## <a name="security-considerations"></a>Zagadnienia dotyczące bezpieczeństwa  
- Typy i składniki w <xref:System.Xml> zależą od obszaru nazw. W poniższych sekcjach omówiono problemy z zabezpieczeniami, które są specyficzne dla technologii XML. Aby uzyskać więcej informacji, zapoznaj się z konkretnymi klasami i określonych elementów członkowskich, a następnie odwiedź [Centrum deweloperów języka XML](http://go.microsoft.com/fwlink/?linkid=42458) informacje techniczne, pliki do pobrania, grupy dyskusyjne i inne zasoby dla deweloperów XML.  
+ Typy i składniki w <xref:System.Xml> zależą od obszaru nazw [systemu zabezpieczeń platformy .NET](~/docs/standard/security/index.md). W poniższych sekcjach omówiono problemy z zabezpieczeniami, które są specyficzne dla technologii XML.
   
- Należy również zauważyć, że gdy używasz <xref:System.Xml> typów i członków, jeśli kod XML zawiera dane, które ma wpływ na prywatność potencjalnych, należy wdrożyć aplikację w taki sposób, aby szanuje prywatność użytkowników końcowych.  
+ Należy również zauważyć, że gdy używasz <xref:System.Xml> typów i członków, jeśli kod XML zawiera dane, które ma wpływ na prywatność potencjalnych, należy wdrożyć aplikację w taki sposób, aby szanuje prywatność użytkowników końcowych.
   
  **Dostępu zewnętrznego**  
   
@@ -197,7 +198,7 @@
   
 -   Zapisywanie dokumentów XML i fragmentów ze źródeł danych w systemie plików, strumieni <xref:System.IO.TextWriter>, lub <xref:System.Text.StringBuilder>.  
   
--   Ładowanie dokumentów do obiektu modelu DOM (Document Object), jeśli używasz <xref:System.Xml.XmlReader> obiektu i <xref:System.Xml.XmlReaderSettings.DtdProcessing%2A> ustawioną <xref:System.Xml.DtdProcessing.Prohibit>.  
+-   Ładowanie dokumentów do obiektu modelu DOM (Document Object), jeśli używasz <xref:System.Xml.XmlReader> obiektu i <xref:System.Xml.XmlReaderSettings.DtdProcessing%2A?displayProperty=nameWithType> ustawioną <xref:System.Xml.DtdProcessing.Prohibit?displayProperty=nameWithType>.  
   
 -   Nawigowanie po modelu DOM obiektu.  
   
@@ -213,7 +214,7 @@
   
 -   Dom w LICZBIE operacji, takich jak badania, edytowanie, przenoszenie podrzędne drzewa między dokumentów i zapisywania obiektów modelu DOM.  
   
- Jeśli masz obawy odmowa problemów dotyczących usługi lub jeśli mamy do czynienia ze źródeł niezaufanych, nie należy włączać przetwarzanie elementu DTD. To jest domyślnie wyłączony na <xref:System.Xml.XmlReader> obiekty, które <xref:System.Xml.XmlReader.Create%2A> metoda tworzy.  
+ Jeśli masz obawy odmowa problemów dotyczących usługi lub jeśli mamy do czynienia ze źródeł niezaufanych, nie należy włączać przetwarzanie elementu DTD. To jest domyślnie wyłączony na <xref:System.Xml.XmlReader> obiekty, które <xref:System.Xml.XmlReader.Create%2A?displayProperty=nameWithType> metoda tworzy.  
   
 > [!NOTE]
 >  <xref:System.Xml.XmlTextReader> Umożliwia przetwarzanie domyślnie DTD. Użyj <xref:System.Xml.XmlTextReader.DtdProcessing%2A?displayProperty=nameWithType> właściwości, aby wyłączyć tę funkcję.  
@@ -224,7 +225,7 @@
   
  Ponieważ dokumenty XML mogą zawierać odwołania do innych plików, trudno jest określić, ile mocy obliczeniowej jest wymagany do analizy dokumentu XML. Na przykład dokumenty XML mogą zawierać definicji DTD. Jeśli element DTD zawiera zagnieżdżone jednostek lub złożonych modele zawartości, może zająć nadmierne ilości czasu, można przeanalizować dokumentu.  
   
- Korzystając z <xref:System.Xml.XmlReader>, można ograniczyć rozmiar dokumentu, który może zostać przeanalizowany przez ustawienie <xref:System.Xml.XmlReaderSettings.MaxCharactersInDocument%2A> właściwości. Można ograniczyć liczbę znaków, które są wynikiem rozwijanie jednostek przez ustawienie <xref:System.Xml.XmlReaderSettings.MaxCharactersFromEntities%2A> właściwości. Zobacz Tematy odpowiednie odwołanie przykłady ustawienie tych właściwości.  
+ Korzystając z <xref:System.Xml.XmlReader>, można ograniczyć rozmiar dokumentu, który może zostać przeanalizowany przez ustawienie <xref:System.Xml.XmlReaderSettings.MaxCharactersInDocument%2A?displayProperty=nameWithType> właściwości. Można ograniczyć liczbę znaków, które są wynikiem rozwijanie jednostek przez ustawienie <xref:System.Xml.XmlReaderSettings.MaxCharactersFromEntities%2A?displayProperty=nameWithType> właściwości. Zobacz Tematy odpowiednie odwołanie przykłady ustawienie tych właściwości.  
   
  Technologie XSD i XSLT mają dodatkowe funkcje, które mogą wpłynąć na wydajność przetwarzania. Na przykład istnieje możliwość utworzenia schematu XML, który wymaga znacznej ilości czasu na przetwarzanie, gdy obliczanego w dokumencie stosunkowo mały. Istnieje również możliwość osadzania bloków skryptu arkusz stylów XSLT. Obu przypadkach stanowić potencjalne zagrożenie zabezpieczeń dla aplikacji.  
   
@@ -232,13 +233,13 @@
   
 -   Wykonywanie skryptów XSLT jest domyślnie wyłączona. Powinna być włączona obsługa skryptów XSLT, tylko wtedy, gdy wymagana jest obsługa skryptów, podczas pracy w pełni zaufanym środowisku.  
   
--   Przekształcenie XSLT `document()` funkcja jest domyślnie wyłączona. Po włączeniu `document()` funkcji, ograniczyć zasoby, które mogą być udostępniane przez przekazanie <xref:System.Xml.XmlSecureResolver> do obiektu <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A> metody.  
+-   Przekształcenie XSLT `document()` funkcja jest domyślnie wyłączona. Po włączeniu `document()` funkcji, ograniczyć zasoby, które mogą być udostępniane przez przekazanie <xref:System.Xml.XmlSecureResolver> do obiektu <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A?displayProperty=nameWithType> metody.  
   
--   Obiekty rozszerzenia są domyślnie włączone. Jeśli <xref:System.Xml.Xsl.XsltArgumentList> obiekt, który zawiera obiekty rozszerzenia jest przekazywany do <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A> metoda, rozszerzenia obiekty są używane.  
+-   Obiekty rozszerzenia są domyślnie włączone. Jeśli <xref:System.Xml.Xsl.XsltArgumentList> obiekt, który zawiera obiekty rozszerzenia jest przekazywany do <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A?displayProperty=nameWithType> metoda, rozszerzenia obiekty są używane.  
   
 -   Arkusze stylów XSLT może zawierać odwołania do innych plików i bloki osadzony skrypt. Złośliwy użytkownik może wykorzystać to poprzez dostarczanie danych lub arkusze stylów w liczbie, gdy wykonywana, może spowodować systemu do przetwarzania, dopóki komputer ma za mało zasobów.  
   
--   Aplikacje XSLT, które działają w środowisku mieszanym zaufania może spowodować fałszowania arkusza stylów. Na przykład, złośliwy użytkownik może załadować obiektu z arkusza stylów szkodliwe i przekazują do innego użytkownika, który następnie wywołuje <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A> — metoda i wykonuje transformację.  
+-   Aplikacje XSLT, które działają w środowisku mieszanym zaufania może spowodować fałszowania arkusza stylów. Na przykład, złośliwy użytkownik może załadować obiektu z arkusza stylów szkodliwe i przekazują do innego użytkownika, który następnie wywołuje <xref:System.Xml.Xsl.XslCompiledTransform.Transform%2A?displayProperty=nameWithType> — metoda i wykonuje transformację.  
   
  Te problemy z zabezpieczeniami można zminimalizować przez nie zostanie włączona obsługa skryptów lub `document()` działać, chyba że arkusza stylów pochodzi z zaufanego źródła i nie akceptuje <xref:System.Xml.Xsl.XslCompiledTransform> obiekty, arkusze stylów XSLT lub XML źródła danych z niezaufanego źródła.  
   
