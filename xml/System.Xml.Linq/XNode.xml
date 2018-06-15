@@ -1,11 +1,11 @@
 <Type Name="XNode" FullName="System.Xml.Linq.XNode">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="f001654247344cf25b9ac07d23e7fb08ac4c201a" />
-    <Meta Name="ms.sourcegitcommit" Value="d31dc2ede16f6f7bc64e90d9f897ff54c4e3869b" />
+    <Meta Name="ms.openlocfilehash" Value="b14ef7fb4f0fbf0278e59d86dd69dcf4d812ec1b" />
+    <Meta Name="ms.sourcegitcommit" Value="3907f9a5780957d9c85af2e54c0a5bc2a5bf19ab" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="04/03/2018" />
-    <Meta Name="ms.locfileid" Value="30741755" />
+    <Meta Name="ms.lasthandoff" Value="06/13/2018" />
+    <Meta Name="ms.locfileid" Value="35417111" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class XNode : System.Xml.Linq.XObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit XNode extends System.Xml.Linq.XObject" />
@@ -822,11 +822,7 @@ Root
           <see cref="T:System.Xml.Linq.XName" /> Do dopasowania.</param>
         <summary>Zwraca kolekcję filtrowane element nadrzędny elementy tego węzła. Tylko elementy, które pasują do <see cref="T:System.Xml.Linq.XName" /> znajdują się w kolekcji.</summary>
         <returns>
-          <see cref="T:System.Collections.Generic.IEnumerable`1" /> z <see cref="T:System.Xml.Linq.XElement" /> elementów nadrzędny tego węzła. Tylko elementy, które pasują do <see cref="T:System.Xml.Linq.XName" /> znajdują się w kolekcji.  
-  
- Węzeł w zwracanej kolekcji znajduje się w kolejności odwrotnej dokumentu.  
-  
- Ta metoda używa odroczonego wykonania.</returns>
+          <see cref="T:System.Collections.Generic.IEnumerable`1" /> z <see cref="T:System.Xml.Linq.XElement" /> elementów nadrzędny tego węzła. Tylko elementy, które pasują do <see cref="T:System.Xml.Linq.XName" /> znajdują się w kolekcji.  Węzeł w zwracanej kolekcji znajduje się w kolejności odwrotnej dokumentu.  Ta metoda używa odroczonego wykonania.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -2540,72 +2536,19 @@ NodeType: Element   Child1
   
  Przykład za pomocą [!INCLUDE[sqltecxlinq](~/includes/sqltecxlinq-md.md)] do transformacji dokumentów XML wyjątkowa przy zachowaniu zużycia pamięci, zobacz [porady: wykonaj przesyłania strumieniowego przekształcenie o dużych dokumentów XML](http://msdn.microsoft.com/library/0759e428-6e59-4d80-a506-365d3a6a2b73).  
   
-   
-  
-## Examples  
- W tym przykładzie używane następującego pliku XML o nazwie Source.xml:  
-  
-```xml  
-<?xml version="1.0" encoding="utf-8" ?>   
-<Root>  
-  <Child Key="01">  
-    <GrandChild>aaa</GrandChild>  
-  </Child>  
-  <Child Key="02">  
-    <GrandChild>bbb</GrandChild>  
-  </Child>  
-  <Child Key="03">  
-    <GrandChild>ccc</GrandChild>  
-  </Child>  
-</Root>  
-```  
-  
- W tym przykładzie tworzy niestandardowe osi metody, która używa <xref:System.Xml.Linq.XNode.ReadFrom%2A>. Niestandardowe osi można badać przy użyciu zapytania LINQ.  
-  
-> [!NOTE]
->  W poniższym przykładzie użyto yield return konstrukcja języka C#. Ponieważ nie istnieje żadne funkcje w [!INCLUDE[vb_orcas_long](~/includes/vb-orcas-long-md.md)], w tym przykładzie jest dostępne tylko w języku C#.  
-  
-```csharp  
-class Program  
-{  
-    static IEnumerable<XElement> StreamRootChildDoc(string uri)  
-    {  
-        using (XmlReader reader = XmlReader.Create(uri))  
-        {  
-            reader.MoveToContent();  
-            // Parse the file and display each of the nodes.  
-            while (reader.Read())  
-            {  
-                switch (reader.NodeType)  
-                {  
-                    case XmlNodeType.Element:  
-                        if (reader.Name == "Child")  
-                        {  
-                            XElement el = XElement.ReadFrom(reader) as XElement;  
-                            if (el != null)  
-                                yield return el;  
-                        }  
-                        break;  
-                }  
-            }  
-        }  
-    }  
-  
-    static void Main(string[] args)  
-    {  
-        IEnumerable<string> grandChildData =  
-            from el in StreamRootChildDoc("Source.xml")  
-            where (int)el.Attribute("Key") > 1  
-            select (string)el.Element("GrandChild");  
-  
-        foreach (string str in grandChildData)  
-            Console.WriteLine(str);  
-    }  
-}  
-```  
-  
- W tym przykładzie tworzy następujące dane wyjściowe.  
-  
+## Examples
+
+W tym przykładzie użyto następującego pliku XML o nazwie *Source.xml*:
+
+[!code-xml[Source.xml](~/samples/snippets/csharp/api/system.xml.linq/xnode/readfrom/Source.xml)]
+
+Poniższy przykład tworzy niestandardowe osi metody, która używa <xref:System.Xml.Linq.XNode.ReadFrom%2A> , a następnie sprawdza osi niestandardowych za pomocą zapytania LINQ:
+
+[!code-csharp[XNode.ReadFromCS](~/samples/snippets/csharp/api/system.xml.linq/xnode/readfrom/Program.cs)]
+[!code-vb[XNode.ReadFromVB](~/samples/snippets/visualbasic/api/system.xml.linq/xnode/readfrom/Program.vb)]
+
+Ten przykład generuje następujące wyniki:
+
 ```  
 bbb  
 ccc  
