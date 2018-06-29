@@ -1,11 +1,11 @@
 <Type Name="TypeInitializationException" FullName="System.TypeInitializationException">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="2f794ef69f9e93c12a84b385905444466972f9b5" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="05c1f85c5424b90852eff3a4df05ae8b725d3f5e" />
+    <Meta Name="ms.sourcegitcommit" Value="d3cf721118797166546daadbf87d91d5c256d489" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36427672" />
+    <Meta Name="ms.lasthandoff" Value="06/28/2018" />
+    <Meta Name="ms.locfileid" Value="37077403" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class TypeInitializationException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit TypeInitializationException extends System.SystemException" />
@@ -57,78 +57,79 @@
   
  W poniższych sekcjach opisano niektóre sytuacje, w których <xref:System.TypeInitializationException> wyjątku.  
   
- [Konstruktory statyczne i typeinitializationexception — wyjątek](#Static)   
- [Wartości limitu czasu dopasowanie wyrażenia regularnego](#Timeout)   
- [Kalendarze i kultury danych.](#Calendars)  
+- [Konstruktory statyczne i typeinitializationexception — wyjątek](#Static)   
+- [Wartości limitu czasu dopasowanie wyrażenia regularnego](#Timeout)   
+- [Kalendarze i kultury danych.](#Calendars)  
   
 <a name="Static"></a>   
-## <a name="static-constructors-and-the-typeinitializationexception-exception"></a>Konstruktory statyczne i typeinitializationexception — wyjątek  
+## <a name="static-constructors-and-the-typeinitializationexception"></a>Konstruktory statyczne i typeinitializationexception —
+
  Konstruktor statyczny, jeśli istnieje, jest wywoływana automatycznie przez środowisko wykonawcze przed utworzeniem nowego wystąpienia typu. Konstruktory statyczne mogą być jawnie zdefiniowany przez dewelopera. Jeśli w konstruktorze statycznym nie jest jawnie zdefiniowany, kompilatorów automatycznie utworzyć zainicjować żadnego `static` (w języku C#) lub `Shared` (w języku Visual Basic) elementy członkowskie tego typu.  Aby uzyskać więcej informacji na konstruktorów statycznych zobacz [konstruktory statyczne](~/docs/csharp/programming-guide/classes-and-structs/static-constructors.md).  
   
  Najczęściej <xref:System.TypeInitializationException> wyjątek jest zgłaszany, gdy Konstruktor statyczny nie może utworzyć wystąpienia typu.  <xref:System.Exception.InnerException%2A> Właściwość wskazuje na to, dlaczego Konstruktor statyczny nie może utworzyć wystąpienia typu. Niektóre z najczęściej przyczyn <xref:System.TypeInitializationException> wyjątku:  
   
- Wystąpił nieobsługiwany wyjątek w konstruktorze statycznym  
- Jeśli w konstruktorze statycznym jest zgłaszany wyjątek, ten wyjątek jest ujęte w <xref:System.TypeInitializationException> wyjątku i typu nie można utworzyć wystąpienia.  
+- Wystąpił nieobsługiwany wyjątek w konstruktorze statycznym  
+ 
+   Jeśli w konstruktorze statycznym jest zgłaszany wyjątek, ten wyjątek jest ujęte w <xref:System.TypeInitializationException> wyjątku i typu nie można utworzyć wystąpienia.  
   
- Co często sprawia, że ten wyjątek trudne do rozwiązania to, że konstruktory statyczne nie są zawsze jawnie zdefiniowane w kodzie źródłowym. Konstruktor statyczny istnieje w typie, jeśli:  
+   Co często sprawia, że ten wyjątek trudne do rozwiązania to, że konstruktory statyczne nie są zawsze jawnie zdefiniowane w kodzie źródłowym. Konstruktor statyczny istnieje w typie, jeśli:  
   
--   Została ona jawnie zdefiniowana jako członka typu.  
+   -   Została ona jawnie zdefiniowana jako członka typu.  
   
--   Typ ma `static` (w języku C#) lub `Shared` (w języku Visual Basic) zmiennych, które są zadeklarowane i zainicjować w jednej instrukcji. W takim przypadku kompilatora języka generuje Konstruktor statyczny dla danego typu. Można sprawdzić za pomocą narzędzia, takie jak [dezasembler IL](~/docs/framework/tools/ildasm-exe-il-disassembler.md). Na przykład gdy C# i VB kompilatory skompilować poniższy przykład, generują one IL dla statycznego konstruktora, który jest podobny do poniższego:  
+   -   Typ ma `static` (w języku C#) lub `Shared` (w języku Visual Basic) zmiennych, które są zadeklarowane i zainicjować w jednej instrukcji. W takim przypadku kompilatora języka generuje Konstruktor statyczny dla danego typu. Można sprawdzić za pomocą narzędzia, takie jak [dezasembler IL](~/docs/framework/tools/ildasm-exe-il-disassembler.md). Na przykład gdy C# i VB kompilatory skompilować poniższy przykład, generują one IL dla statycznego konstruktora, który jest podobny do poniższego:  
   
-    ```  
+   ```  
+   .method private specialname rtspecialname static   
+           void  .cctor() cil managed  
+   {  
+     // Code size       12 (0xc)  
+     .maxstack  8  
+     IL_0000:  ldc.i4.3  
+     IL_0001:  newobj     instance void TestClass::.ctor(int32)  
+     IL_0006:  stsfld     class TestClass Example::test  
+     IL_000b:  ret  
+   } // end of method Example::.cctor  
+   ```  
   
-    .method private specialname rtspecialname static   
-            void  .cctor() cil managed  
-    {  
-      // Code size       12 (0xc)  
-      .maxstack  8  
-      IL_0000:  ldc.i4.3  
-      IL_0001:  newobj     instance void TestClass::.ctor(int32)  
-      IL_0006:  stsfld     class TestClass Example::test  
-      IL_000b:  ret  
-    } // end of method Example::.cctor  
+   W poniższym przykładzie przedstawiono <xref:System.TypeInitializationException> wyjątek w konstruktorze statycznym generowane przez kompilator. `Example` Klasa zawiera `static` (w języku C#) lub `Shared` (w języku Visual Basic) pole typu `TestClass` który zostanie uruchomiony przez przekazanie wartości 3 dla jego konstruktora klasy.  Jednak ta wartość jest niedozwolone; dozwolone są tylko wartości 0 lub 1. W związku z tym `TestClass` zgłasza konstruktora klasy <xref:System.ArgumentOutOfRangeException>. Ponieważ tego wyjątku nie jest obsługiwana, jest ujęte w <xref:System.TypeInitializationException> wyjątku.  
   
-    ```  
+   [!code-csharp[System.TypeInitializationException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/ctorException1.cs#3)]
+   [!code-vb[System.TypeInitializationException#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/CtorException1.vb#3)]  
   
- W poniższym przykładzie przedstawiono <xref:System.TypeInitializationException> wyjątek w konstruktorze statycznym generowane przez kompilator. `Example` Klasa zawiera `static` (w języku C#) lub `Shared` (w języku Visual Basic) pole typu `TestClass` który zostanie uruchomiony przez przekazanie wartości 3 dla jego konstruktora klasy.  Jednak ta wartość jest niedozwolone; dozwolone są tylko wartości 0 lub 1. W związku z tym `TestClass` zgłasza konstruktora klasy <xref:System.ArgumentOutOfRangeException>. Ponieważ tego wyjątku nie jest obsługiwana, jest ujęte w <xref:System.TypeInitializationException> wyjątku.  
+   Należy pamiętać, że komunikat o wyjątku przedstawia informacje na temat <xref:System.Exception.InnerException%2A> właściwości.  
   
- [!code-csharp[System.TypeInitializationException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/ctorException1.cs#3)]
- [!code-vb[System.TypeInitializationException#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/CtorException1.vb#3)]  
+- Brak pliku zestawu lub danych  
+ 
+   Częstą przyczyną <xref:System.TypeInitializationException> wyjątku jest plikiem zestawu lub danych, który był obecny w środowisk projektowania i testowania aplikacji i Brak z jego środowiska uruchomieniowego. Na przykład można skompilować poniższy przykład do zestawu o nazwie Missing1a.dll przy użyciu tej składni wiersza polecenia:  
   
- Należy pamiętać, że komunikat o wyjątku przedstawia informacje na temat <xref:System.Exception.InnerException%2A> właściwości.  
+   ```csharp  
+   csc -t:library Missing1a.cs  
+   ```  
   
- Brak pliku zestawu lub danych  
- Częstą przyczyną <xref:System.TypeInitializationException> wyjątku jest plikiem zestawu lub danych, który był obecny w środowisk projektowania i testowania aplikacji i Brak z jego środowiska uruchomieniowego. Na przykład można skompilować poniższy przykład do zestawu o nazwie Missing1a.dll przy użyciu tej składni wiersza polecenia:  
+   ```vb  
+   vbc Missing1a.vb -t:library  
+   ```  
   
-```csharp  
-csc /t:library Missing1a.cs  
-```  
+   [!code-csharp[System.TypeInitializationException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/Missing1a.cs#1)]
+   [!code-vb[System.TypeInitializationException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/Missing1a.vb#1)]  
   
-```vb  
-vbc Missing1a.vb /t:library  
-```  
+   Następnie można skompilować poniższy przykład do pliku wykonywalnego o nazwie Missing1.exe, umieszczając odwołanie do Missing1a.dll:  
   
- [!code-csharp[System.TypeInitializationException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/Missing1a.cs#1)]
- [!code-vb[System.TypeInitializationException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/Missing1a.vb#1)]  
+   ```csharp
+   csc Missing1.cs /r:Missing1a.dll  
+   ```  
   
- Następnie można skompilować poniższy przykład do pliku wykonywalnego o nazwie Missing1.exe, umieszczając odwołanie do Missing1a.dll:  
+   ```vb
+   vbc Missing1.vb /r:Missing1a.dll  
+   ```  
   
-```csharp  
-csc Missing1.cs /r:Missing1a.dll  
-```  
+   Jednak jeśli zmiana nazwy, przenieść, lub usuń Missing1a.dll i uruchomić przykład, zgłasza <xref:System.TypeInitializationException> wyjątek i wyświetla dane wyjściowe pokazano w przykładzie.  Należy pamiętać, że komunikat o wyjątku zawiera informacje o <xref:System.Exception.InnerException%2A> właściwości. W tym przypadku jest wewnętrzny wyjątek <xref:System.IO.FileNotFoundException> zgłoszono ponieważ środowisko uruchomieniowe nie można znaleźć zestawu zależnego.  
   
-```vb  
-vbc Missing1.vb /r:Missing1a.dll  
-```  
+   [!code-csharp[System.TypeInitializationException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/Missing1.cs#2)]
+   [!code-vb[System.TypeInitializationException#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/Missing1.vb#2)]  
   
- Jednak jeśli zmiana nazwy, przenieść, lub usuń Missing1a.dll i uruchomić przykład, zgłasza <xref:System.TypeInitializationException> wyjątek i wyświetla dane wyjściowe pokazano w przykładzie.  Należy pamiętać, że komunikat o wyjątku zawiera informacje o <xref:System.Exception.InnerException%2A> właściwości. W tym przypadku jest wewnętrzny wyjątek <xref:System.IO.FileNotFoundException> zgłoszono ponieważ środowisko uruchomieniowe nie można znaleźć zestawu zależnego.  
-  
- [!code-csharp[System.TypeInitializationException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.TypeInitializationException/cs/Missing1.cs#2)]
- [!code-vb[System.TypeInitializationException#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.TypeInitializationException/vb/Missing1.vb#2)]  
-  
-> [!NOTE]
->  W tym przykładzie <xref:System.TypeInitializationException> został zgłoszony wyjątek, ponieważ nie można załadować zestawu. Również zostać wygenerowany wyjątek, jeśli w konstruktorze statycznym próbuje otworzyć pliku danych, takich jak plik konfiguracji, plik XML lub plik zawierający serializowane dane, które nie można odnaleźć.  
+   > [!NOTE]
+   >  W tym przykładzie <xref:System.TypeInitializationException> został zgłoszony wyjątek, ponieważ nie można załadować zestawu. Również zostać wygenerowany wyjątek, jeśli w konstruktorze statycznym próbuje otworzyć pliku danych, takich jak plik konfiguracji, plik XML lub plik zawierający serializowane dane, które nie można odnaleźć.  
   
 <a name="Timeout"></a>   
 ## <a name="regular-expression-match-timeout-values"></a>Wartości limitu czasu dopasowanie wyrażenia regularnego  
