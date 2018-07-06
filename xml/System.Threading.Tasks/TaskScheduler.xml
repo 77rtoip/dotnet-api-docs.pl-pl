@@ -1,11 +1,11 @@
 <Type Name="TaskScheduler" FullName="System.Threading.Tasks.TaskScheduler">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="4d9adf13c8a7e851e5512c4b8b0e6ada78afa563" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="9101875b3c768590b23db0c0c08ee17d09fc5e38" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36407623" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37609225" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class TaskScheduler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit TaskScheduler extends System.Object" />
@@ -45,85 +45,85 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Reprezentuje obiekt, który obsługuje niskiego poziomu pracy Kolejkowanie zadań na wątków.</summary>
+    <summary>Reprezentuje obiekt, który obsługuje niskiego poziomu pracy kolejkowania zadania na wątki.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wystąpienie <xref:System.Threading.Tasks.TaskScheduler> klasa reprezentuje harmonogramu zadań. Harmonogram zadań zapewnia ostatecznie wykonaniem pracy zadania.  
+ Wystąpienie <xref:System.Threading.Tasks.TaskScheduler> klasa reprezentuje harmonogramu zadań. Harmonogram zadań zapewnia, że pracy zadania jest wykonywana po pewnym czasie.  
   
- Harmonogram zadań domyślna jest oparta na puli wątków .NET Framework 4, co zapewnia kradzież pracy dla usługi równoważenia obciążenia, wątek iniekcji/wycofania dla maksymalnej przepustowości i ogólnej dobrą wydajność. Powinny być wystarczające w większości scenariuszy.  
+ Domyślnego harmonogramu zadań zależy od puli wątków programu .NET Framework 4 zawiera kradzież pracy dla równoważenia obciążenia, wątek iniekcji/wycofania dla maksymalnej przepustowości i ogólne dobrą wydajność. Powinny być wystarczające dla większości scenariuszy.  
   
- <xref:System.Threading.Tasks.TaskScheduler> Klasy służy również jako punkt rozszerzenia wszystkie dostosowania logiki planowania.  Zawiera mechanizmy, takie jak sposób tworzenia harmonogramu zadań do wykonania i jak zaplanowanych zadań powinny zostać ujawnione do debugera. Jeśli wymagają specjalnych funkcji, można tworzyć harmonogramu niestandardowego i włącz ją dla określonych zadań lub zapytań.  
+ <xref:System.Threading.Tasks.TaskScheduler> Klasy służy również jako punkt rozszerzenia na całą logikę planowania można dostosowywać.  Obejmuje to mechanizmy, takich jak debugery mają być widoczne jak zaplanować zadanie do wykonania i jak z zaplanowanych zadań. Jeśli potrzebujesz specjalne funkcje, można utworzyć niestandardowy harmonogram i włącz ją do określonych zadań lub zapytań.  
   
  W tym temacie:  
-[Domyślny harmonogram zadań i puli wątków](#Default)  
- [Globalne kolejki a lokalnych kolejek](#Queues)  
- [Praca kradzież](#Stealing)  
+[Domyślnego harmonogramu zadań i puli wątków](#Default)  
+ [Globalne kolejki, a lokalne kolejki](#Queues)  
+ [Praca, kradzież](#Stealing)  
  [Długotrwałych zadań](#LongRunning)  
- [Zadania ze śródwierszowaniem](#Inlining)  
+ [Wbudowanie zadania](#Inlining)  
 [Określanie kontekstu synchronizacji](#Sync)  
   
 <a name="Default"></a>   
-## <a name="the-default-task-scheduler-and-the-thread-pool"></a>Domyślny harmonogram zadań i puli wątków  
- Harmonogram domyślnej bibliotece równoległych zadań i PLINQ korzysta z puli wątków .NET Framework, która jest reprezentowana przez <xref:System.Threading.ThreadPool> klasy do kolejki i do pracy. Informacje, które są udostępniane przez korzysta z puli wątków <xref:System.Threading.Tasks.Task> typ do obsługi szczegółowych równoległości (krótkim okresie jednostki pracy) równoległych zadań i zapytania często odpowiadają.  
+## <a name="the-default-task-scheduler-and-the-thread-pool"></a>Domyślnego harmonogramu zadań i puli wątków  
+ Domyślny harmonogram bibliotece równoległych zadań i PLINQ korzysta z puli wątków .NET Framework, która jest reprezentowana przez <xref:System.Threading.ThreadPool> klasy do kolejki i wykonywania pracy. Informacje, które są dostarczane przez korzysta z puli wątków <xref:System.Threading.Tasks.Task> typu, aby efektywnie obsługiwać równoległość drobnoziarnistą (krótkotrwałe jednostki pracy), który równoległe zadania i zapytania często reprezentują.  
   
 <a name="Queues"></a>   
-### <a name="the-global-queue-vs-local-queues"></a>Globalne kolejki a lokalnych kolejek  
- Pula wątków przechowuje globalne FIFO (pierwszy w, FIFO) pracy kolejkę dla wątków w każdej domenie aplikacji. Gdy program wywołuje <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType> (lub <xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) metody pracy jest należy umieścić w tej kolejce udostępnionego i ostatecznie cofnąć oczekujących na następny wątek, który staje się dostępny. Począwszy od programu .NET Framework 4, ta kolejka została ulepszona próbę użycia algorytmu zwolnić blokady, podobny <xref:System.Collections.Concurrent.ConcurrentQueue%601> klasy. Przy użyciu tej implementacji zwolnić blokady, puli wątków zużywa mniej czasu, gdy kolejki i usuwania kolejki elementów roboczych. Świadczenie wydajności jest dostępne dla wszystkich programów używających puli wątków.  
+### <a name="the-global-queue-vs-local-queues"></a>Globalne kolejki, a lokalne kolejki  
+ Pula wątków utrzymuje globalne FIFO (pierwszy in, first-out) działają kolejki dla wątków w każdej domenie aplikacji. Zawsze, gdy program wywołuje <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A?displayProperty=nameWithType> (lub <xref:System.Threading.ThreadPool.UnsafeQueueUserWorkItem%2A?displayProperty=nameWithType>) metody pracy jest umieścić w tej kolejce udostępnionych i ostatecznie cofnąć umieszczonych w kolejce na następny wątek, który stanie się dostępny. Począwszy od programu .NET Framework 4, tej kolejki został ulepszony, aby używać algorytmu wolne od blokady, który przypomina <xref:System.Collections.Concurrent.ConcurrentQueue%601> klasy. Przy użyciu tej implementacji wolne od blokady, puli wątków zużywa mniej czasu, gdy kolejki i usuwania kolejki elementów roboczych. Ta korzyść wydajności jest dostępny dla wszystkich programów, które używają puli wątków.  
   
- Zadania najwyższego poziomu, które są zadania, które nie są tworzone w ramach innego zadania, są umieszczane w kolejce globalnych, podobnie jak wszystkie inne elementy robocze. Jednak zagnieżdżone lub zadania podrzędne, które są tworzone w ramach innego zadania, są obsługiwane odbywa się zupełnie inaczej. Obiekt podrzędny lub zadania zagnieżdżonego jest umieszczany w lokalnej kolejce, specyficzne dla wątku, na którym jest wykonywany zadaniem nadrzędnym. Zadaniem nadrzędnym może być zadanie najwyższego poziomu lub też może być elementem podrzędnym innego zadania. Gdy ten wątek jest gotowa do pracy, najpierw wyszukiwana w lokalnej kolejce. Jeśli istnieje oczekujące elementów roboczych, są one szybko dostępne. Kolejek lokalnych są dostępne w ostatniej, w kolejności FIFO (LIFO), aby zachować lokalizację pamięci podręcznej i zmniejszyć rywalizacji. Aby uzyskać więcej informacji na temat zadań podrzędnych i zagnieżdżone, zobacz [dołączonego i odłączone zadania podrzędne](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md).  
+ Zadania najwyższego poziomu, które są zadania, które nie są tworzone w kontekście innego zadania, są umieszczane w kolejce globalnego, podobnie jak dowolnej innej pozycji roboczej. Jednak zagnieżdżone lub zadań podrzędnych, które są tworzone w kontekście innego zadania, są obsługiwane odbywa się zupełnie inaczej. Podrzędne lub zadania zagnieżdżonego jest umieszczana w kolejce lokalnej, która zależy od do wątku, na którym jest wykonywane zadanie nadrzędne. Zadanie nadrzędne może być zadania najwyższego poziomu, lub też może być elementem podrzędnym innego zadania. Kiedy ten wątek jest gotowy do pracy, najpierw szuka w lokalnej kolejce. Jeśli istnieje oczekujące elementy robocze mogą być dostępne szybko. Lokalne kolejki są dostępne w ostatni na wejściu, kolejności FIFO (LIFO), zachować lokalność pamięci podręcznej do zmniejszenia stopnia rywalizacji. Aby uzyskać więcej informacji dotyczących zadania zagnieżdżone i zadania podrzędne, zobacz [dołączone i odłączone zadania podrzędne](~/docs/standard/parallel-programming/attached-and-detached-child-tasks.md).  
   
- Korzystanie z kolejek lokalnych nie tylko zmniejsza nacisk na globalne kolejki, ale również korzysta z danych lokalizacji. Elementów roboczych w lokalnej kolejce często struktur danych odwołania, które znajdują się fizycznie obok siebie w pamięci. W takich przypadkach dane są już w pamięci podręcznej po pierwsze zadanie zostało uruchomione i szybko dostępne. Zarówno [równoległe LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md) i <xref:System.Threading.Tasks.Parallel> często klasy użyj zagnieżdżone zadań i zadań podrzędnych, a osiągnąć znaczne speedups za pomocą kolejek pracy lokalnej.  
+ Korzystanie z kolejek lokalnych nie tylko zmniejsza wykorzystanie kolejki globalnych, ale również korzysta z zalet lokalizacja danych. Elementy robocze w lokalnej kolejce często odwołanie do struktur danych, które są fizycznie blisko siebie nawzajem w pamięci. W takich przypadkach dane są już w pamięci podręcznej po pierwsze zadanie zostało uruchomione i mogą być dostępne szybko. Zarówno [Parallel LINQ (PLINQ)](~/docs/standard/parallel-programming/parallel-linq-plinq.md) i <xref:System.Threading.Tasks.Parallel> często klasy zagnieżdżone użycie zadania i zadania podrzędne i osiągnąć znaczne szybsze przy użyciu funkcji kolejek pracy lokalnej.  
   
 <a name="Stealing"></a>   
-### <a name="work-stealing"></a>Praca kradzież  
- Począwszy od programu .NET Framework 4, puli wątków również funkcje algorytmu kradzież pracy pomaga zapewnić miejsca nie wątków bezczynności podczas nadal mieć pracują w ich kolejek. Gdy wątku puli wątków jest gotowa do pracy, najpierw analizuje nagłówek kolejki lokalnej, następnie w kolejce globalne, a następnie w kolejkach lokalnych innych wątków. Jeśli znajdzie elementu roboczego w lokalnej kolejce inny wątek najpierw stosuje Algorytm heurystyczny, aby upewnić się, że jego sprawnego działania pracy. Jeśli tak, usuń zaznaczenie pola kolejek elementu roboczego z tail (w kolejności FIFO). To ogranicza rywalizację na każdej kolejki lokalne i zachowuje lokalizację danych. Taka architektura pomaga w wątku puli równoważenia obciążenia pracować wydajniej niż poprzednich wersji.  
+### <a name="work-stealing"></a>Praca, kradzież  
+ Począwszy od programu .NET Framework 4, puli wątków obejmuje także algorytmu kradzież pracy, pomaga zapewnić zapewnia żadne wątki bezczynności podczas nadal mieć pracują w kolejkach, ich. Kiedy wątek puli wątków jest gotowy do pracy, najpierw przeszukuje na czele lokalnej kolejki, następnie w kolejce globalne, a następnie w kolejkach lokalnych innych wątków. Jeśli znajdzie elementu roboczego w lokalnej kolejce inny wątek najpierw stosuje Algorytm heurystyczny, aby upewnić się, że praca może działać wydajnie. Jeśli jest to możliwe, usuwanie kolejek elementu roboczego z zakończeniem (w kolejności FIFO). To ogranicza rywalizację o każdej kolejki lokalne i zachowuje lokalizacja danych. Ta architektura pozwala wątek puli równoważenia obciążenia pracować wydajniej niż poprzednich wersji.  
   
 <a name="LongRunning"></a>   
 ### <a name="long-running-tasks"></a>Długotrwałych zadań  
- Można jawnie uniemożliwić zadania są umieszczone w lokalnej kolejce. Na przykład wiadomo, że elementu roboczego określonego uruchomi dość długo i może zablokować innych elementów pracy w lokalnej kolejce. W takim przypadku można określić <xref:System.Threading.Tasks.TaskCreationOptions?displayProperty=nameWithType> opcja, która stanowi wskazówkę harmonogramu, że dodatkowe wątku mogą być wymagane dla zadania, aby nie blokować postęp innych wątków lub elementy robocze w lokalnej kolejce. Za pomocą tej opcji można uniknąć puli wątków całkowicie, łącznie z kolejkami globalne i lokalne.  
+ Można jawnie uniemożliwić zadania umieszczeniem w lokalnej kolejce. Na przykład wiadomo, że danego elementu pracy będzie wykonywany dla stosunkowo długo i może zablokować wszystkie inne elementy robocze w lokalnej kolejce. W takim przypadku można określić <xref:System.Threading.Tasks.TaskCreationOptions?displayProperty=nameWithType> opcja, która dostarcza wskazówkę obiektowi harmonogram, że dodatkowy wątek może być wymagane dla zadania tak, aby nie blokować postęp innych wątków lub elementów roboczych w lokalnej kolejce. Przy użyciu tej opcji pozwala uniknąć puli wątków całkowicie, łącznie z kolejkami globalne i lokalne.  
   
 <a name="Inlining"></a>   
-### <a name="task-inlining"></a>Zadania ze śródwierszowaniem  
- W niektórych przypadkach, gdy <xref:System.Threading.Tasks.Task> jest czas potrzebny na, jego mogą być wykonywane synchronicznie w wątku, który wykonuje operację oczekiwania. Zwiększa wydajność przez zapobieganie potrzebę dodatkowe wątku i zamiast tego przy użyciu istniejących wątek, które mogłyby w przeciwnym razie zablokowanych. Aby uniknąć błędów spowodowanych re-entrancy, zadania ze śródwierszowaniem wykonywane tylko w przypadku docelowej oczekiwania znajduje się w lokalnej kolejce odpowiednich wątku.  
+### <a name="task-inlining"></a>Wbudowanie zadania  
+ W niektórych przypadkach, gdy <xref:System.Threading.Tasks.Task> to czas potrzebny, on mogą być wykonywane synchronicznie w wątku, który wykonuje operację oczekiwania. To zwiększa wydajność poprzez zapobieganie potrzebę dodatkowy wątek i zamiast tego przy użyciu istniejącego wątku, który będzie zablokowany w przeciwnym razie. Aby zapobiec wystąpieniu błędów z powodu re-entrancy, wbudowanie zadania wykonywane tylko w przypadku docelowej oczekiwania znajduje się w lokalnej kolejce odpowiednie wątku.  
   
 <a name="Sync"></a>   
 ## <a name="specifying-a-synchronization-context"></a>Określanie kontekstu synchronizacji  
- Można użyć <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType> metodę, aby określić, że zadanie powinny zostać zaplanowane do uruchomienia w szczególności wątku. Jest to przydatne w przypadku platform, takich jak formularzy systemu Windows i Windows Presentation Foundation, gdy dostęp do obiektów interfejsu użytkownika często jest ograniczony do kodu, który działa na tym samym wątku, w którym został utworzony obiekt interfejsu użytkownika.  
+ Możesz użyć <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType> metodę, aby określić, że zadanie powinno zostać zaplanowane do uruchomienia na określonego wątku. Jest to przydatne w przypadku środowisk, takich jak formularze Windows i Windows Presentation Foundation, gdzie dostęp do obiektów interfejsu użytkownika często jest ograniczony do kodu, który działa na tym samym wątku, na którym został utworzony obiekt interfejsu użytkownika.  
   
- W poniższym przykładzie użyto <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType> metody w aplikacji Windows Presentation Foundation (WPF), można zaplanować zadania na tym samym wątku, utworzonego formantu interfejsu użytkownika.   W przykładzie jest tworzony mozaiki obrazów, które są losowo dobierane spośród określonego katalogu. Obiekty WPF są używane do ładowania i zmienianie rozmiaru obrazów. Nieprzetworzone pikseli są następnie przekazywane do zadań, która używa <xref:System.Threading.Tasks.Parallel.For%2A> pętli do zapisania danych pikseli w dużą tablicę jednobajtowe. Synchronizacja nie jest wymagana, ponieważ nie dwa Kafelki zajmują niewiele miejsca w tej samej elementów tablicy. Kafelki również można pisać w dowolnej kolejności, ponieważ ich pozycja jest obliczana niezależnie od innych kafelka. Dużą tablicę są następnie przekazywane do zadania, które jest uruchamiane w wątku interfejsu użytkownika załadunku danych pikseli w formancie obrazu.  
+ W poniższym przykładzie użyto <xref:System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext%2A?displayProperty=nameWithType> metody w aplikacji Windows Presentation Foundation (WPF), aby zaplanować zadanie, w tym samym wątku, utworzonego kontrolki interfejsu użytkownika.   Ten przykład tworzy mozaiki obrazów, które są wybierane losowo spośród określonego katalogu. Obiekty WPF są używane do ładowania i zmienianie rozmiaru obrazów. Nieprzetworzone pikseli są następnie przekazywane do zadania, które używa <xref:System.Threading.Tasks.Parallel.For%2A> pętli do zapisywania danych pikseli na dużą tablicę jednobajtowych. Synchronizacja nie jest wymagana, ponieważ żadne dwa Kafelki zajmować się te same elementy tablicy. Kafelki również będą zapisywane w dowolnej kolejności, ponieważ ich pozycja jest obliczany niezależnie od innych kafelków. Dużą tablicę jest następnie przekazywany do zadania, które jest uruchamiane w wątku interfejsu użytkownika, gdzie dane pikseli są ładowane do kontrolkę typu obraz.  
   
- Przykład przenosi dane poza wątku interfejsu użytkownika, modyfikuje go za pomocą pętle równoległe i <xref:System.Threading.Tasks.Task> obiektów, a następnie przekazuje do zadania w wątku interfejsu użytkownika. Takie rozwiązanie jest przydatne, gdy należy użyć w celu wykonania operacji, które nie są obsługiwane przez interfejs API WPF, lub nie są dostatecznie szybkiego Biblioteka zadań równoległych. Innym sposobem tworzenia mozaiki obrazu na platformie WPF jest użycie <xref:System.Windows.Controls.WrapPanel?displayProperty=nameWithType> kontroli i dodać do niej obrazy. <xref:System.Windows.Controls.WrapPanel> Obsługuje pracy pozycjonowania Kafelki. Jednak tej pracy można wykonać tylko w wątku interfejsu użytkownika.  
+ Przykład przenoszenia danych poza wątku interfejsu użytkownika, modyfikuje je za pomocą pętli równoległych i <xref:System.Threading.Tasks.Task> obiektów, a następnie przekazuje go do zadań, które jest uruchamiane w wątku interfejsu użytkownika. To podejście jest przydatne, gdy trzeba użyć Biblioteka zadań równoległych do wykonywania operacji, które nie są obsługiwane przez interfejs API WPF lub nie są wystarczająco szybko. Innym sposobem tworzenia mozaiki obrazu na platformie WPF jest użycie <xref:System.Windows.Controls.WrapPanel?displayProperty=nameWithType> kontroli i dodać do niej obrazy. <xref:System.Windows.Controls.WrapPanel> Obsługuje pracy pozycjonowania Kafelki. Jednak tej pracy można wykonać tylko w wątku interfejsu użytkownika.  
   
  [!code-csharp[TPL_SyncContext#01](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_synccontext/cs/mainwindow.xaml.cs#01)]
  [!code-vb[TPL_SyncContext#01](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_synccontext/vb/MainWindow.xaml.vb#01)]  
   
- Aby utworzyć przykład, Utwórz projekt aplikacji WPF w programie Visual Studio i przypisać mu nazwę. Następnie wykonaj następujące czynności:  
+ Do tworzenia przykładu, Utwórz projekt aplikacji WPF w programie Visual Studio i przypisz mu nazwy wybranych przez użytkownika. Następnie wykonaj następujące czynności:  
   
-1.  W widoku Projekt, przeciągnij <xref:System.Windows.Controls.Image> kontrolować z **przybornika** na powierzchnię projektu. W widoku XAML Określ wyrównanie w poziomie jako "Do lewej." Rozmiar nie ma znaczenia, ponieważ formant jest zmieniany dynamicznie w czasie wykonywania. Zaakceptuj nazwę domyślną, "obrazu".  
+1.  W widoku projektu przeciągnij <xref:System.Windows.Controls.Image> z kontrolować **przybornika** do powierzchni projektowej. W widoku XAML Określ wyrównanie w poziomie jako "Left". Rozmiar nie ma znaczenia, ponieważ można dynamicznie zmianie rozmiaru formantu w czasie wykonywania. Zaakceptuj domyślną nazwę "image".  
   
-2.  Przeciągnij <xref:System.Windows.Controls.Button> kontrolować z **przybornika** do lewej dolnej części okna aplikacji. Kliknij dwukrotnie przycisk, aby dodać <xref:System.Windows.Controls.Primitives.ButtonBase.Click> obsługi zdarzeń. W widoku XAML, określ <xref:System.Windows.Controls.ContentControl.Content%2A> właściwość przycisku "Przechowuj mozaiki" i określ jej wyrównanie poziome "Od lewej". Zaakceptuj nazwę domyślną, "button".  
+2.  Przeciągnij <xref:System.Windows.Controls.Button> z kontrolować **przybornika** do lewej dolnej części okna aplikacji. Kliknij dwukrotnie przycisk aby dodać <xref:System.Windows.Controls.Primitives.ButtonBase.Click> programu obsługi zdarzeń. W widoku XAML, określ <xref:System.Windows.Controls.ContentControl.Content%2A> właściwość przycisku "Przechowuj mozaiki" i określ jej wyrównanie w poziomie jako "Left". Zaakceptuj nazwę domyślną, "button".  
   
-3.  Zastąp całą zawartość pliku MainWindow.xaml.cs lub MainWindow.xaml.vb kod z tego przykładu. Upewnij się, że nazwa obszaru roboczego odpowiada nazwie projektu.  
+3.  Zamień całą zawartość pliku MainWindow.xaml.cs lub MainWindow.xaml.vb kod z tego przykładu. Upewnij się, że nazwa obszaru roboczego odpowiada nazwę projektu.  
   
-4.  Przykład odczytuje obrazy JPEG z katalogu o nazwie obrazy C:\Users\Public\Pictures\Sample\\. Utwórz katalog i umieść w nim niektóre obrazy lub zmień ścieżkę, aby odwoływać się do innego katalogu zawiera obrazy.  
+4.  Przykład odczytuje obrazy JPEG z katalogu o nazwie obrazy C:\Users\Public\Pictures\Sample\\. Tworzenie katalogu i umieścić niektóre obrazy w niej lub zmienić ścieżkę do odwoływania się do innego katalogu, który zawiera obrazy.  
   
- W tym przykładzie ma pewne ograniczenia. Na przykład obsługiwane są tylko 32-bity każdego piksela obrazy; obrazy w innych formatach są uszkodzone, przez <xref:System.Windows.Media.Imaging.BitmapImage> obiektu podczas operacji zmiany rozmiaru. Ponadto obrazków wszystkie muszą być większe niż rozmiar kafelka. Jako dodatkowe wykonywania można dodać funkcji obsługi wielu formatów pikseli i rozmiary plików.  
+ W tym przykładzie ma pewne ograniczenia. Na przykład obsługiwane są tylko 32-bity każdego piksela obrazy; obrazy w innych formatach są uszkodzone, przez <xref:System.Windows.Media.Imaging.BitmapImage> obiektu podczas operacji zmiany rozmiaru. Ponadto obrazy źródłowe wszystkie muszą być większe niż rozmiar kafelka. Jako dodatkowe ćwiczenie można dodawać funkcje do obsługi wielu formatów pikseli i rozmiarów plików.  
   
    
   
 ## Examples  
- Poniższy przykład pochodzi z [przykłady dla programowania równoległego przy użyciu programu .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717) w witrynie sieci Web galerii kodu MSDN.  Powoduje to utworzenie harmonogramu niestandardowego zadania, która ogranicza liczbę wątków używanych przez aplikację. Następnie uruchamia dwa zestawy zadań i wyświetla informacje o wątku, na którym jest wykonywane zadanie i zadania.  
+ Poniższy przykład pochodzi z [przykłady dotyczące programowania równoległego za pomocą programu .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717) w witrynie sieci Web galerii kodu MSDN.  Powoduje utworzenie harmonogramu niestandardowego zadania, która ogranicza liczbę wątków używanych przez aplikację. Następnie uruchamia dwa rodzaje zadań i wyświetla informacje na temat wątku, na którym jest wykonywane zadanie i zadania.  
   
  [!code-csharp[TPL_Schedulers#02](~/samples/snippets/csharp/VS_Snippets_Misc/tpl_schedulers/cs/limitex1.cs#02)]
  [!code-vb[TPL_Schedulers#02](~/samples/snippets/visualbasic/VS_Snippets_Misc/tpl_schedulers/vb/module2.vb#02)]  
   
- Ponadto kilka planiści zadań próbki są dostępne w galerii kodu: [przykłady dla programowania równoległego przy użyciu programu .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717).  
+ Ponadto kilka harmonogramów zadań próbki są dostępne w galerii kodów: [przykłady dotyczące programowania równoległego za pomocą programu .NET Framework 4](http://go.microsoft.com/fwlink/?LinkID=165717).  
   
  ]]></format>
     </remarks>
-    <threadsafe>Wszystkie elementy członkowskie klasy abstrakcyjnej <see cref="T:System.Threading.Tasks.TaskScheduler" /> typu są wątkowo i mogą być używane przez wiele wątków jednocześnie.</threadsafe>
+    <threadsafe>Wszyscy członkowie abstrakcyjnej <see cref="T:System.Threading.Tasks.TaskScheduler" /> typu są bezpieczne pod względem wątku i mogą być używane jednocześnie z wielu wątków.</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -189,8 +189,8 @@
         <ReturnType>System.Threading.Tasks.TaskScheduler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Threading.Tasks.TaskScheduler" /> skojarzony z aktualnie wykonywanego zadania.</summary>
-        <value>Zwraca <see cref="T:System.Threading.Tasks.TaskScheduler" /> skojarzony z aktualnie wykonywanego zadania.</value>
+        <summary>Pobiera <see cref="T:System.Threading.Tasks.TaskScheduler" /> skojarzone z aktualnie przeprowadzane zadanie.</summary>
+        <value>Zwraca <see cref="T:System.Threading.Tasks.TaskScheduler" /> skojarzone z aktualnie przeprowadzane zadanie.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -234,16 +234,37 @@
         <ReturnType>System.Threading.Tasks.TaskScheduler</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera domyślny <see cref="T:System.Threading.Tasks.TaskScheduler" /> wystąpienie, które jest dostępne w programie .NET Framework.</summary>
-        <value>Zwraca domyślne <see cref="T:System.Threading.Tasks.TaskScheduler" /> wystąpienia.</value>
+        <summary>Pobiera domyślny <see cref="T:System.Threading.Tasks.TaskScheduler" /> wystąpienia, który znajduje się w programie .NET Framework.</summary>
+        <value>Zwraca domyślny <see cref="T:System.Threading.Tasks.TaskScheduler" /> wystąpienia.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
  ]]></format>
         </remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Finalize">
+      <MemberSignature Language="C#" Value="~TaskScheduler ();" />
+      <MemberSignature Language="ILAsm" Value=".method familyhidebysig virtual instance void Finalize() cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Threading.Tasks.TaskScheduler.Finalize" />
+      <MemberSignature Language="VB.NET" Value="Finalize ()" />
+      <MemberSignature Language="C++ CLI" Value="!TaskScheduler ()" />
+      <MemberSignature Language="F#" Value="override this.Finalize : unit -&gt; unit" Usage="taskScheduler.Finalize " />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>4.0.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters />
+      <Docs>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="FromCurrentSynchronizationContext">
@@ -284,13 +305,13 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wszystkie <xref:System.Threading.Tasks.Task> wystąpień w kolejce w celu zwróconego harmonogramu będą wykonywane przez wywołanie <xref:System.Threading.SynchronizationContext.Post%2A> metody w tym kontekście.  
+ Wszystkie <xref:System.Threading.Tasks.Task> w kolejce do zwracanego wystąpienia usługi scheduler zostaną wykonane za pomocą wywołania <xref:System.Threading.SynchronizationContext.Post%2A> metody w tym kontekście.  
   
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Bieżący obiekt SynchronizationContext nie może być używany jako obiekt TaskScheduler.</exception>
+        <exception cref="T:System.InvalidOperationException">Bieżący SynchronizationContext nie może służyć jako harmonogramu zadań systemu.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetScheduledTasks">
@@ -330,15 +351,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Debuger pomocy technicznej, generuje element wyliczalny z <see cref="T:System.Threading.Tasks.Task" /> wystąpień obecnie w kolejce do harmonogramu oczekujących na wykonanie.</summary>
-        <returns>Moduł wyliczający, który umożliwia debugera obecnie przesyłanie zadań w kolejce do tego harmonogramu.</returns>
+        <summary>Debuger pomocy technicznej, generuje element wyliczalny z <see cref="T:System.Threading.Tasks.Task" /> wystąpień aktualnie czekają w kolejce do harmonogramu oczekujących na wykonanie.</summary>
+        <returns>Moduł wyliczający, który umożliwia debugera do obecnie przechodzenie przez zadania w kolejce do tego harmonogramu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasa pochodna od <xref:System.Threading.Tasks.TaskScheduler> implementuje tę metodę w celu zapewnienia obsługi integracji z debugery. Ta metoda będzie można wywołać tylko w programie .NET Framework, gdy debuger żąda dostępu do danych. Wyliczenia zwrócił będzie można przechodzić przez debugowania narzędzi do uzyskania dostępu do zadań obecnie w kolejce do tego harmonogramem, dzięki czemu debuger w celu zapewnienia reprezentację te informacje w interfejsie użytkownika.  
+ Klasa pochodząca z <xref:System.Threading.Tasks.TaskScheduler> implementuje tę metodę w celu obsługi integracji z debugery. Ta metoda będzie można wywołać tylko w programie .NET Framework, gdy debuger żąda dostępu do danych. Wyliczenia zwrócony zostanie przesunięta dzięki możliwości debugowania narzędzi do dostępu do zadań aktualnie w kolejce do tego harmonogramem, dzięki czemu debugera, aby zapewnić reprezentację tę informację w interfejsie użytkownika.  
   
- Należy pamiętać, ta metoda jest wywoływana, będzie można zablokowane wątki w procesie. Dlatego jest ważne uniknąć synchronizacji z innych wątków, które mogą prowadzić do zablokowania. Jeśli synchronizacja jest niezbędne, a nie można uzyskać blokady w ramach tej metody, następnie należy powinien zgłosić wyjątek, aby debuger nie zawieszenie. W poniższym przykładzie przedstawiono jeden ze sposobów możliwe w języku C#:  
+ Należy pamiętać, ta metoda jest wywoływana, będzie można zablokować wszystkie wątki w procesie. W związku z tym jest ważne, aby uniknąć synchronizacji z innych wątków, które mogą prowadzić do zablokowania. Jeśli zachodzi synchronizacji i nie można uzyskać blokady w ramach tej metody, następnie należy zgłoszenie wyjątku, aby debuger nie zawieszeniu. Poniższy przykład przedstawia jedną z możliwych rozwiązań w języku C#:  
   
 ```  
 protected override IEnumerable<Task> GetScheduledTasks()  
@@ -359,15 +380,15 @@ protected override IEnumerable<Task> GetScheduledTasks()
     }}  
 ```  
   
- Ponadto ta metoda i wyliczenia zwrócił nie należy zmodyfikować każdy stan globalny widoczne.  
+ Ponadto ta metoda i wyliczalny zwracane nie wolno modyfikować każdy stan widoczne globalnie.  
   
- Zwrócony wyliczalny, nigdy nie może mieć wartości null. Obecnie nie ma żadnych zadań w kolejce, zamiast tego należy zwrócony wyliczalny pusta.  
+ Zwrócone wyliczalny, nigdy nie powinien mieć wartość null. Jeśli nie ma obecnie żadnych zadań umieszczonych w kolejce, pusta wyliczalny należy zamiast tego zostanie zwrócony.  
   
- Deweloperzy, którzy są Implementowanie niestandardowych debugery nie należy bezpośrednio wywołać tę metodę, ale powinien użyć metody wewnętrznej otoki `GetScheduledTasksForDebugger` zamiast: `internal Task[] GetScheduledTasksForDebugger()`. Ta metoda otoki zwraca tablicę zadań zamiast wyliczalny. Aby pobrać listę aktywnych planiści, użyj metody wewnętrznej `internal static TaskScheduler[] GetTaskSchedulersForDebugger()`. Ta metoda statyczna zwraca tablicę wszystkich aktywnych <xref:System.Threading.Tasks.TaskScheduler> wystąpień. Następnie można użyć `GetScheduledTasksForDebugger` na każde wystąpienie harmonogramu można pobrać listy zaplanowanych zadań.  
+ Deweloperzy, którzy wdrażają debugery niestandardowe nie należy bezpośrednio wywołać tę metodę, ale należy użyć metody otoki wewnętrznego `GetScheduledTasksForDebugger` zamiast: `internal Task[] GetScheduledTasksForDebugger()`. Ta metoda otoki zwraca tablicę zadań zamiast wyliczalny. Aby pobrać listę aktywnych harmonogramów, użyj metody wewnętrznej `internal static TaskScheduler[] GetTaskSchedulersForDebugger()`. Ta metoda statyczna zwraca tablicę wszystkich aktywnych <xref:System.Threading.Tasks.TaskScheduler> wystąpień. Następnie można użyć `GetScheduledTasksForDebugger` na każde wystąpienie harmonogramu można pobrać listy zaplanowanych zadań.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Nie można wygenerować listy zadań w kolejce w tej chwili jest tego harmonogramu.</exception>
+        <exception cref="T:System.NotSupportedException">Ten harmonogram nie mógł wygenerować listy zadań podrzędnych w kolejce w tej chwili.</exception>
       </Docs>
     </Member>
     <Member MemberName="Id">
@@ -402,12 +423,12 @@ protected override IEnumerable<Task> GetScheduledTasks()
       </ReturnValue>
       <Docs>
         <summary>Pobiera unikatowy identyfikator dla tego <see cref="T:System.Threading.Tasks.TaskScheduler" />.</summary>
-        <value>Zwraca unikatowy identyfikator dla tego <see cref="T:System.Threading.Tasks.TaskScheduler" />.</value>
+        <value>Zwraca unikatowy identyfikator dla tej klasy <see cref="T:System.Threading.Tasks.TaskScheduler" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
  ]]></format>
         </remarks>
@@ -444,13 +465,13 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Wskazuje poziom współbieżności maksymalna to <see cref="T:System.Threading.Tasks.TaskScheduler" /> umożliwiającą obsługę.</summary>
-        <value>Zwraca liczbę całkowitą przedstawiającą współbieżności maksymalny poziom. Zwraca domyślny harmonogram <see cref="F:System.Int32.MaxValue" />.</value>
+        <summary>Wskazuje poziom współbieżności maksymalną, to <see cref="T:System.Threading.Tasks.TaskScheduler" /> umożliwiającą obsługę.</summary>
+        <value>Zwraca liczbę całkowitą, która reprezentuje poziom współbieżności maksymalną. Zwraca domyślnego harmonogramu <see cref="F:System.Int32.MaxValue" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
  ]]></format>
         </remarks>
@@ -495,17 +516,17 @@ protected override IEnumerable<Task> GetScheduledTasks()
       </Parameters>
       <Docs>
         <param name="task">
-          <see cref="T:System.Threading.Tasks.Task" /> Do kolejki.</param>
+          <see cref="T:System.Threading.Tasks.Task" /> Do umieszczone w kolejce.</param>
         <summary>Kolejki <see cref="T:System.Threading.Tasks.Task" /> do harmonogramu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasa pochodna od <xref:System.Threading.Tasks.TaskScheduler> implementuje tę metodę, aby zaakceptować planowanego na harmonogram zadań.  
+ Klasa pochodząca z <xref:System.Threading.Tasks.TaskScheduler> implementuje tę metodę, aby zaakceptować zadania zaplanowane w ramach harmonogramu zadań.  
   
- Typowa implementacja będzie przechowywać zadania w strukturze danych wewnętrznych, które będą obsługiwane przez wątki, które może wykonać te zadania w czasie w przyszłości.  
+ Typowa implementacja będzie przechowywać zadania w strukturze danych wewnętrznych, które będą obsługiwane przez wątki, które spowoduje wykonanie tych zadań w czasie w przyszłości.  
   
- Ta metoda jest przeznaczone tylko do wywołania przez program .NET Framework i nie powinna być wywoływana bezpośrednio w klasie pochodnej. Jest to niezbędne do obsługi spójności systemu.  
+ Ta metoda jest przeznaczone wyłącznie do można wywoływać za pomocą programu .NET Framework i nie powinien być wywoływany bezpośrednio przez klasy pochodnej. Jest to konieczne utrzymanie spójności systemu.  
   
  ]]></format>
         </remarks>
@@ -552,16 +573,16 @@ protected override IEnumerable<Task> GetScheduledTasks()
       </Parameters>
       <Docs>
         <param name="task">
-          <see cref="T:System.Threading.Tasks.Task" /> Do być usunięty z kolejki.</param>
-        <summary>Podejmuje próbę usuwania z kolejki <see cref="T:System.Threading.Tasks.Task" /> który został uprzednio ustawione w kolejce do tego harmonogramu.</summary>
-        <returns>Wartość logiczna wskazująca czy <paramref name="task" /> argument został pomyślnie dequeued.</returns>
+          <see cref="T:System.Threading.Tasks.Task" /> Do być usuwane z kolejki.</param>
+        <summary>Podejmuje próbę usuwania z kolejki <see cref="T:System.Threading.Tasks.Task" /> który został wcześniej w kolejce do tego harmonogramu.</summary>
+        <returns>Wartość logiczna wskazująca czy <paramref name="task" /> argument był dequeued pomyślnie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
- Ta metoda może być wykonywany w bloku finally; w związku z tym powinien on zwrócić tak szybko jak to możliwe tak że dowolne zasoby, takie jak <xref:System.Threading.CancellationTokenRegistration> obiekty mogą być usuwane w odpowiednim czasie.  
+ Ta metoda może być wykonywany w bloku finally; w związku z tym powinien zostać zwrócony tak szybko, jak to możliwe tak że dowolne zasoby, takie jak <xref:System.Threading.CancellationTokenRegistration> obiekty mogą być usuwane w sposób terminowy.  
   
  ]]></format>
         </remarks>
@@ -607,16 +628,16 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <Parameter Name="task" Type="System.Threading.Tasks.Task" />
       </Parameters>
       <Docs>
-        <param name="task">A <see cref="T:System.Threading.Tasks.Task" /> obiektu do wykonania.</param>
-        <summary>Podejmuje próbę wykonania dostarczonych <see cref="T:System.Threading.Tasks.Task" /> na tego harmonogramu.</summary>
-        <returns>Wartość logiczna oznacza to PRAWDA, jeśli <paramref name="task" /> zostało wykonane pomyślnie, wartość false, jeśli nie było. Częstą przyczyną niepowodzenia wykonywania nie wcześniej zostały wykonane zadania lub trwa proces wykonywany przez inny wątek.</returns>
+        <param name="task">Element <see cref="T:System.Threading.Tasks.Task" /> obiektu do wykonania.</param>
+        <summary>Podejmuje próbę wykonania podanych <see cref="T:System.Threading.Tasks.Task" /> w tym harmonogramie.</summary>
+        <returns>Wartość logiczna oznacza to wartość true, jeśli <paramref name="task" /> zostało wykonane pomyślnie, wartość false, jeśli nie było. Typową przyczyną niepowodzenia wykonywania jest, że zadanie wcześniej zostały wykonane lub trwa proces wykonywany przez inny wątek.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Implementacje harmonogramu są dostarczane z <xref:System.Threading.Tasks.Task> wystąpienia ma być wykonywana przy użyciu jednej <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> — metoda lub <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A> metody. Gdy planista uzna należy uruchomić zadanie podana <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> należy to zrobić. TryExecuteTask obsługuje wszystkie aspekty wykonywanie zadania, w tym wywołanie akcji, obsługa wyjątków, zarządzanie stanem i kontroli cyklu życia.  
+ Harmonogram implementacje są dostarczane z <xref:System.Threading.Tasks.Task> wystąpień do wykonania przy użyciu jednej <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> metody lub <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTaskInline%2A> metody. Gdy harmonogram uzna to za właściwe uruchomić zadanie podana <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> należy to zrobić. TryExecuteTask obsługuje wszystkich aspektów wykonywania zadania, w tym wywołanie akcji, obsługa wyjątków, zarządzanie stanem i kontroli cyklu życia.  
   
- <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> może być używana tylko dla udostępniony przez infrastrukturę programu .NET Framework tego harmonogramu zadań. Nie można stosować do wykonania dowolnego zadania uzyskanymi za pośrednictwem niestandardowych mechanizmów.  
+ <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> może być używana tylko dla zadań dostarczane do tego harmonogramu przez infrastrukturę programu .NET Framework. Nie można stosować można wykonać dowolne zadania uzyskane za pomocą niestandardowych mechanizmów.  
   
  ]]></format>
         </remarks>
@@ -665,20 +686,20 @@ protected override IEnumerable<Task> GetScheduledTasks()
       <Docs>
         <param name="task">
           <see cref="T:System.Threading.Tasks.Task" /> Do wykonania.</param>
-        <param name="taskWasPreviouslyQueued">Wartość logiczna wskazująca, czy zadanie zostało wcześniej umieszczone w kolejce. Jeśli ten parametr ma wartość True, następnie zadania może zostały wcześniej umieszczone w kolejce (zaplanowane); w przypadku wartości FAŁSZ następnie zadanie jest znana nie zostały umieszczone w kolejce i odbywa się to wywołanie w celu wbudowane zadanie zostanie wykonane bez kolejkowania go.</param>
-        <summary>Określa, czy podany <see cref="T:System.Threading.Tasks.Task" /> można synchronicznie wykonać w to wywołanie, a jeśli tak, wykonuje on.</summary>
-        <returns>Wartość logiczna wskazująca, czy zadanie zostało wykonane wbudowanego.</returns>
+        <param name="taskWasPreviouslyQueued">Wartość logiczna wskazująca, czy zadanie zostało wcześniej umieszczone w kolejce. Jeśli ten parametr ma wartość True, następnie zadanie może wcześniej dodane do kolejki (zaplanowane); Jeśli ma wartość FAŁSZ, następnie zadanie jest znane nie zostały umieszczone w kolejce, a to wywołanie jest wykonywane w celu wykonywania zadań w tekście bez usługi kolejkowania go.</param>
+        <summary>Określa, czy podany <see cref="T:System.Threading.Tasks.Task" /> mogą być wykonywane synchronicznie, w tym wywołaniu i jeśli jest to możliwe, wykonuje on.</summary>
+        <returns>Wartość logiczna wskazująca, czy zadanie był wykonywany w tekście.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasa pochodna od <xref:System.Threading.Tasks.TaskScheduler> implementuje tej funkcji do obsługi wbudowanego realizacji zadań w wątku, który inicjuje oczekiwania dla tego obiektu zadania. Wykonanie wbudowanego jest opcjonalny i żądania mogą być odrzucane przez zwrócenie wartości false. Jednak kolejne zadania który może zostać umieszczona w tekście, są skalowane, tym lepiej harmonogramu. W rzeczywistości harmonogramu tego inlines zbyt nieco mogą być podatne na zakleszczenie. Prawidłowe wdrożenie powinien upewnić się, że wykonywanie żądania w obszarze zasady gwarantowane przez harmonogram może pomyślnie wbudowanego. Na przykład jeśli harmonogramu używa dedykowanego wątku do wykonania zadania, wszelkie ze śródwierszowaniem żądania z tego wątku ma być pomyślnie wykonane.  
+ Klasa pochodząca z <xref:System.Threading.Tasks.TaskScheduler> implementuje tej funkcji do obsługi wykonywania śródwierszowego zadania w wątku, który inicjuje oczekiwania dla tego obiektu zadania. Wykonywanie śródwierszowe jest opcjonalny, a żądania mogą zostać odrzucone przez zwrócenie wartości false. Jednak większej liczby zadań, może być śródwierszowa, tym lepsze harmonogram będzie skalowana. W rzeczywistości harmonogram tego inlines zbyt nieco mogą być podatne na zakleszczenia. Prawidłowego wdrożenia należy upewnić się, że wykonywania żądania w obszarze zasady gwarantowane przez harmonogram może pomyślnie wbudowanego. Na przykład, jeśli harmonogramu używa dedykowany wątek służący do wykonywania zadań, wszelkie wbudowanie żądania z tego wątku ma być pomyślnie wykonane.  
   
- Jeśli harmonogramu decyduje o tym, do wykonania wykonywanie śródwierszowe, go należy to zrobić przez wywołanie do podstawowej TaskScheduler <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> metody za pomocą obiektu task podana propagowanie wartości zwracanej. Może to być również odpowiedniego harmonogramu usunąć wbudowanego zadania z jego struktur danych wewnętrznych zdecyduje uwzględnić ze śródwierszowaniem żądania. Należy jednak pamiętać, że w pewnych okolicznościach harmonogramu może zostać poproszony o wbudowane zadanie, którego nie podano wcześniej do niego z <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> metody.  
+ Jeśli harmonogramu decyduje o do wykonywania wykonywania śródwierszowego, go należy to zrobić za pośrednictwem wywołania do podstawowej TaskScheduler <xref:System.Threading.Tasks.TaskScheduler.TryExecuteTask%2A> metody za pomocą obiektu task podana propagowanie wartości zwracanej. Może to być również odpowiednie usługi scheduler do usuwania zadań śródwierszowych jego wewnętrznych struktur danych zdecyduje się do tego żądania wbudowanie. Należy jednak pamiętać, że w pewnych okolicznościach harmonogramu może być konieczne podanie wbudowane zadanie, które wcześniej nie został podany do niego za pomocą <xref:System.Threading.Tasks.TaskScheduler.QueueTask%2A> metody.  
   
- Pochodne harmonogramu jest odpowiedzialny za zapewnienie, że wątek wywołujący jest odpowiednia do wykonywania danego zadania, jak własnych harmonogramów i dotyczą zasad wykonywania.  
+ Pochodne harmonogramu jest odpowiedzialny za zagwarantowanie, że wątek wywołujący nadaje się do wykonywania danego zadania w miarę własnych harmonogramów i zasad wykonywania są.  
   
- Aby uzyskać więcej informacji, zobacz [planiści zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
+ Aby uzyskać więcej informacji, zobacz [harmonogramów zadań](http://msdn.microsoft.com/library/638f8ea5-21db-47a2-a934-86e1e961bf65).  
   
  ]]></format>
         </remarks>
@@ -727,14 +748,14 @@ protected override IEnumerable<Task> GetScheduledTasks()
         <ReturnType>System.EventHandler&lt;System.Threading.Tasks.UnobservedTaskExceptionEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Występuje, gdy zadanie błędnej niezaobserwowany wyjątek ma wyzwolić zasady eskalacji wyjątek, który domyślnie spowoduje zakończenie procesu.</summary>
+        <summary>Występuje, gdy wyjątek niewidocznego uszkodzoną zadanie ma zasady eskalacji wyjątek, który domyślnie zakończy się proces wyzwalacza.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- To zdarzenie w całej domenie aplikacji zapewnia mechanizm, aby zapobiec zasady eskalacji wyjątek (który domyślnie kończy proces) z wyzwalania.  
+ To zdarzenie na poziomie domeny aplikacji udostępnia mechanizm do uniemożliwić zasady eskalacji wyjątków (która domyślnie kończy proces) z procesu wyzwalania.  
   
- Aby ułatwić deweloperom pisanie kodu asynchroniczny oparty na zadaniach, [!INCLUDE[net_v45](~/includes/net-v45-md.md)] zmienia domyślne zachowanie wyjątek niezaobserwowany wyjątków. Mimo że nadal niezaobserwowany wyjątki podnieść <xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException> wyjątek, proces nie zakończy domyślnie. Zamiast tego wyjątku jest obsługiwany przez środowisko uruchomieniowe po wywołaniu zdarzenia, niezależnie od tego, czy program obsługi zdarzeń przestrzega wyjątek. To zachowanie można skonfigurować. Począwszy od [!INCLUDE[net_v45](~/includes/net-v45-md.md)], można użyć elementu konfiguracji, aby powrócić do zachowania [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)] i zakończenie procesu:  
+ Aby ułatwić programistom pisanie kodu asynchronicznego, na podstawie zadań, [!INCLUDE[net_v45](~/includes/net-v45-md.md)] zmienia domyślne zachowanie wyjątek niewidocznego wyjątków. Mimo że nadal niewidocznego wyjątki podnieść <xref:System.Threading.Tasks.TaskScheduler.UnobservedTaskException> wyjątku, proces kończy domyślnie. Zamiast tego wyjątku jest obsługiwany przez środowisko uruchomieniowe po zdarzenie jest wywoływane niezależnie od tego, czy program obsługi zdarzeń przestrzega wyjątek. To zachowanie można skonfigurować. Począwszy od [!INCLUDE[net_v45](~/includes/net-v45-md.md)], można użyć elementu konfiguracji, aby przywrócić działanie [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)] i przerwać proces:  
   
 ```xml  
 <configuration>   
