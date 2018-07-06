@@ -1,11 +1,11 @@
 <Type Name="SafeHandle" FullName="System.Runtime.InteropServices.SafeHandle">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a48931738181122e75f0ec0a410b8d3e63a6436d" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="23dd24cec3f1ab2757c42a1cc0db5f70fb253604" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36537786" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37469687" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class SafeHandle : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi abstract beforefieldinit SafeHandle extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject implements class System.IDisposable" />
@@ -19,6 +19,7 @@
   </AssemblyInfo>
   <AssemblyInfo>
     <AssemblyName>mscorlib</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -51,40 +52,40 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Reprezentuje klasę otoki dla systemu operacyjnego. Ta klasa musi być dziedziczone.</summary>
+    <summary>Reprezentuje klasę otoki dla systemu operacyjnego. Ta klasa musi być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle> Klasa udostępnia finalizacji krytyczne dojście zasobów, uniemożliwia uchwytów z zostanie odzyskana przedwcześnie przez wyrzucanie elementów bezużytecznych i odtwarzane przez system Windows, aby odwołać niezamierzone niezarządzane obiekty.  
+ <xref:System.Runtime.InteropServices.SafeHandle> Klasa udostępnia krytyczna finalizacja zasobów uchwyt, zapobieganie uchwyty z są odzyskiwane przedwcześnie przez wyrzucanie elementów bezużytecznych i odtwarzaniu przez Windows, aby odwoływać się do niezamierzonych niezarządzane obiekty.  
   
  Ten temat zawiera następujące sekcje:  
   
  [Dlaczego SafeHandle?](#Why)   
- [Element SafeHandle jest](#Does)   
- [Klasy pochodne SafeHandle](#Derived)  
+ [Jak działa SafeHandle](#Does)   
+ [Klasy pochodne klasy SafeHandle](#Derived)  
   
 <a name="Why"></a>   
 ## <a name="why-safehandle"></a>Dlaczego SafeHandle?  
- Przed .NET Framework w wersji 2.0, wszystkie systemu operacyjnego dojścia może być tylko hermetyzowane w <xref:System.IntPtr> zarządzany otok obiektów. Gdy to wygodny sposób współdziałanie z kodem natywnym, dojść można przedostawać przez asynchroniczne wyjątki, takie jak nieoczekiwanie przerywanie wątku lub przepełnienie stosu. Te asynchroniczne wyjątki są przeszkodę Oczyszczanie zasobów systemu operacyjnego i może wystąpić niemal z dowolnego miejsca w aplikacji.  
+ Przed .NET Framework w wersji 2.0, wszystkie system operacyjny obsługuje tylko może być hermetyzowane w <xref:System.IntPtr> zarządzanych otoka obiektu. Gdy jest to wygodny sposób na potrzeby współdziałania z kodem natywnym, obsługuje można wyciek przez wyjątków asynchronicznych, takich jak wątek nieoczekiwanie zostanie przerwany lub przepełnienie stosu. Te wyjątki asynchroniczne są przeszkody Oczyszczanie zasobów systemu operacyjnego i może wystąpić praktycznie dowolnym miejscu w aplikacji.  
   
- Mimo że zastąpień w celu <xref:System.Object.Finalize%2A?displayProperty=nameWithType> — metoda Zezwalaj Oczyszczanie zasobów niezarządzanych, gdy obiekt jest w trakcie bezużytecznych w pewnych okolicznościach, finalizable obiektów można odzyskać przez odzyskiwanie pamięci podczas wykonywania metody dla platformy wywołania wywołanie. Jeśli finalizator zwalnia dojście przekazane do tej platformy wywołaniem, połączenie może prowadzić do uszkodzenia obsługi. Ponadto można odzyskać dojście, gdy metodę zostanie zablokowane, gdy platforma wywołania wywołania, takich jak podczas odczytywania pliku.  
+ Mimo że zastąpienia <xref:System.Object.Finalize%2A?displayProperty=nameWithType> metoda umożliwia oczyszczania niezarządzanych zasobów, gdy obiekt jest bezużyteczne w pewnych okolicznościach, które można sfinalizować obiektów można odzyskać przez wyrzucanie elementów bezużytecznych podczas wykonywania metody za pomocą platformy wywołania wywołanie. Jeśli finalizator powoduje zwolnienie dojście przekazane do tej platformy wywołaniem, może prowadzić do obsługi uszkodzeń. Ponadto można odzyskać uchwytu, gdy metoda jest zablokowane podczas jej platformy wywołania wywołania, takie jak podczas odczytywania pliku.  
   
- Więcej wyczerpaniu ponieważ Windows odtwarzana agresywnie dojść, uchwyt można poddana recyklingowi, a wskaż inny zasób, który może zawierać dane poufne. Jest on znany jako atak odtworzenia i może potencjalnie uszkodzić dane i stanowić zagrożenie bezpieczeństwa.  
+ Bardziej krytycznie ponieważ Windows agresywnie jest odtwarzany uchwyty, uchwyt może poddana recyklingowi, a wskaż inny zasób, który może zawierać dane poufne. To jest znany jako atak odtwarzanie i może potencjalnie uszkodzić dane i stanowić zagrożenie dla bezpieczeństwa.  
   
 <a name="Does"></a>   
-## <a name="what-safehandle-does"></a>Element SafeHandle jest  
- <xref:System.Runtime.InteropServices.SafeHandle> Klasa upraszcza kilka te kwestie okresu istnienia obiektów i jest zintegrowana z platformą wywołania tak, aby nie przedostają zasoby systemu operacyjnego. <xref:System.Runtime.InteropServices.SafeHandle> Klasy rozwiązuje problemy okres istnienia obiektu przypisując i zwalniania uchwytów bez przeszkód. Zawiera on krytyczne finalizatora, który zapewnia, że dojście zostało zamknięte i działanie podczas nieoczekiwany <xref:System.AppDomain> zwalnia, nawet w przypadku wywołania wywołania platformy zakłada, że jest uszkodzony.  
+## <a name="what-safehandle-does"></a>Jak działa SafeHandle  
+ <xref:System.Runtime.InteropServices.SafeHandle> Klasa upraszcza kilka te kwestie okresu istnienia obiektów i jest zintegrowana z platformą wywołania, tak aby nie wyciek zasobów systemu operacyjnego. <xref:System.Runtime.InteropServices.SafeHandle> Klasy jest rozpoznawana jako kwestie istnienia obiektu i zwalniają dojścia bez zakłóceń. Zawiera krytyczny finalizator, który zapewnia, że uchwyt jest zamknięty, a następnie gwarantuje działanie w trakcie nieoczekiwany <xref:System.AppDomain> zwalnia, nawet w przypadkach, gdy wywołanie platformy wywołanie zakłada, że w stanie uszkodzenia.  
   
- Ponieważ <xref:System.Runtime.InteropServices.SafeHandle> dziedziczy <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject>, wszystkie niekrytyczne finalizatory są wywoływane przed każdą finalizatory krytyczne. Finalizatory są nazywane na obiektach, które nie są już na żywo podczas przebiegu kolekcji tej samej pamięci. Na przykład <xref:System.IO.FileStream> obiektu można uruchomić normalne finalizator opróżnić istniejące dane buforowane bez ryzyka dojścia jest ujawnione lub poddawane recyklingowi. Ten bardzo słabe kolejności między finalizatory krytyczne i niekrytyczne nie jest przeznaczony do użytku ogólnego. Istnieje głównie w celu pomocy w procesie migracji istniejącej biblioteki zezwalając te biblioteki do użycia <xref:System.Runtime.InteropServices.SafeHandle> bez zmiany ich semantyki. Ponadto krytyczne finalizatora i niczego wywołuje, takich jak <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle?displayProperty=nameWithType> metody, musi być w regionie ograniczonego wykonania. To nakłada ograniczenia dotyczące kodu, jakie mogą być zapisywane w obrębie wykresu wywołań finalizatora.  
+ Ponieważ <xref:System.Runtime.InteropServices.SafeHandle> dziedziczy <xref:System.Runtime.ConstrainedExecution.CriticalFinalizerObject>, wszystkie niekrytyczne finalizatory są wywoływane przed każdą krytyczne finalizatory. Finalizatory są nazywane dla obiektów, które nie są już na żywo podczas przebiegu tej samej kolekcji wyrzucania elementów. Na przykład <xref:System.IO.FileStream> obiektu można uruchomić normalne finalizator opróżnić się istniejących buforowane dane, bez ryzyka stałego skanowania dojścia jest ujawnione lub poddawane recyklingowi. To bardzo słabe porządkowanie między finalizatory krytyczne i niekrytyczne nie jest przeznaczona do użytku ogólnego. Istnieje przede wszystkim ułatwiają migrację istniejących bibliotek, umożliwiając tych bibliotek do użycia <xref:System.Runtime.InteropServices.SafeHandle> bez zmiany ich semantyki. Ponadto krytyczne finalizatory i nic wywoływanych przez nią, takie jak <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle?displayProperty=nameWithType> metody, musi znajdować się w regionie ograniczonego wykonania. To nakłada ograniczenia dotyczące kodu, które mogą być zapisywane w obrębie wykresu wywołań finalizatora.  
   
- Wywołanie operacji platformy automatycznie zwiększyć liczebności referencyjnej dojść zamknięte przez <xref:System.Runtime.InteropServices.SafeHandle> i zmniejszyć ich po zakończeniu. Dzięki temu, że dojście nie zostanie poddanych recyklingowi ani został nieoczekiwanie zamknięty.  
+ Wywołanie operacji platformy automatycznie zwiększyć licznik odwołań uchwytów zamknięte przez <xref:System.Runtime.InteropServices.SafeHandle> i dekrementacyjne je po zakończeniu. Daje to gwarancję, że dojście będą nie odtwarzania lub został nieoczekiwanie zamknięty.  
   
- Własność dojścia podstawowej można określić podczas tworzenia <xref:System.Runtime.InteropServices.SafeHandle> obiektów, podając wartość `ownsHandle` argument <xref:System.Runtime.InteropServices.SafeHandle> konstruktora klasy. Określa, to czy <xref:System.Runtime.InteropServices.SafeHandle> obiektu będzie zwolnić dojścia po usunięciu obiektu.  Jest to przydatne dla dojść wymagań specyficznych okres istnienia lub służący do konsumowania uchwytu, którego okres istnienia jest kontrolowany przez kogoś innego.  
+ Można określić własność podstawowego dojścia przy konstruowaniu <xref:System.Runtime.InteropServices.SafeHandle> obiekty podając wartości do `ownsHandle` argument <xref:System.Runtime.InteropServices.SafeHandle> konstruktora klasy. W ten sposób kontroluje czy <xref:System.Runtime.InteropServices.SafeHandle> obiektu spowoduje zwolnienie uchwytu po obiekt został usunięty.  Jest to przydatne, obsługuje istnienia szczególne wymagania lub używania uchwyt, którego okres istnienia jest kontrolowany przez kogoś innego.  
   
 <a name="Derived"></a>   
-## <a name="classes-derived-from-safehandle"></a>Klasy pochodne SafeHandle  
- <xref:System.Runtime.InteropServices.SafeHandle> jest to klasa abstrakcyjna otoki dla systemu operacyjnego. Wyprowadzanie z tej klasy jest trudne. Zamiast tego należy użyć klasy pochodnej w <xref:Microsoft.Win32.SafeHandles> przestrzeni nazw, która zapewnienia bezpiecznego dojścia do następujących:  
+## <a name="classes-derived-from-safehandle"></a>Klasy pochodne klasy SafeHandle  
+ <xref:System.Runtime.InteropServices.SafeHandle> jest klasą abstrakcyjna otoki dla systemu operacyjnego. Wyprowadzanie z tej klasy jest trudne. Zamiast tego należy użyć klas pochodnych w <xref:Microsoft.Win32.SafeHandles> przestrzeni nazw, które zapewniają bezpieczne dojścia dla następujących:  
   
 -   Pliki ( <xref:Microsoft.Win32.SafeHandles.SafeFileHandle> klasy).  
   
@@ -105,22 +106,22 @@
    
   
 ## Examples  
- Poniższy przykład kodu tworzy niestandardowe bezpieczne dojście dla systemu operacyjnego dojście do pliku, wynikające z <xref:Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid>. Odczytuje bajtów z pliku i wyświetla wartości szesnastkowe. Zawiera także błąd testowania kontroler, która powoduje wątku przerwania, ale wartość uchwytu zostanie zwolniona.  Korzystając z <xref:System.IntPtr> do reprezentowania dojść, dojście jest czasami ujawnione ze względu na przerwanie asynchronicznego wątku.  
+ Poniższy przykład kodu tworzy niestandardowe bezpiecznego dojścia na uchwyt pliku systemu operacyjnego, wynikające z <xref:Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid>. Odczytuje bajtów z pliku i wyświetla ich wartości szesnastkowych. Zawiera również testowanie kontroler pod kątem błędów, dzięki któremu wątku przerwać, ale wartość dojścia jest zwalniana.  Korzystając z <xref:System.IntPtr> do reprezentowania uchwyty, od czasu do czasu przeciek uchwytu ze względu na przerwanie asynchronicznego wątku.  
   
- Konieczne będzie pliku tekstowego w tym samym folderze co skompilowanej aplikacji. Przy założeniu, że nazwa aplikacji "HexViewer", jest użycie wiersza polecenia:  
+ Konieczne będzie plik tekstowy, w tym samym folderze co skompilowanej aplikacji. Przy założeniu, że nazwy aplikacji "HexViewer" jest użycie wiersza polecenia:  
   
  `HexViewer <filename> -Fault`  
   
- Opcjonalnie można określić `-Fault` celowo prób wyciek dojście przez przerywanie wątku w niektórych okna. Narzędzie Perform.exe systemu Windows do monitorowania liczby dojścia podczas wstrzyknięcie błędów.  
+ Opcjonalnie można określić `-Fault` próbuje celowo przecieku uchwytu przerywanie wątków niektóre okna. Narzędzie Windows Perform.exe do monitorowania liczby uchwytu podczas wstrzykiwania błędów.  
   
  [!code-csharp[SafeHandle#1](~/samples/snippets/csharp/VS_Snippets_CLR/SafeHandle/CS/program.cs#1)]  
   
  ]]></format>
     </remarks>
-    <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">aby uzyskać pełne zaufanie dla obiektów dziedziczących. Ten element członkowski nie może być dziedziczona przez kod częściowo zaufany.</permission>
+    <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">aby uzyskać pełne zaufanie dla obiektów dziedziczących. Ten element członkowski nie może być dziedziczona przez częściowo zaufany kod.</permission>
     <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
     <block subset="none" type="overrides">
-      <para>Aby utworzyć klasę pochodzącą od <see cref="T:System.Runtime.InteropServices.SafeHandle" />, musisz znać sposób tworzenia i zwolnić dojścia systemu operacyjnego. Ten proces jest inna dojście do różnych typów, ponieważ niektóre używają [CloseHandle] (https://msdn.microsoft.com/library/windows/desktop/ms724211.aspx) działanie, podczas gdy inne więcej określonych funkcji, takich jak [UnmapViewOfFile] (https://msdn.microsoft.com/library/windows/desktop/aa366882.aspx) lub [FindClose] (https://msdn.microsoft.com/library/windows/desktop/aa364413.aspx). Z tego powodu należy utworzyć klasy pochodnej z <see cref="T:System.Runtime.InteropServices.SafeHandle" /> dla każdego typu dojścia systemu operacyjnego, który ma być zawijany w bezpieczne dojście.  Przy dziedziczeniu z <see cref="T:System.Runtime.InteropServices.SafeHandle" />, konieczne jest przesłonięcie następujących członków: <see cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" /> i <see cref="M:System.Runtime.InteropServices.SafeHandle.ReleaseHandle" />.  Należy również wprowadzić domyślnego konstruktora, który Konstruktor podstawowej z wartością, która reprezentuje wartości nieprawidłowego dojścia i <see cref="T:System.Boolean" /> wartość wskazującą, czy jest własnością uchwyt macierzysty <see cref="T:System.Runtime.InteropServices.SafeHandle" /> i w związku z tym powinien zostać zwolniony podczas które <see cref="T:System.Runtime.InteropServices.SafeHandle" /> został usunięty.</para>
+      <para>Aby utworzyć klasę pochodną <see cref="T:System.Runtime.InteropServices.SafeHandle" />, trzeba wiedzieć, jak utworzyć i bezpłatne dojście systemu operacyjnego. Ten proces różni się dla dojście do różnych typów, ponieważ niektóre wykorzystują [funkcja CloseHandle] (https://msdn.microsoft.com/library/windows/desktop/ms724211.aspx) funkcji, a w innych stosuje bardziej określonych funkcji, takich jak [funkcja UnmapViewOfFile] (https://msdn.microsoft.com/library/windows/desktop/aa366882.aspx) lub [FindClose] (https://msdn.microsoft.com/library/windows/desktop/aa364413.aspx). Z tego powodu należy utworzyć klasę pochodną z <see cref="T:System.Runtime.InteropServices.SafeHandle" /> dla każdego typu dojście systemu operacyjnego, który ma być zawijany w bezpiecznym dojściu.  Przy dziedziczeniu z <see cref="T:System.Runtime.InteropServices.SafeHandle" />, konieczne jest przesłonięcie następujących składowych: <see cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" /> i <see cref="M:System.Runtime.InteropServices.SafeHandle.ReleaseHandle" />.  Należy również podać domyślnego konstruktora, który wywołuje konstruktora podstawowego o wartości, które reprezentują wartości nieprawidłowego dojścia i <see cref="T:System.Boolean" /> wartość wskazującą, czy uchwyt macierzysty jest własnością <see cref="T:System.Runtime.InteropServices.SafeHandle" /> i w związku z tym powinna być zwolniona po które <see cref="T:System.Runtime.InteropServices.SafeHandle" /> został usunięty.</para>
     </block>
     <altmember cref="N:Microsoft.Win32.SafeHandles" />
     <altmember cref="T:System.Runtime.InteropServices.CriticalHandle" />
@@ -158,6 +159,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -185,20 +187,20 @@
         <Parameter Name="ownsHandle" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="invalidHandleValue">Wartość nieprawidłowego dojścia (zazwyczaj 0 lub wartość-1).  Implementacji <see cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" /> powinien zwrócić <see langword="true" /> dla tej wartości.</param>
+        <param name="invalidHandleValue">Wartość nieprawidłowego dojścia (zazwyczaj 0 lub -1).  Implementacja <see cref="P:System.Runtime.InteropServices.SafeHandle.IsInvalid" /> powinna zwrócić <see langword="true" /> dla tej wartości.</param>
         <param name="ownsHandle">
-          <see langword="true" /> Aby umożliwić niezawodnie <see cref="T:System.Runtime.InteropServices.SafeHandle" /> zwolnić dojścia w fazie finalizacji; w przeciwnym razie <see langword="false" /> (niezalecane).</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.InteropServices.SafeHandle" /> klasy z wartością określony nieprawidłowy uchwyt.</summary>
+          <see langword="true" /> Aby umożliwić niezawodnie <see cref="T:System.Runtime.InteropServices.SafeHandle" /> zwolnienie uchwytu podczas fazy finalizacji; w przeciwnym razie <see langword="false" /> (niezalecane).</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.InteropServices.SafeHandle" /> klasy z wartością określoną nieprawidłowego dojścia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `ownsHandle` parametr jest `false`, <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> nigdy nie jest wywoływana; w związku z tym nie jest zalecane do użycia wartości tego parametru, jak kod wycieku zasobów.  
+ Jeśli `ownsHandle` parametr jest `false`, <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> nigdy nie jest wywoływana; w związku z tym, nie zaleca się używać wartości tego parametru, jak Twój kod wycieku zasobów.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.TypeLoadException">Klasa pochodna znajduje się w zestawie bez uprawnienia dostępu do kodu niezarządzanego.</exception>
-        <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">aby uzyskać pełne zaufanie dla obiektów dziedziczących. Ten element członkowski nie może być dziedziczona przez kod częściowo zaufany.</permission>
+        <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">aby uzyskać pełne zaufanie dla obiektów dziedziczących. Ten element członkowski nie może być dziedziczona przez częściowo zaufany kod.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
       </Docs>
     </Member>
@@ -212,6 +214,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -237,21 +240,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Oznacza dojście do zwalniania i zwolnić zasoby.</summary>
+        <summary>Oznacza dojście do zwalniania i zwalnianiu zasobów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda pozwala zasoby, które ma zostać zwolniony. Może się nie powtórzyła natychmiast inne wątki korzystania z tego samego obiektu bezpieczne dojście, ale odbędzie się, gdy nie jest już wymagane. Mimo że większość klas, które używają <xref:System.Runtime.InteropServices.SafeHandle> klasy nie trzeba podać finalizator, czasami jest to konieczne, (na przykład, aby opróżnić limit buforów plików lub do zapisu niektóre dane z powrotem do pamięci). W takim przypadku klasa może zapewnić finalizatorze działanie przed <xref:System.Runtime.InteropServices.SafeHandle> działa finalizator krytyczne.  
+ Wywoływanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda umożliwia zasoby, które ma zostać zwolniony. Nie może być zmienione od razu, inne wątki korzystania z tego samego obiektu bezpiecznego dojścia, ale będzie miało miejsce, gdy tylko nie są już tak jest. Mimo że większość klas, które używają <xref:System.Runtime.InteropServices.SafeHandle> klasy nie trzeba dostarczyć finalizator, czasami jest to konieczne (na przykład opróżnienia się bufory plików lub zapisać dane z powrotem do pamięci). W tym przypadku klasy potrzeby mogą dostarczyć finalizator, który gwarantuje działanie przed <xref:System.Runtime.InteropServices.SafeHandle> krytyczny finalizator przebiegów.  
   
- Wywołanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metody po zakończeniu przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> obiektu.  
+ Wywołaj <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda po zakończeniu przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> obiektu.  
   
 > [!NOTE]
->  Wywoływanie zawsze <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> przed zwolnieniem ostatniego odwołania do <xref:System.Runtime.InteropServices.SafeHandle> obiektu. W przeciwnym razie używa zasobów nie zostanie zwolniona do wywołania modułu zbierającego elementy bezużyteczne <xref:System.Runtime.InteropServices.SafeHandle> obiektu <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> metody.  
+>  Zawsze wywołuj <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> przed publikacją swoje ostatnie odwołanie do <xref:System.Runtime.InteropServices.SafeHandle> obiektu. W przeciwnym razie zasobów jest przy użyciu nie zostanie zwolniona, dopóki moduł odśmiecania pamięci wywołuje <xref:System.Runtime.InteropServices.SafeHandle> obiektu <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> metody.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="DangerousAddRef">
@@ -268,6 +271,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -298,20 +302,20 @@
       </Parameters>
       <Docs>
         <param name="success">
-          <see langword="true" /> Jeśli licznik odwołanie zostało pomyślnie zwiększany; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Ręcznie zwiększa licznik odwołania na <see cref="T:System.Runtime.InteropServices.SafeHandle" /> wystąpień.</summary>
+          <see langword="true" /> Jeśli licznik odwołań został pomyślnie zwiększany; w przeciwnym razie <see langword="false" />.</param>
+        <summary>Ręcznie zwiększa licznik odwołań na <see cref="T:System.Runtime.InteropServices.SafeHandle" /> wystąpień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> Metody uniemożliwia odzyskiwanie pamięci używanej przez dojście środowisko uruchomieniowe języka wspólnego (które występuje, gdy środowisko urchomieniowe wywołuje <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> metody). Można użyć tę metodę, aby ręcznie przyrostu count odwołanie <xref:System.Runtime.InteropServices.SafeHandle> wystąpienia. <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> Zwraca wartość logiczną przy użyciu `ref` parametr (`success`) wskazująca, czy liczba odwołań został pomyślnie zwiększany. Dzięki temu logika program do Wycofaj w razie awarii. Należy ustawić `success` do `false` przed wywołaniem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>. Jeśli `success` jest `true`, uniknąć przecieków zasobów przez dopasowanie wywołanie <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> z odpowiedniego wywołania <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A>.  
+ <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> Metoda uniemożliwia odzyskiwanie pamięci używanej przez dojście środowiska uruchomieniowego języka wspólnego (które występuje, gdy środowisko wykonawcze wywołuje <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> metody). Można użyć tę metodę, aby ręcznie przyrostu odwołania możesz liczyć na <xref:System.Runtime.InteropServices.SafeHandle> wystąpienia. <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> Zwraca wartość logiczną przy użyciu `ref` parametru (`success`) oznacza to, czy licznik odwołań został pomyślnie zwiększany. Dzięki temu logika program wycofać w przypadku awarii. Należy ustawić `success` do `false` przed wywołaniem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>. Jeśli `success` jest `true`, unikaj przeciekom zasobów, dopasowując wywołanie <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> przy użyciu odpowiedniego wywołania <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A>.  
   
 > [!CAUTION]
->  Ta metoda jest przeznaczona dla użytkowników zaawansowanych i zawsze należy używać ostrożnie. Aby uniknąć przeciek dojścia zasobów, zawsze należy wywołać tę metodę w regionie ograniczonego wykonania (CER), gdzie przerwania wątku nie może przerwać przetwarzania.  
+>  Ta metoda jest przeznaczona dla użytkowników zaawansowanych i zawsze należy używać ostrożnie. Wyciekiem uchwyt zasobów, zawsze wywołać tę metodę wewnątrz regionu ograniczonego wykonania (CER), gdzie przerwanie wątku nie może przerwać przetwarzania.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Runtime.InteropServices.SafeHandle.DangerousRelease" />
       </Docs>
     </Member>
@@ -329,6 +333,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -358,19 +363,19 @@
       <Docs>
         <summary>Zwraca wartość <see cref="F:System.Runtime.InteropServices.SafeHandle.handle" /> pola.</summary>
         <returns>
-          <see langword="IntPtr" /> Reprezentujący wartość <see cref="F:System.Runtime.InteropServices.SafeHandle.handle" /> pola. Jeśli dojście została oznaczona jako niepoprawna z <see cref="M:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid" />, ta metoda zwraca nadal oryginalnej wartości dojścia może być wartością przestarzałe.</returns>
+          <see langword="IntPtr" /> Reprezentujący wartość <see cref="F:System.Runtime.InteropServices.SafeHandle.handle" /> pola. Jeśli uchwyt został oznaczony nieprawidłowy z <see cref="M:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid" />, Metoda ta zwraca nadal oryginalnej wartości uchwyt może być wartością starych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda służy do pobierania wartości rzeczywistych dojście wystąpienia programu <xref:System.Runtime.InteropServices.SafeHandle> klasy. Ta metoda jest potrzebne do zapewnienia zgodności ponieważ zwraca wiele właściwości w programie .NET Framework `IntPtr` obsługi typów. `IntPtr` typ dojścia są specyficzne dla platformy typy używane do reprezentowania wskaźnika lub dojścia.  
+ Ta metoda służy do pobrania wartości rzeczywiste dojście wystąpienia programu <xref:System.Runtime.InteropServices.SafeHandle> klasy pochodnej. Ta metoda jest potrzebne do zapewnienia zgodności ponieważ zwraca wiele właściwości w programie .NET Framework `IntPtr` obsługi typów. `IntPtr` typ dojścia są typy specyficzne dla platformy używanych do reprezentowania wskaźnika lub uchwytu.  
   
 > [!CAUTION]
->  Przy użyciu <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> metody może stanowić zagrożenie bezpieczeństwa, ponieważ, jeśli dojście została oznaczona jako niepoprawna z <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A>, <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> nadal zwraca wartość oryginalne, potencjalnie starych dojścia. Zwracane dojście można także ponownie przetworzony w dowolnym momencie. W najlepszym przypadku oznacza to, że dojście może nagle przestać działać. W najgorszym przypadku dojście lub zasób, który reprezentuje dojście udostępnienia w kodzie niezaufanym, może to prowadzić do odtwarzania ataku zabezpieczeń na dojście ponownie lub zwrócony. Na przykład niezaufanych wywołujący może zapytania na danych w dojściu tylko zwrócił i otrzymywanie informacji dla zasób całości niepowiązanych. Zobacz <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> i <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> metod, aby uzyskać więcej informacji o korzystaniu z <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> methodsafely.  
+>  Za pomocą <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> metoda może stanowić zagrożenie bezpieczeństwa, ponieważ, jeśli uchwyt została oznaczona jako niepoprawna przy użyciu <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A>, <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> nadal zwraca wartość oryginalny, potencjalnie nieodświeżoną dojście. Zwracany uchwyt może być również odtworzona w dowolnym momencie. Co najlepsze oznacza to, że dojście może nagle przestać działać. W najgorszym przypadku Jeśli uchwyt lub zasobu, który reprezentuje uchwyt jest uwidaczniany w niezaufanego kodu, może to prowadzić do odtwarzania ataku zabezpieczeń są ponownie wykorzystywane lub zwracany uchwyt. Na przykład niezaufanych wywołujący może wysyłania zapytań dotyczących danych na dojście, po prostu zwracane i otrzymywanie informacji, w przypadku całkowicie niepowiązane zasobów. Zobacz <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> i <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> metody, aby uzyskać więcej informacji o korzystaniu z <xref:System.Runtime.InteropServices.SafeHandle.DangerousGetHandle%2A> methodsafely.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="DangerousRelease">
@@ -387,6 +392,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -414,19 +420,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ręcznie zmniejsza licznika odwołania na <see cref="T:System.Runtime.InteropServices.SafeHandle" /> wystąpienia.</summary>
+        <summary>Dekrementuje ręcznie licznik odwołań na <see cref="T:System.Runtime.InteropServices.SafeHandle" /> wystąpienia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> Metoda jest odpowiednikiem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>. Wywołanie zawsze powinna odpowiadać <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> metody z pomyślnym wywołaniem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>.  
+ <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> Metodą jest odpowiednikiem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>. Powinna zawsze być zgodna wywołanie <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> metody z pomyślnym wywołaniem <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A>.  
   
 > [!CAUTION]
->  Ta metoda jest przeznaczona dla użytkowników zaawansowanych i zawsze należy używać ostrożnie. Aby uniknąć przeciek dojścia zasobów, zawsze należy wywołać tę metodę w regionie ograniczonego wykonania (CER), gdzie przerwania wątku nie może przerwać przetwarzania. W taki sam sposób, że niedopasowane <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> wywołań może spowodować przecieków zasobów, niedopasowanych <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> wywołań może spowodować nieprawidłowe dojście Państwa staną się widoczne dla innych wątków. Nie ujawniaj <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> wywołań kodzie niezaufanym.  
+>  Ta metoda jest przeznaczona dla użytkowników zaawansowanych i zawsze należy używać ostrożnie. Wyciekiem uchwyt zasobów, zawsze wywołać tę metodę wewnątrz regionu ograniczonego wykonania (CER), gdzie przerwanie wątku nie może przerwać przetwarzania. W taki sam sposób, który niedopasowane <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> wywołań może powodować przecieki zasobów, niedopasowane <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> wywołań może spowodować, że Stany nieprawidłowego dojścia do stają się widoczne dla innych wątków. Nie ujawniaj <xref:System.Runtime.InteropServices.SafeHandle.DangerousAddRef%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.DangerousRelease%2A> wywołania do niezaufanego kodu.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Runtime.InteropServices.SafeHandle.DangerousAddRef(System.Boolean@)" />
       </Docs>
     </Member>
@@ -456,6 +462,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -491,16 +498,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda pozwala zasoby, które ma zostać zwolniony. Może się nie powtórzyła natychmiast inne wątki korzystania z tego samego wystąpienia bezpieczne dojście, ale odbędzie się, gdy nie jest już wymagane. Mimo że większość klas przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> nie trzeba podać finalizator, czasami jest to konieczne, (na przykład można opróżnić limit buforów plików lub zapisania niektóre dane w pamięci). W takim przypadku zapewniają finalizatorze działanie przed <xref:System.Runtime.InteropServices.SafeHandle> działa finalizator krytyczne.  
+ Wywoływanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda umożliwia zasoby, które ma zostać zwolniony. Nie może być zmienione od razu, inne wątki korzystania z tego samego wystąpienia bezpiecznego dojścia, ale będzie miało miejsce, gdy tylko nie są już tak jest. Mimo że większość klas przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> nie trzeba dostarczyć finalizator, czasami jest to konieczne (na przykład, aby opróżnić się bufory plików lub do zapisania pewne dane z powrotem do pamięci). W tym przypadku zapewniają finalizator, który jest gwarantowane do uruchomienia przed <xref:System.Runtime.InteropServices.SafeHandle> krytyczny finalizator przebiegów.  
   
- Wywołanie <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metody po zakończeniu przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> obiektu. <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> Pozostawia metody <xref:System.Runtime.InteropServices.SafeHandle> obiektu w stanie uniemożliwiającym jego używanie.  
+ Wywołaj <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda po zakończeniu przy użyciu <xref:System.Runtime.InteropServices.SafeHandle> obiektu. <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> Pozostawia metoda <xref:System.Runtime.InteropServices.SafeHandle> obiektu w stanie uniemożliwiającym jego używanie.  
   
 > [!NOTE]
->  Wywoływanie zawsze <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda przed zwolnieniem ostatniego odwołania do <xref:System.Runtime.InteropServices.SafeHandle> obiektu. W przeciwnym razie używa zasobów nie zostanie zwolniona do wywołania modułu zbierającego elementy bezużyteczne <xref:System.Runtime.InteropServices.SafeHandle> obiektu <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> metody.  
+>  Zawsze wywołuj <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> lub <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metoda przed publikacją swoje ostatnie odwołanie do <xref:System.Runtime.InteropServices.SafeHandle> obiektu. W przeciwnym razie zasobów jest przy użyciu nie zostanie zwolniona, dopóki moduł odśmiecania pamięci wywołuje <xref:System.Runtime.InteropServices.SafeHandle> obiektu <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> metody.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -517,6 +524,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -550,17 +558,17 @@
       </Parameters>
       <Docs>
         <param name="disposing">
-          <see langword="true" /> dla zwykłym dispose operacji. <see langword="false" /> celu sfinalizowania dojście.</param>
-        <summary>Zwalnia zasoby niezarządzane używane przez <see cref="T:System.Runtime.InteropServices.SafeHandle" /> klasa określająca, czy do wykonania zwykłym dispose operacji.</summary>
+          <see langword="true" /> do normalnego dispose operacji. <see langword="false" /> Aby sfinalizować uchwytu.</param>
+        <summary>Zwalnia zasoby niezarządzane używane przez <see cref="T:System.Runtime.InteropServices.SafeHandle" /> klasa określająca, czy wykonać normalnego dispose operacji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy nigdy nie jawnie wywołać <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metody z `disposing` ustawiono parametr `false`.  
+ Nigdy nie jest jawnie wywołać <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> metody z `disposing` parametr `false`.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="Finalize">
@@ -577,6 +585,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -604,16 +613,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwalnia wszystkie zasoby skojarzone z dojścia.</summary>
+        <summary>Zwalnia wszystkie zasoby skojarzone z uchwytu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> Metoda jest destruktor dla elementu <xref:System.Runtime.InteropServices.SafeHandle> klasy. Kod aplikacji nie należy bezpośrednio wywołać tej metody.  
+ <xref:System.Runtime.InteropServices.SafeHandle.Finalize%2A> Destruktor jest metoda <xref:System.Runtime.InteropServices.SafeHandle> klasy. Kod aplikacji nie powinna bezpośrednio wywołać tę metodę.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <altmember cref="M:System.Runtime.InteropServices.SafeHandle.Dispose" />
       </Docs>
     </Member>
@@ -631,6 +640,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -652,12 +662,12 @@
         <ReturnType>System.IntPtr</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Określa dojście w celu jej opakowania.</summary>
+        <summary>Określa dojścia w celu jej opakowania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Nie ujawniaj dojście publicznie (to znaczy poza klasy pochodnej).  
+ Nie ujawniaj uchwytu publicznie (czyli poza klasy pochodnej).  
   
  ]]></format>
         </remarks>
@@ -677,6 +687,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -703,22 +714,22 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy dojście jest zamknięty.</summary>
+        <summary>Pobiera wartość wskazującą, czy uchwyt jest zamknięty.</summary>
         <value>
-          <see langword="true" /> Jeśli zostanie zamknięty dojście; w przeciwnym razie <see langword="false" />.</value>
+          <see langword="true" /> Jeśli uchwyt zostanie zamknięty; w przeciwnym razie <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> Metoda zwraca wartość wskazującą czy <xref:System.Runtime.InteropServices.SafeHandle> obiektu dojście nie jest już skojarzony z zasobem macierzystego. Ta różni się od definicji <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość, która oblicza, czy podanym dojściu zawsze jest uznawane za nieprawidłowe. <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> Metoda zwraca `true` wartość w następujących przypadkach:  
+ <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> Metoda zwraca wartość wskazującą czy <xref:System.Runtime.InteropServices.SafeHandle> dojście do obiektu nie jest już skojarzony z zasobu natywnego. To różni się od definicji <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość, która oblicza, czy podanym dojściu zawsze jest uznawane za nieprawidłowe. <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> Metoda zwraca `true` wartości w następujących przypadkach:  
   
--   <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> Wywołano metodę.  
+-   <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> Metoda została wywołana.  
   
--   <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> Metody lub <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> wywołano metodę i nie żadnych odwołań do <xref:System.Runtime.InteropServices.SafeHandle> obiektu na inne wątki.  
+-   <xref:System.Runtime.InteropServices.SafeHandle.Dispose%2A> Metody lub <xref:System.Runtime.InteropServices.SafeHandle.Close%2A> wywołano metodę wiąże się z żadnych odwołań do <xref:System.Runtime.InteropServices.SafeHandle> obiektu na inny wątek.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="IsInvalid">
@@ -735,6 +746,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -761,27 +773,27 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>W przypadku przesłonięcia w klasie pochodnej pobiera wartość wskazującą, czy wartość dojście jest nieprawidłowe.</summary>
+        <summary>W przypadku przesłonięcia w klasie pochodnej pobiera wartość wskazującą, czy wartość dojścia jest nieprawidłowy.</summary>
         <value>
-          <see langword="true" /> Jeśli wartość uchwytu jest nieprawidłowy. w przeciwnym razie <see langword="false" />.</value>
+          <see langword="true" /> Jeśli wartość dojścia jest nieprawidłowa; w przeciwnym razie <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasy pochodne muszą implementować <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwości tak, aby środowisko uruchomieniowe języka wspólnego można określić, czy finalizacji krytyczne jest wymagana. Klasa pochodna musi zapewniać implementację pasujące do typu ogólnego uchwytu, które obsługują (0 albo -1 jest nieprawidłowy). Te klasy można następnie dalsze pochodnych typów określonych bezpieczne dojście.  
+ Klasy pochodne muszą implementować <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość tak, aby środowisko uruchomieniowe języka wspólnego można określić, czy wymagane jest krytyczna finalizacja. Klasy pochodne musi dostarczyć implementację odpowiadającego ogólny typ dojścia obsługują (0 lub wartość -1 jest nieprawidłowy). Te klasy mogą następnie dodatkowo uzyskane dla typów szczególne bezpiecznego dojścia.  
   
- W odróżnieniu od <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> właściwość, która zgłasza czy <xref:System.Runtime.InteropServices.SafeHandle> obiektu zakończył przy użyciu dojścia podstawowej <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwości oblicza, czy wartość podanym dojściu zawsze jest uznawane za nieprawidłowe. W związku z tym <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość zawsze zwraca tę samą wartość dowolną wartość z określonego dojścia.  
+ W odróżnieniu od <xref:System.Runtime.InteropServices.SafeHandle.IsClosed%2A> właściwość, która zgłasza czy <xref:System.Runtime.InteropServices.SafeHandle> obiektu zostało zakończone, przy użyciu podstawowego dojścia <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość oblicza, czy wartość podanym dojściu zawsze jest uznawane za nieprawidłowe. W związku z tym <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwość zawsze zwraca taką samą wartość dowolną wartość z określonego dojścia.  
   
    
   
 ## Examples  
- Poniższy przykład umożliwia sprawdzenie, czy plik został pomyślnie otwarty. Ten przykładowy kod jest częścią większego przykładu udostępnionego dla <xref:System.Runtime.InteropServices.SafeHandle> klasy.  
+ Poniższy przykład sprawdza, jeśli plik został pomyślnie otwarty. Ten przykład kodu jest częścią większego przykładu przewidzianego dla <xref:System.Runtime.InteropServices.SafeHandle> klasy.  
   
  [!code-csharp[SafeHandle#2](~/samples/snippets/csharp/VS_Snippets_CLR/SafeHandle/CS/program.cs#2)]  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="ReleaseHandle">
@@ -798,6 +810,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -825,31 +838,31 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje kod wymagany do zwolnienia dojście.</summary>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje kod wymagane zwolnienie uchwytu.</summary>
         <returns>
-          <see langword="true" /> Jeśli dojście zwolnieniu pomyślnie; w przeciwnym razie poważnej awarii, <see langword="false" />. W takim przypadku generuje [releaseHandleFailed] (~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Asystent debugowania zarządzanego.</returns>
+          <see langword="true" /> Jeśli uchwyt jest zwalniany pomyślnie; w przeciwnym razie, w przypadku poważnej awarii, <see langword="false" />. W tym przypadku generuje [releaseHandleFailed] (~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Asystent debugowania zarządzanego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> Można wywołać tylko raz i tylko wtedy, gdy uchwyt jest prawidłowy, zgodnie z definicją metody jest gwarancji <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwości. Zaimplementuj tę metodę w Twojej <xref:System.Runtime.InteropServices.SafeHandle> klas do wykonania kodu, który jest wymagany, aby zwolnić dojścia pochodnych. Ponieważ jeden z funkcji <xref:System.Runtime.InteropServices.SafeHandle> jest zapewnienie zapobiegania przecieków zasobów, kod w implementacji <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> musi nigdy się nie powieść. Wywołania modułu zbierającego elementy bezużyteczne <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> po uruchomieniu normalne finalizatory dla obiektów, które były bezużytecznych w tym samym czasie. Moduł zbierający elementy bezużyteczne gwarantuje zasobów, aby wywołać tę metodę i czy metoda nie zostanie przerwana czasie, gdy jest w toku. Ta metoda będzie gotowa jako region ograniczonego wykonania (CER) w czasie tworzenia wystąpienia (wraz ze wszystkich metod jej wykresu wywołań statycznie możliwa do ustalenia). Mimo że zapobiega to przerwania przerwania wątku, nadal należy pamiętać, że żadnych ścieżek błędów w Twojej przesłoniętych <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> metody. W szczególności, zastosuj <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute> atrybutu metody należy wywołać z <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A>. W większości przypadków należy ten kod:  
+ <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> Metody jest gwarantowane, można wywołać tylko raz i tylko wtedy, gdy uchwyt jest prawidłowy, zgodnie z definicją <xref:System.Runtime.InteropServices.SafeHandle.IsInvalid%2A> właściwości. Zaimplementować tę metodę w swojej <xref:System.Runtime.InteropServices.SafeHandle> pochodne klasy do wykonywania kodu, który jest wymagany, aby zwolnić uchwytu. Ponieważ jedną z funkcji <xref:System.Runtime.InteropServices.SafeHandle> ma na celu zagwarantowania zapobiegania przeciekom zasobów, kod w danej implementacji <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> musi nigdy się nie powieść. Moduł odśmiecania pamięci wywołuje <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> po uruchomieniu normalne finalizatory dla obiektów, które były bezużyteczne w tym samym czasie. Moduł zbierający elementy bezużyteczne gwarantuje zasobów, aby wywołać tę metodę i że metody nie zostanie przerwana podczas jego jest w toku. Ta metoda będzie gotowa jako region ograniczonego wykonania (CER), podczas tworzenia wystąpienia (oraz wszystkie metody jej wykresu wywołań statycznie możliwa do ustalenia). Mimo że pozwala to uniknąć przerwania przerwanie wątku, nadal należy pamiętać, że wszystkie ścieżki błędów w swojej zastąpione <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> metody. W szczególności należy zastosować <xref:System.Runtime.ConstrainedExecution.ReliabilityContractAttribute> atrybutu jakiekolwiek metody wywołania z <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A>. W większości przypadków należy ten kod:  
   
  `ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)`  
   
- Ponadto w przypadku prostego oczyszczania (na przykład wywołanie interfejsu API Win32 `CloseHandle` na dojście do pliku) można sprawdzić wartość zwrotną dla pojedynczą platformę wywołania wywołania. Złożone oczyszczania może mieć wiele logice programu i wielu wywołań metody, z których część może zakończyć się niepowodzeniem. Należy upewnij się, że logika program ma rezerwowy kod dla każdego z tych przypadkach.  
+ Ponadto w przypadku prostych oczyszczania (na przykład wywołanie interfejsu API Win32 `CloseHandle` na dojście do pliku) dla pojedynczej platformy wywołania wywołania, można sprawdzić wartość zwracaną. Złożone oczyszczania może mieć wiele logiki programu i wielu wywołań metody, z których część może zakończyć się niepowodzeniem. Należy się upewnić, że logice program ma rezerwowy kod dla każdego z tych przypadków.  
   
- Jeśli <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> zwraca `false` z jakiejkolwiek przyczyny, generuje [releaseHandleFailed](~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Asystent debugowania zarządzanego.  Dzięki temu można wykryć przypadkach, gdy nie próba zwolnienia zasobów.  
+ Jeśli <xref:System.Runtime.InteropServices.SafeHandle.ReleaseHandle%2A> zwraca `false` z jakiegokolwiek powodu, generuje [releaseHandleFailed](~/docs/framework/debug-trace-profile/releasehandlefailed-mda.md) Asystent debugowania zarządzanego.  Dzięki temu można wykryć przypadki, w którym nie powiedzie się próba zwolnienia zasobów.  
   
    
   
 ## Examples  
- Poniższy przykład kodu zwalnia dojście i jest częścią większego przykładu udostępnionego dla <xref:System.Runtime.InteropServices.SafeHandle> klasy.  
+ Poniższy przykładowy kod zwalnia dojścia i jest częścią większego przykładu przewidzianego dla <xref:System.Runtime.InteropServices.SafeHandle> klasy.  
   
  [!code-csharp[SafeHandle#3](~/samples/snippets/csharp/VS_Snippets_CLR/SafeHandle/CS/program.cs#3)]  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="SetHandle">
@@ -866,6 +879,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -896,16 +910,16 @@
       </Parameters>
       <Docs>
         <param name="handle">Istniejące dojście do użycia.</param>
-        <summary>Ustawia określone dojście istniejące dojście.</summary>
+        <summary>Ustawia określone dojście istniejące uchwytu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.Runtime.InteropServices.SafeHandle.SetHandle%2A> metody tylko wtedy, gdy wymaganych do obsługi istniejącego dojścia (na przykład jeśli dojście jest zwracany w strukturze), ponieważ infrastruktury międzyoperacyjnego modelu COM programu .NET Framework nie obsługuje przekazywanie danych wyjściowych dojść w strukturze.  
+ Użyj <xref:System.Runtime.InteropServices.SafeHandle.SetHandle%2A> metody tylko wtedy, gdy potrzeba do obsługi istniejących uchwyt (na przykład, jeśli uchwyt jest zwracany w strukturze), ponieważ infrastruktury międzyoperacyjnego modelu COM programu .NET Framework nie obsługuje przekazywanie danych wyjściowych uchwytów w strukturze.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
     <Member MemberName="SetHandleAsInvalid">
@@ -922,6 +936,7 @@
       </AssemblyInfo>
       <AssemblyInfo>
         <AssemblyName>mscorlib</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -949,18 +964,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Oznacza dojścia jako nie jest już używana.</summary>
+        <summary>Oznacza uchwyt tak nie jest już używana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołanie <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> metody tylko wtedy, gdy wiesz, że uchwyt nie odwołuje się do zasobu. Dzięki temu nie zmienia wartości <xref:System.Runtime.InteropServices.SafeHandle.handle> pole; tylko program oznacza dojście jako zamknięte. Dojście następnie może zawierać potencjalnie starych wartości. To wywołanie powoduje, że nie są podejmowane próby zwolnienia zasobów.  
+ Wywołaj <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> metody tylko wtedy, gdy wiesz, że swoje dojście nie jest już odwołuje się do zasobu. Ten sposób nie zmienia wartość <xref:System.Runtime.InteropServices.SafeHandle.handle> pola tylko program oznacza uchwytu jako zamknięte. Dojście następnie może zawierać potencjalnie nieodświeżoną wartość. To wywołanie powoduje, że nie są podejmowane próby zwolnienie zasobów.  
   
- Jak <xref:System.Runtime.InteropServices.SafeHandle.SetHandle%2A> metody, użyj <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> tylko wtedy, gdy wymagana jest obsługa istniejące dojście.  
+ Podobnie jak w przypadku <xref:System.Runtime.InteropServices.SafeHandle.SetHandle%2A> metody, użyj <xref:System.Runtime.InteropServices.SafeHandle.SetHandleAsInvalid%2A> tylko wtedy, gdy potrzeba do obsługi istniejących dojście.  
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienia do wywoływania kodu niezarządzanego. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać uprawnienie wywoływać kod niezarządzany. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
       </Docs>
     </Member>
   </Members>
