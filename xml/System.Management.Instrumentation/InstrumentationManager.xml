@@ -1,11 +1,11 @@
 <Type Name="InstrumentationManager" FullName="System.Management.Instrumentation.InstrumentationManager">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="06c63942927ed1dafce0982447f6df085309a7d1" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="1ff5f82ef0eaf61cf8390145f8b16d328285ce87" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36478521" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37756789" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class InstrumentationManager" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed InstrumentationManager extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type InstrumentationManager = class" />
   <AssemblyInfo>
     <AssemblyName>System.Management.Instrumentation</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -22,21 +23,21 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Udostępnia metody zarządzające okres istnienia i z modelem użytym rozdzielonymi dostawców.  Uwaga: do bibliotek WMI .NET są teraz wziąć pod uwagę stanu końcowego, a nie dalszy rozwój, ulepszenia lub aktualizacje będą dostępne dla problemy związane z zabezpieczeniami wpływu na te biblioteki. [API MI] (https://msdn.microsoft.com/library/jj152383%28v=vs.80%29.aspx) powinna być używana do wszystkich nowych wdrożeń.</summary>
+    <summary>Udostępnia metody zarządzające okres istnienia i model używany dla dostawcy odłączeni.  Uwaga: do bibliotek WMI .NET teraz są uwzględniane w stan końcowy i nie dalszego rozwoju, ulepszenia lub aktualizacje będą dostępne dla jasnym niezwiązanych z zabezpieczeniami wpływających na tych bibliotek. [API MI] (https://msdn.microsoft.com/library/jj152383%28v=vs.80%29.aspx) powinna być używana dla wszystkich nowych wdrożeń.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Rozdzielonymi dostawców są obsługiwane przez aplikację. Dwie metody może służyć przez aplikację do udostępnienia wystąpienia klas usługi WMI: publikowanie/revoke lub metody wywołania zwrotnego. Używa metody wywołania zwrotnego <xref:System.Management.Instrumentation.InstrumentationManager.RegisterType%2A> i <xref:System.Management.Instrumentation.InstrumentationManager.UnregisterType%2A> metody.  
+ Dostawcy odłączeni są obsługiwane przez aplikację. Dwie metody może służyć przez aplikację do udostępnienia wystąpienia klasy usługi WMI: publikowanie/revoke lub metody wywołania zwrotnego. Używa metody wywołania zwrotnego <xref:System.Management.Instrumentation.InstrumentationManager.RegisterType%2A> i <xref:System.Management.Instrumentation.InstrumentationManager.UnregisterType%2A> metody.  
   
- W modelu publikowania/revoke infrastruktury WMI zawiera domyślne zachowanie dla wielu metod trzeba napisać samodzielnie w metody wywołania zwrotnego. Te obejmują wyliczenia i powiązać metody. W tym modelu aplikacja tworzy wystąpienia i je opublikował. Aplikacja jest odpowiedzialny za zapewnienie, że właściwości klucza klasy są przestrzegane. Aplikacja jest również odpowiedzialne za usuwanie instancji.  
+ W modelu publikowania/revoke infrastrukturze WMI zapewnia domyślne zachowanie dla wielu metod, musisz samodzielnie zapisujesz w metody wywołania zwrotnego. Te obejmują wyliczenia i powiązać metody. W tym modelu aplikacja tworzy wystąpienia i publikuje je. Aplikacja jest odpowiedzialny za zapewnienie, że właściwości klucza klasy są przestrzegane. Aplikacja jest również odpowiedzialny za usunięcie wystąpień.  
   
- W modelu wywołania zwrotnego infrastruktury WMI oczekuje, że aplikacja ma metod, które wyliczenia, powiązania i inne metody wymagane do implementowania dostawcy. Wywołuje aplikację dla tej funkcji, a nie powiedzie się, jeśli nie istnieje lub nie została zaimplementowana właściwie. Aplikacja rejestruje typ z jej klas WMI przy użyciu infrastruktury przez wywołanie metody <xref:System.Management.Instrumentation.InstrumentationManager.RegisterType%2A> oraz wskazuje, że nie chce klas WMI udostępniane przez wywołanie metody <xref:System.Management.Instrumentation.InstrumentationManager.UnregisterType%2A>.  
+ W modelu wywołania zwrotnego infrastruktury WMI oczekuje, że aplikacja miała metod, które obsługują wyliczenie, powiązania i innych metod wymaganych do implementacji funkcji dostawcy. On wywołania do aplikacji dla tej funkcji i kończy się niepowodzeniem, jeśli nie istnieje lub nie została zaimplementowana właściwie. Aplikacja rejestruje typ jego klasy usługi WMI z infrastrukturą, wywołując <xref:System.Management.Instrumentation.InstrumentationManager.RegisterType%2A> i wskazuje, że już nie chce uwidaczniane przez wywołanie metody klasy WMI <xref:System.Management.Instrumentation.InstrumentationManager.UnregisterType%2A>.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano sposób użycia modelu publikowania/odwołania. Dwa wystąpienia klasy router są utworzonych i opublikowanych. Później są odwołane.  
+ Poniższy przykład pokazuje, jak korzystać z modelu publikowania/revoke. Dwa wystąpienia klasy routera są tworzone i opublikowane. Później zostaną odwołane.  
   
 ```  
 public class Sample_InstanceProvider  
@@ -57,7 +58,7 @@ return 0;
 }  
 ```  
   
- W następnym przykładzie metoda wywołania zwrotnego rejestracji jest używany do udostępnienia klasy RouterNew.  
+ W następnym przykładzie metody wywołania zwrotnego rejestracji jest używany do udostępnienia klasy RouterNew.  
   
 ```  
 public int MainNew(string[] args)   
@@ -74,26 +75,35 @@ public int MainNew(string[] args)
   </Docs>
   <Members>
     <Member MemberName="Publish">
-      <MemberSignature Language="C#" Value="public static void Publish (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Publish(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Publish(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Sub Publish (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Publish(System::Object ^ value);" />
-      <MemberSignature Language="F#" Value="static member Publish : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Publish value" />
+      <MemberSignature Language="C#" Value="public static void Publish (object obj);" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Publish(object obj) cil managed" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Publish(System.Object)" FrameworkAlternate="netframework-3.5;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub Publish (obj As Object)" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Publish(System::Object ^ obj);" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="F#" Value="static member Publish : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Publish obj" FrameworkAlternate="netframework-3.5;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="C#" Value="public static void Publish (object value);" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Publish(object value) cil managed" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Publish(System.Object)" FrameworkAlternate="netframework-4.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub Publish (value As Object)" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Publish(System::Object ^ value);" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="F#" Value="static member Publish : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Publish value" FrameworkAlternate="netframework-4.0" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="obj" Type="System.Object" Index="0" FrameworkAlternate="netframework-3.5" />
+        <Parameter Name="value" Type="System.Object" Index="0" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
       </Parameters>
       <Docs>
         <param name="value">Wystąpienie klasy, która implementuje dostawcę, aby opublikować.</param>
-        <summary>Udostępnia wystąpienie dostawcy w ramach infrastruktury WMI.</summary>
+        <param name="obj">To be added.</param>
+        <summary>Udostępnia wystąpienie dostawcy usług w ramach infrastruktury WMI.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -107,6 +117,7 @@ public int MainNew(string[] args)
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -116,8 +127,8 @@ public int MainNew(string[] args)
         <Parameter Name="managementAssembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="managementAssembly">Zestaw do zarejestrowania.</param>
-        <summary>Rejestruje zestawu przy użyciu infrastruktury WMI.</summary>
+        <param name="managementAssembly">Zestaw do rejestracji.</param>
+        <summary>Rejestruje zestaw za pomocą infrastruktury WMI.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -131,6 +142,7 @@ public int MainNew(string[] args)
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -141,7 +153,7 @@ public int MainNew(string[] args)
       </Parameters>
       <Docs>
         <param name="managementType">Typ klasy.</param>
-        <summary>Rejestruje klasę z infrastruktury WMI.</summary>
+        <summary>Rejestruje klasę za pomocą infrastruktury WMI.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -160,26 +172,35 @@ static int Main(string[] args)
       </Docs>
     </Member>
     <Member MemberName="Revoke">
-      <MemberSignature Language="C#" Value="public static void Revoke (object value);" />
-      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Revoke(object value) cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Revoke(System.Object)" />
-      <MemberSignature Language="VB.NET" Value="Public Shared Sub Revoke (value As Object)" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Revoke(System::Object ^ value);" />
-      <MemberSignature Language="F#" Value="static member Revoke : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Revoke value" />
+      <MemberSignature Language="C#" Value="public static void Revoke (object obj);" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Revoke(object obj) cil managed" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Revoke(System.Object)" FrameworkAlternate="netframework-3.5;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub Revoke (obj As Object)" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Revoke(System::Object ^ obj);" FrameworkAlternate="netframework-3.5" />
+      <MemberSignature Language="F#" Value="static member Revoke : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Revoke obj" FrameworkAlternate="netframework-3.5;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="C#" Value="public static void Revoke (object value);" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="ILAsm" Value=".method public static hidebysig void Revoke(object value) cil managed" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="DocId" Value="M:System.Management.Instrumentation.InstrumentationManager.Revoke(System.Object)" FrameworkAlternate="netframework-4.0" />
+      <MemberSignature Language="VB.NET" Value="Public Shared Sub Revoke (value As Object)" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; static void Revoke(System::Object ^ value);" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
+      <MemberSignature Language="F#" Value="static member Revoke : obj -&gt; unit" Usage="System.Management.Instrumentation.InstrumentationManager.Revoke value" FrameworkAlternate="netframework-4.0" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters>
-        <Parameter Name="value" Type="System.Object" />
+        <Parameter Name="obj" Type="System.Object" Index="0" FrameworkAlternate="netframework-3.5" />
+        <Parameter Name="value" Type="System.Object" Index="0" FrameworkAlternate="netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2" />
       </Parameters>
       <Docs>
         <param name="value">Wystąpienie klasy, która implementuje dostawcę, aby można było odwołać.</param>
-        <summary>Pobiera wystąpienia dostawcy obecnie dostępna i staje się niedostępny w ramach infrastruktury WMI.</summary>
+        <param name="obj">To be added.</param>
+        <summary>Pobiera wystąpienie aktualnie dostępnego dostawcę i staje się niedostępny w ramach infrastruktury WMI.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -193,6 +214,7 @@ static int Main(string[] args)
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -202,8 +224,8 @@ static int Main(string[] args)
         <Parameter Name="managementAssembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="managementAssembly">Zestaw zarejestrowany wyrejestrować.</param>
-        <summary>Wyrejestrowuje zestawu obecnie zarejestrowane przy użyciu infrastruktury WMI.</summary>
+        <param name="managementAssembly">Zarejestrowanego zestawu do wyrejestrowania.</param>
+        <summary>Wyrejestrowuje zestaw w danym momencie zarejestrowany za pomocą infrastruktury WMI.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -217,6 +239,7 @@ static int Main(string[] args)
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Management.Instrumentation</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -226,8 +249,8 @@ static int Main(string[] args)
         <Parameter Name="managementType" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="managementType">Zarejestrowanego typu wyrejestrować.</param>
-        <summary>Wyrejestrowuje klasy zarejestrowana przy użyciu infrastruktury WMI.</summary>
+        <param name="managementType">Typ zarejestrowany, aby wyrejestrować.</param>
+        <summary>Wyrejestrowuje klasy zarejestrowane przy użyciu infrastruktury WMI.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
