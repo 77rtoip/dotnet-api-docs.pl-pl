@@ -1,11 +1,11 @@
 <Type Name="Enlistment" FullName="System.Transactions.Enlistment">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="83677dcd285d02d338157cbdb038740221f092c8" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="1645a73090e75ec9e7a6410923ebccc3aa2978ee" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36406280" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37548338" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Enlistment" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Enlistment extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type Enlistment = class" />
   <AssemblyInfo>
     <AssemblyName>System.Transactions</AssemblyName>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>2.0.5.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
@@ -32,21 +33,21 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Umożliwia komunikację między uczestnika transakcji zarejestrowane i Menedżera transakcji podczas ostatniej fazy transakcji.</summary>
+    <summary>Usprawnia komunikację między uczestnika zobowiązaniom transakcji i Menedżer transakcji podczas ostatniej fazy transakcji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy <xref:System.Transactions.Transaction.EnlistVolatile%2A> i <xref:System.Transactions.Transaction.EnlistDurable%2A> metody <xref:System.Transactions.Transaction> obiektu są wywoływane można zarejestrować uczestnika transakcji, zwracają ten obiekt opisujący rejestracji.  
+ Gdy <xref:System.Transactions.Transaction.EnlistVolatile%2A> i <xref:System.Transactions.Transaction.EnlistDurable%2A> metody <xref:System.Transactions.Transaction> obiektu są wywoływane w celu zarejestrować uczestnika transakcji, zwracają one ten obiekt opisujący rejestracji.  
   
- Podczas fazy ostateczne zatwierdzenie transakcji Menedżera transakcji przekazuje tego obiektu do wdrażania Menedżera zasobów <xref:System.Transactions.IEnlistmentNotification> interfejs, który został zarejestrowany w transakcji. W szczególności Menedżera transakcji wywołuje <xref:System.Transactions.IEnlistmentNotification.Commit%2A> lub <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> metody uczestnika, w zależności od tego, czy jego postanowiła przekazać ani wycofać transakcji. Uczestnik powinny wywoływać <xref:System.Transactions.Enlistment.Done%2A> metody tego obiektu, aby dowiedzieć się, że ukończono pracę Menedżera transakcji.  
+ W fazie ostatecznego zatwierdzenia transakcji Menedżera transakcji przekazuje ten obiekt do implementowania Menedżera zasobów <xref:System.Transactions.IEnlistmentNotification> interfejs, który został zarejestrowany w transakcji. Ściślej mówiąc, Menedżer transakcji wywołuje <xref:System.Transactions.IEnlistmentNotification.Commit%2A> lub <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> metoda uczestnika, w zależności od tego, czy jego podjęto decyzję o Zatwierdź lub Wycofaj tę transakcję. Uczestnik powinny wywoływać <xref:System.Transactions.Enlistment.Done%2A> metody tego obiektu, aby umożliwić Menedżera transakcji, dowiedzieć się, że ukończono pracę.  
   
- Funkcja rejestracji można wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowywania.  W ten sposób rejestracji jest rzutowanie odczytu tylko głosowania, co oznacza, że głosów zatwierdzania w transakcji, ale nie musi odbierać końcowego wyniku. Należy zauważyć, że po <xref:System.Transactions.Enlistment.Done%2A> metoda jest wywoływana, zarejestrowane uczestnika odbiera żadne dalsze powiadomienia z Menedżera transakcji.  
+ Rejestracja może wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowania.  W ten sposób rejestracji jest rzutowanie odczytu tylko prawo głosu, co oznacza, że głosów zatwierdzania w transakcji, ale nie wymaga uzyskania końcowego wyniku. Należy zauważyć, że po <xref:System.Transactions.Enlistment.Done%2A> metoda jest wywoływana, zobowiązaniom uczestnika, który odbiera żadne dalsze powiadomienia z menedżerem transakcji.  
   
    
   
 ## Examples  
- Poniższy przykład przedstawia implementację <xref:System.Transactions.IEnlistmentNotification> interfejsu i kiedy <xref:System.Transactions.Enlistment.Done%2A> powinna zostać wywołana metoda.  
+ W poniższym przykładzie pokazano implementację <xref:System.Transactions.IEnlistmentNotification> interfejsu i kiedy <xref:System.Transactions.Enlistment.Done%2A> powinna być wywoływana metoda.  
   
  [!code-csharp[Tx_Enlist#2](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#2)]
  [!code-vb[Tx_Enlist#2](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#2)]  
@@ -68,6 +69,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Transactions</AssemblyName>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>2.0.5.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
@@ -85,16 +87,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wskazuje, że uczestnika transakcji ukończył pracę.</summary>
+        <summary>Wskazuje, że uczestnika transakcji zakończy pracę.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas fazy ostateczne zatwierdzenie transakcji Menedżera transakcji wywołuje albo <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> lub <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> metody uczestnika, w zależności od tego, czy transakcja została zatwierdzona lub wycofana. Menedżer zasobów należy wykonać pracę, Zakończ transakcję i następnie informują menedżera transakcji, że zostało zakończone przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metoda `enlistment` parametru.  
+ W fazie ostatecznego zatwierdzenia transakcji Menedżer transakcji wywołuje albo <xref:System.Transactions.IEnlistmentNotification.Commit%2A>, <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> lub <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> metoda uczestnika, w zależności od tego, czy transakcja ma zostać przekazana lub wycofana. Menedżer zasobów powinien wykonać wszelkie prace niezbędne do zakończenia transakcji, a następnie informują menedżera transakcji, że została zakończona przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metody `enlistment` parametru.  
   
- Jeśli Menedżer zasobów został zarejestrowany trwałym, ale nie odpowiada przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metody Menedżera transakcji jest nie wiesz, że Menedżer zasobów odebrał wywołanie odpowiednie powiadomienie. Tak Menedżer transakcji śledzi oczekiwania na odpowiedź i przechowuje informacje dotyczące tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie wywołuje się, ta część informacji jest przechowywana wokół przez nieograniczony czas w pamięci lub zasobów całego systemu. Powoduje to zasoby nie mogą zostać odzyskane. W przypadku transakcji rozproszonych może to ostatecznie wypełnienia dziennika usługi MSDTC, który przerywa proces MSDTC. W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowo i ciągłe wzrost zużycia pamięci procesu Menedżera zasobów. W związku z tym jest niezwykle ważny, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metody po wykonuje się za pomocą Menedżera zasobów z Praca przygotować.  
+ Jeśli Menedżera zasobów został zarejestrowany trwale, ale nie odpowiada, wywołując <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji jest pewności, czy usługi resource manager otrzymał wywołanie odpowiednie powiadomienie. W efekcie Menedżer transakcji przechowuje oczekiwania na odpowiedź i przechowuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie zostanie wywołana, to fragment informacji jest przechowywana wokół przez czas nieokreślony w pamięci lub zasobów całego systemu. Skutkuje to zasoby nie mogą zostać odzyskane. W przypadku transakcji rozproszonej może to po pewnym czasie wypełnienia dzienniku MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowe i ciągłe wzrost zużycie pamięci procesu Menedżera zasobów. Dlatego jest niezwykle istotne, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metoda po zakończeniu Menedżera zasobów przy użyciu usługi przygotowania pracy.  
   
- Funkcja rejestracji można wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowywania. W ten sposób rejestracji jest rzutowanie odczytu tylko głosowania, co oznacza, że głosów zatwierdzania w transakcji, ale nie musi odbierać końcowego wyniku. Należy pamiętać, że po ta metoda jest wywoływana, zarejestrowane uczestnika odbiera żadne dalsze powiadomienia z Menedżera transakcji.  
+ Rejestracja może wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> w fazie przygotowania. W ten sposób rejestracji jest rzutowanie odczytu tylko prawo głosu, co oznacza, że głosów zatwierdzania w transakcji, ale nie wymaga uzyskania końcowego wyniku. Należy pamiętać, że po ta metoda jest wywoływana, zobowiązaniom uczestnika, który odbiera żadne dalsze powiadomienia z menedżerem transakcji.  
   
  ]]></format>
         </remarks>
