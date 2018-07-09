@@ -1,11 +1,11 @@
 <Type Name="DataLoadOptions" FullName="System.Data.Linq.DataLoadOptions">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="34c67048240be5b4d33ed067657848792722a711" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="4d7a1641f923121f7dc6f5ac9f8bc574e9cf05e1" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36689382" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37680939" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class DataLoadOptions" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit DataLoadOptions extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type DataLoadOptions = class" />
   <AssemblyInfo>
     <AssemblyName>System.Data.Linq</AssemblyName>
+    <AssemblyVersion>3.5.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -22,26 +23,26 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Umożliwia natychmiastowe ładowania oraz filtrowanie powiązanych danych.</summary>
+    <summary>Zapewnia natychmiastowy ładowania i filtrowanie powiązanych danych.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 ## <a name="general"></a>Ogólne  
- Określona w zapytaniu dla obiekt faktycznie pobrać tylko żądanego obiektu. *Powiązane* obiekty nie są automatycznie dołączone w tym samym czasie. (Aby uzyskać więcej informacji, zobacz [zapytań w relacji](~/docs/framework/data/adonet/sql/linq/querying-across-relationships.md).)  
+ Po wykonaniu zapytania dotyczącego obiektu, możesz pobrać faktycznie tylko żądanego obiektu. *Powiązane* obiekty nie są automatycznie pobrać w tym samym czasie. (Aby uzyskać więcej informacji, zobacz [zapytań w relacjach](~/docs/framework/data/adonet/sql/linq/querying-across-relationships.md).)  
   
- <xref:System.Data.Linq.DataLoadOptions> Klasa udostępnia dwie metody uzyskania bezpośredniego ładowania określonego powiązanych danych. <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> Metoda umożliwia natychmiastowe ładowania danych dotyczących do głównego celu. <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> Metoda pozwala na filtrowanie powiązanych obiektów.  
+ <xref:System.Data.Linq.DataLoadOptions> Klasa udostępnia dwie metody do osiągnięcia bezpośrednie ładowanie określonej powiązane dane. <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> Metoda umożliwia bezpośrednie ładowanie danych powiązane z głównym celem. <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> Metoda umożliwia filtrowanie powiązanych obiektów.  
   
 ## <a name="rules"></a>Reguły  
  Należy zauważyć następujące reguły dotyczące <xref:System.Data.Linq.DataLoadOptions> użycia:  
   
--   Przypisywanie <xref:System.Data.Linq.DataLoadOptions> do <xref:System.Data.Linq.DataContext> po wykonaniu pierwszej kwerendy generuje wyjątek.  
+-   Przypisywanie <xref:System.Data.Linq.DataLoadOptions> do <xref:System.Data.Linq.DataContext> po pierwsze zapytanie zostało wykonane generuje wyjątek.  
   
 -   Modyfikowanie <xref:System.Data.Linq.DataLoadOptions> po przypisaniu do <xref:System.Data.Linq.DataContext> generuje wyjątek  
   
 ## <a name="cycle-handling"></a>Obsługa cyklu  
- <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> i <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> dyrektywy nie musi tworzyć cykle. Następujące reprezentują przykłady takich wykresów:  
+ <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> i <xref:System.Data.Linq.DataLoadOptions.AssociateWith%2A> dyrektywy nie należy tworzyć cykle. Poniżej przedstawiono przykłady takich wykresów:  
   
 -   Przykład 1: Self cykliczne  
   
@@ -55,7 +56,7 @@
   
 -   Przykład 3: Dłużej cykli  
   
-     Mimo że nie powinno to nastąpić w dobrze znormalizowane modelu, jest możliwe.  
+     Chociaż należy występuje w dobrze znormalizowane modelu, jest możliwe.  
   
     -   `dlo.LoadWith <A>(a => a.Bs);`  
   
@@ -63,30 +64,30 @@
   
     -   `dlo.LoadWith <C>(c => c.As);`  
   
--   Przykład 4: Self podzapytania cykliczne  
+-   Przykład 4: Self podzapytań cykliczne  
   
     -   `dlo.AssociateWith<A>(a=>a.As.Where(a=>a.Id=33));`  
   
--   Przykład 5: Dłużej podzapytania cykliczne  
+-   Przykład 5: Dłużej cyklicznego podzapytań  
   
     -   `dlo.AssociateWith<A>(a=>a.Bs.Where(b=>b.Id==3));`  
   
     -   `dlo.AssociateWith<B>(b=>b.As.Where(a=>a.Id==3));`  
   
- Poniżej przedstawiono niektóre reguły ogólne, które ułatwiają zrozumienie zdarzenia występujące w tych scenariuszach.  
+ Poniżej przedstawiono kilka ogólnych zasad, które pomagają zrozumieć, co występuje w następujących scenariuszach.  
   
- **Operacja LoadWith** każde wywołanie <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> sprawdza, czy cykle zostały wprowadzone do wykresu. Jeśli, jak w przykładach 1, 2 i 3, jest zwracany wyjątek.  
+ **Loadoptions** każde wywołanie <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> sprawdza, czy cykle zostały wprowadzone do wykresu. Jeśli, tak jak w przykładach 1, 2 i 3, wyjątek jest generowany.  
   
- **AssociateWith** aparatu w czasie wykonywania nie dotyczą istniejących klauzule podzapytania relacji wewnątrz wyrażenia.  
+ **AssociateWith** aparatu w czasie wykonywania nie ma zastosowania do relacji wewnątrz wyrażenia wartości istniejących klauzule podzapytania.  
   
--   Na przykład 4 `Where` klauzuli jest wykonywane względem wszystkich `A`, nie tylko te podrzędna filtrowane według wyrażenia podzapytania (ponieważ może to być cykliczne)  
+-   W przykładzie 4 `Where` klauzula jest wykonywane względem wszystkich `A`, nie tylko tych podrzędnych filtrowane według wyrażenia podzapytania (ponieważ byłoby cyklicznego)  
   
--   W przykładzie 5 pierwszy `Where` klauzuli jest stosowane do wszystkich `B`s, nawet wtedy, gdy istnieją podzapytania na `B`. Drugi `Where` klauzuli jest stosowane do wszystkich `A`podzapytania s nawet wtedy, gdy istnieją na `A`.  
+-   W przykładzie 5 pierwszy `Where` klauzula jest stosowane do wszystkich `B`s, nawet wtedy, gdy istnieją podzapytań na `B`. Drugi `Where` klauzula jest stosowane do wszystkich `A`podzapytań s nawet wtedy, gdy istnieją na `A`.  
   
    
   
 ## Examples  
- Po pobraniu `Customers` z przykładowej bazy danych Northwind możesz użyć <xref:System.Data.Linq.DataLoadOptions> Aby określić, że `Orders` jest również mają zostać pobrane. Można nawet określić który podzestaw `Orders` do pobrania.  
+ Po pobraniu `Customers` z przykładowej bazy danych Northwind możesz użyć <xref:System.Data.Linq.DataLoadOptions> Aby określić, że `Orders` jest również do pobrania. Możesz nawet określić który podzestaw `Orders` do pobrania.  
   
  ]]></format>
     </remarks>
@@ -101,6 +102,7 @@
       <MemberType>Constructor</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Parameters />
@@ -119,6 +121,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -128,13 +131,13 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">Identyfikuje zapytania, który ma być używany dla określonego pola jeden do wielu lub właściwości. Należy pamiętać, że: Jeśli wyrażenie nie rozpoczyna się pole lub właściwość, która reprezentuje relacji jeden do wielu, jest zgłaszany wyjątek.  Jeśli operator inny niż prawidłowy operator pojawi się w wyrażeniu, jest zwracany wyjątek. Prawidłowe operatory są następujące: gdzie OrderBy ThenBy OrderByDescending ThenByDescending potrwać</param>
-        <summary>Filtry pobrać obiektów dla określonej relacji.</summary>
+        <param name="expression">Identyfikuje zapytania, które ma być używany w określonym polu jeden do wielu lub właściwość. Należy pamiętać o następujących: Jeśli wyrażenie nie zaczyna się ona polem ani właściwością, która reprezentuje relacji jeden do wielu, zwracany jest wyjątek.  Jeśli operatora innego niż prawidłowy operator pojawi się w wyrażeniu, zwracany jest wyjątek. Prawidłowe operatory to w następujący sposób: w przypadku gdy OrderBy ThenBy OrderByDescending ThenByDescending podjąć</param>
+        <summary>Służy do przefiltrowania pobrane dla określonego relacji obiekty.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W poniższym przykładzie pętli wewnętrznej wykonuje iterację tylko na te `Orders` które nie zostały wysłane dzisiaj.  
+ W poniższym przykładzie wewnętrzną pętlę iteruje tylko te `Orders` które nie zostały wysłane już dziś.  
   
    
   
@@ -156,6 +159,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -168,19 +172,19 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ, który jest zapytanie względem.  Jeśli typ jest Niemapowane, jest zwracany wyjątek.</typeparam>
-        <param name="expression">Identyfikuje zapytania, który ma być używany dla określonego pola jeden do wielu lub właściwości. Należy pamiętać, że: Jeśli wyrażenie nie rozpoczyna się pole lub właściwość, która reprezentuje relacji jeden do wielu, jest zgłaszany wyjątek.  Jeśli operator inny niż prawidłowy operator pojawi się w wyrażeniu, jest zwracany wyjątek. Prawidłowe operatory są następujące: gdzie OrderBy ThenBy OrderByDescending ThenByDescending potrwać</param>
-        <summary>Filtruje pobrane dla określonego relacji obiekty.</summary>
+        <typeparam name="T">Typ, który jest wysyłane zapytanie względem.  Jeśli typ jest niezamapowany, wyjątek jest generowany.</typeparam>
+        <param name="expression">Identyfikuje zapytania, które ma być używany w określonym polu jeden do wielu lub właściwość. Należy pamiętać o następujących: Jeśli wyrażenie nie zaczyna się ona polem ani właściwością, która reprezentuje relacji jeden do wielu, zwracany jest wyjątek.  Jeśli operatora innego niż prawidłowy operator pojawi się w wyrażeniu, zwracany jest wyjątek. Prawidłowe operatory to w następujący sposób: w przypadku gdy OrderBy ThenBy OrderByDescending ThenByDescending podjąć</param>
+        <summary>Służy do przefiltrowania pobrane dla określonego relacji obiekty.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać informacje dotyczące zapobiegania cykle, zobacz <xref:System.Data.Linq.DataLoadOptions>.  
+ Aby uzyskać informacje o tym, jak w celu uniknięcia cyklów, zobacz <xref:System.Data.Linq.DataLoadOptions>.  
   
    
   
 ## Examples  
- W poniższym przykładzie pętli wewnętrznej wykonuje iterację tylko na te `Orders` które nie zostały wysłane dzisiaj.  
+ W poniższym przykładzie wewnętrzną pętlę iteruje tylko te `Orders` które nie zostały wysłane już dziś.  
   
  [!code-csharp[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#1)]
  [!code-vb[System.Data.Linq.DataLoadOptions#1](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#1)]  
@@ -249,6 +253,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -258,13 +263,13 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.LambdaExpression" />
       </Parameters>
       <Docs>
-        <param name="expression">Wyrażenie lambda identyfikuje pokrewnego.</param>
-        <summary>Pobiera określony danych związanych z głównego celu za pomocą wyrażenia lambda.</summary>
+        <param name="expression">Wyrażenie lambda, która identyfikuje pokrewnego.</param>
+        <summary>Pobiera określone dane związane z główny element docelowy przy użyciu wyrażenia lambda.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W poniższym przykładzie wszystkie `Orders` dla wszystkich `Customers` kto znajdują się w Londynie są pobierane, gdy zapytanie jest wykonywane. W rezultacie, kolejne dostęp do `Orders` właściwość `Customer` obiektu nie spowoduje wyzwolenia Nowa kwerenda bazy danych.  
+ W poniższym przykładzie wszystkie `Orders` dla wszystkich `Customers` kto znajdują się w Londynie są pobierane, gdy zapytanie jest wykonywane. Dzięki temu usługa następujących po sobie dostęp do `Orders` właściwość `Customer` obiektu nie wyzwalają nowej kwerendy bazy danych.  
   
    
   
@@ -286,6 +291,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.Data.Linq</AssemblyName>
+        <AssemblyVersion>3.5.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -298,21 +304,21 @@
         <Parameter Name="expression" Type="System.Linq.Expressions.Expression&lt;System.Func&lt;T,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ, który jest zapytanie względem.  W przypadku Niemapowane tego typu, jest zwracany wyjątek.</typeparam>
-        <param name="expression">Określa pole lub właściwość do pobrania.  Jeśli wyrażenie nie identyfikuje pole lub właściwość, która reprezentuje relacja jeden do jednego lub jeden do wielu, jest zwracany wyjątek.</param>
-        <summary>Określa, które obiekty podrzędne można pobrać po przesłaniu zapytania dla obiekt typu T.</summary>
+        <typeparam name="T">Typ, który jest wysyłane zapytanie względem.  Jeśli tego typu jest niezamapowany, jest zgłaszany wyjątek.</typeparam>
+        <param name="expression">Określa pole lub właściwość do pobrania.  Jeśli wyrażenie identyfikuje ona polem ani właściwością, która reprezentuje relację jeden do jednego lub jeden do wielu, jest zgłaszany wyjątek.</param>
+        <summary>Określa, które obiekty podrzędne można pobrać po wysłaniu zapytania dotyczącego obiektu typu T.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Nie można określić ładowanie dwa poziomy relacji (na przykład `Orders.OrderDetails`). W tych scenariuszach należy określić dwa oddzielne <xref:System.Data.Linq.DataLoadOptions.LoadWith%2A> metody.  
   
- Aby uniknąć cyklicznie, zobacz uwagi w sekcji <xref:System.Data.Linq.DataLoadOptions>.  
+ Aby uniknąć cykliczny, zobacz uwagi w temacie <xref:System.Data.Linq.DataLoadOptions>.  
   
    
   
 ## Examples  
- W poniższym przykładzie wszystkie `Orders` dla wszystkich `Customers` kto znajdują się w Londynie są pobierane, gdy zapytanie jest wykonywane. W rezultacie, kolejne dostęp do `Orders` właściwość `Customer` obiektu nie spowoduje wyzwolenia Nowa kwerenda bazy danych.  
+ W poniższym przykładzie wszystkie `Orders` dla wszystkich `Customers` kto znajdują się w Londynie są pobierane, gdy zapytanie jest wykonywane. Dzięki temu usługa następujących po sobie dostęp do `Orders` właściwość `Customer` obiektu nie wyzwalają nowej kwerendy bazy danych.  
   
  [!code-csharp[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/csharp/VS_Snippets_Data/system.data.linq.dataloadoptions/cs/program.cs#2)]
  [!code-vb[System.Data.Linq.DataLoadOptions#2](~/samples/snippets/visualbasic/VS_Snippets_Data/system.data.linq.dataloadoptions/vb/module1.vb#2)]  

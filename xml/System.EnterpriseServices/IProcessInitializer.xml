@@ -1,11 +1,11 @@
 <Type Name="IProcessInitializer" FullName="System.EnterpriseServices.IProcessInitializer">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="65909f2ec439d52a6e219ae1ac7909475679abd1" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="6928ecdc6b5be0c84dbb3a96fb6b93bc93a17072" />
+    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36563528" />
+    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
+    <Meta Name="ms.locfileid" Value="37655142" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IProcessInitializer" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IProcessInitializer" />
@@ -15,6 +15,8 @@
   <TypeSignature Language="F#" Value="type IProcessInitializer = interface" />
   <AssemblyInfo>
     <AssemblyName>System.EnterpriseServices</AssemblyName>
+    <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <AssemblyVersion>4.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Interfaces />
@@ -27,16 +29,16 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Obsługuje metody, które mogą być wywoływane, gdy składnik COM uruchamiania lub wyłączania.</summary>
+    <summary>Obsługuje metody, które mogą być wywoływane, gdy składnik COM, uruchamiania lub zamykania.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Implementowanie <xref:System.EnterpriseServices.IProcessInitializer> metody interfejsu w obsługiwanych składników Jeśli chcesz uruchomić inicjowania lub zamknięcia kodu podczas procesu serwera (Dllhost.exe) uruchamiania lub zamykania, odpowiednio.  
+ Implementowanie <xref:System.EnterpriseServices.IProcessInitializer> metod interfejsu na obsługiwanych składników czy chcesz uruchomić inicjowania kod zamknięcia po procesu serwera (Dllhost.exe) uruchamiania lub zamykania, odpowiednio.  
   
- COM + zawiera `Startup` i `Shutdown` zdarzenia, gdy Dllhost.exe początkowej i końcowej. Ta funkcja umożliwia wszystkie składniki modelu COM + w aplikacji serwera COM + (nazywane składniki serwera poniżej) do uruchamiania niestandardowych inicjowanie i oczyszczanie kodu są zainstalowane. Wystąpienia każdego składnika, który implementuje <xref:System.EnterpriseServices.IProcessInitializer> interfejs zostanie utworzona i przechowywana w czasie trwania procesu i wywołano metody interfejsu podczas uruchamiania i wyłączania. Po zaimplementowaniu na <xref:System.EnterpriseServices.ServicedComponent>, podczas rejestracji składnika `InitializesServerApplication` parametru w `COMAdminCatalogObject` w składnikach kolekcji ustawiono `true`.  
+ COM + zawiera `Startup` i `Shutdown` zdarzenia w przypadku Dllhost.exe rozpoczyna i kończy. Ta funkcja umożliwia żadnych składników modelu COM +, które są zainstalowane w aplikacji serwera COM + (nazywane składniki serwera poniżej) do uruchamiania niestandardowe inicjowanie i oczyszczanie kodu. Wystąpienia każdego składnika, który implementuje <xref:System.EnterpriseServices.IProcessInitializer> interfejs zostanie utworzona i przechowywane przez czas trwania procesu i potrzebny podczas uruchamiania i zamykania metod interfejsu. Po zaimplementowaniu w <xref:System.EnterpriseServices.ServicedComponent>, podczas rejestracji składnika `InitializesServerApplication` parametru w `COMAdminCatalogObject` w ramach składników kolekcji jest ustawiona na `true`.  
   
- Przy użyciu `Startup` i `Shutdown` zdarzenia, można zainicjować zasobów, tworzyć połączenia, zainicjować udostępnionych danych, a następnie uruchom oczyszczanie kodu. Nie należy jednak dostępu stanów, które są specyficzne dla modelu COM +, ponieważ wystąpienia serwera składników nie został jeszcze utworzony. Ponadto kod w `Startup` i `Shutdown` zdarzenia powinien zwrócić tak szybko jak to możliwe, ponieważ system oczekuje tylko 90 sekund na Dllhost.exe w celu przygotowania do akceptowania aktywacji po procesie uruchamiania systemu. Jeśli nie Dllhost.exe sygnalizuje, że jest gotowy w ciągu 90 sekund, system kończy proces; w związku z tym wszystkie inicjowania przetwarzania musi zostać wykonane w tym przedziale czasu. Składnik każdego serwera, który uczestniczy w inicjowania musi obsługiwać <xref:System.EnterpriseServices.IProcessInitializer> interfejsu. Przy uruchamianiu DllHost.exe COM + tworzy wszystkie składniki serwera, którzy zażądali tej usługi, wywołania `QueryInterface` dla <xref:System.EnterpriseServices.IProcessInitializer> interfejsu i wywołania <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> funkcji. Podobnie podczas zamykania procesu DllHost.exe wywołuje <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> funkcja tych wcześniej zapisanych wskaźniki interfejsu.  
+ Za pomocą `Startup` i `Shutdown` zdarzenia, można zainicjować zasobów, tworzenie połączeń, inicjowania udostępnionych danych, a następnie uruchom kod porządkujący. Nie wymaga jednak dostępu stany, które są specyficzne dla modelu COM +, ponieważ wystąpienia serwera składników, które nie zostały jeszcze utworzone. Ponadto kod w `Startup` i `Shutdown` zdarzenia powinna zwrócić tak szybko, jak to możliwe, ponieważ system oczekuje tylko 90 sekund dla Dllhost.exe przygotowując się do akceptowania aktywacji po procesie uruchamiania systemu. Jeśli Dllhost.exe nie sygnalizuje, że jest gotowa w ciągu 90 sekund, system kończy proces; w efekcie wszystkie inicjowania przetwarzania musi zostać zakończony w tym przedziale czasu. Każdy składnik serwera, który uczestniczy w inicjowania musi obsługiwać <xref:System.EnterpriseServices.IProcessInitializer> interfejsu. Przy uruchamianiu DllHost.exe modelu COM + tworzy wszystkie składniki serwera, które zażądał tej usługi, wywołania `QueryInterface` dla <xref:System.EnterpriseServices.IProcessInitializer> interfejsu i wywołania <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> funkcji. Podobnie, gdy proces DllHost.exe zostanie zamknięta, wywoływanych przez nią <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> funkcji na te wcześniej zapisane wskaźniki interfejsu.  
   
  ]]></format>
     </remarks>
@@ -52,6 +54,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.EnterpriseServices</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -59,12 +63,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wykonuje akcje zamknięcia. Wywoływana, gdy Dllhost.exe zostanie zamknięta.</summary>
+        <summary>Wykonuje akcje zamknięcia. Wywołuje się, gdy Dllhost.exe zostanie zamknięta.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> nie jest wywoływana podczas natychmiastowy błąd lub inne zdarzenia zamknięcia krytycznego.  
+ <xref:System.EnterpriseServices.IProcessInitializer.Shutdown%2A> nie jest wywoływana podczas failfast lub innych zdarzeń zamknięcia krytycznego.  
   
  ]]></format>
         </remarks>
@@ -80,6 +84,8 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.EnterpriseServices</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -89,15 +95,15 @@
         <Parameter Name="punkProcessControl" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="punkProcessControl">W systemie Microsoft Windows XP wskaźnik do <see langword="IUnknown" /> interfejs składnika COM uruchamiania. W systemie Windows 2000, ten argument jest zawsze <see langword="null" />.</param>
-        <summary>Wykonuje inicjowania podczas uruchamiania. Wywołuje się po uruchomieniu Dllhost.exe.</summary>
+        <param name="punkProcessControl">W systemie Microsoft Windows XP, wskaźnik do <see langword="IUnknown" /> interfejs składnika COM uruchamiania. W systemie Microsoft Windows 2000 ten argument jest zawsze <see langword="null" />.</param>
+        <summary>Wykonuje inicjowanie przy uruchamianiu. Wywołuje się, gdy Dllhost.exe została uruchomiona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Zawiera odwołanie do obiektu `punkProcessControl` implementuje <xref:System.EnterpriseServices.IProcessInitControl> interfejsu. <xref:System.EnterpriseServices.IProcessInitControl> obsługuje pojedynczej metody <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>.  
   
- Kod inicjujący w <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> można wywołać <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>, z równa ponownego uruchamiania razy składnika limit czasu w sekundach limit czasu.  
+ Kod inicjowania w <xref:System.EnterpriseServices.IProcessInitializer.Startup%2A> może wywołać <xref:System.EnterpriseServices.IProcessInitControl.ResetInitializerTimeout%2A>, przy użyciu limitu czasu, ustaw wartość początkową limit czasu składników czas pozostały czas w sekundach.  
   
  ]]></format>
         </remarks>
