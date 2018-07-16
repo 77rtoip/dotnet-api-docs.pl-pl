@@ -1,11 +1,11 @@
 <Type Name="WorkflowInstance" FullName="System.Activities.Hosting.WorkflowInstance">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="c5c11958c52a0255dd1e5186879480a827cf27ae" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="d315816115611de8c387fecbcb3fd4aac1e1aff6" />
+    <Meta Name="ms.sourcegitcommit" Value="44933aff38db926168781f50300446344189a04d" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36654269" />
+    <Meta Name="ms.lasthandoff" Value="07/16/2018" />
+    <Meta Name="ms.locfileid" Value="39064851" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class WorkflowInstance" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract WorkflowInstance extends System.Object" />
@@ -23,28 +23,28 @@
   <Interfaces />
   <Docs>
     <summary>
-      <see cref="T:System.Activities.Hosting.WorkflowInstance" /> jest lekki, środowiska uruchomieniowego na wystąpienie wykonywania przepływu pracy programu. Może zostać zbudowana w celu utworzenia nowego wystąpienia przepływu pracy lub istniejącego wystąpienia. Interfejsy API który <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" /> ujawnia są minimalny zestaw kontrolek środowiska uruchomieniowego, z których można zaimplementować wyższej liczby operacji poziomu. Ten zestaw interfejsu API reprezentuje cały szerokość funkcji środowiska uruchomieniowego. <see cref="T:System.Activities.Hosting.WorkflowInstance" /> jest klasą abstrakcyjną i zależy od wykonania hosta jego metody abstrakcyjne zapewnić host funkcje, takie jak synchronizacji, utrwalania, śledzenia i rozszerzenia.</summary>
+      <see cref="T:System.Activities.Hosting.WorkflowInstance" /> to lekkie środowisko uruchomieniowe na wystąpienie wykonywania przepływu pracy programu. Może zostać zbudowana w celu utworzenia nowego wystąpienia przepływu pracy lub istniejące wystąpienie przechodzi w stan. Interfejsy API, <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" /> ujawnia to minimalny zestaw kontrolek środowiska uruchomieniowego, z których można zaimplementować operacji na wyższym poziomie. Ten zestaw API reprezentuje cały szeroki zakres funkcji środowiska uruchomieniowego. <see cref="T:System.Activities.Hosting.WorkflowInstance" /> jest klasą abstrakcyjną i opiera się na implementacji hosta jego metody abstrakcyjne zapewnić host funkcje, takie jak synchronizacja, trwałości, śledzenia i rozszerzeń.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Activities.Hosting.WorkflowInstance> jest jednym wątku przyjęto założenie, że host synchronizuje wszystkie do niego dostęp. Próba wywołania jednocześnie wiele interfejsów API spowoduje <xref:System.InvalidOperationException> został zgłoszony.  
+ <xref:System.Activities.Hosting.WorkflowInstance> jest jednym wątków i przyjęto założenie, że host synchronizuje dostęp do niego. Próba wywołania wiele interfejsów API, równocześnie spowoduje <xref:System.InvalidOperationException> zgłaszane.  
   
- Wewnętrznie <xref:System.Activities.Hosting.WorkflowInstance> ma dwa stany: uruchamianie i wstrzymana. Jedynym sposobem, aby spowodować przejście ze środowiska uruchomieniowego Wstrzymano uruchomiona jest wywołanie <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>. Wszystkie akcje (z wyjątkiem Wstrzymaj) może zostać pobrany, tylko gdy środowisko wykonawcze zostało wstrzymane. Środowisko uruchomieniowe stają się samorzutnie wstrzymana w następujących sytuacjach:  
+ Wewnętrznie <xref:System.Activities.Hosting.WorkflowInstance> ma dwóch stanów: uruchomiona, a wstrzymana. Jedynym sposobem, aby spowodować przejście ze środowiska uruchomieniowego Wstrzymano uruchomiona jest wywołanie <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>. Wszystkie akcje (z wyjątkiem wstrzymania) może zostać pobrany tylko, gdy środowisko uruchomieniowe zostało wstrzymane. Środowisko uruchomieniowe stają się spontanicznie wstrzymane w następujących sytuacjach:  
   
--   Wystąpił błąd krytyczny do środowiska wykonawczego. Host zostanie zasygnalizowane przez <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> (który nie można sygnalizować przejście może zostać wstrzymana), a następnie powiadomienie za pośrednictwem <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A>.  
+-   Wystąpił błąd krytyczny do środowiska uruchomieniowego. Hosta są sygnalizowane za pośrednictwem <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> (który nie sygnalizuje przejścia do wstrzymana), a następnie powiadomiony poprzez <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A>.  
   
--   Wystąpił wyjątek w przepływie pracy był nieprzechwycony i znaki ucieczki katalogu głównego. Host zostanie powiadomiony poprzez <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyUnhandledException%2A> metody.  
+-   Wyjątek w przepływie pracy był nieprzechwycony i poprzedzone znakiem zmiany znaczenia katalogu głównego. Host zostanie powiadomiony poprzez <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyUnhandledException%2A> metody.  
   
--   Planista ma za mało elementów roboczych i jest teraz <xref:System.Activities.Hosting.WorkflowInstanceState.Idle>. Host zostanie powiadomiony poprzez <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A> metody. Należy pamiętać, że harmonogram może zabrakło elementów roboczych, ponieważ wystąpienie jest w stanie bezczynności lub wystąpienia jest pełny. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> Wartość <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwości może służyć do rozróżniania między nimi.  
+-   Harmonogram ma za mało elementów roboczych i jest teraz <xref:System.Activities.Hosting.WorkflowInstanceState.Idle>. Host zostanie powiadomiony poprzez <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A> metody. Należy pamiętać, że harmonogram może zabrakło elementów roboczych, ponieważ wystąpienie jest w stanie bezczynności lub wystąpienie zostało zakończone. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> Wartość <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwość może służyć do rozróżnienia między nimi.  
   
- Host może żądanie zmiany uruchomienie wstrzymana przez wywołanie metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> lub <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.PauseWhenPersistable%2A> metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> zwrócone przez wystąpienie <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwości. Nie należy traktować tego żądania ma określoną odpowiedź, co oznacza, że host nie należy próbować skorelowania OnNotify * lub <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> z określonym wywołaniem wstrzymania. W odpowiedzi na żądanie wstrzymania, środowisko uruchomieniowe można przejść na wstrzymana i wywołanie <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A> podczas planista ma nadal elementów roboczych oczekujących. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> Wartość <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwości można użyć do sprawdzenia, czy harmonogram ma nie więcej pracy został przerwany przez żądanie wstrzymania.  
+ Host może żądanie zmiany z systemem wstrzymana przez wywołanie metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> lub <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.PauseWhenPersistable%2A> metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> wystąpienie zwrócone przez <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwości. To żądanie powinno nie można uważać za ma określoną odpowiedź, co oznacza, że host nie należy próbować skorelować onnotify — * lub <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> przy użyciu określonego wywołania wstrzymania. W odpowiedzi na żądanie wstrzymania, środowisko uruchomieniowe można przejść na wstrzymana, a następnie wywołać <xref:System.Activities.Hosting.WorkflowInstance.OnNotifyPaused%2A> podczas harmonogram środki, nieopłacone elementów roboczych oczekujących. <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.State%2A> Wartość <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwość może służyć do określenia, czy harmonogram ma nie ma więcej pracy, czy został przerwany przez żądanie wstrzymania.  
   
- <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> Metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> zwrócone przez wystąpienie <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwość jest jedyną metodą, które można wywołać podczas <xref:System.Activities.Hosting.WorkflowInstance> jest w stanie działania. Wszystkie inne metody spowoduje zgłoszenie <xref:System.InvalidOperationException> Jeśli wywołany. Podane zasady dotyczące <xref:System.Activities.Hosting.WorkflowInstance> przejść z jednego stanu do innego, publiczny pojęcie uruchomiona i wstrzymana można zdefiniować w następujący sposób:  
+ <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.RequestPause%2A> Metody <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> wystąpienie zwrócone przez <xref:System.Activities.Hosting.WorkflowInstance.Controller%2A> właściwość jest jedyną metodą, która może być wywoływany podczas <xref:System.Activities.Hosting.WorkflowInstance> jest w stanie uruchomiona. Wszystkie inne metody zgłosi <xref:System.InvalidOperationException> przypadku ich wywołania. Podane zasady dotyczące <xref:System.Activities.Hosting.WorkflowInstance> przejścia z jednego stanu do drugiego, publiczne pojęcie uruchomiona i wstrzymana można zdefiniować w następujący sposób:  
   
 -   Uruchamianie — stan między wywołanie <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A> i WorkflowInstance.OnNotify* dalej.  
   
--   Wstrzymane — stan między ostatnim WorkflowInstance.OnNotify* i następne wywołanie <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>.  
+-   Wstrzymano — stan między ostatniego WorkflowInstance.OnNotify* i następnym wywołaniu <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Run%2A>.  
   
  ]]></format>
     </remarks>
@@ -75,8 +75,8 @@
         <Parameter Name="workflowDefinition" Type="System.Activities.Activity" />
       </Parameters>
       <Docs>
-        <param name="workflowDefinition">Działanie, który definiuje przepływ pracy.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Activities.Hosting.WorkflowInstance" /> klasy z definicją określonego przepływu pracy.</summary>
+        <param name="workflowDefinition">Działanie, które definiuje przepływ pracy.</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Activities.Hosting.WorkflowInstance" /> klasy za pomocą definicji określonego przepływu pracy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -97,9 +97,9 @@
         <Parameter Name="definitionIdentity" Type="System.Activities.WorkflowIdentity" />
       </Parameters>
       <Docs>
-        <param name="workflowDefinition">Działanie, który definiuje przepływ pracy.</param>
+        <param name="workflowDefinition">Działanie, które definiuje przepływ pracy.</param>
         <param name="definitionIdentity">Tożsamość definicji.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Activities.Hosting.WorkflowInstance" /> z definicji określonego przepływu pracy i definicję tożsamości.</summary>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Activities.Hosting.WorkflowInstance" /> klasy za pomocą definicji określonego przepływu pracy i tożsamość definicji.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -124,10 +124,10 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">Okres, po którym próba przerwania.</param>
+        <param name="timeout">Okres, po upływie którego próba przerwania.</param>
         <param name="callback">Metoda wywoływana po wykonaniu operacji śledzenia.</param>
         <param name="state">Informacje o operacji asynchronicznej.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy, aby rozpocząć wysyłanie oczekujących śledzenie rekordów asynchronicznie Śledzenie uczestników.</summary>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy, aby rozpocząć wysyłanie oczekujące rekordy śledzenia do śledzenia uczestników asynchronicznie.</summary>
         <returns>Stan bieżącej operacji śledzenia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -148,7 +148,7 @@
         <ReturnType>System.Activities.Hosting.WorkflowInstance+WorkflowInstanceControl</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" /> wystąpienia tego <see cref="T:System.Activities.Hosting.WorkflowInstance" />.</summary>
+        <summary>Pobiera <see cref="T:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl" /> wystąpienia w tym <see cref="T:System.Activities.Hosting.WorkflowInstance" />.</summary>
         <value>Wystąpienie kontrolera dla tego wystąpienia przepływu pracy.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -191,7 +191,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wywołania <see cref="M:System.Disposable.Dispose" /> na wszystkie rozszerzenia, które implementują <see cref="T:System.IDisposable" />.</summary>
+        <summary>Wywołania <see cref="M:System.IDisposable.Dispose" /> na wszystkie rozszerzenia, które implementują <see cref="T:System.IDisposable" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -214,8 +214,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Stan operacji asynchronicznej ścieżki.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy, aby zakończyć operację śledzenia.</summary>
+        <param name="result">Stan operacji asynchronicznej śledzenie.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy, aby zakończyć operację śledzenia.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -238,8 +238,8 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">Okres, po którym próba przerwania.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do wysłania oczekujących śledzenie rekordów Śledzenie uczestników.</summary>
+        <param name="timeout">Okres, po upływie którego próba przerwania.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy, aby wysłać oczekujące rekordy śledzenia do śledzenia uczestników.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -263,9 +263,9 @@
         <Parameter Name="updateMap" Type="System.Activities.DynamicUpdate.DynamicUpdateMap" />
       </Parameters>
       <Docs>
-        <param name="deserializedRuntimeState">Stan środowiska uruchomieniowego zdeserializowany.</param>
+        <param name="deserializedRuntimeState">Stan środowiska uruchomieniowego po deserializacji.</param>
         <param name="updateMap">Mapa aktualizacji.</param>
-        <summary>Pobiera listę działań, która blokuje aktualizacji przepływu pracy.</summary>
+        <summary>Pobiera listę działań, która blokuje aktualizacja przepływu pracy.</summary>
         <returns>Lista działań, która blokuje aktualizacji.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -294,9 +294,9 @@
       </TypeParameters>
       <Parameters />
       <Docs>
-        <typeparam name="T">Typ rozszerzenia można znaleźć.</typeparam>
+        <typeparam name="T">Typ rozszerzenia Aby znaleźć.</typeparam>
         <summary>Zwraca rozszerzenie określonego typu.</summary>
-        <returns>Rozszerzenie określonego typu.</returns>
+        <returns>Rozszerzenie o określonym typie.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -324,8 +324,8 @@
       </TypeParameters>
       <Parameters />
       <Docs>
-        <typeparam name="T">Typ rozszerzenia można znaleźć.</typeparam>
-        <summary>Zwraca wszystkie rozszerzenia znaleziono dla określonego typu.</summary>
+        <typeparam name="T">Typ rozszerzenia Aby znaleźć.</typeparam>
+        <summary>Zwraca wszystkie rozszerzenia, które można odnaleźć określonego typu.</summary>
         <returns>Wszystkie rozszerzenia znaleziono dla określonego typu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -346,13 +346,13 @@
         <ReturnType>System.Activities.LocationReferenceEnvironment</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia środowisko głównego dla argumentów i zmienne wystąpienia przepływu pracy.</summary>
-        <value>Środowisko głównego dla argumentów i zmienne wystąpienia przepływu pracy.</value>
+        <summary>Pobiera lub ustawia środowisko głównego dla argumentów i zmiennych wystąpienia przepływu pracy.</summary>
+        <value>Środowisko głównego argumentów i zmiennych wystąpienia przepływu pracy.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli ta właściwość jest ustawiona, po zainicjowaniu wystąpienia przepływu pracy i <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, <xref:System.InvalidOperationException> jest generowany.  
+ Jeśli ta właściwość jest ustawiona, po zainicjowaniu wystąpienia przepływu pracy i <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, <xref:System.InvalidOperationException> zgłaszany.  
   
  ]]></format>
         </remarks>
@@ -385,7 +385,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wywołanie przez hosta do inicjowania wystąpienia przepływu pracy.</summary>
+        <summary>Metoda wywoływana przez hosta do inicjowania wystąpienia przepływu pracy.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Initialize">
@@ -407,8 +407,8 @@
         <Parameter Name="deserializedRuntimeState" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="deserializedRuntimeState">Stan czasu wykonywania, używany do wykonania przepływu pracy.</param>
-        <summary>Wywołanie przez hosta do inicjowania wystąpienia przepływu pracy ze stanu czasu wykonywania przepływu pracy.</summary>
+        <param name="deserializedRuntimeState">Stan czasu wykonywania, służących do wykonywania przepływu pracy.</param>
+        <summary>Metoda wywoływana przez hosta do inicjowania wystąpienia przepływu pracy, o stanie przepływu pracy w czasie wykonywania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -432,9 +432,9 @@
         <Parameter Name="workflowExecutionProperties" Type="System.Collections.Generic.IList&lt;System.Activities.Handle&gt;" />
       </Parameters>
       <Docs>
-        <param name="workflowArgumentValues">Parametry wejściowe w przepływie pracy, wyznaczaną przez Nazwa argumentu.</param>
+        <param name="workflowArgumentValues">Parametry wejściowe w przepływie pracy, kluczach nazwę argumentu.</param>
         <param name="workflowExecutionProperties">Lista właściwości wykonania przepływu pracy.</param>
-        <summary>Wywołanie przez hosta do inicjowania wystąpienia przepływu pracy z wartości argumentów i właściwości wykonania.</summary>
+        <summary>Metoda wywoływana przez hosta do inicjowania wystąpienia przepływu pracy przy użyciu wartości argumentów i właściwości wykonania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -458,9 +458,9 @@
         <Parameter Name="updateMap" Type="System.Activities.DynamicUpdate.DynamicUpdateMap" />
       </Parameters>
       <Docs>
-        <param name="deserializedRuntimeState">Stan czasu wykonywania, używany do wykonania przepływu pracy.</param>
+        <param name="deserializedRuntimeState">Stan czasu wykonywania, służących do wykonywania przepływu pracy.</param>
         <param name="updateMap">Mapa aktualizacji.</param>
-        <summary>Wywołanie przez hosta do zainicjowania wystąpienia przepływu pracy ze stanu czasu wykonywania przepływu pracy i aktualizować mapy.</summary>
+        <summary>Metoda wywoływana przez hosta do inicjowania wystąpienia przepływu pracy, o stanie przepływu pracy w czasie wykonywania i zaktualizować mapę.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -480,9 +480,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy wystąpienie przepływu pracy zostało zainicjowane.</summary>
+        <summary>Pobiera wartość wskazującą, czy wystąpienie przepływu pracy został zainicjowany.</summary>
         <value>
-          <see langword="true" /> Jeśli wystąpienie przepływu pracy zostało zainicjowane; w przeciwnym razie <see langword="false" />.</value>
+          <see langword="true" /> Jeśli wystąpienie przepływu pracy został zainicjowany; w przeciwnym razie <see langword="false" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -510,8 +510,8 @@
         <param name="keys">Klucze wystąpienia do skojarzenia z tym wystąpieniem przepływu pracy.</param>
         <param name="callback">Metoda wywoływana po zakończeniu operacji.</param>
         <param name="state">Opcjonalne obiekt specyficzne dla aplikacji, który zawiera informacje o operacji asynchronicznej.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta, że nowe klucze wystąpienia powinna być skojarzona z tym wystąpieniem.</summary>
-        <returns>Odwołanie do asynchroniczną skojarzyć operacji kluczy.</returns>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, że nowe klucze wystąpienia powinna być skojarzona z tego wystąpienia.</summary>
+        <returns>Odwołanie do asynchroniczną kojarzenie kluczy operacji.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -537,7 +537,7 @@
       <Docs>
         <param name="callback">Metoda wywoływana po wykonaniu operacji śledzenia.</param>
         <param name="state">Informacje o operacji asynchronicznej.</param>
-        <summary>Asynchroniczne wywołanie poprosić hosta, aby opróżnić oczekujących śledzenie rekordów Śledzenie uczestników.</summary>
+        <summary>Asynchroniczne wywołanie poprosić hosta, aby opróżnić oczekujące rekordy śledzenia do śledzenia uczestników.</summary>
         <returns>Stan bieżącej operacji śledzenia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -562,10 +562,10 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="callback">Metoda wywoływana po wykonaniu operacji utrwalania.</param>
+        <param name="callback">Metoda wywoływana, gdy operacja utrwalanie została zakończona.</param>
         <param name="state">Opcjonalne obiekt specyficzne dla aplikacji, który zawiera informacje o operacji asynchronicznej.</param>
-        <summary>Asynchroniczne wywołanie poprosić hosta, aby utrwalić przepływ pracy.</summary>
-        <returns>Odwołanie do bieżącego utrwalić operacji.</returns>
+        <summary>Asynchroniczne wywołanie poprosić hosta, aby utrwalić przepływu pracy.</summary>
+        <returns>Odwołanie do bieżącej operacji są zachowywane.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -591,13 +591,13 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="bookmark">Zakładka wznowienia.</param>
-        <param name="value">Dane do przekazania do działania, które utworzyło <see cref="T:System.Activities.Bookmark" />.</param>
-        <param name="timeout">Interwał przez operację wznawiania należy wykonać, zanim operacja została anulowana, a co <see cref="T:System.TimeoutException" /> jest generowany.</param>
-        <param name="callback">Metoda wywoływana po wykonaniu operacji wznowienia.</param>
+        <param name="bookmark">Zakładki, aby wznowić.</param>
+        <param name="value">Dane, które mają być przekazywane do działania, które utworzyło <see cref="T:System.Activities.Bookmark" />.</param>
+        <param name="timeout">Interwał, w którym przez operację wznawiania należy wykonać, zanim operacja została anulowana, a co <see cref="T:System.TimeoutException" /> zgłaszany.</param>
+        <param name="callback">Metoda wywoływana, gdy została zakończona przez operację wznawiania.</param>
         <param name="state">Opcjonalne obiekt specyficzne dla aplikacji, który zawiera informacje o operacji asynchronicznej.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta, który rozpoczyna operację zakładki wznawiania.</summary>
-        <returns>Odwołanie do operacji asynchronicznych wznowienia.</returns>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, który rozpoczyna operację wznowienie zakładki.</summary>
+        <returns>Odwołanie do operacji wznowieniem asynchronicznym.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -621,7 +621,7 @@
       </Parameters>
       <Docs>
         <param name="keys">Lista kluczy, aby usunąć skojarzenie.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta, że określone klucze wystąpienia nie powinny już być skojarzone z tym wystąpieniem.</summary>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, że określone wystąpienie klucze nie powinny już być skojarzone z tym wystąpieniem.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -644,8 +644,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Odwołanie do asynchroniczną skojarzyć operacji kluczy.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta o ukończeniu operacji kojarzenie kluczy.</summary>
+        <param name="result">Odwołanie do asynchroniczną kojarzenie kluczy operacji.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta o ukończeniu operacji kojarzenie kluczy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -668,8 +668,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Stan asynchronicznego opróżniania rekordów operacji śledzenia.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta po zakończeniu opróżniania rekordów operacji śledzenia.</summary>
+        <param name="result">Stan asynchronicznego opróżniania operacji rekordów śledzenia.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, po zakończeniu pracy opróżniania operacji rekordów śledzenia.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -692,8 +692,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Odwołanie do asynchroniczną utrwalić operacji.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta o ukończeniu operacji utrwalania.</summary>
+        <param name="result">Odwołanie do asynchroniczną operację są zachowywane.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta o ukończeniu operacji utrwalania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -716,8 +716,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Odwołanie do wznowienia asynchronicznych operacji zakładki.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta o ukończeniu operacji wznawiania zakładki.</summary>
+        <param name="result">Odwołanie do operacji zakładki wznowieniem asynchronicznym.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta o ukończeniu operacji zakładki wznowienie.</summary>
         <returns>Jedną z wartości wyliczenia, które wskazuje wynik <see cref="T:System.Activities.Bookmark" /> wznawia działania.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -739,7 +739,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta, którego wystąpienia przepływu pracy przeszła ze stanu uruchomienia do stanu wstrzymania.</summary>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, którego wystąpienie przepływu pracy przeszła ze stanu uruchomienia do stanu wstrzymania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -765,8 +765,8 @@
       <Docs>
         <param name="exception">Nieobsługiwany wyjątek.</param>
         <param name="source">Działanie, która zgłosiła wyjątek.</param>
-        <param name="sourceInstanceId">Unikatowy identyfikator <see cref="T:System.Activities.ActivityInstance" /> reprezentujący działania, która zgłosiła wyjątek.</param>
-        <summary>Metoda wywoływana przez hosta powiadomi Wystąpił nieobsługiwany wyjątek w wystąpieniu przepływu pracy środowiska uruchomieniowego przepływu pracy.</summary>
+        <param name="sourceInstanceId">Unikatowy identyfikator <see cref="T:System.Activities.ActivityInstance" /> reprezentujący działania, który wygenerował wyjątek.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, że wystąpił nieobsługiwany wyjątek w wystąpieniu przepływu pracy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -789,13 +789,13 @@
         <Parameter Name="reason" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="reason">Przyczyna przerywanie wystąpienia przepływu pracy.</param>
-        <summary>Wywoływane przez środowisko uruchomieniowe przepływu pracy do powiadamiania hosta, że zażądano operacji przerwania dla wystąpienia przepływu pracy.</summary>
+        <param name="reason">Przyczyna zostanie przerwany wystąpienia przepływu pracy.</param>
+        <summary>Metoda wywoływana przez środowisko wykonawcze przepływów pracy w celu powiadomienia hosta, że zażądano operacji przerywania dla wystąpienia przepływu pracy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Raz <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> jest nazywany większość <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> interfejsów API, z wyjątkiem <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Abort%2A> zgłosi <xref:System.InvalidOperationException>. Oczekuje się, że po <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> nosi nazwę hosta będzie trend kierunku stanu, w którym mogą spełniać przerwanie.  
+ Gdy <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> jest wywoływana, większość <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl> interfejsów API, z wyjątkiem <xref:System.Activities.Hosting.WorkflowInstance.WorkflowInstanceControl.Abort%2A> zgłosi <xref:System.InvalidOperationException>. Oczekuje się, że po <xref:System.Activities.Hosting.WorkflowInstance.OnRequestAbort%2A> nosi nazwę hosta będzie trend kierunku stanu, w którym można spełniać przerwanie.  
   
  ]]></format>
         </remarks>
@@ -820,13 +820,13 @@
         <Parameter Name="extensionManager" Type="System.Activities.Hosting.WorkflowInstanceExtensionManager" />
       </Parameters>
       <Docs>
-        <param name="extensionManager">Menedżer rozszerzenia, aby zarejestrować.</param>
-        <summary>Metoda wywoływana przez hosta, aby zarejestrować menedżera określonego rozszerzenia, zweryfikuj, czy wszystkie wymagane rozszerzenia są obecne i zainicjować kolekcji rozszerzeń do użycia.</summary>
+        <param name="extensionManager">W Menedżerze rozszerzeń, aby zarejestrować.</param>
+        <summary>Metoda wywoływana przez hosta do zarejestrować menedżera określonego rozszerzenia, zweryfikuj, czy wszystkie wymagane rozszerzenia są obecne i zainicjować Kolekcja rozszerzeń, które ma być używany.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Rozszerzenia określonemu według typu i hosta, pod warunkiem, że rozszerzenie zawsze zostaną użyte, jeśli podana. Dodane za pośrednictwem rozszerzenia <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A> użyć typu środowiska uruchomieniowego obiektu jako typ klucza. Dostawcy rozszerzeń dodane za pośrednictwem <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A> decared typ T funkcję\<T > jako typ klucza. Zamieszczone przez działania przy użyciu różnych metod *ActivityMetadata.AddDefaultExtensionProvider dostawców rozszerzeń są usuwane, jeśli rozszerzenia hosta nie istnieje dla typu zadeklarowany lub jest typem szerszych realizowane za pośrednictwem AddDefaultExtensionProvider (np. Jeśli Func\<StreamWriter > podano i Func\<TextWriter > jest dostępne tylko Func\<StreamWriter > zostaną zachowane). Jeśli rozszerzenie nie istnieje w kolekcji, która jest wymagana przez działanie (wyrażonych przez wywołanie metody * ActivityMetadata.RequireExtension) <xref:System.Activities.ValidationException> jest generowany.  
+ Rozszerzenia są dostosowane przy typu i hostem, pod warunkiem, że rozszerzenie zawsze będzie używany, jeśli podano. Liczba dodanych za pośrednictwem rozszerzeń <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A> używają typu środowiska uruchomieniowego obiektu jako klucz typu. Dostawcy rozszerzeń dodane za pomocą <xref:System.Activities.Hosting.WorkflowInstanceExtensionManager.Add%2A> Użyj decared typu T funkcję\<T > jako klucz typu. Dostawców rozszerzeń, za pomocą różnych metod *ActivityMetadata.AddDefaultExtensionProvider pochodzącego z działania są porzucane, jeśli rozszerzenie hosta istnieje zadeklarowanym typem lub występuje szerszy typ dostępne za pośrednictwem AddDefaultExtensionProvider (np.) Jeśli Func\<StreamWriter — > znajduje się i Func\<TextWriter > podano tylko Func\<StreamWriter — > zostaną zachowane). Jeśli rozszerzenie nie istnieje w kolekcji, która jest wymagana przez działanie (wyrażona przez wywołanie metody * ActivityMetadata.RequireExtension) <xref:System.Activities.ValidationException> zgłaszany.  
   
  ]]></format>
         </remarks>
@@ -848,7 +848,7 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy host obsługuje skojarzenie <see cref="P:System.Runtime.DurableInstancing.InstanceView.InstanceKeys" /> z wystąpieniem środowiska wykonawczego.</summary>
+        <summary>Pobiera wartość wskazującą, czy host obsługuje skojarzenie <see cref="P:System.Runtime.DurableInstancing.InstanceView.InstanceKeys" /> przy użyciu wystąpienia środowiska wykonawczego.</summary>
         <value>
           <see langword="true" /> Jeśli host obsługuje skojarzenie <see cref="P:System.Runtime.DurableInstancing.InstanceView.InstanceKeys" /> z wystąpieniem przepływu pracy; w przeciwnym razie <see langword="false" />.</value>
         <remarks>To be added.</remarks>
@@ -870,13 +870,13 @@
         <ReturnType>System.Threading.SynchronizationContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia <see cref="T:System.Threading.SynchronizationContext" /> używane do planowania wystąpienia przepływu pracy.</summary>
+        <summary>Pobiera lub ustawia <see cref="T:System.Threading.SynchronizationContext" /> używana do planowania wystąpienia przepływu pracy.</summary>
         <value>Kontekst synchronizacji używane do planowania wystąpienia przepływu pracy.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli ta właściwość jest ustawiona, po zainicjowaniu wystąpienia przepływu pracy i <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, <xref:System.InvalidOperationException> jest generowany.  
+ Jeśli ta właściwość jest ustawiona, po zainicjowaniu wystąpienia przepływu pracy i <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, <xref:System.InvalidOperationException> zgłaszany.  
   
  ]]></format>
         </remarks>
@@ -899,12 +899,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zgłasza wyjątek <see cref="T:System.InvalidOperationException" /> Jeśli wystąpienie przepływu pracy zostało zainicjowane, zgodnie z ustaleniami <see cref="P:System.Activities.Hosting.WorkflowInstance.IsReadOnly" />.</summary>
+        <summary>Zgłasza <see cref="T:System.InvalidOperationException" /> Jeśli wystąpienie przepływu pracy został zainicjowany, zgodnie z ustaleniami <see cref="P:System.Activities.Hosting.WorkflowInstance.IsReadOnly" />.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, a następnie <xref:System.InvalidOperationException> jest generowany.  
+ Jeśli <xref:System.Activities.Hosting.WorkflowInstance.IsReadOnly%2A> zwraca `true`, a następnie <xref:System.InvalidOperationException> zgłaszany.  
   
  ]]></format>
         </remarks>
@@ -926,8 +926,8 @@
         <ReturnType>System.Activities.Activity</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera definicję przepływu pracy z wystąpieniem przepływu pracy.</summary>
-        <value>Definicja przepływu pracy wystąpienia przepływu pracy.</value>
+        <summary>Pobiera definicji przepływu pracy z wystąpieniem przepływu pracy.</summary>
+        <value>Definicja przepływu pracy wystąpienie przepływu pracy.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

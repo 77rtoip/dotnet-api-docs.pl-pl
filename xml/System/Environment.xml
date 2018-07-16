@@ -1,11 +1,11 @@
 <Type Name="Environment" FullName="System.Environment">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ee38aecf8b92514f99bd30fc6610189253e474c8" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="20d345aeac8348f9cb90eceda898997c33f522f1" />
+    <Meta Name="ms.sourcegitcommit" Value="2902e97018244969c4c5b1b51e4b8c4b76006f74" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37729411" />
+    <Meta Name="ms.lasthandoff" Value="07/14/2018" />
+    <Meta Name="ms.locfileid" Value="39061724" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class Environment" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Environment extends System.Object" />
@@ -674,21 +674,34 @@ goto :EOF
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Environment.GetEnvironmentVariable%28System.String%29> Metoda pobiera zmienną środowiskową z bloku środowiska tylko bieżącego procesu. Jest to równoważne z wywoływaniem <xref:System.Environment.GetEnvironmentVariable%28System.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. Blok środowiska bieżącego procesu obejmuje następujące zmienne środowiskowe:  
+
+<xref:System.Environment.GetEnvironmentVariable%28System.String%29> Metoda pobiera zmienną środowiskową z bloku środowiska tylko bieżącego procesu. Jest to równoważne z wywoływaniem <xref:System.Environment.GetEnvironmentVariable%28System.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. 
+
+Aby pobrać wszystkie zmienne środowiskowe wraz z wartościami, należy wywołać <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
   
--   Wszystkie maszyny zmienne środowiskowe, które są zdefiniowane w czasie, proces zostanie utworzony, wraz z wartościami.  
+Nazwy zmiennych środowiskowych jest rozróżniana wielkość liter w systemie Linux i macOS, ale nie jest rozróżniana wielkość liter w Windows.  
+ 
+### <a name="on-windows-systems"></a>W systemach Windows
+
+ W systemach Windows zawiera blok środowiska bieżącego procesu:
+ 
+- Wszystkie zmienne środowiskowe, które są dostarczane do niego przez proces nadrzędny, który go utworzył. Na przykład aplikacji platformy .NET, uruchamiany z okna konsoli dziedziczy wszystkie zmienne środowiskowe w oknie konsoli. 
+
+  Jeśli nie ma żadnych procesów nadrzędnego, zmienne środowiskowe dla poszczególnych komputerów i użytkowników są używane zamiast tego. Na przykład nowe okno konsoli ma wszystkich poszczególnych komputerów i użytkowników zmienne środowiskowe zdefiniowane w czasie jej uruchamiania.
+
+- Wszelkie zmienne dodane do bloku procesu, gdy proces jest uruchomiony, wywołując jedną <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. Te zmienne środowiskowe są zachowywane do momentu zakończenia działania aplikacji .NET.  
   
--   Wszystkie zmienne środowiskowe na użytkownika, które są zdefiniowane w czasie procesu jest tworzony wraz z ich wartościami.  
-  
--   Wszelkie zmienne dodane do bloku procesu, gdy proces jest uruchomiony, wywołując jedną <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>.  
-  
- Jeśli zmienne środowiskowe są tworzone po rozpoczęciu procesu, można użyć tej metody do pobierania tych zmiennych, które zostały utworzone przez wywołanie metody <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość.<xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>.  
-  
- Aby pobrać wszystkie zmienne środowiskowe wraz z wartościami, należy wywołać <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
-  
- Nazwy zmiennych środowiskowych nie jest rozróżniana wielkość liter.  
-  
-   
+Jeśli zmienne środowiskowe są tworzone po rozpoczęciu procesu, można użyć tej metody do pobierania tych zmiennych, które zostały utworzone przez wywołanie metody <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość.<xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>.  
+
+### <a name="on-macos-and-linux-systems"></a>W systemach macOS i Linux systemów
+
+W systemach macOS i Linux blok środowiska bieżącego procesu obejmuje następujące zmienne środowiskowe:
+
+- Wszystkie zmienne środowiskowe, które są dostarczane do niego przez proces nadrzędny, który go utworzył. Aplikacje .NET uruchamiane w powłoce obejmuje to wszystkie zmienne środowiskowe zdefiniowane w powłoce.
+
+- Wszelkie zmienne dodane do bloku procesu, gdy proces jest uruchomiony, wywołując jedną <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. Te zmienne środowiskowe są zachowywane do momentu zakończenia działania aplikacji .NET.  
+
+.NET core w systemie macOS i Linux nie obsługuje zmiennych środowiskowych dla poszczególnych komputerów lub użytkowników.   
   
 ## Examples  
  W poniższym przykładzie użyto <xref:System.Environment.GetEnvironmentVariable%2A> metodę, która pobierze `windir` zmiennej środowiskowej, która zawiera ścieżkę do katalogu Windows.  
@@ -751,14 +764,25 @@ goto :EOF
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- `target` Parametr określa, czy zmienna środowiskowa jest pobierana z bieżącego procesu lub klucza rejestru systemu Windows dla bieżącego użytkownika lub komputera lokalnego. Wszystkie zmienne środowiskowe na użytkownika i komputera są automatycznie kopiowane do bloku środowiska bieżącego procesu. Jednak zmienne środowiskowe dodawane tylko do bloku środowiska bieżącego procesu utrzymują się tylko za czas trwania procesu.  
+## Remarks 
+
+Aby pobrać wszystkie zmienne środowiskowe wraz z wartościami, należy wywołać <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
   
- Aby pobrać wszystkie zmienne środowiskowe wraz z wartościami, należy wywołać <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
+Nazwy zmiennych środowiskowych jest rozróżniana wielkość liter w systemie Linux i macOS, ale nie jest rozróżniana wielkość liter w Windows. 
+
+### <a name="on-windows-systems"></a>W systemach Windows
+
+W Windows `target` parametr określa, czy zmienna środowiskowa jest pobierana z bieżącego procesu lub klucza rejestru systemu Windows dla bieżącego użytkownika lub komputera lokalnego. Wszystkie zmienne środowiskowe na użytkownika i komputera są automatycznie kopiowane do bloku środowiska bieżącego procesu, jak inne zmienne środowiskowe, które są dostępne dla procesu nadrzędnego, który utworzył proces .NET. Jednak zmienne środowiskowe dodawane tylko do bloku środowiska bieżącego procesu, wywołując jedną <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType> tylko przez czas trwania procesu.  
   
- Nazwy zmiennych środowiskowych nie jest rozróżniana wielkość liter.  
-  
-   
+### <a name="on-macos-and-linux-systems"></a>W systemach macOS i Linux systemów
+
+W systemach macOS i Linux `GetEnvironmentVariable(String, EnvironmentVariableTarget)` obsługuje metody `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithtype> tylko. Wywołania z `target` wartość <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithtype> lub <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithtype> nie są obsługiwane i zwracają `null`. 
+
+Dostępne są następujące zmienne środowiskowe na proces:
+
+- Te dziedziczone z procesu nadrzędnego, zazwyczaj używany do wywoływania powłoki `dotnet.exe` lub uruchamianie aplikacji .NET.
+
+- Identyczne ze zdefiniowanymi przez wywołanie metody albo <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. Utrzymują się tylko do tych zmiennych środowiskowych `dotnet` kończy proces lub aplikacja platformy .NET.   
   
 ## Examples  
  Poniższy przykład tworzy zmienne środowiskowe dla celów Proces, Użytkownik i Komputer, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe Użytkownik i Komputer, a następnie usuwa zmienne środowiskowe.  
@@ -830,7 +854,21 @@ goto :EOF
 ## Remarks  
  Nazwy i wartości zmiennych środowiskowych, które są przechowywane jako pary klucz wartość, w zwróconym elemencie <xref:System.Collections.IDictionary>.  
   
-   
+### <a name="on-windows-systems"></a>W systemach Windows
+
+W systemach Windows `GetEnvironmentVariables` metoda zwraca następujące variabless środowiska:
+  
+- Wszystkie maszyny zmienne środowiskowe, które są zdefiniowane w czasie, proces zostanie utworzony, wraz z wartościami.  
+  
+- Wszystkie zmienne środowiskowe na użytkownika, które są zdefiniowane w czasie procesu jest tworzony wraz z ich wartościami.  
+
+- Wszelkie zmienne dziedziczone z procesu nadrzędnego, z którego aplikacji .NET został uruchomiony lub dodane do bloku procesu, gdy proces jest uruchomiony. Zmienne środowiskowe są dodawane, gdy proces jest uruchomiony, wywołując jedną <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>.  
+
+### <a name="on-macos-and-linux-systems"></a>W systemach macOS i Linux systemów
+
+W systemach MacOS i Linux `GetEnvironmentVariables` metoda pobiera nazwy i wartości wszystkich zmiennych środowiskowych, które są dziedziczone z procesu nadrzędnego, który uruchomił `dotnet` proces lub które są zdefiniowane w zakresie `dotnet` sam przetwarzania. Raz `dotnet` zakończenia procesu, te zmienne środowiskowe ostatnie przestaje istnieć. 
+
+.NET core nie obsługuje zmiennych środowiskowych dla poszczególnych komputerów lub użytkowników.   
   
 ## Examples  
  W poniższym przykładzie pokazano <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
@@ -884,11 +922,18 @@ goto :EOF
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `target` Parametr określa, czy źródło jest bieżący proces, klucz rejestru dla bieżącego użytkownika lub klucza rejestru dla komputera lokalnego.  
-  
- Nazwy i wartości zmiennych środowiskowych, które są przechowywane jako pary klucz/wartość, w zwróconym elemencie <xref:System.Collections.IDictionary> obiektu.  
-  
-   
+
+Nazwy i wartości zmiennych środowiskowych, które są przechowywane jako pary klucz/wartość, w zwróconym elemencie <xref:System.Collections.IDictionary> obiektu.  
+
+### <a name="on-windows-systems"></a>W systemach Windows
+
+W systemach Windows `target` parametr określa, czy źródło jest bieżący proces, klucz rejestru dla bieżącego użytkownika lub klucza rejestru dla komputera lokalnego.  
+
+### <a name="on-macos-and-linux-systems"></a>W systemach macOS i Linux systemów
+
+W systemach macOS i Linux, tylko `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType> jest obsługiwana. Zmienne środowiskowe dla procesu są dziedziczone z procesu nadrzędnego (zazwyczaj powłoka) używane do uruchomienia `dotnet` przetwarzania lub są zdefiniowane w zakresie `dotnet` sam przetwarzania. Po zakończenia procesu dotnet, tych zmiennych środowiskowych ostatnie przestaje istnieć.  
+
+Zmienne środowiskowe dla poszczególnych komputerów i użytkowników nie są obsługiwane. A `target` wartość <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType> lub <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> zwraca pustą tablicę.
   
 ## Examples  
  Poniższy przykład tworzy zmienne środowiskowe dla celów Proces, Użytkownik i Komputer, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe Użytkownik i Komputer, a następnie usuwa zmienne środowiskowe.  
@@ -1553,9 +1598,14 @@ goto :EOF
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> Metoda pozwala zdefiniować zmienną środowiskową, która jest dostępna dla wszystkich procesów, które są uruchamiane na komputerze ( <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType> wartość), wszystkie procesy uruchomione przez użytkownika ( <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> wartość), lub do bieżącego procesu ( <xref:System.EnvironmentVariableTarget.Process> wartości). Zmienne środowiskowe dla poszczególnych komputerów i użytkowników są kopiowane do bloku środowiska bieżącego procesu. Jednak zmienne środowiskowe, które są unikatowe, jak bieżący blok środowiska procesu utrzymują się tylko do momentu zakończenia procesu.  
+
+<xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> Metoda pozwala zdefiniować zmienną środowiskową, która jest dostępna dla bieżącego procesu ( <xref:System.EnvironmentVariableTarget.Process> wartości). Zmienne środowiskowe, które są unikatowe, jak bieżący blok środowiska procesu są zachowywane tylko do momentu zakończenia procesu.
+
+Ponadto tylko w systemach Windows <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metoda pozwala zdefiniować zmienną środowiskową, która jest dostępna dla wszystkich procesów, które są uruchamiane na komputerze ( <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType> wartość) i wszystkie procesy uruchomione przez użytkownika ( <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> wartości). Zmienne środowiskowe dla poszczególnych komputerów i użytkowników są kopiowane do bloku środowiska bieżącego procesu.  
+ 
+Wywołania na platformy .NET Core maxOS i systemy Linux <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z wartością <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType> wartość) lub <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> są ignorowane. 
   
- Jeśli `value` argument nie jest pusty (zobacz opis usuwania zmiennej środowiskowej w dalszej części tej sekcji definicji pustą wartość) i zmienną środowiskową o nazwie określonej przez `variable` parametrów nie istnieje, środowisko zmienna zostanie utworzone i przypisane zawartość `value`.  Jeśli istnieje, jego wartość jest modyfikowana.  
+ Jeśli `value` argument nie jest pusty (zobacz opis usuwania zmiennej środowiskowej w dalszej części tej sekcji definicji pustą wartość) i zmienną środowiskową o nazwie określonej przez `variable` argumentu nie istnieje, środowisko zmienna zostanie utworzone i przypisane zawartość `value`.  Jeśli istnieje, jego wartość jest modyfikowana.  
   
  Jeśli `variable` zawiera szesnastkowe-początkowe zero znaków, znaków przed zero znaków są traktowane jako nazwa zmiennej środowiskowej, a wszystkie kolejne znaki są ignorowane.  
   
@@ -1570,16 +1620,16 @@ goto :EOF
 -   Składa się z pojedynczego znaku, którego wartością jest U + 0000.  
   
  Jeśli `variable` nie istnieje żaden błąd nie wystąpi, mimo że nie można wykonać operacji. Należy zachować ostrożność podczas `target` jest <xref:System.EnvironmentVariableTarget.Machine>, ponieważ może przypadkowo usunąć zmienną środowiskową, która wpływa na cały komputer lokalny, nie tylko bieżący proces lub użytkownika.  
-  
- Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User>, zmienna środowiskowa jest przechowywana w kluczu HKEY_CURRENT_USER\Environment rejestru na komputerze lokalnym. Jest on również kopiowany do wystąpienia Eksploratora plików, które działają jako bieżącego użytkownika. Zmienna środowiskowa jest następnie dziedziczone przez nowe procesy, które użytkownik uruchamia się w Eksploratorze plików.  
+
+### <a name="environmentvariabletargetmachine-and-environmentvariabletargetuser-on-windows-systems"></a>EnvironmentVariableTarget.Machine i EnvironmentVariableTarget.User w systemach Windows
+
+Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, zmienna środowiskowa jest przechowywana w kluczu HKEY_CURRENT_USER\Environment rejestru na komputerze lokalnym. Jest on również kopiowany do wystąpienia Eksploratora plików, które działają jako bieżącego użytkownika. Zmienna środowiskowa jest następnie dziedziczone przez nowe procesy, które użytkownik uruchamia się w Eksploratorze plików.  
   
  Podobnie jeśli `target` jest <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType>, zmienna środowiskowa jest przechowywana w kluczu HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Control\Session Manager\Environment rejestru na komputerze lokalnym. Jest on również kopiowany do wszystkie wystąpienia Eksploratora plików. Zmienna środowiskowa jest następnie dziedziczone przez nowe procesy, które uruchamianych z poziomu Eksploratora plików.  
   
  Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User> lub <xref:System.EnvironmentVariableTarget.Machine>, inne aplikacje są powiadamiane ustalonej operacji przez Windows `WM_SETTINGCHANGE` wiadomości.  
   
  Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> lub <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType>, zaleca się długość `value` mieć mniej niż 2048 znaków.  
-  
-   
   
 ## Examples  
  Poniższy przykład tworzy zmienne środowiskowe dla optymalizacji <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>, <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, i <xref:System.EnvironmentVariableTarget.Machine> jest przeznaczony dla, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe i użytkownika, a następnie usuwa środowisko zmienne.  
