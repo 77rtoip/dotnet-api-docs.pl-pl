@@ -1,11 +1,11 @@
 <Type Name="TransactionManager" FullName="System.Transactions.TransactionManager">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="94a7df2187676486db82e4651339fa18685001a3" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="0ed5091b9916cf14169e9bf44326acc319defaca" />
+    <Meta Name="ms.sourcegitcommit" Value="01f28caab7b3f23878dd07b402a8dd48b9478c8c" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37608484" />
+    <Meta Name="ms.lasthandoff" Value="07/19/2018" />
+    <Meta Name="ms.locfileid" Value="39141827" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class TransactionManager" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed TransactionManager extends System.Object" />
@@ -241,8 +241,8 @@
         <Parameter Name="manager" Type="System.Guid" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="resourceManagerIdentifier">To be added.</param>
-        <param name="manager">To be added.</param>
+        <param name="resourceManagerIdentifier">Element <see cref="T:System.Guid" /> , który jednoznacznie identyfikuje zasób do odzyskania z.</param>
+        <param name="manager">Element <see cref="T:System.Guid" /> , który jednoznacznie identyfikuje zasób do odzyskania z.</param>
         <summary>Powiadamia menedżera transakcji, Menedżer zasobów, odzyskiwanie po awarii została zakończona, reenlisting wszystkich nierozwiązanych transakcji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -250,7 +250,7 @@
 ## Remarks  
  Wszystkich menedżerów trwałe zasobów, które należy wykonać odzyskiwanie po ich pierwszym uruchomieniu przez wywołanie metody <xref:System.Transactions.TransactionManager.Reenlist%2A> metody dla każdej transakcji oczekujących.  Tylko wtedy, gdy wszystkich reenlistments gotowe usługi resource manager wywołać <xref:System.Transactions.TransactionManager.RecoveryComplete%2A>.  
   
- Aby uzyskać więcej informacji na temat odzyskiwania, zobacz [przeprowadzania odzyskiwania](http://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
+ Aby uzyskać więcej informacji na temat odzyskiwania, zobacz [przeprowadzania odzyskiwania](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
   
  **Uwaga** ta metoda używa <xref:System.Security.Permissions.SecurityAction.LinkDemand> aby zapobiec jest wywoływana z niezaufanego kodu; jednak tylko bezpośredniego wywołującego jest wymagana do posiadają `FullTrust` zestaw uprawnień.  
   
@@ -300,15 +300,44 @@
         <Parameter Name="notification" Type="System.Transactions.IEnlistmentNotification" Index="2" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="resourceManagerIdentifier">To be added.</param>
-        <param name="manager">To be added.</param>
-        <param name="recoveryInformation">To be added.</param>
-        <param name="recoveryInfo">To be added.</param>
-        <param name="enlistmentNotification">To be added.</param>
-        <param name="notification">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="resourceManagerIdentifier">Element <see cref="T:System.Guid" /> , który jednoznacznie identyfikuje usługi resource manager.</param>
+        <param name="manager">Element <see cref="T:System.Guid" /> , który jednoznacznie identyfikuje usługi resource manager.</param>
+        <param name="recoveryInformation">Zawiera dodatkowe informacje o informacje dotyczące odzyskiwania.</param>
+        <param name="recoveryInfo">Zawiera dodatkowe informacje o informacje dotyczące odzyskiwania.</param>
+        <param name="enlistmentNotification">Obiekt zasobu, który implementuje <see cref="T:System.Transactions.IEnlistmentNotification" /> Aby otrzymywać powiadomienia.</param>
+        <param name="notification">Obiekt zasobu, który implementuje <see cref="T:System.Transactions.IEnlistmentNotification" /> Aby otrzymywać powiadomienia.</param>
+        <summary>Reenlists trwałe uczestnika transakcji.</summary>
+        <returns>
+          <see cref="T:System.Transactions.Enlistment" /> Opisujący rejestracji.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+
+## Remarks
+
+Menedżer zasobów ułatwia rozwiązanie trwałych rejestracji w transakcji przez reenlisting uczestnika transakcji po awarii zasobu.
+
+`resourceManagerIdentifier` Parametr jest używany do stale etykiety uczestnika transakcji w przypadku awarii zasobu. Podczas wywoływania <xref:System.Transactions.TransactionManager.Reenlist%2A> metody, Menedżer zasobów należy podać takie same `resourceManagerIdentifier` wyczerpuje wywołanego ona pierwotnie <xref:System.Transactions.Transaction.EnlistDurable%2A> metody podczas rejestracji, lub <xref:System.Transactions.TransactionException> zgłaszany.
+
+Gdy uczestnika, który jest reenlisted za pomocą tej metody, metody Faza 2 <xref:System.Transactions.IEnlistmentNotification> odpowiada wyniku transakcji (oznacza to, że <xref:System.Transactions.IEnlistmentNotification.Commit%2A> , <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> lub <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> ) są nazywane odpowiednio.
+
+Po uczestnicy są pomyślnie reenlisted, należy wywołać <xref:System.Transactions.TransactionManager.RecoveryComplete%2A> do ukończenia odzyskiwania.
+
+Tej metody powinny wywoływać tylko w przypadku, gdy Menedżera zasobów zostanie uruchomiony ponownie po awarii. Ponadto należy tylko reenlist rozwiązane transakcje zarejestrowane przez Menedżera zasobów w fazie przygotowania początkowego dwufazowego zatwierdzania. Każda próba wywołania tej metody w czasie nieprawidłowy może utworzyć błędnych wyników.
+
+Jeśli Menedżer transakcji nie powiedzie się i usługi resource manager przeprowadzi odzyskiwania tylko przez krótki czas po użytkownik <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metoda rejestracji w fazie 1 protokołu dwufazowy proces zatwierdzania, Menedżer zasobów albo może zostać wyświetlony <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> lub <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> wywołania zwrotnego.
+
+Aby uzyskać więcej informacji na temat odzyskiwania, zobacz [przeprowadzania odzyskiwania](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).
+
+**Uwaga** ta metoda używa <xref:System.Security.Permissions.SecurityAction.LinkDemand> aby zapobiec jest wywoływana z niezaufanego kodu; jednak tylko bezpośredniego wywołującego jest wymagana do posiadają `FullTrust` zestaw uprawnień.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="recoveryInformation" /> jest nieprawidłowy.  - lub - informacje Menedżera transakcji w <paramref name="recoveryInformation" /> jest niezgodna z menedżerem transakcji skonfigurowany.  - lub - <paramref name="RecoveryInformation" /> nie jest rozpoznawane przez <see cref="N:System.Transactions" />.</exception>
+        <exception cref="T:System.InvalidOperationException">
+          <see cref="M:System.Transactions.TransactionManager.RecoveryComplete(System.Guid)" /> zostały już wywołane dla określonego <paramref name="resourceManagerIdentifier" />. Ponownej jest odrzucane.</exception>
+        <exception cref="T:System.Transactions.TransactionException">
+          <paramref name="resourceManagerIdentifier" /> Nie pasuje do zawartości określonego odzyskiwania informacji z <paramref name="recoveryInformation" />.</exception>
       </Docs>
     </Member>
   </Members>
