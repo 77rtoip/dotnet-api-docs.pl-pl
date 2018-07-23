@@ -1,11 +1,11 @@
 <Type Name="XslTransform" FullName="System.Xml.Xsl.XslTransform">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bde6eef3e191bd0a25d4c462afa81d1cbfd131ba" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="90f9aaa4f98d650b51fb98e9ae2d19d691591587" />
+    <Meta Name="ms.sourcegitcommit" Value="102d07546033d7818b72aa66d7a26c70235baedd" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37733118" />
+    <Meta Name="ms.lasthandoff" Value="07/23/2018" />
+    <Meta Name="ms.locfileid" Value="39202248" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class XslTransform" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XslTransform extends System.Object" />
@@ -746,8 +746,14 @@
   
  Istnieją różne sposoby, aby przedstawić dowód na to. W poniższej tabeli opisano jakiego rodzaju dowody, aby zapewnić obsługę typowych scenariuszy użytkownika.  
   
-    
+|Scenariusz|Typ dowody, aby zapewnić|  
+|--------------|---------------------------------|  
+|Arkusz stylów XSLT stanowi odrębną całość lub pochodzi z bazy kodu, którym ufasz.|Używanie dowodu z zestawu.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(xslReader, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła jest znana i jest możliwe do zweryfikowania adresu URL.|Utwórz dowodów przy użyciu adresu URL.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform();&#13;&#10; Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(stylesheetURL); &#13;&#10;xslt.Load(xslReader,resolver,evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany.|Ustaw dowód `null`. Bloki skryptu nie są przetwarzane, XSLT `document()` funkcja nie jest obsługiwana i obiekty rozszerzeń uprzywilejowanych są niedozwolone.<br /><br /> Ponadto można również ustawić `resolver` parametr `null`. Gwarantuje to, że `xsl:import` i `xsl:include` elementy nie zostały przetworzone.|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany, ale wymagają obsługi skryptów.|Żądanie dowód od elementu wywołującego. Interfejs API obiekt wywołujący musi umożliwiają zwykle przedstawić dowód na to, <xref:System.Security.Policy.Evidence> klasy.|  
   
+     
 ## Examples  
  Poniższy przykład wykonuje przekształcenie XSLT gdzie `xsltReader` jest <xref:System.Xml.XmlReader> zawierający arkusz stylów i `secureURL` jest zaufany adres URL, który może służyć do tworzenia <xref:System.Security.Policy.Evidence>. <xref:System.Xml.XmlSecureResolver.CreateEvidenceForUrl%2A?displayProperty=nameWithType> Metoda służy do tworzenia <xref:System.Security.Policy.Evidence> których są stosowane do arkusza stylów.  
   
@@ -811,7 +817,14 @@
   
  Istnieją różne sposoby, aby przedstawić dowód na to. W poniższej tabeli opisano jakiego rodzaju dowody, aby zapewnić obsługę typowych scenariuszy użytkownika.  
   
-  ]]></format>
+|Scenariusz|Typ dowody, aby zapewnić|  
+|--------------|---------------------------------|  
+|Arkusz stylów XSLT stanowi odrębną całość lub pochodzi z bazy kodu, którym ufasz.|Używanie dowodu z zestawu.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(style sheet, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła jest znana i jest możliwe do zweryfikowania adresu URL.|Utwórz dowodów przy użyciu adresu URL.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(style sheetURL); &#13;&#10;xslt.Load(style sheet,resolver,evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany.|Ustaw dowód `null`. Bloki skryptu nie są przetwarzane, XSLT `document()` funkcja nie jest obsługiwana i obiekty rozszerzeń uprzywilejowanych są niedozwolone.<br /><br /> Ponadto można również ustawić `resolver` parametr `null`. Gwarantuje to, że `xsl:import` i `xsl:include` elementy nie zostały przetworzone.|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany, ale wymagają obsługi skryptów.|Żądanie dowód od elementu wywołującego. Interfejs API obiekt wywołujący musi umożliwiają zwykle przedstawić dowód na to, <xref:System.Security.Policy.Evidence> klasy.|  
+  
+ ]]></format>
         </remarks>
         <exception cref="T:System.Xml.Xsl.XsltCompileException">Załadowano zasób nie jest prawidłowego arkusza stylów.</exception>
         <exception cref="T:System.Security.SecurityException">Arkusz stylów odwołania wymaga funkcji, który nie jest dozwolona przez dowody dostarczone.  Obiekt wywołujący próbuje przedstawić dowód i nie ma <see langword="ControlEvidence" /> uprawnień.</exception>
@@ -870,11 +883,18 @@
   
  Istnieją różne sposoby, aby przedstawić dowód na to. W poniższej tabeli opisano jakiego rodzaju dowody, aby zapewnić obsługę typowych scenariuszy użytkownika.  
   
-    
+|Scenariusz|Typ dowody, aby zapewnić|  
+|--------------|---------------------------------|  
+|Arkusz stylów XSLT stanowi odrębną całość lub pochodzi z bazy kodu, którym ufasz.|Używanie dowodu z zestawu.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;xslt.Load(xslNav, resolver, this.GetType().Assembly.Evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła jest znana i jest możliwe do zweryfikowania adresu URL.|Utwórz dowodów przy użyciu adresu URL.<br /><br /> <pre><code class="lang-csharp">XsltTransform xslt = new XslTransform(); &#13;&#10;Evidence evidence = XmlSecureResolver.CreateEvidenceForUrl(style sheetURL); &#13;&#10;xslt.Load(xslNav,resolver,evidence);</code></pre>|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany.|Ustaw dowód `null`. Bloki skryptu nie są przetwarzane, XSLT `document()` funkcja nie jest obsługiwana i obiekty rozszerzeń uprzywilejowanych są niedozwolone.<br /><br /> Ponadto można również ustawić `resolver` parametr `null`. Gwarantuje to, że `xsl:import` i `xsl:include` elementy nie zostały przetworzone.|  
+|Arkusz stylów XSLT jest dostarczany ze źródła zewnętrznego. Pochodzenie źródła nie jest znany, ale wymagają obsługi skryptów.|Żądanie dowód od elementu wywołującego. Interfejs API obiekt wywołujący musi umożliwiają zwykle przedstawić dowód na to, `Evidence` klasy.|  
+  
+   
   
 ## Examples  
  Poniższy przykład wykonuje przekształcenie XSLT przy użyciu arkusza stylów ze źródła zewnętrznego. Ponieważ arkusz stylów pochodzi z niezaufanego źródła `resolver` i `evidence` parametry są ustawione na `null`.  
-  
+ 
  [!code-csharp[XslTransform.Load5#1](~/samples/snippets/csharp/VS_Snippets_Data/XslTransform.Load5/CS/trans_noev.cs#1)]
  [!code-vb[XslTransform.Load5#1](~/samples/snippets/visualbasic/VS_Snippets_Data/XslTransform.Load5/VB/trans_noev.vb#1)]  
   
