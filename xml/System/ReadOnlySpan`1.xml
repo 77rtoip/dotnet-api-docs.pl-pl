@@ -1,11 +1,11 @@
 <Type Name="ReadOnlySpan&lt;T&gt;" FullName="System.ReadOnlySpan&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7e0feb74debd27988fa190cdd4fc23848bb487d3" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="2390d6e71ade8e4287af3f857eb311f8b180dfdc" />
+    <Meta Name="ms.sourcegitcommit" Value="37682ce95205a8acb8849d62d77692eac62ac500" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36428537" />
+    <Meta Name="ms.lasthandoff" Value="07/27/2018" />
+    <Meta Name="ms.locfileid" Value="39322529" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct ReadOnlySpan&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit ReadOnlySpan`1&lt;T&gt; extends System.ValueType" />
@@ -37,9 +37,13 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <typeparam name="T">To be added.</typeparam>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <typeparam name="T">Typ elementów w <see cref="System.ReadOnlySpan`1" />.</typeparam>
+    <summary>Zawiera pamięci są bezpieczne i bezpieczny typowo reprezentację tylko do odczytu dla niego ciągły region dowolnego pamięci.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[`ReadOnlySpan<T>` jest [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) który jest przydzielony na stosie i nigdy nie można wprowadzić do zarządzanej sterty. Typy struktury REF mają kilku ograniczeniom, aby upewnić się, że nie można awansować do zarządzanej sterty, w tym, że ich nie może być zapakowany, przechwycone w wyrażeniach lambda, przypisane do zmiennych typu <xref:System.Object>, przypisane do `dynamic` zmienne, a dowolny typ interfejsu nie mogą wdrażać.
+
+A `ReadOnlySpan<T>` wystąpienia jest często używana do odwoływać się do elementów tablicy lub część tablicy. W przeciwieństwie do tablicy, jednak `ReadOnlySpan<T>` pamięci zarządzanej, natywnej pamięci może wskazywać wystąpienie lub zarządzanych pamięci stosu.]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -62,9 +66,11 @@
         <Parameter Name="array" Type="T[]" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="array">Tablica, z której ma zostać utworzona <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <summary>Tworzy nową <see cref="T:System.ReadOnlySpan`1" /> względem całej określonej tablicy.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Jeśli tablica ma wartość null, ten konstruktor zwraca wartość null `ReadOnlySpan<T>`.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -92,10 +98,16 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="pointer">Wskaźnik do ciągu określonej liczby adres początkowy <paramref name="T" /> obiektów w pamięci.</param>
+        <param name="length">Liczba <paramref name="T" /> obiekty do uwzględnienia.</param>
+        <summary>Tworzy nową <see cref="T:System.ReadOnlySpan`1" /> z określoną liczbę bajtów, zaczynając od adresu określonego pamięci.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Ten konstruktor należy używać ostrożnie, ponieważ powoduje ona utworzenie arbitralnie wpisane `T`s z bloku pamięci.]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="T" /> jest typem referencyjnym lub zawiera odwołania i nie mogą być przechowywane w pamięci niezarządzanej.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="length" /> ma wartość ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -115,10 +127,14 @@
         <Parameter Name="start" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="start">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="array">Tablica, z której ma zostać utworzona <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <param name="start">Indeks początkowy, od której rozpoczyna zakres tylko do odczytu.</param>
+        <summary>Tworzy nową <see cref="T:System.ReadOnlySpan`1" /> z tablicy, zaczynając od określonego indeksu i przechodzić do końca tablicy.</summary>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="start" /> jest mniej-niż 0 lub większą-niż długość tablicy.</exception>
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="array" /> ma wartość null.</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -143,11 +159,15 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="array">Tablica, z której ma zostać utworzona <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <param name="start">Indeks pierwszego elementu w celu uwzględnienia.</param>
+        <param name="length">Liczba elementów do uwzględnienia.</param>
+        <summary>Tworzy nową <see cref="T:System.ReadOnlySpan`1" /> zawierającą określoną liczbę elementów tablicy, zaczynając od określonego indeksu.</summary>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="array" /> jest <see langword="null" />, ale <paramref name="start" /> lub <paramref name="length" /> jest różna od zera.<p />
+--lub--<p /><paramref name="start" /> wykracza poza granice tablicy. <p />
+--lub--<p /><paramref name="start" /> i <paramref name="length" /> przekracza liczbę elementów w tablicy.</exception>
       </Docs>
     </Member>
     <Member MemberName="CopyTo">
@@ -173,9 +193,13 @@
         <Parameter Name="destination" Type="System.Span&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="destination">Zakres, aby skopiować elementy do.</param>
+        <summary>Kopiuje zawartość to <see cref="System.ReadOnlySpan`1" /> do miejsca docelowego <see cref="System.Span`1" />.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Jeśli `source` i `destination` zachodziły na siebie, materiałami `source` odbywa się tak, jakby zostały skopiowane do lokalizacji tymczasowej, przed skopiowaniem ich do `destination`.]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="destination" /> jest krótszy niż źródłowy <see cref="System.ReadOnlySpan`1" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="DangerousCreate">
@@ -203,12 +227,18 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="obj">To be added.</param>
-        <param name="objectData">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="obj">Obiektu zarządzanego, który zawiera dane obejmują zakres.</param>
+        <param name="objectData">Odwołanie do danych w obiekcie.</param>
+        <param name="length">Liczba <paramref name="T" /> elementy, aby obejmować.</param>
+        <summary>Tworzy nową <see cref="T:System.ReadOnlySpan`1" /> nad częścią regularne zarządzanego obiektu.</summary>
+        <returns>A <see cref="T:System.ReadOnlySpan`1" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Ta metoda jest niebezpieczne ponieważ ona **nie sprawdza** następujące warunki błędów:
+
+- `length` Parametr jest nieprawidłowy.
+- `obj` Parametr ma wartość null.
+- Obiekty `obj` wskazuje może zawierać surowy wskaźnik.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DangerousGetPinnableReference">
@@ -228,9 +258,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Zwraca odwołanie do elementu <see cref="T:System.ReadOnlySpan`1" /> o indeksie zero. Jeśli zakres tylko do odczytu jest pusty, zwraca odwołanie do lokalizacji pamięci, gdzie pierwszy element czy były przechowywane.</summary>
+        <returns>Odwołanie do pierwszego elementu <see cref="T:System.ReadOnlySpan`1" /> o indeksie zero.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Ta metoda zwraca [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type). Może służyć do przypinania <xref:System.ReadOnlySpan`1> w pamięci. Jest wymagany do obsługi użytkowania <xref:System.ReadOnlySpan`1> w ramach [stałej](~/docs/csharp/language-reference/keywords/fixed-statement.md) instrukcji.
+
+Ta dokumentacja jest używany dla funkcji przypinania i nigdy nie może być wyłuskiwany.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Empty">
@@ -253,8 +287,8 @@
         <ReturnType>System.ReadOnlySpan&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Zwraca pustą <see cref="T:System.ReadOnlySpan`1" />.</summary>
+        <value>Zwraca pustą <see cref="T:System.ReadOnlySpan`1" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -289,10 +323,13 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="obj">Nieobsługiwane.</param>
+        <summary>Nieobsługiwane. Zgłasza <see cref="T:System.NotSupportedException" />.</summary>
+        <returns>Nieobsługiwane.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Nieobsługiwane.]]></format>
+        </remarks>
+        <exception cref="T:System.NotSupportedException">Zawsze generowany przez tę metodę.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -312,9 +349,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Zwraca moduł wyliczający dla tego <see cref="T:System.ReadOnlySpan`1" />.</summary>
+        <returns>Moduł wyliczający dla tego zakresu tylko do odczytu.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Zamiast wywoływać metodę <xref:System.ReadOnlySpan%601.GetEnumerator%2A> metoda bezpośrednio, można użyć C# `foreach` instrukcji i Visual Basic `For Each`... `Next` konstrukcji wyliczyć <xref:System.ReadOnlySpan%601>.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -346,9 +385,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Nieobsługiwane. Zgłasza <see cref="T:System.NotSupportedException" />.</summary>
+        <returns>Nieobsługiwane.</returns>
+        <remarks>Nieobsługiwane.</remarks>
+        <exception cref="T:System.NotSupportedException">Zawsze generowany przez tę metodę.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetPinnableReference">
@@ -369,7 +409,7 @@
         </Attribute>
       </Attributes>
       <ReturnValue>
-        <ReturnType>System.T&amp;</ReturnType>
+        <ReturnType>T@</ReturnType>
         <Attributes>
           <Attribute>
             <AttributeName>System.Runtime.CompilerServices.IsReadOnly</AttributeName>
@@ -378,9 +418,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Zwraca odwołanie do elementu <see cref="T:System.ReadOnlySpan`1" /> o indeksie zero. Jeśli zakres tylko do odczytu jest pusty, zwraca <see langword="null" />.</summary>
+        <returns>Odwołanie do elementu <see cref="T:System.ReadOnlySpan`1" /> o indeksie zero, lub <see langword="null" /> Jeśli <see cref="M:System.ReadOnlySpan`1.IsEmpty" /> jest <see langword="true" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[`GetPinnableReference` Metoda zwraca [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type). Może służyć do przypinania <xref:System.ReadOnlySpan%601> w pamięci. Jest wymagany do obsługi użytkowania <xref:System.ReadOnlySpan%601> w ramach [stałej](~/docs/csharp/language-reference/keywords/fixed-statement.md) instrukcji.
+
+Ta dokumentacja jest używany dla funkcji przypinania i nigdy nie może być wyłuskiwany.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsEmpty">
@@ -403,8 +447,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Zwraca wartość, która wskazuje bieżącego zakresu tylko do odczytu jest pusta.</summary>
+        <value>
+          <see langword="true" /> gdy bieżącego zakresu jest pusta. w przeciwnym razie <see langword="false" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -430,16 +475,18 @@
         </Attribute>
       </Attributes>
       <ReturnValue>
-        <ReturnType>System.T&amp;</ReturnType>
+        <ReturnType>T@</ReturnType>
       </ReturnValue>
       <Parameters>
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">To be added.</param>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <param name="index">Liczony od zera indeks elementu do pobrania.</param>
+        <summary>Pobiera element z zakresu tylko do odczytu dla podanego indeksu zaczynającego się od zera.</summary>
+        <value>Element z zakresu tylko do odczytu.</value>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.IndexOutOfRangeException">
+          <paramref name="index" /> mniej niż zero większa lub równa <see cref="P:System.ReadOnlySpan`1.Length" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Length">
@@ -462,8 +509,8 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Liczba elementów w zakresie tylko do odczytu.</summary>
+        <value>Liczba elementów.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -491,11 +538,14 @@
         <Parameter Name="right" Type="System.ReadOnlySpan&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="left">To be added.</param>
-        <param name="right">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="left">Pierwszy zakres do porównania.</param>
+        <param name="right">Drugi zakres do porównania.</param>
+        <summary>Zwraca wartość wskazującą, czy dwa <see cref="T:System.ReadOnlySpan`1" /> wystąpień są takie same.</summary>
+        <returns>
+          <see langword="true" /> Jeśli dwa <see cref="T:System.ReadOnlySpan`1" /> wystąpienia są równe; w przeciwnym razie wartość <see langword="false" /></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[To sprawdza, czy jest to dwa <xref:System.ReadOnlySpan`1> wystąpienia punktu w tej samej lokalizacji pamięci początkowej i mają taką samą <xref:System.ReadOnlySpan`1.Length> wartości. Porównuje zawartości dwóch <xref:System.ReadOnlySpan`1> wystąpień.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="op_Implicit">
@@ -521,9 +571,9 @@
         <Parameter Name="array" Type="T[]" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">Tablica do przekonwertowania na <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <summary>Definiuje niejawna konwersja tablicy na <see cref="T:System.ReadOnlySpan`1" />.</summary>
+        <returns>Zakres tylko do odczytu, który odpowiada <paramref name="array" />.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -555,10 +605,10 @@
         <Parameter Name="segment" Type="System.ArraySegment&lt;T&gt;" Index="0" FrameworkAlternate="netcore-2.1" />
       </Parameters>
       <Docs>
-        <param name="arraySegment">To be added.</param>
-        <param name="segment">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="arraySegment">Segment macierzy, który ma zostać przekonwertowane na <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <param name="segment">Segment macierzy, który ma zostać przekonwertowane na <see cref="T:System.ReadOnlySpan`1" />.</param>
+        <summary>Definiuje niejawną konwersję <see cref="T:System.ArraySegment`1" /> do <see cref="T:System.ReadOnlySpan`1" />.</summary>
+        <returns>Zakres tylko do odczytu, umożliwiająca segmentem tablicy.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -586,11 +636,14 @@
         <Parameter Name="right" Type="System.ReadOnlySpan&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="left">To be added.</param>
-        <param name="right">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="left">Pierwszy tylko do odczytu zakres do porównania.</param>
+        <param name="right">Drugi atrybut tylko do odczytu zakres do porównania.</param>
+        <summary>Zwraca wartość wskazującą, czy dwa <see cref="T:System.ReadOnlySpan`1" /> typy wartości nie są takie same.</summary>
+        <returns>
+          <see langword="true" /> Jeśli dwa <see cref="T:System.ReadOnlySpan`1" /> typy wartości nie są równe; w przeciwnym razie <see langword="false" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Dwa <xref:System.ReadOnlySpan%601> typy wartości nie są takie same, jeśli mają one różne długości lub odpowiadające elementy `left` i `right` wskaż pamięci różnych lokalizacjach.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Slice">
@@ -616,10 +669,12 @@
         <Parameter Name="start" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">Indeks, od którego należy rozpocząć wycinka.</param>
+        <summary>Formularze wycinek z bieżącego zakresu tylko do odczytu, który rozpoczyna się od określonego indeksu.</summary>
+        <returns>Zakres, który składa się z wszystkich elementów bieżącego zakresu z <paramref name="index" /> na koniec zakresu.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="start" /> jest większa niż liczba elementów w zakresie tylko do odczytu.</exception>
       </Docs>
     </Member>
     <Member MemberName="Slice">
@@ -646,11 +701,13 @@
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <param name="length">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">Indeks, od którego należy rozpocząć tego wycinka.</param>
+        <param name="length">Żądany długość dla wycinka.</param>
+        <summary>Formularze wycinek z bieżącego zakresu tylko do odczytu, rozpoczynając od określonego indeksu dla określonej długości.</summary>
+        <returns>Zakres tylko do odczytu, która składa się z <paramref name="length" /> elementy z bieżącego span, zaczynając od <paramref name="index" />.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="start" /> jest mniejsze zero lub większa niż lub równa <see cref="T:System.Span`1.Length" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="ToArray">
@@ -674,9 +731,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Kopiuje zawartość tego zakresu tylko do odczytu do nowej tablicy.</summary>
+        <returns>Tablica zawierająca dane bieżącego zakresu.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Ta metoda wykonuje kopię alokacji i danych sterty i w związku z tym, należy unikać, jeśli jest to możliwe. Jego go, które są czasem niezbędne, gdy interfejsy API, które obsługują <xref:System.ReadOnlySpan%601> typy wartości nie są dostępne, ale są interfejsy API, które działają z tablicami.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -696,9 +755,11 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Zwraca reprezentację ciągu tego <see cref="T:System.ReadOnlySpan`1" />.</summary>
+        <returns>Reprezentacja ciągu tego typu wartości.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Aby uzyskać `ReadOnlySpan<Char>`, `ToString` metoda zwraca <xref:System.String> zawierający znaki, wskazywana przez zakres. W przeciwnym razie zwraca <xref:System.String> o nazwie typu i liczby elementów, które zawiera zakres.]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TryCopyTo">
@@ -724,10 +785,15 @@
         <Parameter Name="destination" Type="System.Span&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="destination">Obiekt docelowy operacji kopiowania.</param>
+        <summary>Próbuje skopiuj zawartość tego <see cref="System.ReadOnlySpan`1" /> do <see cref="System.Span`1" /> i zwraca wartość, aby wskazać, czy operacja zakończyła się pomyślnie.</summary>
+        <returns>
+          <see langword="true" /> Jeśli operacja kopiowania zakończyła się pomyślnie; w przeciwnym razie <see langword="false" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[Jeśli `source` i `destination` zachodziły na siebie, materiałami `source` odbywa się tak, jakby zostały skopiowane do lokalizacji tymczasowej, przed skopiowaniem ich do `destination`.
+
+Jeśli `destination` długość jest mniejsza niż `source`, żadne elementy nie są kopiowane i metoda zwraca `false`.]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>
