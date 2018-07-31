@@ -1,11 +1,11 @@
 <Type Name="DateTime" FullName="System.DateTime">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="cd9d4c900e7e20f02b9005d05b82e9bcd83c9257" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="b4d1ca425a897d7dbb0ce3182962684726e82eeb" />
+    <Meta Name="ms.sourcegitcommit" Value="4303c81814c0b4fd5963444073ed25c176c5ddad" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37732859" />
+    <Meta Name="ms.lasthandoff" Value="07/31/2018" />
+    <Meta Name="ms.locfileid" Value="39361170" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct DateTime : IComparable, IComparable&lt;DateTime&gt;, IConvertible, IEquatable&lt;DateTime&gt;, IFormattable, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit DateTime extends System.ValueType implements class System.IComparable, class System.IComparable`1&lt;valuetype System.DateTime&gt;, class System.IConvertible, class System.IEquatable`1&lt;valuetype System.DateTime&gt;, class System.IFormattable, class System.Runtime.Serialization.ISerializable" />
@@ -63,7 +63,7 @@
 
 ## <a name="quick-links-to-example-code"></a>Szybkie łącza do przykładowego kodu
 
-[!INCLUDE[interactive-note](~/includes/csharp-interactive-note.md)]
+[!INCLUDE[interactive-note](~/includes/csharp-interactive-with-utc-note.md)]
 
 W tym artykule przedstawiono kilka przykładów, które używają `DateTime` typu:
 
@@ -86,7 +86,7 @@ W tym artykule przedstawiono kilka przykładów, które używają `DateTime` typ
  [Użyj `ParseExact` lub `TryParseExact` do przekonwertowania na ciąg w formacie znane](#parsing-02)     
  [Przekonwertować z reprezentacji ciągu ISO 8601 do daty i godziny](#parsing-03)     
 
-**`DateTime` rozdzielczość**  
+**`DateTime` Rozdzielczość**  
  [Zapoznaj się z rozwiązania dla wartości daty i godziny](#resolution-01)     
  [Porównanie dla równości w granicach tolerancji](#comparison-01)     
 
@@ -431,13 +431,13 @@ W poniższym przykładzie pokazano sposób porównywania w przybliżeniu równow
 
 ### <a name="com-interop-considerations"></a>Uwagi dotyczące współdziałania COM  
 
-A <xref:System.DateTime> wartość, która jest przekazywana do aplikacji modelu COM, a następnie jest przenoszona z powrotem do aplikacji zarządzanej, jest nazywany przesyłania danych. Ponieważ kalendarz perski nie może być wyznaczony jako kalendarz domyślny dla kultury, wyświetlanie daty w kalendarzu Perskim wymaga poszczególnych wywołań dla jej <xref:System.DateTime>, , i  metody.  
+A <xref:System.DateTime> wartość, która jest przekazywana do aplikacji modelu COM, a następnie jest przenoszona z powrotem do aplikacji zarządzanej, jest nazywany przesyłania danych. Jednak <xref:System.DateTime> nie ma wartość, która określa tylko przez czas błądzenia, zgodnie z oczekiwaniami.  
   
-Drugie wywołanie konstruktora tworzy  wartości za pomocą  obiektu. Ponieważ Hidżra jest kalendarz domyślny bieżącej kultury,  metody używane do formatowania daty. at 3:00 P.M. Po przywróceniu poprzedniej bieżącej kultury (która jest angielski (Stany Zjednoczone), w tym przypadku)  metoda używa bieżącej kultury domyślnego kalendarza gregoriańskiego do formatowania daty. nie jest poza zasięgiem obsługiwanym przez .  
+Jeśli możesz Rundy tylko przez czas, np. w dniu 3, końcowej daty i godziny jest 30 grudnia 1899 r. o 3:00, zamiast, 1 stycznia 0001 r at 3:00 P.M. .NET Framework i COM założono domyślną datę, gdy określono tylko raz. Jednak COM system założy podstawowy data 30 grudnia 1899 r, gdy podstawowy dzień, 1 stycznia 0001 r przyjęto założenie, .NET Framework  
   
-- lub -  jest mniejsza niż 1 lub większa niż liczba miesięcy . Inicjuje nowe wystąpienie klasy  struktury określony rok, miesiąc, godziny, minuty i sekundy. Ten konstruktor interpretuje parametry, , i  jako rok, miesiąc i dzień w kalendarzu gregoriańskim.  
+Tylko godzina jest przekazywany z programu .NET Framework modelowi COM, jest przetwarzana w specjalny jest przeprowadzane, Konwertuje czas na format używany przez model COM. Kiedy tylko godzina jest przekazywany z modelu COM do programu .NET Framework, brak specjalnego przetwarzania jest wykonywane, ponieważ, może dojść do uszkodzenia uzasadnione daty i godziny w lub przed 30 grudnia 1899. Jeśli wartość typu date rozpoczyna się jego przesyłania danych z modelu COM, .NET Framework i COM należy zachować daty.  
   
-Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xref:System.DateTime>, miesiąca, dzień, godzinę, minutęi drugi określić czas lokalny, uniwersalny czas koordynowany (UTC) lub nie.  
+Zachowanie środowiska .NET Framework i COM oznacza, że jeśli rund Twojej aplikacji <xref:System.DateTime> określa tylko raz, aplikacja musi Pamiętaj, aby zmodyfikować lub zignorować błędne datę z końcowym <xref:System.DateTime> obiektu.  
      
  ]]></format>
     </remarks>
@@ -494,20 +494,20 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
         <Parameter Name="ticks" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="ticks">Inicjuje nowe wystąpienie klasy  strukturę do określonego roku, miesiąc, dzień, godzinę, minuty, sekundy i uniwersalny czas koordynowany (UTC) lub czasu lokalnego.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.DateTime" /> strukturę do określonego roku, miesiąca, godziny, minuty i sekundy określonego kalendarza.</summary>
+        <param name="ticks">Data i czas wyrażony w liczbie 100-nanosekundowych interwałów, które upłynęły od 1 stycznia 0001 na 00:00:00.000 w kalendarzu gregoriańskim.</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.DateTime" /> struktury do określonej liczby taktów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  <xref:System.DateTime.Kind%2A> Właściwość jest inicjowana do <xref:System.DateTimeKind.Unspecified>.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
    
   
 ## Examples  
- Inicjuje nowe wystąpienie klasy <xref:System.DateTime> strukturę do określonego roku, miesiąca, dnia, godziny, minuty, sekundy i milisekundy.  
+ W poniższym przykładzie pokazano jeden z <xref:System.DateTime> konstruktorów.  
   
  [!code-cpp[datetime.ctor_Int64#1](~/samples/snippets/cpp/VS_Snippets_CLR/datetime.ctor_Int64/CPP/ticks.cpp#1)]
  [!code-csharp[datetime.ctor_Int64#1](~/samples/snippets/csharp/VS_Snippets_CLR/datetime.ctor_Int64/CS/ticks.cs#1)]
@@ -551,14 +551,14 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
         <Parameter Name="kind" Type="System.DateTimeKind" />
       </Parameters>
       <Docs>
-        <param name="ticks">Inicjuje nowe wystąpienie klasy  strukturę do określonego roku, miesiąc, dzień, godzinę, minuty, sekundy i uniwersalny czas koordynowany (UTC) lub czasu lokalnego.</param>
-        <param name="kind">Jedną z wartości wyliczenia, które wskazuje czy <c>roku</c>, miesiąca, dzień, godzinę, minutę, drugi, i milisekund określić czas lokalny, uniwersalny czas koordynowany (UTC) lub nie.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.DateTime" /> struktury do określonego roku, miesiąca, dnia, godziny, minuty, sekundy, milisekund i uniwersalny czas koordynowany (UTC) lub czasu lokalnego.</summary>
+        <param name="ticks">Data i czas wyrażony w liczbie 100-nanosekundowych interwałów, które upłynęły od 1 stycznia 0001 na 00:00:00.000 w kalendarzu gregoriańskim.</param>
+        <param name="kind">Jedną z wartości wyliczenia, które wskazuje czy <c>impulsów</c> określa czas lokalny, uniwersalny czas koordynowany (UTC) lub nie.</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.DateTime" /> struktury określoną liczbę taktów i uniwersalny czas koordynowany (UTC) lub czasu lokalnego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
  ]]></format>
         </remarks>
@@ -743,7 +743,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
   
  Ten konstruktor interpretuje parametry`year`, `month`, i `day` jako rok, miesiąc i dzień w kalendarzu gregoriańskim. Aby utworzyć wystąpienie <xref:System.DateTime> wartości za pomocą rok, miesiąc i dzień w kalendarzu innym, wywołanie <xref:System.DateTime.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Globalization.Calendar%29> konstruktora.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
    
   
@@ -810,7 +810,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
 ## Remarks  
  Ten konstruktor interpretuje parametry`year`, `month`, i `day` jako rok, miesiąc i dzień w kalendarzu gregoriańskim. Aby utworzyć wystąpienie <xref:System.DateTime> wartości za pomocą rok, miesiąc i dzień w kalendarzu innym, wywołanie <xref:System.DateTime.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Globalization.Calendar%2CSystem.DateTimeKind%29> konstruktora.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
    
   
@@ -951,7 +951,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
   
  <xref:System.DateTime.Kind%2A> Właściwość jest inicjowana do <xref:System.DateTimeKind.Unspecified>.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
    
   
@@ -1021,7 +1021,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
 ## Remarks  
  Ten konstruktor interpretuje parametry`year`, `month`, i `day` jako rok, miesiąc i dzień w kalendarzu gregoriańskim. Aby utworzyć wystąpienie <xref:System.DateTime> wartości za pomocą rok, miesiąc i dzień w kalendarzu innym, wywołanie <xref:System.DateTime.%23ctor%28System.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Int32%2CSystem.Globalization.Calendar%2CSystem.DateTimeKind%29> konstruktora.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
    
   
@@ -1090,7 +1090,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
   
  Dopuszczalne wartości dla `year`, `month`, i `day` zależą od `calendar`. Wyjątek jest generowany, jeśli określonej daty i godziny nie można wyrazić za pomocą `calendar`.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
  <xref:System.Globalization> Przestrzeń nazw udostępnia kilka kalendarzy, w tym <xref:System.Globalization.GregorianCalendar> i <xref:System.Globalization.JulianCalendar>.  
   
@@ -1162,7 +1162,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
 ## Remarks  
  Dopuszczalne wartości dla `year`, `month`, i `day` parametry są zależne od `calendar` parametru. Wyjątek jest generowany, jeśli określonej daty i godziny nie można wyrazić za pomocą `calendar`.  
   
- - lub - <xref:System.DateTimeOffset> jest mniejszy niż 0 lub większa od 23 - lub -  jest mniejszy niż 0 lub większą niż 59.  
+ Dla aplikacji, w których przenośność danych daty i godziny lub ograniczone strefy czasowej ważne jest świadomość, można użyć odpowiedniego <xref:System.DateTimeOffset> konstruktora.  
   
  <xref:System.Globalization> Przestrzeń nazw udostępnia kilka kalendarzy, w tym <xref:System.Globalization.GregorianCalendar> i <xref:System.Globalization.JulianCalendar>.  
   
@@ -2580,7 +2580,7 @@ Jedną z wartości wyliczenia, które wskazuje czy <xref:System.DateTime>roku<xr
         <exception cref="T:System.ArgumentOutOfRangeException">
           <paramref name="fileTime" /> jest mniejsza niż 0 lub reprezentuje czas przekracza <see cref="F:System.DateTime.MaxValue" />.</exception>
         <block subset="none" type="usage">
-          <para>Zazwyczaj <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> przywraca metoda <see cref="T:System.DateTime" /> wartość, która została zapisana przez <see cref="M:System.DateTime.ToFileTime" /> metody. Jednak te dwie wartości mogą się różnić w następujących warunkach: — w przypadku serializacji i deserializacji obiektu <see cref="T:System.DateTime" /> wartość występuje w różnych strefach czasowych. Na przykład jeśli <see cref="T:System.DateTime" /> wartość z godziny 12:30:00 w Stanach Zjednoczonych Strefy czasowej wschodni jest serializowana, a następnie wykonać deserializacji w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego, oryginalnym wartość 12:30:00 jest dopasowywana do 9:30:00 odzwierciedlać różnicę między dwiema strefami czasowymi.  -Jeśli <see cref="T:System.DateTime" /> wartość, która jest serializowana reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej. W tym przypadku <see cref="M:System.DateTime.ToFileTime" /> metoda dostosowuje przywróconej <see cref="T:System.DateTime" /> wartości, tak aby reprezentuje prawidłową godzinę w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w wartość Liczba całkowita typu long, jest konwertowany ten zakres <see cref="M:System.DateTime.ToFileTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.FromFileTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.fromfiletime/cs/fromfiletime1.cs#1)] [! code-vb[System.DateTime.FromFileTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.fromfiletime/vb/fromfiletime1.vb#1)]</para>
+          <para>Zazwyczaj <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> przywraca metoda <see cref="T:System.DateTime" /> wartość, która została zapisana przez <see cref="M:System.DateTime.ToFileTime" /> metody. Jednak te dwie wartości mogą się różnić w następujących warunkach: — w przypadku serializacji i deserializacji obiektu <see cref="T:System.DateTime" /> wartość występuje w różnych strefach czasowych. Na przykład jeśli <see cref="T:System.DateTime" /> wartość z godziny 12:30:00 w Stanach Zjednoczonych Strefy czasowej wschodni jest serializowana, a następnie wykonać deserializacji w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego, oryginalnym wartość 12:30:00 jest dopasowywana do 9:30:00 odzwierciedlać różnicę między dwiema strefami czasowymi.  -Jeśli <see cref="T:System.DateTime" /> wartość, która jest serializowana reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej. W tym przypadku <see cref="M:System.DateTime.ToFileTime" /> metoda dostosowuje przywróconej <see cref="T:System.DateTime" /> wartości, tak aby reprezentuje prawidłową godzinę w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w wartość Liczba całkowita typu long, jest konwertowany ten zakres <see cref="M:System.DateTime.ToFileTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.FromFileTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.fromfiletime/cs/fromfiletime1.cs#1)] [! kodu vb[System.DateTime.FromFileTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.fromfiletime/vb/fromfiletime1.vb#1)]</para>
         </block>
         <altmember cref="M:System.DateTime.ToUniversalTime" />
         <altmember cref="M:System.TimeZone.GetUtcOffset(System.DateTime)" />
@@ -4453,9 +4453,9 @@ Poniższy przykład analizuje ciągów w każdym z tych formatów przy użyciu k
 |Jeśli wywołasz|I `provider` jest|Informacje o formatowaniu jest tworzony na podstawie|  
 |-----------------|-----------------------|--------------------------------------------|  
 |<xref:System.DateTime.Parse%28System.String%29>|-|Bieżąca kultura wątku (<xref:System.Globalization.DateTimeFormatInfo.CurrentInfo%2A?displayProperty=nameWithType> właściwości)|  
-|<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|<xref:System.Globalization.DateTimeFormatInfo> obiektu|Określony <xref:System.Globalization.DateTimeFormatInfo> obiektu|  
+|<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|Element <xref:System.Globalization.DateTimeFormatInfo> obiektu|Określony <xref:System.Globalization.DateTimeFormatInfo> obiektu|  
 |<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|`null`|Bieżąca kultura wątku (<xref:System.Globalization.DateTimeFormatInfo.CurrentInfo%2A?displayProperty=nameWithType> właściwości)|  
-|<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|<xref:System.Globalization.CultureInfo> obiektu|<xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> Właściwości|  
+|<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|Element <xref:System.Globalization.CultureInfo> obiektu|<xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> Właściwości|  
 |<xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%29> lub <xref:System.DateTime.Parse%28System.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%29>|Niestandardowe <xref:System.IFormatProvider> implementacji|<xref:System.IFormatProvider.GetFormat%2A?displayProperty=nameWithType> — Metoda|  
   
  Gdy informacje o formatowaniu jest tworzony na podstawie <xref:System.Globalization.DateTimeFormatInfo> obiektu <xref:System.Globalization.DateTimeFormatInfo.Calendar%2A?displayProperty=nameWithType> właściwość definiuje kalendarz używany w operacji analizowania.  
@@ -4522,7 +4522,7 @@ Poniższy przykład analizuje ciągów w każdym z tych formatów przy użyciu k
 
 Liczne przykłady, które wywołują `DateTime.Parse` metoda rozmieszczonymi w [uwagi](#remarks) sekcji tego artykułu, w dokumentacji dotyczącej poszczególnych `DateTime.Parse` przeciążenia.
 
-[!INCLUDE[interactive-note](~/includes/csharp-interactive-note.md)]
+[!INCLUDE[interactive-note](~/includes/csharp-interactive-with-utc-note.md)]
 
 Możesz również pobrać kompletny zestaw `DateTime.Parse` przykłady, które są zawarte w [projektu .NET Core 2.0 dla języka C#](https://github.com/dotnet/samples/raw/master/snippets/csharp/downloads/api/System/DateTime.Parse.zip) i [projektu .NET Core 2.0 dla języka Visual Basic](https://github.com/dotnet/samples/raw/master/snippets/visualbasic/downloads/api/System/DateTime.Parse.zip), z [dotnet / repozytorium GitHub Samples](https://github.com/dotnet/samples).
 
@@ -4567,7 +4567,7 @@ Możesz również pobrać kompletny zestaw `DateTime.Parse` przykłady, które s
         <Parameter Name="s" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz temat [ciąg parse](#StringToParse), aby uzyskać więcej informacji.</param>
+        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz [ciąg można przeanalizować](#StringToParse) Aby uzyskać więcej informacji.</param>
         <summary>Konwertuje ciąg reprezentujący datę i godzinę na jego <see cref="T:System.DateTime" /> równoważne przy użyciu konwencji bieżącej kultury wątku.</summary>
         <returns>Obiekt, który jest odpowiednikiem daty i godziny zawartej w elemencie <paramref name="s" />.</returns>
         <remarks>
@@ -4641,8 +4641,8 @@ Obsługuje on <xref:System.FormatException> wyjątek, który jest generowany, gd
         <Parameter Name="provider" Type="System.IFormatProvider" />
       </Parameters>
       <Docs>
-        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz temat [ciąg parse](#StringToParse), aby uzyskać więcej informacji.</param>
-        <param name="provider">Obiekt, który dostarcza informacje specyficzne dla kultury formatu o <c>s</c>.  Zobacz [analizowanie i conventions](#Culture) kultury</param>
+        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz [ciąg można przeanalizować](#StringToParse) Aby uzyskać więcej informacji.</param>
+        <param name="provider">Obiekt, który dostarcza informacje specyficzne dla kultury formatu o <c>s</c>.  Zobacz [konwencje analizy i kultury](#Culture)</param>
         <summary>Konwertuje ciąg reprezentujący datę i godzinę na jego <see cref="T:System.DateTime" /> równoważne przy użyciu informacji specyficznych dla kultury.</summary>
         <returns>Obiekt, który jest odpowiednikiem daty i godziny zawartej w elemencie <paramref name="s" /> zgodnie z określonym <paramref name="provider" />.</returns>
         <remarks>
@@ -4737,8 +4737,8 @@ Poniższy przykład analizuje tablicę ciągów daty przy użyciu konwencji en U
         <Parameter Name="styles" Type="System.Globalization.DateTimeStyles" />
       </Parameters>
       <Docs>
-        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz temat [ciąg parse](#StringToParse), aby uzyskać więcej informacji.</param>
-        <param name="provider">Obiekt, który dostarcza specyficzne dla kultury informacje o formatowaniu <c>s</c>.  Zobacz [analizowanie i conventions](#Culture) kultury</param>
+        <param name="s">Ciąg zawierający datę i godzinę, które należy przekształcić. Zobacz [ciąg można przeanalizować](#StringToParse) Aby uzyskać więcej informacji.</param>
+        <param name="provider">Obiekt, który dostarcza specyficzne dla kultury informacje o formatowaniu <c>s</c>.  Zobacz [konwencje analizy i kultury](#Culture)</param>
         <param name="styles">Bitowa kombinacja wartości wyliczenia wskazująca elementy stylu, które mogą być obecne w <c>s</c> dla analizy operacja została wykonana pomyślnie, a definiuje, jak interpretować przeanalizowaną datę w odniesieniu do bieżącej strefie czasowej lub Bieżąca data. To typowa wartość do określenia <see cref="F:System.Globalization.DateTimeStyles.None" />.</param>
         <summary>Konwertuje ciąg reprezentujący datę i godzinę na jego <see cref="T:System.DateTime" /> równoważne przy użyciu informacji specyficznych dla kultury i styl formatowania.</summary>
         <returns>Obiekt, który jest odpowiednikiem daty i godziny zawartej w elemencie <paramref name="s" />, zgodnie z określonym <paramref name="provider" /> i <paramref name="styles" />.</returns>
@@ -4870,7 +4870,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.FormatException">
           <paramref name="s" /> lub <paramref name="format" /> jest ciągiem pustym.  - lub - <paramref name="s" /> nie zawiera datę i godzinę, która odnosi się do wzorca określonego w <paramref name="format" />.  - lub - składnik godziny, jak i oznaczenie AM/PM w <paramref name="s" /> nie zgadza się.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTime.TryParseExact" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -5040,7 +5040,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentException">
           <paramref name="style" /> zawiera nieprawidłową kombinację <see cref="T:System.Globalization.DateTimeStyles" /> wartości. Na przykład zarówno <see cref="F:System.Globalization.DateTimeStyles.AssumeLocal" /> i <see cref="F:System.Globalization.DateTimeStyles.AssumeUniversal" />.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTime.TryParseExact" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -5147,7 +5147,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentException">
           <paramref name="style" /> zawiera nieprawidłową kombinację <see cref="T:System.Globalization.DateTimeStyles" /> wartości. Na przykład zarówno <see cref="F:System.Globalization.DateTimeStyles.AssumeLocal" /> i <see cref="F:System.Globalization.DateTimeStyles.AssumeUniversal" />.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTime.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTime.TryParseExact" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -6455,7 +6455,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">Wynikowy czas pliku reprezentuje datę i godzinę przed 12:00 w dniu 1 stycznia 1601 r. UTC.</exception>
         <block subset="none" type="usage">
-          <para>Zazwyczaj <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> przywraca metoda <see cref="T:System.DateTime" /> wartość, która została zapisana przez <see cref="M:System.DateTime.ToFileTime" /> metody. Jednak te dwie wartości mogą się różnić w następujących warunkach: — w przypadku serializacji i deserializacji obiektu <see cref="T:System.DateTime" /> wartość występuje w różnych strefach czasowych. Na przykład jeśli <see cref="T:System.DateTime" /> wartość z godziny 12:30:00 w Stanach Zjednoczonych Strefy czasowej wschodni jest serializowana, a następnie wykonać deserializacji w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego, oryginalnym wartość 12:30:00 jest dopasowywana do 9:30:00 odzwierciedlać różnicę między dwiema strefami czasowymi.  -Jeśli <see cref="T:System.DateTime" /> wartość, która jest serializowana reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej. W tym przypadku <see cref="M:System.DateTime.ToFileTime" /> metoda dostosowuje przywróconej <see cref="T:System.DateTime" /> wartości, tak aby reprezentuje prawidłową godzinę w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w wartość Liczba całkowita typu long, jest konwertowany ten zakres <see cref="M:System.DateTime.ToFileTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.FromFileTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.fromfiletime/cs/fromfiletime1.cs#1)] [! code-vb[System.DateTime.FromFileTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.fromfiletime/vb/fromfiletime1.vb#1)]</para>
+          <para>Zazwyczaj <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> przywraca metoda <see cref="T:System.DateTime" /> wartość, która została zapisana przez <see cref="M:System.DateTime.ToFileTime" /> metody. Jednak te dwie wartości mogą się różnić w następujących warunkach: — w przypadku serializacji i deserializacji obiektu <see cref="T:System.DateTime" /> wartość występuje w różnych strefach czasowych. Na przykład jeśli <see cref="T:System.DateTime" /> wartość z godziny 12:30:00 w Stanach Zjednoczonych Strefy czasowej wschodni jest serializowana, a następnie wykonać deserializacji w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego, oryginalnym wartość 12:30:00 jest dopasowywana do 9:30:00 odzwierciedlać różnicę między dwiema strefami czasowymi.  -Jeśli <see cref="T:System.DateTime" /> wartość, która jest serializowana reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej. W tym przypadku <see cref="M:System.DateTime.ToFileTime" /> metoda dostosowuje przywróconej <see cref="T:System.DateTime" /> wartości, tak aby reprezentuje prawidłową godzinę w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w wartość Liczba całkowita typu long, jest konwertowany ten zakres <see cref="M:System.DateTime.ToFileTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.FromFileTime(System.Int64)" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.FromFileTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.fromfiletime/cs/fromfiletime1.cs#1)] [! kodu vb[System.DateTime.FromFileTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.fromfiletime/vb/fromfiletime1.vb#1)]</para>
         </block>
         <altmember cref="M:System.DateTime.ToFileTimeUtc" />
         <altmember cref="T:System.Int64" />
@@ -6565,7 +6565,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
   
  Począwszy od .NET Framework w wersji 2.0, wartość zwracana przez <xref:System.DateTime.ToLocalTime%2A> metoda jest określana przez <xref:System.DateTime.Kind%2A> właściwości bieżącego <xref:System.DateTime> obiektu. W poniższej tabeli opisano możliwe wyniki.  
   
-|Rodzaj|wyniki|  
+|rodzaj|wyniki|  
 |----------|-------------|  
 |<xref:System.DateTimeKind.Utc>|To wystąpienie <xref:System.DateTime> jest konwertowana na czas lokalny.|  
 |<xref:System.DateTimeKind.Local>|Konwersja nie jest wykonywane.|  
@@ -6593,7 +6593,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
  ]]></format>
         </remarks>
         <block subset="none" type="usage">
-          <para>Możesz użyć <see cref="M:System.DateTime.ToLocalTime" /> metoda przywracania lokalne daty i wartości godziny, który został przekonwertowany na czas UTC przy <see cref="M:System.DateTime.ToUniversalTime" /> lub <see cref="M:System.DateTime.FromFileTimeUtc(System.Int64)" /> metody. Jednak jeśli pierwotny czas reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej, nie będzie ona zgodna z wartością przywróconej. Gdy <see cref="M:System.DateTime.ToLocalTime" /> metoda konwertuje godzinę w formacie UTC lokalnej strefy czasowej, również dostosowuje czas, więc to jest prawidłowa w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w UTC, jest konwertowany ten zakres <see cref="M:System.DateTime.ToUniversalTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.ToLocalTime" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.ToLocalTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tolocaltime/cs/tolocaltime1.cs#1)] [! code-vb[System.DateTime.ToLocalTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tolocaltime/vb/tolocaltime1.vb#1)]</para>
+          <para>Możesz użyć <see cref="M:System.DateTime.ToLocalTime" /> metoda przywracania lokalne daty i wartości godziny, który został przekonwertowany na czas UTC przy <see cref="M:System.DateTime.ToUniversalTime" /> lub <see cref="M:System.DateTime.FromFileTimeUtc(System.Int64)" /> metody. Jednak jeśli pierwotny czas reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej, nie będzie ona zgodna z wartością przywróconej. Gdy <see cref="M:System.DateTime.ToLocalTime" /> metoda konwertuje godzinę w formacie UTC lokalnej strefy czasowej, również dostosowuje czas, więc to jest prawidłowa w lokalnej strefie czasowej.  Na przykład następuje przejście od czasu standardowego do czasu letniego w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego w dniu 14 marca 2010 r. o 2:00, kiedy czas jest przesuwany o jedną godzinę — na 3:00:00. Ten interwał godzinowy jest nieprawidłowy, czyli jest to przedział czasu, który nie istnieje w danej strefie czasowej. W poniższym przykładzie pokazano, gdy czas, który mieści się w UTC, jest konwertowany ten zakres <see cref="M:System.DateTime.ToUniversalTime" /> metody i następnie przywróceniu przez <see cref="M:System.DateTime.ToLocalTime" /> metody, pierwotna wartość jest dostosowywana do stają się prawidłową godzinę. Można określić, czy określoną wartość daty i godziny może podlegać modyfikacji przez przekazanie jej do <see cref="M:System.TimeZoneInfo.IsInvalidTime(System.DateTime)" /> metody, jak pokazano na przykładzie.  [! code-csharp[System.DateTime.ToLocalTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tolocaltime/cs/tolocaltime1.cs#1)] [! kodu vb[System.DateTime.ToLocalTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tolocaltime/vb/tolocaltime1.vb#1)]</para>
         </block>
         <altmember cref="T:System.TimeZone" />
         <altmember cref="M:System.TimeZone.GetUtcOffset(System.DateTime)" />
@@ -6952,7 +6952,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez bieżącą kulturę.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTime.ToString" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HijriCalendar" /> klasy, gdy bieżącą kulturą jest arabski (Syria).  [!code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception2.cs# (2)] [! code-vb [System.DateTime.ToString.ArgumentOutOfRangeException#2] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/ DateTime.toString.argumentoutofrangeexception2.VB#2)]</para>
+            <see cref="M:System.DateTime.ToString" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HijriCalendar" /> klasy, gdy bieżącą kulturą jest arabski (Syria).  [! code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception2.cs#2)] [! kodu vb[System.DateTime.ToString.ArgumentOutOfRangeException#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/datetime.tostring.argumentoutofrangeexception2.vb#2)]</para>
         </block>
         <altmember cref="T:System.Globalization.DateTimeFormatInfo" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7028,7 +7028,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez <paramref name="provider" />.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTime.ToString(System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez kulturę, reprezentowane przez <paramref name="provider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.JapaneseCalendar" /> klasy.  [!code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception1.cs# (1)] [! code-vb [System.DateTime.ToString.ArgumentOutOfRangeException#1] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/ DateTime.toString.argumentoutofrangeexception1.VB#1)]</para>
+            <see cref="M:System.DateTime.ToString(System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez kulturę, reprezentowane przez <paramref name="provider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.JapaneseCalendar" /> klasy.  [! code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception1.cs#1)] [! kodu vb[System.DateTime.ToString.ArgumentOutOfRangeException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/datetime.tostring.argumentoutofrangeexception1.vb#1)]</para>
         </block>
         <altmember cref="T:System.Globalization.DateTimeFormatInfo" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7109,7 +7109,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez bieżącą kulturę.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTime.ToString(System.String)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HebrewCalendar" /> klasy, gdy bieżącą kulturą jest hebrajski (Izrael).  [!code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception3.cs# (3)] [! code-vb [System.DateTime.ToString.ArgumentOutOfRangeException#3] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/ DateTime.toString.argumentoutofrangeexception3.VB#3)]</para>
+            <see cref="M:System.DateTime.ToString(System.String)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HebrewCalendar" /> klasy, gdy bieżącą kulturą jest hebrajski (Izrael).  [! code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception3.cs#3)] [! kodu vb[System.DateTime.ToString.ArgumentOutOfRangeException#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/datetime.tostring.argumentoutofrangeexception3.vb#3)]</para>
         </block>
         <altmember cref="T:System.Globalization.DateTimeFormatInfo" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7194,7 +7194,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez <paramref name="provider" />.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTime.ToString(System.String,System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez <paramref name="provider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.UmAlQuraCalendar" /> klasy.  [!code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception4.cs# (4)] [! code-vb [System.DateTime.ToString.ArgumentOutOfRangeException#4] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/ DateTime.toString.argumentoutofrangeexception4.VB#4)]</para>
+            <see cref="M:System.DateTime.ToString(System.String,System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez <paramref name="provider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTime" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.UmAlQuraCalendar" /> klasy.  [! code-csharp[System.DateTime.ToString.ArgumentOutOfRangeException#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/cs/datetime.tostring.argumentoutofrangeexception4.cs#4)] [! kodu vb[System.DateTime.ToString.ArgumentOutOfRangeException#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.tostring.argumentoutofrangeexception/vb/datetime.tostring.argumentoutofrangeexception4.vb#4)]</para>
         </block>
         <altmember cref="T:System.Globalization.DateTimeFormatInfo" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7246,7 +7246,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
   
  Począwszy od .NET Framework w wersji 2.0, wartość zwracana przez <xref:System.DateTime.ToUniversalTime%2A> metoda jest określana przez <xref:System.DateTime.Kind%2A> właściwości bieżącego <xref:System.DateTime> obiektu. W poniższej tabeli opisano możliwe wyniki.  
   
-|Rodzaj|wyniki|  
+|rodzaj|wyniki|  
 |----------|-------------|  
 |<xref:System.DateTimeKind.Utc>|Konwersja nie jest wykonywane.|  
 |<xref:System.DateTimeKind.Local>|Bieżący <xref:System.DateTime> obiekt jest konwertowany na czas UTC.|  
@@ -7275,7 +7275,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         </remarks>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTime.ToUniversalTime" /> Metoda jest czasami używana do konwersji czasu lokalnego na UTC. <see cref="M:System.DateTime.ToLocalTime" /> Następnie wywoływana jest metoda, aby przywrócić pierwotny czas lokalny. Jednak jeśli pierwotny czas reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej, dwie wartości czasu lokalnego nie będzie taki sam. Aby uzyskać dodatkowe informacje i przykłady, zobacz <see cref="M:System.DateTime.ToLocalTime" /> metody.  Na [! Systemy include[WinXP](~/includes/WinXP-MD.MD)] <see cref="M:System.DateTime.ToUniversalTime" /> metoda rozpoznaje tylko bieżącą regułę dopasowania dla lokalnej strefy czasowej, która dotyczy wszystkich dat, w tym niższego poziomu daty (czyli daty, które są starsze niż data początkowa Bieżący reguła korekty). Aplikacje działające na [! INCLUDE[WinXP](~/includes/WinXP-MD.MD)] wymagające w przeszłości dokładne lokalne daty i czasu obliczeń muszą obejść ten problem za pomocą <see cref="M:System.TimeZoneInfo.FindSystemTimeZoneById(System.String)" /> metodę, która pobierze <see cref="T:System.TimeZoneInfo" /> obiekt, który odnosi się do lokalnej strefy czasowej i wywoływanie jej <see cref="M:System.TimeZoneInfo.ConvertTimeToUtc(System.DateTime,System.TimeZoneInfo)" /> metody.  Poniższy przykład ilustruje różnicę między <see cref="M:System.DateTime.ToUniversalTime" /> i <see cref="M:System.TimeZoneInfo.ConvertTimeToUtc(System.DateTime,System.TimeZoneInfo)" /> metody [! System include[WinXP](~/includes/WinXP-MD.MD)] w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego. Pierwsze wywołania metody dwóch dotyczą datę w 2006 bieżącej reguły korekty strefy czasowej (w przypadku której zakończył obowiązywać w 2007). Przejście do czasu letniego w drugą niedzielę marca; zapewnia bieżącej reguły korekty regule, który był obowiązuje 2006, pod warunkiem przejścia do czasu letniego w pierwszej niedzieli kwietnia. Tylko trzecim wywołaniu metody dokładnie wykonuje tę datę historycznych i czasu konwersji.  [! code-csharp[System.DateTime.ToUniversalTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.touniversaltime/cs/touniversaltime.cs#1)] [! code-vb[System.DateTime.ToUniversalTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.touniversaltime/vb/touniversaltime.vb#1)]</para>
+            <see cref="M:System.DateTime.ToUniversalTime" /> Metoda jest czasami używana do konwersji czasu lokalnego na UTC. <see cref="M:System.DateTime.ToLocalTime" /> Następnie wywoływana jest metoda, aby przywrócić pierwotny czas lokalny. Jednak jeśli pierwotny czas reprezentuje nieprawidłową godzinę w lokalnej strefie czasowej, dwie wartości czasu lokalnego nie będzie taki sam. Aby uzyskać dodatkowe informacje i przykłady, zobacz <see cref="M:System.DateTime.ToLocalTime" /> metody.  Na [!INCLUDE[winxp](~/includes/winxp-md.md)] systemów <see cref="M:System.DateTime.ToUniversalTime" /> metoda rozpoznaje tylko bieżącą regułę dopasowania dla lokalnej strefy czasowej, która dotyczy wszystkich dat, w tym niższego poziomu daty (czyli daty, które jest wcześniejsza niż data początkowa bieżącego korekty Reguła). Aplikacje działające na [!INCLUDE[winxp](~/includes/winxp-md.md)] wymagające w przeszłości dokładne lokalne daty i czasu obliczeń muszą obejść ten problem za pomocą <see cref="M:System.TimeZoneInfo.FindSystemTimeZoneById(System.String)" /> metoda pobierania <see cref="T:System.TimeZoneInfo" /> obiekt, który odpowiada lokalnej strefy czasowej i wywoływania jego <see cref="M:System.TimeZoneInfo.ConvertTimeToUtc(System.DateTime,System.TimeZoneInfo)" /> metody.  Poniższy przykład ilustruje różnicę między <see cref="M:System.DateTime.ToUniversalTime" /> i <see cref="M:System.TimeZoneInfo.ConvertTimeToUtc(System.DateTime,System.TimeZoneInfo)" /> metod [!INCLUDE[winxp](~/includes/winxp-md.md)] system w Stanach Zjednoczonych Strefa czasowa czasu pacyficznego. Pierwsze wywołania metody dwóch dotyczą datę w 2006 bieżącej reguły korekty strefy czasowej (w przypadku której zakończył obowiązywać w 2007). Przejście do czasu letniego w drugą niedzielę marca; zapewnia bieżącej reguły korekty regule, który był obowiązuje 2006, pod warunkiem przejścia do czasu letniego w pierwszej niedzieli kwietnia. Tylko trzecim wywołaniu metody dokładnie wykonuje tę datę historycznych i czasu konwersji.  [! code-csharp[System.DateTime.ToUniversalTime#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetime.touniversaltime/cs/touniversaltime.cs#1)] [! kodu vb[System.DateTime.ToUniversalTime#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetime.touniversaltime/vb/touniversaltime.vb#1)]</para>
         </block>
         <altmember cref="M:System.DateTime.ToLocalTime" />
       </Docs>
@@ -7419,7 +7419,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
  ]]></format>
         </remarks>
         <block subset="none" type="usage">
-          <para>Formatowanie mają wpływ właściwości bieżącego <see cref="T:System.Globalization.DateTimeFormatInfo" /> obiektu, które domyślnie są uzyskiwane z ** regionalnych i językowych opcje ** elementu w Panelu sterowania. <see cref="Overload:System.DateTime.TryParse" /> Metody mogą nieoczekiwanie zakończyć się niepowodzeniem i zwracać <see langword="False" /> Jeśli bieżące <see cref="P:System.Globalization.DateTimeFormatInfo.DateSeparator" /> i <see cref="P:System.Globalization.DateTimeFormatInfo.TimeSeparator" /> właściwości są ustawiane na tę samą wartość.</para>
+          <para>Formatowanie mają wpływ właściwości bieżącego <see cref="T:System.Globalization.DateTimeFormatInfo" /> obiektu, które domyślnie są uzyskiwane z **Opcje regionalne i językowe** w Panelu sterowania. <see cref="Overload:System.DateTime.TryParse" /> Metody mogą nieoczekiwanie zakończyć się niepowodzeniem i zwracać <see langword="False" /> Jeśli bieżące <see cref="P:System.Globalization.DateTimeFormatInfo.DateSeparator" /> i <see cref="P:System.Globalization.DateTimeFormatInfo.TimeSeparator" /> właściwości są ustawiane na tę samą wartość.</para>
         </block>
         <altmember cref="Overload:System.DateTime.Parse" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7751,7 +7751,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentException">
           <paramref name="styles" /> nie jest prawidłowym <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  - lub - <paramref name="styles" /> zawiera nieprawidłową kombinację <see cref="T:System.Globalization.DateTimeStyles" /> wartości (na przykład zarówno <see cref="F:System.Globalization.DateTimeStyles.AssumeLocal" /> i <see cref="F:System.Globalization.DateTimeStyles.AssumeUniversal" />).</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTime.TryParseExact" /> metoda zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTime.TryParseExact" /> metoda zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTime.ParseExact" />
         <altmember cref="T:System.Globalization.CultureInfo" />
@@ -7856,7 +7856,7 @@ W poniższym przykładzie pokazano <xref:System.DateTime.Parse%28System.String%2
         <exception cref="T:System.ArgumentException">
           <paramref name="styles" /> nie jest prawidłowym <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  - lub - <paramref name="styles" /> zawiera nieprawidłową kombinację <see cref="T:System.Globalization.DateTimeStyles" /> wartości (na przykład zarówno <see cref="F:System.Globalization.DateTimeStyles.AssumeLocal" /> i <see cref="F:System.Globalization.DateTimeStyles.AssumeUniversal" />).</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTime.TryParseExact" /> metoda zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTime.TryParseExact" /> metoda zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTime.ParseExact" />
         <altmember cref="T:System.Globalization.CultureInfo" />

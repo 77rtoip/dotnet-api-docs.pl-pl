@@ -1,11 +1,11 @@
 <Type Name="ThreadPool" FullName="System.Threading.ThreadPool">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7542193821586bc0241b3b3025f0ccf05510af2f" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="3affe4872ffccc66fbf65bb8eeb4555921416133" />
+    <Meta Name="ms.sourcegitcommit" Value="4303c81814c0b4fd5963444073ed25c176c5ddad" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37609238" />
+    <Meta Name="ms.lasthandoff" Value="07/31/2018" />
+    <Meta Name="ms.locfileid" Value="39361196" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class ThreadPool" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit ThreadPool extends System.Object" />
@@ -548,7 +548,9 @@
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak utworzyć obiekt, który zawiera informacje o zadaniu. Ilustruje też sposób przekazywania obiektu do zadania, które znajduje się w kolejce do wykonania w puli wątków.  
+ W poniższym przykładzie użyto puli wątków .NET do obliczania `Fibonacci` wyniku dla pięciu liczby z zakresu od 20 do 40. Każdy `Fibonacci` wynik jest reprezentowany przez `Fibonacci` klasy, która udostępnia metodę o nazwie `ThreadPoolCallback` , która wykonuje obliczenie. Obiekt, który reprezentuje każdy `Fibonacci` wartość zostanie utworzony i `ThreadPoolCallback` metoda jest przekazywana do <xref:System.Threading.ThreadPool.QueueUserWorkItem%2A>, co powoduje przypisanie dostępnych wątków w puli, aby wykonać metodę.  
+  
+ Ponieważ każdy `Fibonacci` obiekt otrzymuje częściową losową wartość do obliczenia, a ponieważ każdy wątek będzie konkurującymi czasu procesora, nie wiadomo z wyprzedzeniem, jak długo potrwa dla wszystkich pięciu wyniki mają być obliczane. Dlatego każdego `Fibonacci` obiekt jest przekazywany wystąpienie <xref:System.Threading.ManualResetEvent> klasy podczas konstruowania. Każdy obiekt sygnalizuje obiektu podanego zdarzenia po obliczeniu zakończeniu, pozwalający głównemu wątkowi bloku wykonywania za pomocą <xref:System.Threading.WaitHandle.WaitAll%2A> aż do wszystkich pięciu `Fibonacci` obiekty zostały obliczone wynik. `Main` Metoda następnie wyświetla każdy `Fibonacci` wynik.
   
  [!code-cpp[System.Threading.ThreadPool QueueUserWorkItem1#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.ThreadPool QueueUserWorkItem1/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.ThreadPool QueueUserWorkItem1#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.ThreadPool QueueUserWorkItem1/CS/source.cs#1)]
