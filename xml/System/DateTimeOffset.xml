@@ -1,11 +1,11 @@
 <Type Name="DateTimeOffset" FullName="System.DateTimeOffset">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="4f8c7274d1b9aa13327d099e53947262562814ab" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="3c27804246472c7cc17802e38ff397f97b719760" />
+    <Meta Name="ms.sourcegitcommit" Value="4f9e960e786edf67b6a29655670b1a15e71c03de" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37731286" />
+    <Meta Name="ms.lasthandoff" Value="08/02/2018" />
+    <Meta Name="ms.locfileid" Value="39418612" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct DateTimeOffset : IComparable, IComparable&lt;DateTimeOffset&gt;, IEquatable&lt;DateTimeOffset&gt;, IFormattable, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit DateTimeOffset extends System.ValueType implements class System.IComparable, class System.IComparable`1&lt;valuetype System.DateTimeOffset&gt;, class System.IEquatable`1&lt;valuetype System.DateTimeOffset&gt;, class System.IFormattable, class System.Runtime.Serialization.IDeserializationCallback, class System.Runtime.Serialization.ISerializable" />
@@ -3385,7 +3385,13 @@
   
  [!code-csharp[System.DateTimeOffset.ParseExact#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.DateTimeOffset.ParseExact/cs/ParseExact.cs#1)]
  [!code-vb[System.DateTimeOffset.ParseExact#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.DateTimeOffset.ParseExact/vb/ParseExact.vb#1)]  
-  
+
+Poniższy przykład analizuje tablicę ciągów, które powinny być zgodna z [ISO 8601](~/docs/standard/base-types/standard-date-and-time-format-strings.md#the-round-trip-o-o-format-specifier). Jako dane wyjściowe w przykładzie pokazano ciągi zawierające spacje na początku i nie można przeanalizować powiedzie się, jak ciągów daty i godziny elementy, które są poza zakresem.
+
+[!code-csharp[Parsing an ISO 8601 string](~/samples/snippets/csharp/api/system/datetimeoffset/parseexact/parseexact-iso8601.cs)]
+[!code-vb[Parsing an ISO 8601 string](~/samples/snippets/visualbasic/api/system/datetimeoffset/parseexact/parseexact-iso8601.vb)]
+
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">Przesunięcie jest większe niż 14 godzin lub mniejsze niż-14 godzin.</exception>
@@ -3394,7 +3400,7 @@
         <exception cref="T:System.FormatException">
           <paramref name="input" /> jest pustym ciągiem ("").  - lub - <paramref name="input" /> nie zawiera nieprawidłową reprezentacją ciągu daty i godziny.  - lub - <paramref name="format" /> jest ciągiem pustym.  - lub - składnik godziny, jak i oznaczenie AM/PM w <paramref name="input" /> nie zgadza się.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTimeOffset.TryParseExact" />
       </Docs>
@@ -3420,13 +3426,44 @@
         <Parameter Name="styles" Type="System.Globalization.DateTimeStyles" />
       </Parameters>
       <Docs>
-        <param name="input">To be added.</param>
-        <param name="format">To be added.</param>
-        <param name="formatProvider">To be added.</param>
-        <param name="styles">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="input">Zakres znaków, który reprezentuje datę i godzinę.</param>
+        <param name="format">Zakres znaków, który zawiera specyfikator formatu, który definiuje z oczekiwanym formatem <paramref name="input" />.</param>
+        <param name="formatProvider">Obiekt, który zawiera informacje o formatowaniu specyficzne dla kultury na temat <paramref name="input" />.</param>
+        <param name="styles">Bitowa kombinacja wartości wyliczenia wskazująca dozwolony format parametru <paramref name="input" />.</param>
+        <summary>Konwertuje zakres znaków, który reprezentuje datę i godzinę na jego <see cref="T:System.DateTimeOffset" /> odpowiednika przy użyciu określonego formatu, informacji o formacie specyficzne dla kultury i stylu. Format daty i godziny reprezentującego musi dokładnie pasować określonym formacie.</summary>
+        <returns>Obiekt, który jest odpowiednikiem daty i godziny, który jest zawarty w <paramref name="input" /> parametr określony przez <paramref name="format" />, <paramref name="formatProvider" />, i <paramref name="styles" /> parametrów.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Metoda ta analizuje obszaru znak, który reprezentuje datę, która musi być w formacie zdefiniowane przez `format` parametru. Wymaga również, aby \<daty >, \<czas >, a \<przesunięcie > elementy reprezentację ciągu daty i godziny są wyświetlane w kolejności określonej przez `format`. Jeśli `input` nie odpowiada `format` wzorzec, metoda zgłasza <xref:System.FormatException>.  Z kolei <xref:System.DateTimeOffset.Parse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Globalization.DateTimeStyles)?displayProperty=nameWithType> metody jest analizowany ciąg przedstawiając datę w jednym z formatów rozpoznawany przez dostawcę formatu <xref:System.Globalization.DateTimeFormatInfo> obiektu. <xref:System.DateTimeOffset.Parse%2A> Umożliwia także \<daty >, \<czas >, i \<przesunięcie > elementy reprezentację ciągu daty i godziny są wyświetlane w dowolnej kolejności.  
+  
+ `format` Parametr jest zakresu znaków, który zawiera specyfikator formatu standardowego pojedynczych znaków lub specyfikatorów formatu niestandardowego, które definiują wymagany format parametru `input` parametru. Aby uzyskać szczegółowe informacje na temat prawidłowych kodów formatowania, zobacz [standardowych ciągów daty i godziny Format](~/docs/standard/base-types/standard-date-and-time-format-strings.md) i [Custom Date and Time Format Strings](~/docs/standard/base-types/custom-date-and-time-format-strings.md). Jeśli `format` obejmuje `z`, `zz`, lub `zzz` specyfikatorów formatu niestandardowego, aby wskazać, że przesunięcie musi znajdować się w `input`, że musi zawierać znak ujemny lub znak wartości dodatnich. Jeśli brakuje znaku, metoda zgłasza <xref:System.FormatException>.  
+  
+ Jeśli `format` wymaga, aby `input` zawierają datę, ale nie przez czas wynikowy <xref:System.DateTimeOffset> przypisany jest obiekt, godziny od północy (0: 00:00). Jeśli `format` wymaga, aby `input` zawiera godzinę, ale nie daty, wynikowy <xref:System.DateTimeOffset> bieżącą datę w systemie lokalnym przypisany jest obiekt. Jeśli `format` nie wymaga `input` zawiera przesunięcie, wynikowy <xref:System.DateTimeOffset> przesunięcia strefy czasowej systemu lokalnego przypisany jest obiekt.  
+  
+ Określonej daty i godziny symboli i ciągów używanych w `input` są definiowane przez `formatProvider` parametru, ponieważ jest dokładny format `input` Jeśli `format` jest specyfikator formatu standardowego. `formatProvider` Parametr może być jedną z następujących czynności:  
+  
+-   A <xref:System.Globalization.CultureInfo> obiekt, który reprezentuje kulturę, na podstawie którego `input` jest interpretowany. <xref:System.Globalization.DateTimeFormatInfo> Obiektu zwróconego przez jego <xref:System.Globalization.CultureInfo.DateTimeFormat%2A> właściwość definiuje symbole i formatowanie w `input`.  
+  
+-   Element <xref:System.Globalization.DateTimeFormatInfo> obiektu, który definiuje format danych daty i godziny.  
+  
+ Jeśli `formatprovider` jest `null`, <xref:System.Globalization.CultureInfo> używany jest obiekt, który odpowiada bieżącej kulturze.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">Przesunięcie jest większe niż 14 godzin lub mniejsze niż-14 godzin.  
+—lub—  
+<paramref name="styles" /> Parametr zawiera nieobsługiwaną wartość.  
+—lub—  
+<paramref name="styles" /> Parametr zawiera <see cref="T:System.Globalization.DateTimeStyles" /> wartości, które nie mogą być używane razem.</exception>
+        <exception cref="T:System.FormatException">
+          <paramref name="input" /> jest puste znaku zakresu.  
+ - lub - <paramref name="input" /> nie zawiera nieprawidłową reprezentacją ciągu daty i godziny.  
+ - lub - <paramref name="format" /> jest pusty znak zakresu.  
+ —lub—  
+ Składnik godziny i oznaczenie AM/PM w <paramref name="input" /> nie zgadza się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ParseExact">
@@ -3450,13 +3487,61 @@
         <Parameter Name="styles" Type="System.Globalization.DateTimeStyles" />
       </Parameters>
       <Docs>
-        <param name="input">To be added.</param>
-        <param name="formats">To be added.</param>
-        <param name="formatProvider">To be added.</param>
-        <param name="styles">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="input">Zakres znaków, który zawiera datę i godzinę konwersji.</param>
+        <param name="formats">Tablica specyfikatorów formatu, które definiują oczekiwane formaty <paramref name="input" />.</param>
+        <param name="formatProvider">Obiekt, który dostarcza specyficzne dla kultury informacje o formatowaniu <paramref name="input" />.</param>
+        <param name="styles">Bitowa kombinacja wartości wyliczenia wskazująca dozwolony format parametru <paramref name="input" />.</param>
+        <summary>Konwertuje zakres znaków, który zawiera ciąg reprezentujący datę i godzinę na jego <see cref="T:System.DateTimeOffset" /> odpowiednika przy użyciu wskazanych formatów, informacji o formacie specyficzne dla kultury i stylu. Format daty i godziny reprezentującego musi dokładnie jednego ze wskazanych formatów.</summary>
+        <returns>Obiekt, który jest odpowiednikiem daty i godziny, który jest zawarty w <paramref name="input" /> parametr określony przez <paramref name="formats" />, <paramref name="formatProvider" />, i <paramref name="styles" /> parametrów.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ 
+Metoda ta analizuje zakres znaków reprezentujący datę, która pasuje do jednej z wzorców przypisane do `formats` parametru. Jeśli `input` nie pasuje dowolny z tych wzorców dowolne zmiany, definiowane przez `styles` parametr, metoda zgłasza <xref:System.FormatException>. Oprócz porównanie `input` do wielu wzorców formatowania, to przeciążenie działa identycznie do <xref:System.DateTimeOffset.ParseExact(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Globalization.DateTimeStyles)?displayProperty=nameWithType> metody.  
+  
+ `formats` Parametr jest tablicą ciągów, w której elementy zawierają jeden standardowy specyfikator formatu albo jednego lub więcej specyfikatorów formatu niestandardowego, które definiują możliwe wzorzec `input` parametru. Po wywołaniu metody `input` musi odpowiadać jednej z tych wzorców. Aby uzyskać szczegółowe informacje na temat prawidłowych kodów formatowania, zobacz [standardowych ciągów daty i godziny Format](~/docs/standard/base-types/standard-date-and-time-format-strings.md) i [Custom Date and Time Format Strings](~/docs/standard/base-types/custom-date-and-time-format-strings.md). Jeśli dopasowanego elementu w `formats` obejmuje `z`, `zz`, lub `zzz` specyfikatorów formatu niestandardowego, aby wskazać, że przesunięcie musi znajdować się w `input`, że musi zawierać znak ujemny lub znak wartości dodatnich. Jeśli brakuje znaku, metoda zgłasza <xref:System.FormatException>.  
+  
+> [!IMPORTANT]
+>  Za pomocą `formats` parametr tego przeciążenia można określić wiele formatów może pomóc zmniejszyć Rozczarowanie wielu użytkownikom środowisko podczas wprowadzania daty i godziny. W szczególności możliwość definiowania wielu wzorców w danych wejściowych włącza aplikację do obsługi reprezentacji daty i godziny, które można uwzględnić lub braku zer wiodących w ciągu miesięcy, dni, godziny, minuty i sekundy.
+  
+ Jeśli dopasowanego elementu w `formats` wymaga, aby `input` zawierają datę, ale nie przez czas, wynikowy <xref:System.DateTimeOffset> przypisany jest obiekt, godziny od północy (0: 00:00). Jeśli element dopasowane w `formats` wymaga, aby `input` zawiera godzinę, ale nie daty, wynikowy <xref:System.DateTimeOffset> bieżącą datę w systemie lokalnym przypisany jest obiekt. Jeśli element dopasowane w `formats` nie wymaga `input` zawiera przesunięcie, przesunięcie wynikowy <xref:System.DateTimeOffset> obiekt jest zależny od wartości `styles` parametru. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeLocal>, przesunięcie lokalnej strefy czasowej jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeUniversal>, przesunięcie skoordynowanego czasu uniwersalnego (UTC) lub + 00:00 jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli żadna wartość nie jest określona, używane jest przesunięcie lokalnej strefy czasowej.  
+  
+ Określonej daty i godziny symboli i ciągów używanych w `input` są definiowane przez `formatProvider` parametru. To samo dotyczy dokładny format `input`, jeśli pasującego elementu `formats` jest ciągiem specyfikatora formatu standardowego. `formatProvider` Parametr może być jedną z następujących czynności:  
+  
+-   A <xref:System.Globalization.CultureInfo> obiekt, który reprezentuje kulturę, na podstawie którego `input` jest interpretowany. <xref:System.Globalization.DateTimeFormatInfo> Obiektu zwróconego przez <xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> właściwość definiuje symbole i formatowanie w `input`.  
+  
+-   Element <xref:System.Globalization.DateTimeFormatInfo> obiektu, który definiuje format danych daty i godziny.  
+  
+ Jeśli `formatprovider` jest `null`, <xref:System.Globalization.CultureInfo> używany jest obiekt, który odpowiada bieżącej kulturze.  
+  
+ `styles` Parametr określa, czy biały znak jest dozwolony w ciągu wejściowym, wskazuje, jak ciągi bez składnika przesunięcia jawne są parsowane i obsługuje konwersji czasu UTC w ramach operacji analizy. Wszystkie elementy członkowskie <xref:System.Globalization.DateTimeStyles> wyliczenia są obsługiwane, oprócz <xref:System.Globalization.DateTimeStyles.NoCurrentDateDefault>. Poniższa tabela zawiera listę działania każdego z obsługiwanych elementów członkowskich.  
+  
+|`DateTimeStyles` Element członkowski|Zachowanie|  
+|-----------------------------|--------------|  
+|<xref:System.Globalization.DateTimeStyles.AdjustToUniversal>|Analizuje `input` oraz, w razie potrzeby konwertuje go na UTC. Jest to równoważne do analizowania parametrów, a następnie wywoływania <xref:System.DateTimeOffset.ToUniversalTime%2A?displayProperty=nameWithType> metoda zwracanego <xref:System.DateTimeOffset> obiektu.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeLocal>|Jeśli element dopasowane w `formats` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie lokalnej strefy czasowej. Jest to wartość domyślna.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeUniversal>|Jeśli element dopasowane w `formats` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie czasu UTC (+ 00:00).|  
+|<xref:System.Globalization.DateTimeStyles.AllowInnerWhite>|Umożliwia `input` obejmujący wewnętrzny biały znak nie jest określony przez `format`. Dodatkowy biały znak może występować między składnikami Data i godzina, jak i w ramach poszczególnych składników (z wyjątkiem przesunięcie) i jest ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowLeadingWhite>|Umożliwia `input` obejmujący spacje nie został określony przez `formats`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowTrailingWhite>|Umożliwia `input` obejmujący końcowe spacje nie został określony przez `formats`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowWhiteSpaces>|Umożliwia `input` na zawiera spacje wiodące, końcowe i wewnętrzny nie został określony przez `formats`. Wszystkich dodatkowych białych znaków, nie jest określony w elemencie dopasowane w `formats` są ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.None>|Wskazuje, że dodatkowy biały znak nie jest dozwolona w `input`. Biały znak musi znajdować się dokładnie tak jak określono w określonym elemencie `formats` dla aby wystąpiło dopasowanie. Jest to zachowanie domyślne.|  
+|<xref:System.Globalization.DateTimeStyles.RoundtripKind>|Nie obowiązuje, ponieważ <xref:System.DateTimeOffset> nie ma struktury `Kind` właściwości.|  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">Przesunięcie jest większe niż 14 godzin lub mniejsze niż-14 godzin.  
+- lub - <paramref name="styles" /> zawiera nieobsługiwaną wartość.  
+—lub—  
+<paramref name="styles" /> Parametr zawiera <see cref="T:System.Globalization.DateTimeStyles" /> wartości, które nie mogą być używane razem.</exception>
+        <exception cref="T:System.FormatException">
+          <paramref name="input" /> jest puste znaku zakresu.  
+- lub - <paramref name="input" /> nie zawiera nieprawidłową reprezentacją ciągu daty i godziny.  
+—lub—  
+Nie elementu <paramref name="formats" /> zawiera prawidłowym specyfikatorem formatu.  
+—lub—  
+Składnik godziny i oznaczenie AM/PM w <paramref name="input" /> nie zgadza się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ParseExact">
@@ -3541,7 +3626,19 @@
   
  [!code-csharp[System.DateTimeOffset.ParseExact#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.DateTimeOffset.ParseExact/cs/ParseExact.cs#2)]
  [!code-vb[System.DateTimeOffset.ParseExact#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.DateTimeOffset.ParseExact/vb/ParseExact.vb#2)]  
-  
+
+W poniższym przykładzie użyto różnych <xref:System.Globalization.DateTimeStyles> wartości można przeanalizować tablicę ciągów, które powinny być zgodna z [ISO 8601](~/docs/standard/base-types/standard-date-and-time-format-strings.md#the-round-trip-o-o-format-specifier). Dane wyjściowe z przykładu pokazują, można przeanalizować, jeśli się nie powieść ciągi, które są mają niepoprawny format:
+
+- zawierają one biały znak i odpowiednią <xref:System.Globalization.DateTimeStyles> flagi (takie jak <xref:System.Globalization.DateTimeStyles.AllowWhiteSpaces?displayProperty=nameWithType> nie został podany w wywołaniu metody.
+
+- zawierają one daty i godziny elementy, które są poza zakresem.
+
+Ciągi, które nie należy określać przesunięcie czasu UTC są zakłada się, że masz przesunięcie lokalnej strefy czasowej (w tym przypadku -07:00) chyba że <xref:System.Globalization.DateTimeStyles.AssumeUniversal?displayProperty=nameWithType> flaga jest podany w wywołaniu metody. W takim przypadku są to zakłada się, że skoordynowany czas uniwersalny.
+
+[!code-csharp[Parsing ISO 8601 strings](~/samples/snippets/csharp/api/system/datetimeoffset/parseexact/parseexact-iso8601-2.cs)]
+[!code-vb[Parsing ISO 8601 strings](~/samples/snippets/visualbasic/api/system/datetimeoffset/parseexact/parseexact-iso8601-2.vb)]
+
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">Przesunięcie jest większe niż 14 godzin lub mniejsze niż-14 godzin.  - lub - <paramref name="styles" /> parametr zawiera nieobsługiwaną wartość.  - lub - <paramref name="styles" /> parametr zawiera <see cref="T:System.Globalization.DateTimeStyles" /> wartości, które nie mogą być używane razem.</exception>
@@ -3550,7 +3647,7 @@
         <exception cref="T:System.FormatException">
           <paramref name="input" /> jest pustym ciągiem ("").  - lub - <paramref name="input" /> nie zawiera nieprawidłową reprezentacją ciągu daty i godziny.  - lub - <paramref name="format" /> jest ciągiem pustym.  - lub - składnik godziny, jak i oznaczenie AM/PM w <paramref name="input" /> nie zgadza się.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTimeOffset.TryParseExact" />
       </Docs>
@@ -3649,7 +3746,7 @@
         <exception cref="T:System.FormatException">
           <paramref name="input" /> jest pustym ciągiem ("").  - lub - <paramref name="input" /> nie zawiera nieprawidłową reprezentacją ciągu daty i godziny.  - lub - nie elementu <paramref name="formats" /> zawiera prawidłowym specyfikatorem formatu.  - lub - składnik godziny, jak i oznaczenie AM/PM w <paramref name="input" /> nie zgadza się.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTimeOffset.ParseExact" /> metoda zgłasza wyjątek <see cref="T:System.FormatException" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTimeOffset.TryParseExact" />
       </Docs>
@@ -4323,7 +4420,7 @@ Me.ToUtcDateTime().ToFileTime()
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez bieżącą kulturę.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTimeOffset.ToString" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HijriCalendar" /> klasy, gdy bieżącą kulturą jest arabski (Syria).  [! code-csharp [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#2] (~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/ datetimeoffset.toString.argumentoutofrangeexception2.CS#2)] [! code-vb [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#2] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/ System.datetimeoffset.toString.argumentoutofrangeexception/VB/datetimeoffset.toString.argumentoutofrangeexception2.VB#2)]</para>
+            <see cref="M:System.DateTimeOffset.ToString" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HijriCalendar" /> klasy, gdy bieżącą kulturą jest arabski (Syria).  [! code-csharp[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/datetimeoffset.tostring.argumentoutofrangeexception2.cs#2)] [! kodu vb[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/vb/datetimeoffset.tostring.argumentoutofrangeexception2.vb#2)]</para>
         </block>
       </Docs>
     </Member>
@@ -4391,7 +4488,7 @@ Me.ToUtcDateTime().ToFileTime()
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez <paramref name="formatProvider" />.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTimeOffset.ToString(System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez kulturę, reprezentowane przez <paramref name="formatProvider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.JapaneseCalendar" /> klasy.  [! code-csharp [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#1] (~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/ datetimeoffset.toString.argumentoutofrangeexception1.CS#1)] [! code-vb [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#1] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/ System.datetimeoffset.toString.argumentoutofrangeexception/VB/datetimeoffset.toString.argumentoutofrangeexception1.VB#1)]</para>
+            <see cref="M:System.DateTimeOffset.ToString(System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez kulturę, reprezentowane przez <paramref name="formatProvider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.JapaneseCalendar" /> klasy.  [! code-csharp[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/datetimeoffset.tostring.argumentoutofrangeexception1.cs#1)] [! kodu vb[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/vb/datetimeoffset.tostring.argumentoutofrangeexception1.vb#1)]</para>
         </block>
       </Docs>
     </Member>
@@ -4465,7 +4562,7 @@ Me.ToUtcDateTime().ToFileTime()
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez bieżącą kulturę.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTimeOffset.ToString(System.String)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HebrewCalendar" /> klasy, gdy bieżącą kulturą jest hebrajski (Izrael).  [! code-csharp [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#3] (~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/ datetimeoffset.toString.argumentoutofrangeexception3.CS#3)] [! code-vb [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#3] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/ System.datetimeoffset.toString.argumentoutofrangeexception/VB/datetimeoffset.toString.argumentoutofrangeexception3.VB#3)]</para>
+            <see cref="M:System.DateTimeOffset.ToString(System.String)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez bieżącą kulturę. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.HebrewCalendar" /> klasy, gdy bieżącą kulturą jest hebrajski (Izrael).  [! code-csharp[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/datetimeoffset.tostring.argumentoutofrangeexception3.cs#3)] [! kodu vb[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/vb/datetimeoffset.tostring.argumentoutofrangeexception3.vb#3)]</para>
         </block>
       </Docs>
     </Member>
@@ -4550,7 +4647,7 @@ Me.ToUtcDateTime().ToFileTime()
         <exception cref="T:System.ArgumentOutOfRangeException">Data i godzina jest poza zakresem dat obsługiwanym przez kalendarz używany przez <paramref name="formatProvider" />.</exception>
         <block subset="none" type="usage">
           <para>
-            <see cref="M:System.DateTimeOffset.ToString(System.String,System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez <paramref name="formatProvider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.UmAlQuraCalendar" /> klasy.  [! code-csharp [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#4] (~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/ datetimeoffset.toString.argumentoutofrangeexception4.CS#4)] [! code-vb [System.DateTimeOffset.ToString.ArgumentOutOfRangeException#4] (~/samples/snippets/visualbasic/VS_Snippets_CLR_System/ System.datetimeoffset.toString.argumentoutofrangeexception/VB/datetimeoffset.toString.argumentoutofrangeexception4.VB#4)]</para>
+            <see cref="M:System.DateTimeOffset.ToString(System.String,System.IFormatProvider)" /> Metoda zwraca reprezentację ciągu daty i godziny w kalendarz używany przez <paramref name="formatProvider" /> parametru. Jego kalendarz jest zdefiniowany przez <see cref="P:System.Globalization.DateTimeFormatInfo.Calendar" /> właściwości. Jeśli wartość bieżącego <see cref="T:System.DateTimeOffset" /> wystąpienie jest wcześniejsza niż <see cref="P:System.Globalization.Calendar.MinSupportedDateTime" /> lub późniejsza niż <see cref="P:System.Globalization.Calendar.MaxSupportedDateTime" />, metoda zgłasza <see cref="T:System.ArgumentOutOfRangeException" />. Poniższy przykład stanowi ilustrację. Próbuje sformatować datę, która jest poza zakresem <see cref="T:System.Globalization.UmAlQuraCalendar" /> klasy.  [! code-csharp[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/cs/datetimeoffset.tostring.argumentoutofrangeexception4.cs#4)] [! kodu vb[System.DateTimeOffset.ToString.ArgumentOutOfRangeException#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.datetimeoffset.tostring.argumentoutofrangeexception/vb/datetimeoffset.tostring.argumentoutofrangeexception4.vb#4)]</para>
         </block>
       </Docs>
     </Member>
@@ -5015,14 +5112,53 @@ Me.ToUtcDateTime().ToFileTime()
         <Parameter Name="result" Type="System.DateTimeOffset&amp;" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="input">To be added.</param>
-        <param name="format">To be added.</param>
-        <param name="formatProvider">To be added.</param>
-        <param name="styles">To be added.</param>
-        <param name="result">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="input">Zakres znaków, zawierającą reprezentujący datę i godzinę konwersji.</param>
+        <param name="format">Specyfikator formatu, który definiuje wymagany format parametru <paramref name="input" />.</param>
+        <param name="formatProvider">Obiekt, który dostarcza specyficzne dla kultury informacje o formatowaniu <paramref name="input" />.</param>
+        <param name="styles">Bitowa kombinacja wartości wyliczenia wskazująca dozwolony format parametru <paramref name="input" />. To typowa wartość do określenia <see cref="F:System.Globalization.DateTimeStyles.None" /></param>
+        <param name="result">Gdy metoda zwróci wartość, zawiera <see cref="T:System.DateTimeOffset" /> odpowiednikiem daty i godziny <paramref name="input" />, jeśli konwersja jest powiodło się, lub <see cref="F:System.DateTimeOffset.MinValue" /> Jeśli konwersja nie powiodła się. Jeśli konwersja nie powiedzie się</param>
+        <summary>Konwertuje reprezentację daty i godziny w zakresie znaków, aby jego <see cref="System.DateTimeOffset" /> odpowiednika przy użyciu określonego formatu, informacji o formacie specyficzne dla kultury i stylu. Format daty i godziny reprezentującego musi dokładnie pasować seryjnych formatu.</summary>
+        <returns>
+          <see langword="true" /> Jeśli <paramref name="input" /> parametr jest pomyślnie przekonwertowany; w przeciwnym razie <see langword="false" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Przypomina to przeciążenie <xref:System.DateTimeOffset.ParseExact(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Globalization.DateTimeStyles)?displayProperty=nameWithType> metody, z tą różnicą, że ta metoda wyrzuca wyjątku, jeśli konwersja nie powiedzie się. Analizuje reprezentacja daty i godziny, który dokładnie musi być zgodna ze wzorcem określonym przez `format` parametru. Jeśli `input` nie pasuje do tego wzorca, z niektórych zmian biały znak zdefiniowane przez `styles` parametru podczas analizowania kończy się niepowodzeniem, a metoda zwraca `false`.  
+  
+`format` Parametr jest zakresu znaków, który zawiera jeden standardowy specyfikator formatu albo jednego lub więcej specyfikatorów formatu niestandardowego, które definiują wymagany wzorzec `input`. Aby uzyskać szczegółowe informacje na temat prawidłowych kodów formatowania, zobacz [standardowych ciągów daty i godziny Format](~/docs/standard/base-types/standard-date-and-time-format-strings.md) i [Custom Date and Time Format Strings](~/docs/standard/base-types/custom-date-and-time-format-strings.md). Jeśli `format` obejmuje `z`, `zz`, lub `zzz` specyfikatorów formatu niestandardowego, aby wskazać, że przesunięcie musi znajdować się w `input`, że musi zawierać znak ujemny lub znak wartości dodatnich. Jeśli brakuje znaku, analizowania operacja zakończy się niepowodzeniem i metoda zwraca `false`.  
+  
+Jeśli `format` wymaga, aby `input` zawierają datę, ale nie przez czas wynikowy <xref:System.DateTimeOffset> przypisany jest obiekt, godziny od północy (0: 00:00). Jeśli `format` wymaga, aby `input` zawiera godzinę, ale nie daty, wynikowy <xref:System.DateTimeOffset> bieżącą datę w systemie lokalnym przypisany jest obiekt. Jeśli `format` nie wymaga `input` zawiera przesunięcie, przesunięcie wynikowy <xref:System.DateTimeOffset> obiekt jest zależny od wartości `styles` parametru. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeLocal>, przesunięcie lokalnej strefy czasowej jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeUniversal>, przesunięcie skoordynowanego czasu uniwersalnego (UTC) lub + 00:00 jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli żadna wartość nie jest określona, używane jest przesunięcie lokalnej strefy czasowej.  
+  
+Określonej daty i godziny symboli i ciągów używanych w `input` są definiowane przez `formatProvider` parametru. To samo dotyczy dokładne wzorzec `input` Jeśli `format` jest ciągiem specyfikatora formatu standardowego. `formatProvider` Parametr może być jedną z następujących czynności:  
+  
+-   A <xref:System.Globalization.CultureInfo> obiekt, który reprezentuje kulturę, na podstawie którego `input` jest interpretowany. <xref:System.Globalization.DateTimeFormatInfo> Obiektu zwróconego przez <xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> właściwość definiuje symbole i standardowych formatów dozwolonych w `input`.  
+  
+-   Element <xref:System.Globalization.DateTimeFormatInfo> obiektu, który definiuje format danych daty i godziny.  
+  
+ Jeśli `formatprovider` jest `null`, <xref:System.Globalization.CultureInfo> używany jest obiekt, który odpowiada bieżącej kulturze.  
+  
+ `styles` Parametr określa, czy biały znak jest dozwolony w ciągu wejściowym, wskazuje, jak ciągi bez składnika przesunięcia jawne są parsowane i obsługuje konwersji czasu UTC w ramach operacji analizy. Wszystkie elementy członkowskie <xref:System.Globalization.DateTimeStyles> wyliczenia są obsługiwane, oprócz <xref:System.Globalization.DateTimeStyles.NoCurrentDateDefault>. Poniższa tabela zawiera listę działania każdego z obsługiwanych elementów członkowskich.  
+  
+|`DateTimeStyles` Element członkowski|Zachowanie|  
+|-----------------------------|--------------|  
+|<xref:System.Globalization.DateTimeStyles.AdjustToUniversal>|Analizuje `input` oraz, w razie potrzeby konwertuje go na UTC. Jest to równoważne do analizowania reprezentację daty i godziny, a następnie wywoływania <xref:System.DateTimeOffset.ToUniversalTime%2A?displayProperty=nameWithType> metoda zwracanego <xref:System.DateTimeOffset> obiektu.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeLocal>|Jeśli `format` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie lokalnej strefy czasowej. Jest to zachowanie domyślne.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeUniversal>|Jeśli `format` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie czasu UTC (+ 00:00).|  
+|<xref:System.Globalization.DateTimeStyles.AllowInnerWhite>|Umożliwia `input` obejmujący wewnętrzny biały znak nie jest określona przez format. Dodatkowy biały znak może występować między składnikami Data i godzina, jak i w ramach poszczególnych składników, z wyjątkiem przesunięcie i jest ignorowana podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowLeadingWhite>|Umożliwia `input` obejmujący spacje nie został określony przez `format`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowTrailingWhite>|Umożliwia `input` obejmujący końcowe spacje nie został określony przez `format`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowWhiteSpaces>|Umożliwia `input` na zawiera spacje wiodące, końcowe i wewnętrzny nie został określony przez `format`. Wszystkich dodatkowych białych znaków, nie jest określona w `format` są ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.None>|Wskazuje, że dodatkowy biały znak nie jest dozwolona w `input`. Biały znak musi znajdować się dokładnie tak jak określono w `format`. Jest to zachowanie domyślne.|  
+|<xref:System.Globalization.DateTimeStyles.RoundtripKind>|Nie ma wpływu, ponieważ <xref:System.DateTimeOffset> nie ma struktury `Kind` właściwości.|  
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="styles" /> zawiera Niezdefiniowany <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  
+- lub - <see cref="F:System.Globalization.DateTimeStyles.NoCurrentDateDefault" /> nie jest obsługiwane.  
+- lub - <paramref name="styles" /> obejmuje wzajemnie się wykluczają <see cref="T:System.Globalization.DateTimeStyles" /> wartości.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryParseExact">
@@ -5055,7 +5191,48 @@ Me.ToUtcDateTime().ToFileTime()
         <param name="result">To be added.</param>
         <summary>To be added.</summary>
         <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks
+ 
+Ta metoda jest analizowany ciąg przedstawiając datę, która pasuje do jednej z wzorców przypisane do `formats` tablicy. Jeśli `input` nie pasuje do jednej z tych wzorców z wszelkich zmian zdefiniowane przez `styles` parametru podczas analizowania kończy się niepowodzeniem, a metoda zwraca `false`. Oprócz porównanie `input` do wielu ciągów, które zawierają specyfikatorów formatu, to przeciążenie działa identycznie do <xref:System.DateTimeOffset.ParseExact(System.ReadOnlySpan{System.Char},System.String[],System.IFormatProvider,System.Globalization.DateTimeStyles)?displayProperty=nameWithType> metody.  
+  
+ `formats` Parametr jest tablicą ciągów, w której elementy zawierają jeden standardowy specyfikator formatu albo jednego lub więcej specyfikatorów formatu niestandardowego, które definiują możliwe wzorzec `input`. Aby uzyskać szczegółowe informacje na temat prawidłowych kodów formatowania, zobacz [standardowych ciągów daty i godziny Format](~/docs/standard/base-types/standard-date-and-time-format-strings.md) i [Custom Date and Time Format Strings](~/docs/standard/base-types/custom-date-and-time-format-strings.md). Jeśli dopasowanego elementu w `formats` obejmuje `z`, `zz`, lub `zzz` specyfikatorów formatu niestandardowego, aby wskazać, że przesunięcie musi znajdować się w `input`, że musi zawierać znak ujemny lub znak wartości dodatnich. Jeśli brakuje znaku udanej operacji zakończy się niepowodzeniem, a metoda zwraca `false`.  
+  
+> [!IMPORTANT]
+>  Za pomocą `formats` parametr tego przeciążenia można określić wiele formatów może pomóc zmniejszyć Rozczarowanie wielu użytkownikom środowisko podczas wprowadzania daty i godziny. W szczególności możliwość definiowania wielu wzorców w danych wejściowych włącza aplikację do obsługi reprezentacji daty i godziny, które można uwzględnić lub braku zer wiodących w ciągu miesięcy, dni, godziny, minuty i sekundy. Przykład stanowi ilustrację tego.  
+  
+ Jeśli dopasowanego elementu w `formats` wymaga, aby `input` zawierają datę, ale nie przez czas, wynikowy <xref:System.DateTimeOffset> przypisany jest obiekt, godziny od północy (0: 00:00). Jeśli element dopasowane w `formats` wymaga, że dane wejściowe zawierają przez czas, ale nie daty, wynikowy <xref:System.DateTimeOffset> bieżącą datę w systemie lokalnym przypisany jest obiekt. Jeśli element dopasowane w `formats` nie wymaga `input` zawiera przesunięcie, przesunięcie wynikowy <xref:System.DateTimeOffset> obiekt jest zależny od wartości `styles` parametru. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeLocal?displayProperty=nameWithType>, przesunięcie lokalnej strefy czasowej jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli `styles` obejmuje <xref:System.Globalization.DateTimeStyles.AssumeUniversal?displayProperty=nameWithType>, przesunięcie skoordynowanego czasu uniwersalnego (UTC) lub + 00:00 jest przypisane do <xref:System.DateTimeOffset> obiektu. Jeśli żadna wartość nie jest określona, używane jest przesunięcie lokalnej strefy czasowej.  
+  
+ Określonej daty i godziny symboli używanych w `input` są definiowane przez `formatProvider` parametru. To samo dotyczy dokładne wzorzec `input` Jeśli pasującego elementu `formats` jest ciągiem specyfikatora formatu standardowego. `formatProvider` Parametr może być jedną z następujących czynności:  
+  
+-   A <xref:System.Globalization.CultureInfo> obiekt, który reprezentuje kulturę, na podstawie którego `input` jest interpretowany. <xref:System.Globalization.DateTimeFormatInfo> Obiektu zwróconego przez <xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> właściwość definiuje symbole i formatowanie w `input`.  
+  
+-   Element <xref:System.Globalization.DateTimeFormatInfo> obiektu, który definiuje format danych daty i godziny.  
+  
+ Jeśli `formatprovider` jest `null`, <xref:System.Globalization.CultureInfo> używany jest obiekt, który odpowiada bieżącej kulturze.  
+  
+ `styles` Parametr określa, czy biały znak jest dozwolony w ciągu wejściowym, wskazuje, jak ciągi bez składnika przesunięcia jawne są parsowane i obsługuje konwersji czasu UTC w ramach operacji analizy. Wszystkie elementy członkowskie <xref:System.Globalization.DateTimeStyles> wyliczenia są obsługiwane, oprócz <xref:System.Globalization.DateTimeStyles.NoCurrentDateDefault>. Poniższa tabela zawiera listę działania każdego z obsługiwanych elementów członkowskich.  
+  
+|`DateTimeStyles` Element członkowski|Zachowanie|  
+|-----------------------------|--------------|  
+|<xref:System.Globalization.DateTimeStyles.AdjustToUniversal>|Analizuje `input` oraz, w razie potrzeby konwertuje go na UTC. Jest to równoważne do analizowania parametrów, a następnie wywoływania <xref:System.DateTimeOffset.ToUniversalTime%2A?displayProperty=nameWithType> metoda zwracanego <xref:System.DateTimeOffset> obiektu.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeLocal>|Jeśli element dopasowane w `formats` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie lokalnej strefy czasowej. Jest to wartość domyślna.|  
+|<xref:System.Globalization.DateTimeStyles.AssumeUniversal>|Jeśli element dopasowane w `formats` nie wymaga `input` zawierają wartość przesunięcia zwracanego <xref:System.DateTimeOffset> obiekt otrzymuje przesunięcie czasu UTC (+ 00:00).|  
+|<xref:System.Globalization.DateTimeStyles.AllowInnerWhite>|Umożliwia `input` obejmujący wewnętrzny biały znak nie jest określony przez elementy w `formats`. Dodatkowy biały znak może występować między składnikami Data i godzina, jak i w ramach poszczególnych składników (z wyjątkiem przesunięcie) i jest ignorowana podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowLeadingWhite>|Umożliwia `input` obejmujący wiodące spacje nie są określone przez elementy w `formats`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowTrailingWhite>|Umożliwia `input` obejmujący końcowe spacje nie są określone przez elementy w `formats`. Są one ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.AllowWhiteSpaces>|Umożliwia `input` na zawiera spacje wiodące, końcowe i wewnętrzne nie są określone przez elementy w `formats`. Wszystkich dodatkowych białych znaków, nie jest określony w elemencie dopasowane w `formats` są ignorowane podczas analizowania ciągu.|  
+|<xref:System.Globalization.DateTimeStyles.None>|Wskazuje, że dodatkowy biały znak nie jest dozwolona w `input`. Biały znak musi znajdować się dokładnie tak jak określono w określonym elemencie w `formats` dla pomyślnego dopasowania wystąpić. Jest to zachowanie domyślne.|  
+|<xref:System.Globalization.DateTimeStyles.RoundtripKind>|Nie obowiązuje, ponieważ <xref:System.DateTimeOffset> nie ma struktury `Kind` właściwości.|  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">
+          <paramref name="styles" /> zawiera Niezdefiniowany <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  
+- lub - <see cref="F:System.Globalization.DateTimeStyles.NoCurrentDateDefault" /> nie jest obsługiwane.  
+- lub - <paramref name="styles" /> obejmuje wzajemnie się wykluczają <see cref="T:System.Globalization.DateTimeStyles" /> wartości.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryParseExact">
@@ -5136,20 +5313,30 @@ Me.ToUtcDateTime().ToFileTime()
 |<xref:System.Globalization.DateTimeStyles.None>|Wskazuje, że dodatkowy biały znak nie jest dozwolona w `input`. Biały znak musi znajdować się dokładnie tak jak określono w `format`. Jest to zachowanie domyślne.|  
 |<xref:System.Globalization.DateTimeStyles.RoundtripKind>|Nie ma wpływu, ponieważ <xref:System.DateTimeOffset> nie ma struktury `Kind` właściwości.|  
   
-   
-  
-## Examples  
+## Examples 
+
  W poniższym przykładzie użyto <xref:System.DateTimeOffset.TryParseExact%28System.String%2CSystem.String%2CSystem.IFormatProvider%2CSystem.Globalization.DateTimeStyles%2CSystem.DateTimeOffset%40%29> metody za pomocą standardowych i niestandardowych określników, niezmienna kultura i różnymi <xref:System.Globalization.DateTimeStyles> wartości można przeanalizować kilka ciągów daty i godziny.  
   
  [!code-csharp[System.DateTimeOffset.TryParseExact#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.DateTimeOffset.TryParseExact/cs/TryParseExact.cs#1)]
  [!code-vb[System.DateTimeOffset.TryParseExact#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.DateTimeOffset.TryParseExact/vb/TryParseExact.vb#1)]  
+
+W poniższym przykładzie użyto różnych <xref:System.Globalization.DateTimeStyles> wartości można przeanalizować tablicę ciągów, które powinny być zgodna z [ISO 8601](~/docs/standard/base-types/standard-date-and-time-format-strings.md#the-round-trip-o-o-format-specifier). Dane wyjściowe z przykładu pokazują, można przeanalizować, jeśli się nie powieść ciągi, które są mają niepoprawny format:
+
+- zawierają one biały znak i odpowiednią <xref:System.Globalization.DateTimeStyles> flagi (takie jak <xref:System.Globalization.DateTimeStyles.AllowWhiteSpaces?displayProperty=nameWithType> nie został podany w wywołaniu metody.
+
+- zawierają one daty i godziny elementy, które są poza zakresem.
+
+Ciągi, które nie należy określać przesunięcie czasu UTC są zakłada się, że masz przesunięcie lokalnej strefy czasowej (w tym przypadku -07:00, która odzwierciedla przesunięcie strefy czasu pacyficznego) chyba że <xref:System.Globalization.DateTimeStyles.AssumeUniversal?displayProperty=nameWithType> flaga jest podany w wywołaniu metody. W takim przypadku są to zakłada się, że skoordynowany czas uniwersalny.
+
+[!code-csharp[Parsing ISO 8601 strings](~/samples/snippets/csharp/api/system/datetimeoffset/tryparseexact/tryparseexacto8601-2.cs)]
+[!code-vb[Parsing ISO 8601 strings](~/samples/snippets/visualbasic/api/system/datetimeoffset/tryparseexact/tryparseexacto8601-2.vb)]
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentException">
           <paramref name="styles" /> zawiera Niezdefiniowany <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  - lub - <see cref="F:System.Globalization.DateTimeStyles.NoCurrentDateDefault" /> nie jest obsługiwane.  - lub - <paramref name="styles" /> obejmuje wzajemnie się wykluczają <see cref="T:System.Globalization.DateTimeStyles" /> wartości.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTimeOffset.TryParseExact" /> zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTimeOffset.TryParseExact" /> zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
         <altmember cref="Overload:System.DateTimeOffset.ParseExact" />
       </Docs>
@@ -5248,7 +5435,7 @@ Me.ToUtcDateTime().ToFileTime()
         <exception cref="T:System.ArgumentException">
           <paramref name="styles" /> zawiera Niezdefiniowany <see cref="T:System.Globalization.DateTimeStyles" /> wartość.  - lub - <see cref="F:System.Globalization.DateTimeStyles.NoCurrentDateDefault" /> nie jest obsługiwane.  - lub - <paramref name="styles" /> obejmuje wzajemnie się wykluczają <see cref="T:System.Globalization.DateTimeStyles" /> wartości.</exception>
         <block subset="none" type="usage">
-          <para>W [! INCLUDE[net_v40_short](~/includes/NET-V40-Short-MD.MD)] <see cref="Overload:System.DateTimeOffset.TryParseExact" /> zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [! INCLUDE[net_v35_short](~/includes/NET-v35-Short-MD.MD)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
+          <para>W [!INCLUDE[net_v40_short](~/includes/net-v40-short-md.md)], <see cref="Overload:System.DateTimeOffset.TryParseExact" /> zwraca <see langword="false" /> ciąg można przeanalizować zawiera składnik godziny i oznaczenia AM/PM, które nie są w umowie. W [!INCLUDE[net_v35_short](~/includes/net-v35-short-md.md)] i wcześniejszych wersjach, oznaczenia AM/PM jest ignorowany.</para>
         </block>
       </Docs>
     </Member>
