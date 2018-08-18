@@ -1,11 +1,11 @@
 <Type Name="InstancePersistenceCommand" FullName="System.Runtime.DurableInstancing.InstancePersistenceCommand">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7a813699aae9d8d597178da185585c0f2cbe5bd1" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="9daf16e962aeb7bcc70d45768c6287f25b324e68" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36635773" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39754299" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class InstancePersistenceCommand" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit InstancePersistenceCommand extends System.Object" />
@@ -22,7 +22,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Klasa podstawowa dla wszystkich trwałości powiązanych poleceń. Polecenia są rozróżniane według nazwy. Zazwyczaj polecenia również można rozróżnić przy użyciu ich typu pochodnego.</summary>
+    <summary>Klasa bazowa dla wszystkich stanów trwałych powiązanych poleceń. Polecenia są rozróżniane według nazwy. Zazwyczaj polecenia również można rozróżnić przy użyciu ich typu pochodnego.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -42,8 +42,8 @@
         <Parameter Name="name" Type="System.Xml.Linq.XName" />
       </Parameters>
       <Docs>
-        <param name="name">Właściwość XName (kombinacja przestrzeni nazw i nazwę) polecenia.</param>
-        <summary>Inicjuje wystąpienie klasy <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceCommand" /> klasy.</summary>
+        <param name="name">XName (kombinacja przestrzeni nazw i nazwy) polecenia.</param>
+        <summary>Inicjuje wystąpienie <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceCommand" /> klasy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -63,9 +63,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Wskazuje, czy polecenie może próbować blokady wystąpienia.</summary>
+        <summary>Wskazuje, czy polecenie może próbować uzyskać blokady w wystąpieniu.</summary>
         <value>
-          <see langword="true" /> Jeśli polecenie uzyskuje blokadę wystąpienia; w przeciwnym razie wartość <see langword="false" />. Wartość domyślna to <see langword="false" />.</value>
+          <see langword="true" /> Jeśli polecenie Uzyskaj blokadę na wystąpienie; w przeciwnym razie wartość <see langword="false" />. Wartość domyślna to <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -92,9 +92,9 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zwraca wartość wskazującą, czy dostawca trwałości zdecydować się na zarejestrować transakcja otoczenia (Transaction.Currnet) podczas wykonywania tego polecenia.</summary>
+        <summary>Zwraca wartość wskazującą, czy dostawcy stanów trwałych zrezygnować z ustawienia nie można zarejestrować transakcji otoczenia (Transaction.Currnet) podczas wykonywania tego polecenia.</summary>
         <value>
-          <see langword="True" /> Jeśli rejestrowanie w transakcji jest opcjonalne dla tego polecenia, w przeciwnym razie <see langword="false" />.</value>
+          <see langword="True" /> Jeśli rejestrowanie w transakcji jest opcjonalny dla tego polecenia, w przeciwnym razie <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -117,12 +117,17 @@
         <AssemblyName>System.Runtime.DurableInstancing</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Xml.Linq.XName</ReturnType>
       </ReturnValue>
       <Docs>
         <summary>Pobiera nazwę polecenia trwałości.</summary>
-        <value>XName (kombinacja przestrzeni nazw i nazwa).</value>
+        <value>XName (kombinacja przestrzeni nazw i nazwy).</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -146,13 +151,13 @@
       </Parameters>
       <Docs>
         <param name="view">
-          <see cref="T:System.Runtime.DurableInstancing.InstanceView" /> Obiekt reprezentujący bieżący stan dojście wystąpienia.</param>
-        <summary>Weryfikuje polecenia.</summary>
+          <see cref="T:System.Runtime.DurableInstancing.InstanceView" /> Obiekt reprezentujący bieżącego stanu dojście wystąpienia.</param>
+        <summary>Sprawdza poprawność polecenia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Polecenia zastępować metodę Validate do zapewnienia, że polecenia jest nieprawidłowy do wykonania w danym momencie. Implementacje powinny zgłoszenia wyjątku InvalidOperationException, jeśli polecenie nie nadaje się do wykonania przed InstanceView przekazany jako parametr.  Metoda weryfikacji jest wywoływana przez obiektu InstanceStore, zanim polecenie zostanie przekazany do metody InstanceStore.TryCommand.  
+ Sprawdź poprawność, aby upewnić się, że polecenie jest prawidłowy do wykonania w danej chwili polecenia, musi zostać zastąpiona. Implementacje powinny zgłaszać InvalidOperationException, jeśli polecenie nie nadaje się do wykonania wobec InstanceView przekazany jako parametr.  Metoda sprawdzania poprawności jest wywoływana przez objekt InstanceStore, zanim to polecenie jest przekazywany do InstanceStore.TryCommand.  
   
  ]]></format>
         </remarks>
