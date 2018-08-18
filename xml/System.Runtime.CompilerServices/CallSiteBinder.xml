@@ -1,11 +1,11 @@
 <Type Name="CallSiteBinder" FullName="System.Runtime.CompilerServices.CallSiteBinder">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="78fef0a9aa8488bd151ed91742b5ed109d5e21bb" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="73a49cccbc2e2082976c1f02c2738c298898cb03" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36637541" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39800348" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class CallSiteBinder" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit CallSiteBinder extends System.Object" />
@@ -36,7 +36,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Klasa jest odpowiedzialny za wiązania w czasie operacji dynamicznych w witrynie wywołania dynamicznego.</summary>
+    <summary>Klasa jest odpowiedzialny za powiązanie operacji dynamicznych w witrynie wywołania dynamicznego środowiska uruchomieniowego.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -65,6 +65,11 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <Parameters />
       <Docs>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.CompilerServices.CallSiteBinder" /> klasy.</summary>
@@ -107,10 +112,10 @@
       </Parameters>
       <Docs>
         <param name="args">Tablica argumentów operacji dynamicznej.</param>
-        <param name="parameters">Tablica <see cref="T:System.Linq.Expressions.ParameterExpression" /> wystąpień, które reprezentują parametry miejsce wywołania w procesie powiązania.</param>
-        <param name="returnLabel">LabelTarget, zwraca wynik wiązania dynamicznego.</param>
-        <summary>Wykonuje wiązania w czasie operacji dynamicznej na zestawie argumentów.</summary>
-        <returns>Wyrażenie, które wykonuje testy na argumentów operacji dynamicznej i wykonuje operację dynamiczną, jeśli testy są prawidłowe. Jeśli testy zostaną zakończone niepowodzeniem na kolejne wystąpienia operacji dynamicznej, wiązanie zostanie ponownie wywołany, aby utworzyć nowy <see cref="T:System.Linq.Expressions.Expression" /> dla nowych typów argumentu.</returns>
+        <param name="parameters">Tablica <see cref="T:System.Linq.Expressions.ParameterExpression" /> wystąpień, które reprezentują parametry witryny wywołania w procesie powiązania.</param>
+        <param name="returnLabel">LabelTarget, używane w celu zwrócenia wyniku wiązanie dynamiczne.</param>
+        <summary>Wykonuje powiązanie czasu wykonywania operacji dynamicznej na zestawu argumentów.</summary>
+        <returns>Wyrażenie, przeprowadza testy na argumenty operacji dynamicznej, która wykonuje operację dynamiczną, jeśli testy są prawidłowe. Jeśli testy zostaną zakończone niepowodzeniem na pozostałe wystąpienia operacji dynamicznej, wiązanie zostanie ponownie wywołany, aby wygenerować nową <see cref="T:System.Linq.Expressions.Expression" /> dla nowych typów argumentów.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -155,11 +160,11 @@
         <Parameter Name="args" Type="System.Object[]" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ docelowy CallSite.</typeparam>
-        <param name="site">CallSite powiązania jest wykonywane.</param>
-        <param name="args">Argumenty dla obiekt wiążący.</param>
-        <summary>Zapewnia obsługę powiązanie niskiego poziomu środowiska wykonawczego. Klasy można zmienić i podaj bezpośredniego delegata stosowania reguły. Może to umożliwić zapisywanie reguł na dysku, o specjalizowany reguły dostępne w czasie wykonywania lub podając różnych zasad buforowania.</summary>
-        <returns>Nowe delegowanie, która zastępuje element docelowy CallSite.</returns>
+        <typeparam name="T">Typ docelowy miejsca wywołania.</typeparam>
+        <param name="site">Miejsca wywołania powiązania jest wykonywane.</param>
+        <param name="args">Argumenty dla integratora.</param>
+        <summary>Zapewnia obsługę powiązania niskiego poziomu środowiska uruchomieniowego. Klasy mogą zastąpić i podasz delegata bezpośrednich do wykonania reguły. Umożliwia to realizowany Zapisywanie reguł na dysku, mających wyspecjalizowane zasady dostępne w czasie wykonywania lub zapewnianie inne zasady buforowania.</summary>
+        <returns>Nowy delegat, który zastępuje obiekt docelowy miejsca wywołania.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -204,8 +209,8 @@
       </Parameters>
       <Docs>
         <typeparam name="T">Typ docelowy dodawany.</typeparam>
-        <param name="target">Docelowego delegata, który ma zostać dodana do pamięci podręcznej.</param>
-        <summary>Dodaje miejsce docelowe do pamięci podręcznej znanych elementów docelowych. Przed wywołaniem metody BindDelegate, aby utworzyć nową regułę skanowania pamięci podręcznej elementów docelowych.</summary>
+        <param name="target">Docelowego delegata, który ma zostać dodany do pamięci podręcznej.</param>
+        <summary>Dodaje element docelowy w pamięci podręcznej znanych celów. Ma zostać przeprowadzone skanowanie buforowane obiekty docelowe, przed wywołaniem BindDelegate, aby utworzyć nową regułę.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -235,13 +240,18 @@
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
         <AssemblyVersion>4.2.1.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Linq.Expressions.LabelTarget</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera etykietę, którą można spowodować, że można zaktualizować powiązania. Wskazuje on, wyrażenia powiązanie jest już nieprawidłowy. Służy to zwykle po zmianie "version" obiekt dynamiczny.</summary>
+        <summary>Pobiera etykietę, która może służyć do, że powiązanie do zaktualizowania. Wskazuje, że wyrażenia wiązania nie jest już prawidłowy. Służy to zwykle po zmianie "wersja" obiekt dynamiczny.</summary>
         <value>
-          <see cref="T:System.Linq.Expressions.LabelTarget" /> Obiekt reprezentujący etykiety, który może służyć do wyzwolenia aktualizacji powiązania.</value>
+          <see cref="T:System.Linq.Expressions.LabelTarget" /> Obiekt reprezentujący etykietę, która może służyć do wyzwolenia aktualizacji powiązania.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
