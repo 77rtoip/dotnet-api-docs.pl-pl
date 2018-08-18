@@ -1,10 +1,10 @@
 <Type Name="INotifyDataErrorInfo" FullName="System.ComponentModel.INotifyDataErrorInfo">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="b98a51d80855e6f11bfebb82f451d108cfcd5d13" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36702557" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface INotifyDataErrorInfo" />
@@ -31,12 +31,12 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Definiuje elementy członkowskie, które klas jednostek danych można zaimplementować w celu obsługi niestandardowego sprawdzania poprawności synchroniczne i asynchroniczne.</summary>
+    <summary>Definiuje elementy członkowskie, które można zaimplementować klas jednostek danych, aby zapewnić obsługę niestandardowego sprawdzania poprawności synchroniczne i asynchroniczne.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ten interfejs umożliwia klas jednostek danych do wdrożenia niestandardowych reguł walidacji i ujawnia asynchronicznie wyniki sprawdzania poprawności. Ten interfejs obsługuje również błędów niestandardowych obiektów, wiele błędów według właściwości, właściwość między błędy i błędy na poziomie jednostki. Właściwość między błędy są błędy, które mają wpływ na wiele właściwości. Te błędy można skojarzyć z co najmniej wszystkich właściwości, których dotyczy, lub można je traktować jako błędy na poziomie jednostki. Błędy na poziomie jednostki są błędy, które mają wpływ na wiele właściwości lub wpływa na całą jednostki bez wpływu na określonej właściwości.  
+ Ten interfejs umożliwia klas jednostek danych implementować niestandardowe reguły sprawdzania poprawności oraz udostępnianie wyników weryfikacji asynchronicznie. Ten interfejs obsługuje również obiekty błędów niestandardowych, wiele błędów na właściwość, właściwości wielu błędów i błędy na poziomie jednostki. Błędy wielu właściwości są błędy, które mają wpływ na wiele właściwości. Te błędy można skojarzyć z co najmniej wszystkich właściwości, których dotyczy problem, lub można je traktować jako błędy na poziomie jednostki. Błędy na poziomie jednostki są błędy, które mają wpływ na wiele właściwości atrybutu lub wpływają na cały jednostki bez wywierania wpływu na określonej właściwości.  
   
  ]]></format>
     </remarks>
@@ -70,12 +70,12 @@
         <ReturnType>System.EventHandler&lt;System.ComponentModel.DataErrorsChangedEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Występuje, gdy zmieniono błędy sprawdzania poprawności dla właściwości lub dla całej jednostki.</summary>
+        <summary>Występuje, gdy dla właściwości lub dla całej jednostki zmieniły się błędy sprawdzania poprawności.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasy implementującej powinien zgłosić to zdarzenie w interfejsie użytkownika wątku po każdej zmianie <xref:System.ComponentModel.INotifyDataErrorInfo.GetErrors%2A> zwraca zmiany wartości, nawet jeśli wartość zwracana implementuje <xref:System.Collections.Specialized.INotifyCollectionChanged>.  
+ Klasy implementującej powinno zgłosić to zdarzenie w interfejsie użytkownika wątku zawsze, gdy <xref:System.ComponentModel.INotifyDataErrorInfo.GetErrors%2A> zwracają zmiany wartości, nawet jeśli wartość zwracaną implementuje <xref:System.Collections.Specialized.INotifyCollectionChanged>.  
   
  ]]></format>
         </remarks>
@@ -112,16 +112,16 @@
         <Parameter Name="propertyName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="propertyName">Nazwa właściwości do pobrania błędy sprawdzania poprawności. lub <see langword="null" /> lub <see cref="F:System.String.Empty" />, aby pobrać błędy na poziomie jednostki.</param>
+        <param name="propertyName">Nazwa właściwości, które można pobrać błędów sprawdzania poprawności. lub <see langword="null" /> lub <see cref="F:System.String.Empty" />, aby pobrać błędy na poziomie jednostki.</param>
         <summary>Pobiera błędy sprawdzania poprawności dla określonej właściwości lub dla całej jednostki.</summary>
         <returns>Błędy sprawdzania poprawności dla właściwości lub jednostki.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda zwraca <xref:System.Collections.IEnumerable> zmianą zgodnie z reguł walidacji asynchroniczne zakończenie przetwarzania. Dzięki temu aparat wiązania do automatycznego aktualizowania opinii weryfikacji interfejsu użytkownika podczas dodane, usunięte lub zmodyfikowane błędy.  
+ Ta metoda zwraca <xref:System.Collections.IEnumerable> , można zmienić reguły asynchronicznego sprawdzania poprawności zakończy przetwarzanie. Dzięki temu aparatu powiązania do automatycznego aktualizowania opinia walidacji interfejsu użytkownika, gdy błędy są dodane, usunięte lub zmodyfikowane.  
   
- Zwracana wartość można zmienić na inny <xref:System.Collections.IEnumerable>, lub można ponownie użyć poprzednio zwróconych <xref:System.Collections.IEnumerable> i zmienić jego zawartość. Wszystkie zmiany do wartości zwracanej powinna podnieść <xref:System.ComponentModel.INotifyDataErrorInfo.ErrorsChanged> zdarzeń, nawet jeśli wartość zwracana implementuje <xref:System.Collections.Specialized.INotifyCollectionChanged>.  
+ Zwracana wartość można zmienić na inną <xref:System.Collections.IEnumerable>, lub można użyć ponownie wcześniej zwrócony <xref:System.Collections.IEnumerable> i zmienić jego zawartość. Zmiany wprowadzone w wartości zwracanej, powinny wywoływać <xref:System.ComponentModel.INotifyDataErrorInfo.ErrorsChanged> zdarzenia, nawet jeśli wartość zwracaną implementuje <xref:System.Collections.Specialized.INotifyCollectionChanged>.  
   
  ]]></format>
         </remarks>
@@ -157,12 +157,12 @@
       <Docs>
         <summary>Pobiera wartość wskazującą, czy jednostka ma błędy sprawdzania poprawności.</summary>
         <value>
-          <see langword="true" /> Jeśli jednostka obecnie występują błędy sprawdzania poprawności; w przeciwnym razie <see langword="false" />.</value>
+          <see langword="true" /> Jeśli jednostka ma obecnie błędy sprawdzania poprawności; w przeciwnym razie <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta właściwość zwraca `false` Jeśli nie ma żadnych błędów znanych jednostek poziomie właściwości lub sprawdzania poprawności dla jednostki w czasie do niego dostępu. Jednak niektóre reguły sprawdzania poprawności mogą być nadal uruchomione asynchronicznie opisowi dla <xref:System.ComponentModel.INotifyDataErrorInfo.GetErrors%2A> metody.  
+ Ta właściwość zwraca `false` Jeśli nie ma żadnych błędów znane właściwości poziomie lub na poziomie jednostki sprawdzania poprawności dla jednostki w czasie, jest on dostępny. Jednak niektóre reguły sprawdzania poprawności mogą być nadal uruchomione asynchronicznie opisowi dla <xref:System.ComponentModel.INotifyDataErrorInfo.GetErrors%2A> metody.  
   
  ]]></format>
         </remarks>

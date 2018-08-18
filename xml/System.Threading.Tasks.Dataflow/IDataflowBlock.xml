@@ -1,10 +1,10 @@
 <Type Name="IDataflowBlock" FullName="System.Threading.Tasks.Dataflow.IDataflowBlock">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="34711813963d940018412100f9cfc38705ee40d3" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36407607" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IDataflowBlock" />
@@ -54,12 +54,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Sygnały do <see cref="T:System.Threading.Tasks.Dataflow.IDataflowBlock" /> czy go powinien nie akceptuje utworzyć więcej wiadomości ani zużywać więcej przełożonych komunikaty.</summary>
+        <summary>Sygnalizuje <see cref="T:System.Threading.Tasks.Dataflow.IDataflowBlock" /> czy go powinien nie akceptują wygenerować więcej wiadomości ani zużywać więcej odroczone komunikaty.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> została wywołana w bloku przepływu danych, tym bloku zostanie zakończony i jego <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadań przejdzie w stan końcowy po został on przetworzony wszystkie wcześniej dostępne dane. <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> zostanie nie bloku oczekiwanie na ukończenie występuje, ale zamiast zainicjuje żądania; czekać na zakończenie zachodzić <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadań mogą być używane.  
+ Po <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> została wywołana w bloku przepływu danych, zakończy się tego bloku, a jego <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadanie przejdzie stan końcowy po zostało przetworzone wszystkie dane były dostępne. <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Complete%2A> będzie blokuje oczekiwanie na ukończenie wystąpienia, ale raczej zainicjuje żądania; czekać na zakończenie zachodzić <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadania mogą być używane.  
   
  ]]></format>
         </remarks>
@@ -84,13 +84,13 @@
         <ReturnType>System.Threading.Tasks.Task</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Threading.Tasks.Task" /> reprezentujący operację asynchroniczną i zakończenia bloku przepływu danych.</summary>
+        <summary>Pobiera <see cref="T:System.Threading.Tasks.Task" /> reprezentujący operację asynchroniczną i uzupełniania bloku przepływu danych.</summary>
         <value>Zadanie.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Blok przepływu danych jest traktowany jako wykonania, gdy nie aktualnie przetwarza komunikat i kiedy ma gwarancję, że nie będzie przetwarzać więcej wiadomości. Zwrócona <xref:System.Threading.Tasks.Task> spowoduje przejście do stanu ukończenia po ukończeniu skojarzony blok. Spowoduje przejście do <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.RanToCompletion> stanu po bloku zakończeniu jego przetwarzanie pomyślnie zgodnie z bloku przepływu danych zdefiniowany semantyki. Spowoduje przejście do <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.Faulted> stan, gdy bloku przepływu danych zakończył przetwarzanie przedwcześnie z powodu nieobsługiwanego wyjątku i spowoduje przejście do <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.Canceled> stanu po ukończeniu bloku przepływu danych Przetwarzanie przedwcześnie z powodu odebrania żądania anulowania. Po zakończeniu zadania w <xref:System.Threading.Tasks.TaskStatus.Faulted> stanu, jego `Exception` właściwość, którą będzie zwracać <xref:System.AggregateException> zawierający co najmniej jeden wyjątek powodujące block niepowodzenia.  
+ W bloku przepływu danych jest uznawany za ukończone, gdy nie obecnie przetwarza komunikat i kiedy ma gwarancję, że nie będzie przetwarzać więcej wiadomości. Zwrócony <xref:System.Threading.Tasks.Task> spowoduje przejście do stanu ukończenia, po ukończeniu skojarzony blok. Zostanie zastąpiona usługą <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.RanToCompletion> stan po bloku ukończeniu jego przetwarzania pomyślnie zgodnie z bloku przepływu danych zdefiniować semantyki. Zostanie zastąpiona usługą <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.Faulted> stan bloku przepływu danych zakończeniu przetwarzania przedwcześnie z powodu nieobsługiwanego wyjątku, gdy zostanie zastąpiona usługą <xref:System.Threading.Tasks.TaskStatus> <xref:System.Threading.Tasks.TaskStatus.Canceled> stanu po zakończeniu w bloku przepływu danych Przetwarzanie przedwcześnie z powodu odebrania żądania anulowania. Jeśli zadanie zakończy się w <xref:System.Threading.Tasks.TaskStatus.Faulted> stanu, jego `Exception` zwróci właściwość <xref:System.AggregateException> zawierające jeden lub kilka wyjątków, które spowodowały bloku nie powiedzie się.  
   
  ]]></format>
         </remarks>
@@ -119,12 +119,12 @@
       <Docs>
         <param name="exception">
           <see cref="T:System.Exception" /> , Która spowodowała błąd.</param>
-        <summary>Powoduje, że <see cref="T:System.Threading.Tasks.Dataflow.IDataflowBlock" /> ukończone <see cref="F:System.Threading.Tasks.TaskStatus.Faulted" /> stanu.</summary>
+        <summary>Powoduje, że <see cref="T:System.Threading.Tasks.Dataflow.IDataflowBlock" /> do wykonania w <see cref="F:System.Threading.Tasks.TaskStatus.Faulted" /> stanu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A> została wywołana w bloku przepływu danych, tym bloku zostanie zakończony i jego <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadań przejdzie w stan końcowy. Błąd bloku, jako anulowanie bloku, powoduje, że buforowanego wiadomości (nieprzetworzone komunikaty wejściowe jak również komunikaty wyjściowe unoffered) utratę.  
+ Po <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Fault%2A> została wywołana w bloku przepływu danych, zakończy się tego bloku, a jego <xref:System.Threading.Tasks.Dataflow.IDataflowBlock.Completion%2A> zadanie przejdzie w stan końcowy. Powodujący błąd bloku, jako anulowanie bloku, powoduje, że buforowane wiadomości (nieprzetworzone komunikaty wejściowe także komunikaty wyjściowe unoffered), zostanie utracone.  
   
  ]]></format>
         </remarks>

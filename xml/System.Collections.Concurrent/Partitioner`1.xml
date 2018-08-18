@@ -1,10 +1,10 @@
 <Type Name="Partitioner&lt;TSource&gt;" FullName="System.Collections.Concurrent.Partitioner&lt;TSource&gt;">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="c1eaa3e485994bd8abd424dc8bacbaaf952b4a75" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36713955" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class Partitioner&lt;TSource&gt;" />
@@ -37,7 +37,7 @@
   <Interfaces />
   <Docs>
     <typeparam name="TSource">Typ elementów w kolekcji.</typeparam>
-    <summary>Reprezentuje określonego sposób rozdzielania źródła danych do wielu partycji.</summary>
+    <summary>Reprezentuje określonego sposób podział źródła danych na wiele partycji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -47,14 +47,14 @@
    
   
 ## Examples  
- Poniższy przykład przedstawia sposób wykonania partycjonerem, który zwraca jeden element w czasie:  
+ Poniższy przykład pokazuje, jak Implementowanie partycjonera, który zwraca jeden element w czasie:  
   
  [!code-csharp[System.Collections.Concurrent.Partitioner#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.collections.concurrent.partitioner/cs/partitioner.cs#1)]
  [!code-vb[System.Collections.Concurrent.Partitioner#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.collections.concurrent.partitioner/vb/partitioner.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>Metod statycznych w <see cref="T:System.Collections.Concurrent.Partitioner`1" /> są wszystkie wielowątkowość i mogą być używane jednocześnie wiele wątków. Jednak gdy utworzony obiekt partitioner jest w użyciu, źródła danych nie powinien być modyfikowany, czy z tego samego wątku, który używa partycjonera lub oddzielnym wątku.</threadsafe>
+    <threadsafe>Metody statyczne na <see cref="T:System.Collections.Concurrent.Partitioner`1" /> są wszystkie metodą o bezpiecznych wątkach i mogą być używane jednocześnie z wielu wątków. Jednak gdy utworzono partycjonera jest używany, źródła danych nie powinien być modyfikowany, czy z tym samym wątku, który używa partycjonera lub oddzielnego wątku.</threadsafe>
     <altmember cref="T:System.Collections.Concurrent.OrderablePartitioner`1" />
     <altmember cref="T:System.Collections.Concurrent.Partitioner" />
   </Docs>
@@ -117,19 +117,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy obiekt, który można partycji podstawowej kolekcji do zmiennej liczby partycji.</summary>
+        <summary>Tworzy obiekt, który można podzielić na partycje kolekcji źródłowej do zmiennej liczby partycji.</summary>
         <returns>Obiekt, który można utworzyć partycji w źródle danych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Implementuje zwrócony obiekt <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejsu. Wywoływanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu tworzy innej partycji w sekwencji.  
+ Zwrócony obiekt implementuje <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejsu. Wywoływanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu tworzy innej partycji za pośrednictwem sekwencji.  
   
- <xref:System.Collections.Concurrent.Partitioner%601.GetDynamicPartitions%2A> Metoda jest obsługiwana tylko, jeśli <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> właściwość zwraca wartość true. Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ <xref:System.Collections.Concurrent.Partitioner%601.GetDynamicPartitions%2A> Metoda jest obsługiwana tylko w przypadku <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> właściwość zwraca wartość true. Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Dynamiczne partycjonowanie nie jest obsługiwana przez klasę podstawową. Musi on implementować w klasie pochodnej.</exception>
+        <exception cref="T:System.NotSupportedException">Dynamiczne partycjonowanie nie jest obsługiwana przez klasę bazową. Należy ją zaimplementować w klasie pochodnej.</exception>
         <altmember cref="T:System.Collections.Concurrent.OrderablePartitioner`1" />
         <altmember cref="T:System.Collections.Concurrent.Partitioner" />
       </Docs>
@@ -164,14 +164,14 @@
         <Parameter Name="partitionCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="partitionCount">Liczba partycji do utworzenia.</param>
-        <summary>Partycji podstawowej kolekcji do podanej liczby partycji.</summary>
-        <returns>Lista zawierająca <paramref name="partitionCount" /> wyliczenia.</returns>
+        <param name="partitionCount">Liczba partycji w celu tworzenia.</param>
+        <summary>Dzieli kolekcji źródłowej do danej liczby partycji.</summary>
+        <returns>Lista zawierająca <paramref name="partitionCount" /> modułów wyliczających.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasa, która implementuje tę metodę powinien zwrócić dokładnie liczby partycji, które są określone w `partitionCount`. Jeśli partycji nie zawiera żadnych elementów, zwracany jest pusty moduł wyliczający zamiast wartości null (Nothing w języku Visual Basic). Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Klasa, która implementuje ta metoda powinien zwrócić dokładną liczbę partycji, które są określone w `partitionCount`. Jeśli partycja nie zawiera żadnych elementów, zwracany jest pusty moduł wyliczający, a nie o wartości null (Nothing w języku Visual Basic). Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
@@ -206,13 +206,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera czy można dynamicznie utworzyć dodatkowe partycje.</summary>
-        <value>wartość true, jeśli <see cref="T:System.Collections.Concurrent.Partitioner`1" /> można utworzyć partycji dynamicznie żądania; wartość false, gdy <see cref="T:System.Collections.Concurrent.Partitioner`1" /> można alokować partycje statycznie.</value>
+        <summary>Pobiera informacje, czy dodatkowe partycje, które mogą być tworzone dynamicznie.</summary>
+        <value>wartość true, jeśli <see cref="T:System.Collections.Concurrent.Partitioner`1" /> można utworzyć partycji dynamicznie zgodnie z żądania; FAŁSZ Jeśli <see cref="T:System.Collections.Concurrent.Partitioner`1" /> może alokować partycje statycznie.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli klasa pochodna nie zastąpić i implementować <xref:System.Collections.Concurrent.Partitioner%601.GetDynamicPartitions%2A>, <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> powinna zostać zwrócona wartość false. Wartość <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> nie powinny zmieniać w okresie istnienia tego wystąpienia. Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Klasa pochodna zmiany ustawień i nie implementować <xref:System.Collections.Concurrent.Partitioner%601.GetDynamicPartitions%2A>, <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> powinna zostać zwrócona wartość false. Wartość <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> nie powinno się zmieniać, przez cały okres istnienia tego wystąpienia. Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>

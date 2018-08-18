@@ -1,10 +1,10 @@
 <Type Name="ArrayPool&lt;T&gt;" FullName="System.Buffers.ArrayPool&lt;T&gt;">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="c365ab2f2412036b41ba89388ab6a1187f6696d2" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36647252" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ArrayPool&lt;T&gt;" />
@@ -35,11 +35,11 @@
   
 ## Remarks  
   
- Przy użyciu <xref:System.Buffers.ArrayPool%601> klasy wynajmować i zwracać buforów (przy użyciu <xref:System.Buffers.ArrayPool%601.Rent%2A> i <xref:System.Buffers.ArrayPool%601.Return%2A> metody) może poprawić wydajność w sytuacji, gdy tablice są tworzone i niszczone często, co wykorzystania pamięci znaczących w pamięci Moduł zbierający.
+ Za pomocą <xref:System.Buffers.ArrayPool%601> klasy wynajmować i zwrócenie buforów (przy użyciu <xref:System.Buffers.ArrayPool%601.Rent%2A> i <xref:System.Buffers.ArrayPool%601.Return%2A> metody) może poprawić wydajność w sytuacji, w którym tablice są tworzone i niszczone, często, i wykorzystanie pamięci znaczące w pamięci Moduł zbierający.
   
  ]]></format>
     </remarks>
-    <threadsafe>Ta klasa jest bezpieczne wątkowo. Wszystkie elementy Członkowskie mogą być używane przez wiele wątków jednocześnie.</threadsafe>
+    <threadsafe>Ta klasa jest metodą o bezpiecznych wątkach. Wszystkie elementy Członkowskie mogą być używane przez wiele wątków jednocześnie.</threadsafe>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -64,7 +64,7 @@
   
 ## Remarks  
   
-Należy pamiętać, że ten konstruktor jest chroniony; może być wywoływany tylko przez klasy pochodzące od <xref:System.Buffers.ArrayPool%601> klasy. 
+Należy pamiętać, że ten konstruktor jest chronione. może być wywoływany tylko przez klasy pochodne <xref:System.Buffers.ArrayPool%601> klasy. 
  ]]></format>
         </remarks>
       </Docs>
@@ -117,16 +117,16 @@ Należy pamiętać, że ten konstruktor jest chroniony; może być wywoływany t
         <Parameter Name="maxArraysPerBucket" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="maxArrayLength">Maksymalna długość tablicy wystąpienia, które mogą być przechowywane w puli.</param>
-        <param name="maxArraysPerBucket">Maksymalna liczba wystąpień tablicy, które mogą być przechowywane w każdym zasobniku w puli. Puli grupuje podobne długości tablic w zasobników szybszy dostęp.</param>
-        <summary>Tworzy nowe wystąpienie klasy <see cref="T:System.Buffers.ArrayPool`1" /> przy użyciu określonej konfiguracji.</summary>
-        <returns>Nowe wystąpienie klasy <see cref="T:System.Buffers.ArrayPool`1" /> klasy z określoną konfiguracją.</returns>
+        <param name="maxArrayLength">Maksymalna długość wystąpienia tablicy, które mogą być przechowywane w puli.</param>
+        <param name="maxArraysPerBucket">Maksymalna liczba wystąpień tablicy, które mogą być przechowywane w każdego przedziału w puli. Puli grupuje tablice o długości podobne do zasobników szybszy dostęp.</param>
+        <summary>Tworzy nowe wystąpienie klasy <see cref="T:System.Buffers.ArrayPool`1" /> klasy przy użyciu określonej konfiguracji.</summary>
+        <returns>Nowe wystąpienie klasy <see cref="T:System.Buffers.ArrayPool`1" /> klas z określoną konfiguracją.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
-Wystąpienie <xref:System.Buffers.ArrayPool%601> klasy utworzony przez tę metodę pozwala grupować tablic w pakiety, których nie więcej niż `maxArraysPerBucket` w każdym zasobniku i z tymi tablicami nieprzekraczającej `maxArrayLength` długości.
+Wystąpienie <xref:System.Buffers.ArrayPool%601> klasy utworzone przez tę metodę pozwala grupować tablic w przedziały, na których nie więcej niż `maxArraysPerBucket` w każdego przedziału, z tymi macierzami nieprzekraczającej `maxArrayLength` długości.
  ]]></format>
         </remarks>
       </Docs>
@@ -155,13 +155,13 @@ Wystąpienie <xref:System.Buffers.ArrayPool%601> klasy utworzony przez tę metod
       <Docs>
         <param name="minimumLength">Minimalna długość tablicy.</param>
         <summary>Pobiera buforu, który jest co najmniej żądanej długości.</summary>
-        <returns>Tablica typu <see cref="T:T[]" /> jest co najmniej <paramref name="minimumLength" /> długości.</returns>
+        <returns>Tablica typu <see cref="T:T[]" /> to co najmniej <paramref name="minimumLength" /> długości.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
 
-Bufor jest pożyczki do obiektu wywołującego i powinny być zwrócone do tej samej puli przy użyciu <xref:System.Buffers.ArrayPool%601.Return%2A> metodę, tak że mogą być ponownie używane w kolejnych wywołaniach <xref:System.Buffers.ArrayPool%601.Rent%2A> metody. Nie można zwrócić Wydzierżawionym bufor nie jest to błąd krytyczny. Jednak może dojść do aplikacji zmniejszyć wydajność, ponieważ pula może być konieczne utworzenie nowych buforu zastąpić utracone.
+Bufor jest pożyczki do obiektu wywołującego, a powinien nastąpić powrót do tej samej puli przy użyciu <xref:System.Buffers.ArrayPool%601.Return%2A> metodę, tak że mogą zostać ponownie użyte w kolejnych wywołaniach <xref:System.Buffers.ArrayPool%601.Rent%2A> metody. Nie można zwrócić Wydzierżawionym bufor nie jest to błąd krytyczny. Jednak może prowadzić do aplikacji obniżenie wydajności, ponieważ pula może być konieczne utworzenie nowych buforu na zastąpienie utracone.
  ]]></format>
         </remarks>
       </Docs>
@@ -188,15 +188,15 @@ Bufor jest pożyczki do obiektu wywołującego i powinny być zwrócone do tej s
         <Parameter Name="clearArray" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="array">Buforu, aby powrócić do puli, który został uzyskany wcześniej przy użyciu <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> metody.</param>
-        <param name="clearArray">Wskazuje, czy zawartość buforów powinny zostać wyczyszczone przed ponownym użyciem. Jeśli <paramref name="clearArray" /> ma ustawioną wartość <see langword="true" />, i jeśli puli zapisze bufor do włączenia kolejnych ponownemu <see cref="M:System.Buffers.ArrayPool`1.Return(`0[],System.Boolean)" /> metody spowoduje wyczyszczenie <paramref name="array" /> jego zawartość, aby kolejnych wywołującemu, korzystając z <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> — metoda nie będą widzieć zawartość poprzednie obiektu wywołującego. Jeśli <paramref name="clearArray" /> ma ustawioną wartość <see langword="false" /> lub jeśli pula zostanie zwolniony buforu, pozostaną zawartości tablicy bez zmian.</param>
-        <summary>Zwraca tablicę do puli, który wcześniej został uzyskany przy użyciu <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> metody w tym samym <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</summary>
+        <param name="array">Bufor, aby powrócić do puli które zostały wcześniej pobrane przy użyciu <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> metody.</param>
+        <param name="clearArray">Wskazuje, czy zawartość buforu powinno być wyczyszczone przed ponownym użyciem. Jeśli <paramref name="clearArray" /> jest ustawiona na <see langword="true" />, i jeśli będą przechowywane w puli buforów, które umożliwia późniejsze ponowne użycie, <see cref="M:System.Buffers.ArrayPool`1.Return(`0[],System.Boolean)" /> metoda spowoduje wyczyszczenie <paramref name="array" /> jego zawartość, aby kolejne wywołującemu, korzystając z <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> metody nie będą widzieć zawartości poprzedniego obiektu wywołującego. Jeśli <paramref name="clearArray" /> ustawiono <see langword="false" /> lub jeśli pula będzie zwolnić buforu, zawartość tablicy są pozostawiane bez zmian.</param>
+        <summary>Zwraca tablicę do puli, które zostały wcześniej pobrane przy użyciu <see cref="M:System.Buffers.ArrayPool`1.Rent(System.Int32)" /> metody na tym samym <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
 
-Po buforu został zwrócony do puli, wywołujący zrezygnuje własność wszystkich buforu i nie może używać. Odwołanie zwrócone przez wywołanie danego <xref:System.Buffers.ArrayPool%601.Rent%2A> metoda musi być zwracany wyłącznie, przy użyciu <xref:System.Buffers.ArrayPool%601.Return%2A> metody raz. Wartość domyślna <xref:System.Buffers.ArrayPool%601> może utrzymywać na zwrócony buforu celu wynajmować go ponownie, lub może zwolnić buforu zwrócony, jeśli okaże się, że pula już ma za mało buforów przechowywane.
+Po bufor został zwrócony do puli, obiekt wywołujący rezygnuje ze własność wszystkich buforu, a nie może używać. Odwołania zwrócone w wyniku podanego wywołania <xref:System.Buffers.ArrayPool%601.Rent%2A> — metoda musi być zwracany za pomocą <xref:System.Buffers.ArrayPool%601.Return%2A> metoda jeden raz. Wartość domyślna <xref:System.Buffers.ArrayPool%601> mogą je utrzymywać na zwracany buforu celu wynajmować ją ponownie, lub może zwolnić buforu zwracany, jeśli okaże się, że puli już ma za mało buforów przechowywane.
  ]]></format>
         </remarks>
       </Docs>
@@ -220,14 +220,14 @@ Po buforu został zwrócony do puli, wywołujący zrezygnuje własność wszystk
         <ReturnType>System.Buffers.ArrayPool&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera udostępnionej <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</summary>
-        <value>Udostępnionej <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</value>
+        <summary>Pobiera wspólny <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</summary>
+        <value>Wspólny <see cref="T:System.Buffers.ArrayPool`1" /> wystąpienia.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
 
-Współużytkowanej puli udostępnia domyślną implementację <xref:System.Buffers.ArrayPool%601> klasy, która jest przeznaczony dla ogólnego zastosowania. Udostępniony klasy przechowuje tablic o różnych rozmiarach i może ponownie przekazanie tablicą większych niż rzeczywiście zażądano, ale jego nigdy nie zwróci kopię tablicą mniejsza niż żądana. Wynajem buforu używającego udostępnionych klasy <xref:System.Buffers.ArrayPool%601.Rent%2A> metody spowoduje istniejącemu buforowi przełączana z puli do odpowiedniego buforu jest dostępna lub w nowym buforze są przydzielone, jeśli nie jest dostępna.
+Udostępniona pula udostępnia domyślną implementację elementu <xref:System.Buffers.ArrayPool%601> klasy, która jest przeznaczona dla ogólnego zastosowania. Udostępnione klasy obsługuje tablice o różnych rozmiarach i może ponownie przekazanie tablicę o większych niż rzeczywiście zażądano, ale jej nigdy nie zwróci kopię tablicy o mniejszych niż żądana. Wynajem buforu z za pomocą klasy udostępnione <xref:System.Buffers.ArrayPool%601.Rent%2A> metoda spowoduje istniejących buforu są pobierane z puli, czy odpowiedniego buforu jest dostępna w nowym buforze są przydzielone, jeśli nie jest dostępna.
  ]]></format>
         </remarks>
       </Docs>

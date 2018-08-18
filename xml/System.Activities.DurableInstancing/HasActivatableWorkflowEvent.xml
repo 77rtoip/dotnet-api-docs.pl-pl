@@ -1,10 +1,10 @@
 <Type Name="HasActivatableWorkflowEvent" FullName="System.Activities.DurableInstancing.HasActivatableWorkflowEvent">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="3ffeadee2b98803676112409762252de088d2749" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36723253" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class HasActivatableWorkflowEvent : System.Runtime.DurableInstancing.InstancePersistenceEvent&lt;System.Activities.DurableInstancing.HasActivatableWorkflowEvent&gt;" />
@@ -25,33 +25,33 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Reprezentuje zdarzenie, który wywołuje magazyn wystąpienia powiadomiono ogólnego hostów o istnieniu aktywowalnej wystąpień w bazie danych trwałości.</summary>
+    <summary>Przedstawia zdarzenie, która wywołuje magazyn wystąpienia, aby powiadomić ogólnego hosty o istnieniu aktywowalnej wystąpień w bazie danych trwałości.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Wystąpienie jest *aktywowalnej*, jeśli nie jest w stanie wstrzymania lub stanu ukończenia i spełnia następujące warunki:  
   
--   Wystąpienie jest *do uruchomienia*. Wystąpienie w bazie danych trwałości jest uznawany za do uruchomienia, jeśli spełnia następujące warunki:  
+-   Wystąpienie jest *możliwy do uruchomienia*. Wystąpienie bazy danych trwałości jest traktowane jako możliwy do uruchomienia, jeśli spełnia następujące warunki:  
   
-    -   Wystąpienie jest odblokowany, a ma oczekujące czasomierza, który wygasł.  
+    -   Wystąpienie jest odblokowana i ma oczekujące czasomierza, który wygasł.  
   
-    -   Wystąpienie jest odblokowany, a jego stan jest **Executing**.  
+    -   Wystąpienie jest odblokowana i jego stan to **Executing**.  
   
-    -   Wystąpienie znajdują się nieprawidłowe blokady.  
+    -   Wystąpienie ma nieprawidłowy blokadę.  
   
--   Nie ma hosta przepływu pracy jest zdolny do ładowania, których wystąpienie jest uruchomiona na komputerze.  
+-   Brak hosta przepływu pracy jest zdolny do ładowania, którego wystąpienie jest uruchomiona na komputerze.  
   
- Magazyn wystąpienia należy okresowo wyszukiwanie wystąpienia aktywowalnej przepływu pracy, które należą do hosta przepływu pracy, który używa magazynu. Powinna ona podnieść <xref:System.Activities.DurableInstancing.HasActivatableWorkflowEvent> po znalezione wystąpienie aktywowalnej w magazynie informacji o trwałości. Jeśli w magazynie wystąpień nie może odnaleźć wystąpienia aktywowalnej w magazynie informacji o trwałości, należy kontynuować do monitorowania magazynu trwałości dla wystąpienia aktywowalnej.  
+ Magazyn wystąpienia należy okresowo wyszukiwać wystąpienia aktywowalnej przepływu pracy, które należą do hosta przepływu pracy, który używa magazynu. Powinna ona zgłosić <xref:System.Activities.DurableInstancing.HasActivatableWorkflowEvent> gdy znajdzie aktywowalnej wystąpienia w magazynie w trwałości. Jeśli Magazyn wystąpienia nie może odnaleźć aktywowalnej wystąpienia w magazynie w trwałości, powinno ono nadal monitorować wszystkie wystąpienia aktywowalnej w sklepie trwałości.  
   
- Po wywoływanie HasActivatableWorkflowEvent, w magazynie wystąpień powinna zostać przerwana w magazynie informacji o trwałości dla wystąpień aktywowalnej monitorowania, dopóki nie odbierze i wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>. Monitorowanie nadal tylko, jeśli wykonanie polecenia nie zwraca żadnych wystąpień aktywowalnej przepływu pracy.  
+ Po podnoszenie HasActivatableWorkflowEvent, Magazyn wystąpienia ma zostać zatrzymana, aktywowalnej wystąpienia w sklepie trwałości monitorowania, dopóki nie odbierze i wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>. Monitorowanie nadal tylko, jeśli wykonanie polecenia nie zwraca żadnych wystąpień aktywowalnej przepływu pracy.  
   
- Ogólny hosta odebrania to zdarzenie wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand> przed w magazynie wystąpień, do uzyskania parametrów aktywacji wymagane do utworzenia hosta przepływu pracy. Ogólny host korzysta z tych parametrów aktywacji można utworzyć hosta przepływu pracy, który z kolei ładuje i uruchamia wystąpienie usługi. Parametry aktywacji dla typu aktywacji WAS są: Nazwa witryny, ścieżkę aplikacji (względem lokacji) i ścieżki usługi (względem aplikacji). Magazyn wystąpienia może zwrócić wielu zestawów trzy następujące parametry aktywacji.  
+ Gdy host ogólny otrzymuje to zdarzenie, wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand> względem magazynu wystąpienia, aby uzyskać parametry aktywacji wymagane do utworzenia hosta przepływu pracy. Ogólny hosta korzysta z tych parametrów aktywacji w celu utworzenia hosta przepływu pracy, który z kolei ładuje i uruchamia wystąpienie usługi. Parametry aktywacji WAS typ aktywacji są: Nazwa witryny, ścieżkę aplikacji (względem witryny) i ścieżki usługi (względem aplikacji). Magazyn wystąpień może zwrócić wiele zestawów tych trzech parametrów aktywacji.  
   
- Ogólnego host jest hostem, który ma parametr XName o nazwie **ActivationType**, który powinien mieć ustawioną wartość obsługiwane przez w magazynie wystąpień. Obecnie w magazynie wystąpień przepływu pracy SQL obsługuje ogólnego hosty z parametrem ActivationType ustawioną wartość: **WAS**. Jeśli ActivationType nie jest ustawiona na wszystkich, w magazynie wystąpień przepływu pracy SQL traktuje hosta jako ogólnego hosta.  
+ Ogólny host jest hostem, która ma parametr XName o nazwie **ActivationType**, które powinno być ustawione na wartość obsługiwane przez Magazyn wystąpienia. Obecnie Store wystąpienia przepływu pracy SQL obsługuje ogólny hosty z parametrem ActivationType ustawionym na wartość: **WAS**. Jeśli ActivationType nie jest ustawiona na wszystkich Store wystąpienia przepływu pracy SQL traktuje hosta jako hosta ogólnego.  
   
 > [!NOTE]
->  Usługa zarządzania przepływu pracy, że jest dostarczany z kodem o nazwie "Seattle" (rozszerzenia serwera aplikacji dla programu .NET 4.0) jest ogólny hosta, który ma typ aktywacji ustawioną **WAS**.  
+>  Usługa zarządzania przepływu pracy, że dostarczany z kodem o nazwie "Seattle" (rozszerzenia serwera aplikacji dla programów .NET 4.0) jest ogólny hosta, który ma ustawiony typ aktywacji **WAS**.  
   
  ]]></format>
     </remarks>

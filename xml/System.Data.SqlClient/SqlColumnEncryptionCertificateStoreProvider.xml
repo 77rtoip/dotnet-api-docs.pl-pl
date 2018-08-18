@@ -1,10 +1,10 @@
 <Type Name="SqlColumnEncryptionCertificateStoreProvider" FullName="System.Data.SqlClient.SqlColumnEncryptionCertificateStoreProvider">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="f096213f9a5fe505bbfae8c61667155915e1736f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36680097" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class SqlColumnEncryptionCertificateStoreProvider : System.Data.SqlClient.SqlColumnEncryptionKeyStoreProvider" />
@@ -22,7 +22,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Implementacja dostawcy magazynu kluczy dla magazynu certyfikatów systemu Windows. Ta klasa pozwala na stosowanie certyfikaty przechowywane w magazynie certyfikatów systemu Windows jako kolumny kluczy głównych. Aby uzyskać więcej informacji zobacz [zawsze Encrypted](/sql/relational-databases/security/encryption/always-encrypted-database-engine).</summary>
+    <summary>Implementacja dostawcy magazynu kluczy dla Windows certyfikatu Store. Ta klasa umożliwia, przy użyciu certyfikatów przechowywanych w Windows Store certyfikatu jako kolumny kluczy głównych. Aby uzyskać więcej informacji, zobacz [Always Encrypted](/sql/relational-databases/security/encryption/always-encrypted-database-engine).</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -39,7 +39,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Dostawca magazynu kluczy dla magazynu certyfikatów systemu Windows.</summary>
+        <summary>Dostawca magazynu kluczy dla Windows certyfikatu Store.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -65,10 +65,11 @@
       </Parameters>
       <Docs>
         <param name="masterKeyPath">Ścieżka klucza głównego.</param>
-        <param name="encryptionAlgorithm">Algorytm szyfrowania. Obecnie jest jedyną poprawną wartością: <c>RSA_OAEP</c></param>
+        <param name="encryptionAlgorithm">Algorytm szyfrowania. Obecnie jedyna prawidłowa wartość to: <c>RSA_OAEP</c></param>
         <param name="encryptedColumnEncryptionKey">Klucz szyfrowania zaszyfrowanej kolumny.</param>
-        <summary>Odszyfrowuje określona wartość zaszyfrowanego klucza szyfrowania kolumny. Zaszyfrowaną wartość ma być zaszyfrowany przy użyciu certyfikatu z określoną ścieżką klucza i określony algorytm. Format ścieżki klucza powinien być "Local Machine/Moje/&lt;certificate_thumbrint&gt;" lub "bieżącego użytkownika/Moje/&lt;certificate_thumbprint&gt;".</summary>
-        <returns>Zwraca <see cref="T:System.Byte" />. Klucz szyfrowania kolumny odszyfrowany.</returns>
+        <summary>Odszyfrowuje zaszyfrowane określona wartość klucza szyfrowania kolumny. Zaszyfrowana wartość oczekuje zaszyfrowane przy użyciu certyfikatu z określoną ścieżką kluczy i przy użyciu określonego algorytmu. Powinna być w formacie ścieżki klucza "maszyna lokalna/Moje/&lt;certificate_thumbrint&gt;" lub "bieżącego użytkownika/Moje/&lt;certificate_thumbprint&gt;".</summary>
+        <returns>Zwraca <see cref="T:System.Byte" />.   
+Kolumna odszyfrowany klucz szyfrowania.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -94,10 +95,11 @@
       </Parameters>
       <Docs>
         <param name="masterKeyPath">Ścieżka klucza głównego.</param>
-        <param name="encryptionAlgorithm">Algorytm szyfrowania. Obecnie jest jedyną poprawną wartością: <c>RSA_OAEP</c></param>
+        <param name="encryptionAlgorithm">Algorytm szyfrowania. Obecnie jedyna prawidłowa wartość to: <c>RSA_OAEP</c></param>
         <param name="columnEncryptionKey">Klucz szyfrowania zaszyfrowanej kolumny.</param>
-        <summary>Są szyfrowane przy użyciu certyfikatu z określoną ścieżką klucza i określony algorytm klucza szyfrowania kolumny. Format ścieżki klucza powinien być "Local Machine/Moje/&lt;certificate_thumbrint&gt;" lub "bieżącego użytkownika/Moje/&lt;certificate_thumbprint&gt;".</summary>
-        <returns>Zwraca <see cref="T:System.Byte" />. Klucz szyfrowania zaszyfrowanej kolumny.</returns>
+        <summary>Szyfruje klucz szyfrowania kolumny przy użyciu certyfikatu z określoną ścieżką klucza oraz za pomocą określonego algorytmu. Powinna być w formacie ścieżki klucza "maszyna lokalna/Moje/&lt;certificate_thumbrint&gt;" lub "bieżącego użytkownika/Moje/&lt;certificate_thumbprint&gt;".</summary>
+        <returns>Zwraca <see cref="T:System.Byte" />.   
+Klucz szyfrowania zaszyfrowanej kolumny.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -141,11 +143,11 @@
         <Parameter Name="allowEnclaveComputations" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">Ścieżka klucza głównego kolumny.</param>
+        <param name="masterKeyPath">Kolumna ścieżki klucza głównego.</param>
         <param name="allowEnclaveComputations">
-          <see langword="true" /> Aby wskazać, że klucza głównego kolumny obsługuje obliczenia enklawę; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Podpisaniu metadanych klucza głównego kolumny z klucza głównego kolumny odwołuje się <paramref name="masterKeyPath" /> parametru.</summary>
-        <returns>Podpis metadanych klucza głównego kolumny.</returns>
+          <see langword="true" /> Aby wskazać, że klucz główny kolumny obsługuje obliczeń enklawy; w przeciwnym razie <see langword="false" />.</param>
+        <summary>Podpisuje cyfrowo metadanych klucz główny kolumny z kluczem głównym kolumny, które są przywoływane przez <paramref name="masterKeyPath" /> parametru.</summary>
+        <returns>Podpis kolumny metadanych klucza głównego.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -170,11 +172,11 @@
         <Parameter Name="signature" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="masterKeyPath">Pełną ścieżkę klucza asymetrycznego. Format ścieżki jest specyficzne dla dostawcy magazynu kluczy.</param>
-        <param name="allowEnclaveComputations">Wartość logiczna wskazująca, czy ten klucz można wysyłać do zaufanych enklawę.</param>
+        <param name="masterKeyPath">Pełna ścieżka klucza asymetrycznego. Format ścieżki jest specyficzne dla dostawcy magazynu kluczy.</param>
+        <param name="allowEnclaveComputations">Wartość logiczna wskazująca, jeśli ten klucz mogą być wysyłane do zaufanych enklawy.</param>
         <param name="signature">Klucz główny siognature metadanych.</param>
-        <summary>Ta funkcja musi być implementowana przez odpowiednie dostawców magazynu kluczy. Tej funkcji należy używać klucza asymetrycznego identyfikowana na podstawie ścieżki klucza i sprawdź metadanych umożliwia składające się z (masterKeyPath, allowEnclaveComputations, providerName).</summary>
-        <returns>Wartość logiczna, która wskazuje, czy można zweryfikować metadanych klucza głównego w oparciu podana podpisu.</returns>
+        <summary>Ta funkcja muszą być zaimplementowane przez odpowiednich dostawców Store klucza. Tę funkcję, należy użyć klucza asymetrycznego identyfikowane za pomocą ścieżki klucza i sprawdź, metadanych masterkey składający się z (masterKeyPath allowEnclaveComputations, providerName).</summary>
+        <returns>Wartość logiczna, która wskazuje, jeśli można zweryfikować metadanych klucza głównego na podstawie podanego podpisu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
