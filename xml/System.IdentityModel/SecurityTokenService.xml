@@ -1,10 +1,10 @@
 <Type Name="SecurityTokenService" FullName="System.IdentityModel.SecurityTokenService">
   <Metadata>
     <Meta Name="ms.openlocfilehash" Value="b5c8d93b898d628b70967d33278c8cd9f33a66bf" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.sourcegitcommit" Value="d0bb31ec8354fa58c62c2a646057eec11d3e2150" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
+    <Meta Name="ms.lasthandoff" Value="08/17/2018" />
     <Meta Name="ms.locfileid" Value="36479611" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class SecurityTokenService" />
@@ -22,34 +22,34 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Abstrakcyjna klasa podstawowa, która definiuje właściwości i metody usługi tokenu zabezpieczającego (STS).</summary>
+    <summary>Abstrakcyjna klasa bazowa, która definiuje właściwości i metody usługi tokenu zabezpieczającego (STS).</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Do utworzenia tokenu Zabezpieczającego musi pochodzić od <xref:System.IdentityModel.SecurityTokenService> klasy. W klasie niestandardowych co najmniej przesłonięcia <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> i <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metody. Te zastąpienia STS utworzone za pomocą Domyślna implementacja wszystkie inne metody zdefiniowanej w klasie jest może wystawiać tokeny zabezpieczające w odpowiedzi na zabezpieczeń żądania tokenu (RST). Oznacza to, że powiązanie problem zdefiniowane w specyfikacji WS-Trust jest zaimplementowana. To powiązanie jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Brak innych powiązania WS-Trust (odnawiania, Anuluj i sprawdzania poprawności) zostały zaimplementowane w przypadku domyślnym i odpowiednie błąd jest zwracany do obiektu wywołującego po napotkaniu RST, która odpowiada jednej z tych powiązań. Oczywiście można zastąpić odpowiednie metody (<xref:System.IdentityModel.SecurityTokenService.Renew%2A>, <xref:System.IdentityModel.SecurityTokenService.Cancel%2A>, i <xref:System.IdentityModel.SecurityTokenService.Validate%2A>) do zaimplementowania tych powiązań w Twojej usługi STS.  
+ Aby utworzyć usługę STS muszą pochodzić od <xref:System.IdentityModel.SecurityTokenService> klasy. W klasie niestandardowych co najmniej zastąpisz <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> i <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metody. Za pomocą te zastąpienia może wystawiać tokeny zabezpieczające w odpowiedzi na zabezpieczenia żądania tokenu (RST) jest utworzone za pomocą Domyślna implementacja wszystkie inne metody zdefiniowanej w klasie usługi STS. Oznacza to, że powiązanie problem z definicją w specyfikacji WS-Trust jest zaimplementowana. To powiązanie jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Żaden z pozostałych powiązaniach protokołu WS-Trust (Odnów, Anuluj i sprawdź poprawność) są implementowane w na przypadek domyślny i odpowiednie błędów jest zwracany do obiektu wywołującego, jeśli zostanie osiągnięty RST, który odpowiada jednej z tych powiązań. Można oczywiście zastąpić właściwe metody (<xref:System.IdentityModel.SecurityTokenService.Renew%2A>, <xref:System.IdentityModel.SecurityTokenService.Cancel%2A>, i <xref:System.IdentityModel.SecurityTokenService.Validate%2A>) Aby zaimplementować te powiązania w usługi STS.  
   
 > [!IMPORTANT]
->  Implementowanie STS gotowe do produkcji pociąga za sobą, należy dokładnie zaplanować i znaczne zasobów, aby ograniczyć potencjalne zagrożenia bezpieczeństwa związane z udostępnianie takiej usługi. Większość deweloperów przy użyciu systemu Windows Identity Foundation (WIF) będzie można tworzenia aplikacji, które zewnętrzny Zarządzanie tożsamościami do usługi tokenu Zabezpieczającego, a nie samego tworzenia tokenu Zabezpieczającego. WIF udostępnia rozszerzenie programu Visual Studio, tożsamość i narzędzie dostępu do programu Visual Studio 2012, aby pomóc deweloperom testowanie rozwiązań w środowisku programistycznym. To narzędzie zawiera tokenu Zabezpieczającego `LocalSTS`, które można skonfigurować do obsługi oświadczenia właściwe dla aplikacji, które tworzysz. Aby uzyskać więcej informacji o narzędziu tożsamościami i dostępem, zobacz [tożsamości i dostępu do narzędzi dla programu Visual Studio 2012](~/docs/framework/security/identity-and-access-tool-for-vs.md). W niektórych scenariuszach `LocalSTS` mogą nie zapewniać funkcje niezbędne do odpowiednio przetestować aplikację; przykładowo w scenariuszu, która obejmuje tworzenie programu obsługi tokenów niestandardowych do użytku przez aplikację. W takich przypadkach mogą dziedziczyć po <xref:System.IdentityModel.SecurityTokenService> można utworzyć jeden lub więcej STSs proste który można wdrożyć w środowisku projektowania i który może służyć do testowania tych funkcji w aplikacji. W tej sekcji reszty koncentruje się na metody ujawnione przez <xref:System.IdentityModel.SecurityTokenService> klasy umożliwiające implementowanie prostego STS i rozszerzanie Potok wydawania tokenów.  
+>  Implementowanie STS gotowe do produkcji pociąga za sobą, staranne planowanie oraz dużo zasobów, aby ograniczyć potencjalne zagrożenia bezpieczeństwa związane z udostępnianie takiej usługi. Większość deweloperów przy użyciu Windows Identity Foundation (WIF) będzie można tworzenia aplikacji, które oddelegowania procesów zarządzania tożsamości do usługi STS, a nie sam tworzenia usługi tokenu Zabezpieczającego. Program WIF oferuje rozszerzenie programu Visual Studio, narzędzie tożsamości i dostępu dla programu Visual Studio 2012, aby pomóc deweloperom testowanie rozwiązań w środowisku programistycznym. To narzędzie zawiera usługę STS, `LocalSTS`, które można skonfigurować w celu obsługi określonych oświadczeń do aplikacji, który tworzysz. Aby uzyskać więcej informacji o narzędziu tożsamościami i dostępem, zobacz [narzędzie tożsamości i dostępu dla programu Visual Studio 2012](~/docs/framework/security/identity-and-access-tool-for-vs.md). W niektórych scenariuszach `LocalSTS` nie mogą zawierać funkcje niezbędne do odpowiednio testować swoją aplikację; na przykład w scenariuszu, która obejmuje tworzenie programu obsługi tokenów niestandardowych do użytku przez aplikację. W takich przypadkach może pochodzić z <xref:System.IdentityModel.SecurityTokenService> utworzyć jeden lub więcej prostych usługi STS, można wdrożyć w środowisku deweloperskim i który może służyć do testowania tych funkcji w aplikacji. Pozostała część tej sekcji skupiono się na metod udostępnianych przez <xref:System.IdentityModel.SecurityTokenService> klasę, która umożliwia Implementowanie prostego usługi STS i rozszerzanie potoku wystawiania tokenu.  
   
- Poniższa lista zawiera krótki przegląd metod podstawowe znaczenie deweloperowi do użycia w środowisku testowym lub programowanie.  
+ Poniższa lista zawiera krótki przegląd metody podstawowe znaczenie dla dewelopera, do użytku w środowisku testowym lub deweloperskim.  
   
--   <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metody. Ta metoda zwraca <xref:System.IdentityModel.Scope> obiektu, który zawiera informacje o planu odzyskiwania. Ten obiekt jest używany w pozostałej części potok wydawania tokenów i zawiera informacje na temat podpisywania i szyfrowania poświadczeń do użycia w odpowiedzi, a także `AppliesTo` i `ReplyTo` (jeśli jest to wymagane) adresów. Należy przesłonić tę metodę.  
+-   <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metody. Ta metoda zwraca <xref:System.IdentityModel.Scope> obiektu, który zawiera informacje dotyczące jednostki Uzależnionej. Ten obiekt jest używana w pozostałej części potoku wystawiania tokenów i zawiera informacje dotyczące podpisywania i szyfrowania poświadczeń do użycia w odpowiedzi, a także `AppliesTo` i `ReplyTo` (jeśli jest to wymagane) adresów. Należy przesłonić tę metodę.  
   
--   <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metody. Ta metoda zwraca <xref:System.Security.Claims.ClaimsIdentity> obiekt, który zawiera oświadczenia, aby powrócić do planu odzyskiwania. Należy przesłonić tę metodę.  
+-   <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metody. Ta metoda zwraca <xref:System.Security.Claims.ClaimsIdentity> obiekt, który zawiera oświadczenia, aby powrócić do jednostki Uzależnionej. Należy przesłonić tę metodę.  
   
--   <xref:System.IdentityModel.SecurityTokenService.Issue%2A> Metody. Ta metoda implementuje potoku żądania tokenu, który przetwarza przychodzące żądanie tokenu zabezpieczeń (RST) i zwraca odpowiedź (odpowiedź RSTR) do obiektu wywołującego, który zawiera token, który może służyć do uwierzytelniania w usłudze RP. Wiele innych metod zdefiniowane w <xref:System.IdentityModel.SecurityTokenService> klasy są wywoływane z tej metody, w tym <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> i <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metody. Nie należy przesłonić tę metodę, ale opis potoku żądania tokenu, który implementuje mogą być pomocne.  
+-   <xref:System.IdentityModel.SecurityTokenService.Issue%2A> Metody. Ta metoda implementuje potoku żądania tokenu, który przetwarza przychodzące żądanie tokenu zabezpieczeń (RST) i zwraca odpowiedź (RSTR) do obiektu wywołującego, który zawiera token, który może służyć do uwierzytelniania za pomocą jednostki Uzależnionej. Wiele innych metod, zdefiniowanych w <xref:System.IdentityModel.SecurityTokenService> klasy są wywoływane z tej metody, w tym <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> i <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metody. Nie trzeba zastąpić tę metodę, ale zrozumienie potoku żądania tokenu, który implementuje mogą być pomocne.  
   
- STS jest skonfigurowana za pośrednictwem <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration> klasy.  
+ Usługa STS jest skonfigurowana za pośrednictwem <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration> klasy.  
   
    
   
 ## Examples  
- Przykłady kodu, które są używane w <xref:System.IdentityModel.SecurityTokenService> tematy są pobierane z `Custom Token` próbki. Ten przykład zawiera klas niestandardowych, które umożliwiają przetwarzania tokenów sieci Web proste (SWT), a także implementacja pasywnym STS jest w stanie obsłużyć SWT token. Na przykład sposobu wdrażania usługi tokenu Zabezpieczającego active widać `Federation Metadata` próbki. Dla informacji o te przykłady i inne przykłady, które są dostępne dla WIF i o tym, gdzie można je pobrać, zobacz [indeksu przykładowy kod WIF](~/docs/framework/security/wif-code-sample-index.md). Poniższy kod przedstawia implementację pasywnym STS przy użyciu <xref:System.IdentityModel.SecurityTokenService> klasy.  
+ Przykłady kodu, które są używane w <xref:System.IdentityModel.SecurityTokenService> tematy są pobierane z `Custom Token` próbki. W tym przykładzie zawiera niestandardowych klas, które umożliwiają przetwarzanie tokenów sieci Web proste (SWT), a także implementacja pasywną usługą STS, który umożliwia obsługę tokenu SWT. Na przykład sposób implementacji aktywną usługą STS widać `Federation Metadata` próbki. Aby uzyskać informacji o tych przykładów i inne przykłady, które są dostępne dla programu WIF i o tym, gdzie można je pobrać, zobacz [Indeks przykładów kodu programu WIF](~/docs/framework/security/wif-code-sample-index.md). Poniższy kod przedstawia implementację pasywną usługą STS przy użyciu <xref:System.IdentityModel.SecurityTokenService> klasy.  
   
  [!code-csharp[WIFCustomTokenSTS#3](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#3)]  
   
- Poniższy kod przedstawia sposób wywołania niestandardowych STS pasywnym żądania WS-Federation przez wywołanie metody <xref:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations.ProcessRequest%28System.Web.HttpRequest%2CSystem.Security.Claims.ClaimsPrincipal%2CSystem.IdentityModel.SecurityTokenService%2CSystem.Web.HttpResponse%29?displayProperty=nameWithType> metoda w kodzie w `default.aspx.cs` pliku.  
+ Poniższy kod pokazuje, jak wywołać niestandardowy pasywną usługą STS do przetwarzania żądań protokołu WS-Federation, wywołując <xref:System.IdentityModel.Services.FederatedPassiveSecurityTokenServiceOperations.ProcessRequest%28System.Web.HttpRequest%2CSystem.Security.Claims.ClaimsPrincipal%2CSystem.IdentityModel.SecurityTokenService%2CSystem.Web.HttpResponse%29?displayProperty=nameWithType> metody w kodzie w `default.aspx.cs` pliku.  
   
  [!code-csharp[WIFCustomTokenSTS#1](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/default.aspx.cs#1)]  
   
@@ -78,13 +78,13 @@
         <Parameter Name="securityTokenServiceConfiguration" Type="System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" />
       </Parameters>
       <Docs>
-        <param name="securityTokenServiceConfiguration">A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> zawierający ustawienia dla usługi STS.</param>
-        <summary>Wywoływana z klas pochodnych zainicjować <see cref="T:System.IdentityModel.SecurityTokenService" /> przy użyciu określonych ustawień konfiguracyjnych.</summary>
+        <param name="securityTokenServiceConfiguration">Element <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> zawierający ustawienia dla usługi STS.</param>
+        <summary>Wywoływana w klasach pochodnych można zainicjować <see cref="T:System.IdentityModel.SecurityTokenService" /> przy użyciu ustawienia konfiguracji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby zainicjować dostawcy zakresu i certyfikat wystawcy tokenów, należy użyć tego konstruktora.  
+ Aby zainicjować dostawcy zakresu i certyfikatu wystawcy tokenów, należy użyć tego konstruktora.  
   
  ]]></format>
         </remarks>
@@ -114,14 +114,14 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="callback">
-          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o ukończeniu operacji asynchronicznej Anuluj.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z operacji asynchronicznych anulowania.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie usługi WS-Trust anulować.</summary>
+          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o zakończeniu operacji asynchronicznej anulowania.</param>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z operacją asynchroniczną Anuluj.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie anulowania WS-Trust.</summary>
         <returns>
-          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchronicznego anulowania.</returns>
+          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja anulowania asynchronicznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -154,13 +154,13 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="scope">
           <see cref="T:System.IdentityModel.Scope" /> Zawierający informacje dotyczące jednostki uzależnionej skojarzonej z żądaniem.</param>
         <param name="callback">
-          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z operacji asynchronicznej.</param>
+          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z operacją asynchroniczną.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się wywołanie asynchroniczne <see cref="M:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope)" /> metody.</summary>
         <returns>
           <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchroniczna.</returns>
@@ -196,14 +196,14 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="callback">
-          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z operacji asynchronicznej.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się wywołanie asynchroniczne dla <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> metody.</summary>
+          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z operacją asynchroniczną.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się wywołania asynchronicznego dla <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> metody.</summary>
         <returns>
-          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchronicznego anulowania.</returns>
+          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja anulowania asynchronicznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -236,14 +236,14 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="callback">
-          <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o ukończeniu operacji asynchronicznej problem.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzonych z operacją asynchroniczną problem.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie usługi WS-Trust problem.</summary>
+          <see cref="T:System.AsyncCallback" /> Delegata, który odbiera powiadomienie o ukończeniu operacji asynchronicznej problem.</param>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z operacją asynchroniczną problem.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie protokołu WS-Trust problem.</summary>
         <returns>
-          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchronicznego problem.</returns>
+          <see cref="T:System.IAsyncResult" /> Odwołujący się operacji asynchronicznych problem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -276,11 +276,11 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="callback">
           <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o zakończeniu asynchroniczną odnowić operacji.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z asynchroniczną odnowić operacji.</param>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z asynchronicznymi odnowić operacji.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie odnowienia WS-Trust.</summary>
         <returns>
           <see cref="T:System.IAsyncResult" /> Czy odwołania asynchroniczną odnowić operacji.</returns>
@@ -316,12 +316,12 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="callback">
           <see cref="T:System.AsyncCallback" /> Delegata, która odbiera powiadomienia o zakończeniu asynchroniczną weryfikowanie operacji.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z asynchroniczną weryfikowanie operacji.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się asynchroniczne żądanie usługi WS-Trust sprawdzania poprawności.</summary>
+        <param name="state">Obiekt, który zawiera informacje o stanie związane z asynchronicznymi zweryfikować operację.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, rozpoczyna się żądanie asynchroniczne sprawdzanie poprawności protokołu WS-Trust.</summary>
         <returns>
           <see cref="T:System.IAsyncResult" /> Czy odwołania asynchroniczną weryfikowanie operacji.</returns>
         <remarks>
@@ -354,10 +354,10 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, przetwarza żądanie anulowania WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -389,7 +389,7 @@
       <Docs>
         <param name="request">Przychodzące żądania tokenu.</param>
         <param name="scope">
-          <see cref="P:System.IdentityModel.SecurityTokenService.Scope" /> Obiektu zwróconego z <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />.</param>
+          <see cref="P:System.IdentityModel.SecurityTokenService.Scope" /> Obiekt zwracany z <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />.</param>
         <summary>Tworzy wystąpienie <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />.</summary>
         <returns>
           <see cref="P:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor" />.</returns>
@@ -402,7 +402,10 @@
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="request" /> jest <see langword="null" />.  - lub - <paramref name="scope" /> jest <see langword="null" />.</exception>
+          <paramref name="request" /> jest <see langword="null" />.  
+  
+—lub— 
+ <paramref name="scope" /> jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="EndCancel">
@@ -425,9 +428,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginCancel(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne żądanie anulowania WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -458,9 +461,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> metody.</summary>
-        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> zawierający kolekcję oświadczenia, które zostaną umieszczone w tokenie zabezpieczającym wystawione.</returns>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> metody.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetOutputClaimsIdentity(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.IdentityModel.Scope,System.AsyncCallback,System.Object)" /> metody.</summary>
+        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> , która zawiera kolekcję oświadczeń, które zostaną umieszczone w tokenie zabezpieczającym wystawione.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -491,9 +494,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Scope" /> która hermetyzuje jednostki uzależnionej informacje firmy (RP) skojarzony z żądaniem (RST) określona w wywołaniu <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</returns>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Scope" /> która hermetyzuje jednostki uzależnionej informacje innych firm (RP) skojarzony z żądaniem (RST) określone w wywołaniu <see cref="M:System.IdentityModel.SecurityTokenService.BeginGetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -524,9 +527,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne żądanie usługi WS-Trust problem.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginIssue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, zostanie ukończone żądania asynchronicznego problem WS-Trust.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -557,9 +560,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginRenew(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne żądanie odnowienia WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -590,9 +593,9 @@
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Który jest zwracany przez wywołanie do <see cref="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje asynchroniczne żądanie zweryfikowania WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+          <see cref="T:System.IAsyncResult" /> Zwracanym przez wywołanie <see cref="M:System.IdentityModel.SecurityTokenService.BeginValidate(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken,System.AsyncCallback,System.Object)" /> metody.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, kończy się sprawdzanie poprawności protokołu WS-Trust żądania asynchronicznego.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -626,7 +629,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana z domyślnej potok wydawania tokenów zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
+ Ta metoda jest wywoływana z domyślnej potoku wystawiania tokenu jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
   
  Domyślna implementacja zwraca <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.TokenIssuerName%2A> właściwości z konfiguracji dostępne za pośrednictwem <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> właściwości.  
   
@@ -655,33 +658,33 @@
         <Parameter Name="scope" Type="System.IdentityModel.Scope" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <param name="scope">
           <see cref="T:System.IdentityModel.Scope" /> Zawierający informacje dotyczące jednostki uzależnionej skojarzonej z żądaniem. Jest to <see cref="T:System.IdentityModel.Scope" /> obiekt, który został zwrócony przez <see cref="M:System.IdentityModel.SecurityTokenService.GetScope(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" /> metody.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, ta metoda zwraca zbiór tematów dane wyjściowe do uwzględnienia w wystawionego tokenu.</summary>
-        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> zawierający kolekcję oświadczenia, które zostaną umieszczone w tokenie zabezpieczającym wystawione.</returns>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, ta metoda zwraca kolekcję podmiotów danych wyjściowych, które mają zostać uwzględnione w wystawiony token.</summary>
+        <returns>A <see cref="T:System.Security.Claims.ClaimsIdentity" /> , która zawiera kolekcję oświadczeń, które zostaną umieszczone w tokenie zabezpieczającym wystawione.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metoda jest wywoływana z potoku wystawiania tokenu, który jest implementowany przez <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Zwraca <xref:System.Security.Claims.ClaimsIdentity> zawierający oświadczenia do uwzględnienia w tokenie zabezpieczeń oparte na obiekt żądający tokenu ( `principal` parametru), RST przychodzące ( `request` parametru), i uzależnionej, dla którego token jest przeznaczony () `scope` parametru). Logikę tej metody jest przede wszystkim odpowiedzieć na następujące pytania:  
+ <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metoda jest wywoływana z potoku wystawiania tokenu jest implementowany przez <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Zwraca <xref:System.Security.Claims.ClaimsIdentity> zawierający oświadczenia do uwzględnienia w tokenie zabezpieczającym wystawiony, w oparciu o obiekt żądający tokenu ( `principal` parametru), RST przychodzące ( `request` parametru), i uzależnionej, dla którego token jest przeznaczony () `scope` parametru). Logic Apps w ramach tej metody jest przede wszystkim odpowiedzieć na następujące pytania:  
   
--   **Które typy oświadczeń powinny być uwzględnione w odpowiedzi oparte na planu odzyskiwania, dla której jest przeznaczony?** Zwykle to decyzji na podstawie-RP z listy typów oświadczeń wymagane dla każdego planu odzyskiwania lub na podstawie danego żądania, sprawdzając <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.Claims%2A> właściwości żądania. Jednak wartości logiczne i szczegóły dotyczące określania oświadczeń do uwzględnienia w odpowiedzi jest całkowicie do implementacji.  
+-   **Który typ oświadczenia powinny być uwzględnione w odpowiedzi na podstawie na jednostki Uzależnionej dla której jest przeznaczony?** Zwykle to decyzji na podstawie-RP z listy typów oświadczeń wymaganych dla każdej jednostki Uzależnionej lub na podstawie danego żądania, sprawdzając <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.Claims%2A> właściwości żądania. Jednak logika i szczegóły dotyczące określania oświadczeń do uwzględnienia w odpowiedzi jest całkowicie do implementacji.  
   
--   **Które wartości oświadczeń powinny zostać przypisane do oświadczeń w odpowiedzi?** Dla dostawcy tożsamości (Usługa STS protokołu IP) zazwyczaj oznacza to przy użyciu co najmniej jednego oświadczenia w obiektu żądającego <xref:System.Security.Claims.ClaimsPrincipal> (dostarczonych przez `principal` parametrów) do uzyskania dostępu do Sklepu (lub innego podmiotu), aby zwrócić wartości dla wymaganych typów oświadczeń. Dla dostawcy federacyjnego (R STS) zazwyczaj oznacza to wykonywanie określonego rodzaju przetwarzania na obiektu żądającego oświadczeń przychodzących do spełnienia żądania; na niektórych oświadczeń przedstawiony przez obiekt żądający, podczas przekazywania innymi przez niezmodyfikowany prawdopodobnie wykonywanie filtrowania lub transformacji. Oczywiście tak jak w przypadku podejmowania decyzji o tym, które oświadczenia do uwzględnienia w odpowiedzi szczegóły i logiki sposobu określania wartości tych oświadczeń zależy od implementacji.  
+-   **Które roszczenie wartości powinny być przypisane do oświadczeń w odpowiedzi?** Dostawcy tożsamości (Usługa STS IP) zwykle oznacza to przy użyciu co najmniej jeden oświadczeń w żądającego <xref:System.Security.Claims.ClaimsPrincipal> (dostarczonych przez `principal` parametrów) do uzyskania dostępu do magazynu (lub inną jednostkę), aby zwrócić wartości dla wymaganych typów oświadczeń. W przypadku dostawcy federacyjnego (usługi STS R) zwykle oznacza to przeprowadzania pewnego rodzaju przetwarzania żądającego oświadczeń przychodzących do spełnienia żądania; prawdopodobnie wykonywania filtrowania lub przekształcania oświadczeń, niektóre przedstawione przez obiekt żądający, podczas przekazywania innymi przez niezmodyfikowane. Oczywiście tak jak w przypadku podejmowania decyzji o tym, które oświadczenia zostaną do uwzględnienia w odpowiedzi, szczegóły i logiki sposobu określania wartości te oświadczenia zależy od implementacji.  
   
    
   
 ## Examples  
- Przykładowy kod, który jest używany w tym temacie jest pobierana z `Custom Token` próbki. Ten przykład zawiera klas niestandardowych, które umożliwiają przetwarzania tokenów sieci Web proste (SWT), a także implementacja pasywnym STS jest w stanie obsłużyć SWT token. Na przykład sposobu wdrażania usługi tokenu Zabezpieczającego active widać `Federation Metadata` próbki. Dla informacji o te przykłady i inne przykłady, które są dostępne dla WIF i o tym, gdzie można je pobrać, zobacz [indeksu przykładowy kod WIF](~/docs/framework/security/wif-code-sample-index.md). Poniższy kod przedstawia sposób przesłonięcia <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metoda zwraca oświadczenia dla Twojej usługi STS. W tym przykładzie komunikat żądania zabezpieczeń tokenu (RST) zostanie zignorowany i zwracany jest kolekcją oświadczenia na podstawie użytkownika, jak uwierzytelnieniu Usługa tokenu Zabezpieczającego.  
+ Przykład kodu, który jest używany w tym temacie jest pobierana z `Custom Token` próbki. W tym przykładzie zawiera niestandardowych klas, które umożliwiają przetwarzanie tokenów sieci Web proste (SWT), a także implementacja pasywną usługą STS, który umożliwia obsługę tokenu SWT. Na przykład sposób implementacji aktywną usługą STS widać `Federation Metadata` próbki. Aby uzyskać informacji o tych przykładów i inne przykłady, które są dostępne dla programu WIF i o tym, gdzie można je pobrać, zobacz [Indeks przykładów kodu programu WIF](~/docs/framework/security/wif-code-sample-index.md). Poniższy kod przedstawia sposób przesłonięcia <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> metodę, aby zwracać oświadczenia do usługi STS. W tym przykładzie komunikat żądania zabezpieczeń tokenu (RST) zostanie zignorowany i zwracana jest kolekcja oświadczenia na podstawie użytkownika, ponieważ uwierzytelnieniu Usługa STS.  
   
  [!code-csharp[WIFCustomTokenSTS#6](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#6)]  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>Należy przesłonić tę metodę w implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</para>
+          <para>Należy przesłonić tę metodę w danej implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</para>
         </block>
         <altmember cref="T:System.IdentityModel.Scope" />
         <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
@@ -706,23 +709,26 @@
         <Parameter Name="scope" Type="System.IdentityModel.Scope" />
       </Parameters>
       <Docs>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący przychodzącego żądania tokenu (RST).</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący przychodzące żądania tokenu (RST).</param>
         <param name="scope">
-          <see cref="T:System.IdentityModel.Scope" /> Wystąpienia, który hermetyzuje informacje dotyczące jednostki uzależnionej.</param>
-        <summary>Pobiera token potwierdzenia do uwzględnienia w odpowiedzi (odpowiedź RSTR).</summary>
-        <returns>A <see cref="T:System.IdentityModel.Tokens.ProofDescriptor" /> reprezentujący nowo utworzony potwierdzającego deskryptora. Deskryptor potwierdzającego może być asymetrycznego deskryptora potwierdzającego, deskryptor potwierdzającego symetrycznego lub <see langword="null" /> w przypadku tokenu elementu nośnego.</returns>
+          <see cref="T:System.IdentityModel.Scope" /> Wystąpienia, który hermetyzuje informacje o jednostkę uzależnioną.</param>
+        <summary>Pobiera token potwierdzenia do uwzględnienia w odpowiedzi (RSTR).</summary>
+        <returns>A <see cref="T:System.IdentityModel.Tokens.ProofDescriptor" /> reprezentujący nowo utworzony dowód deskryptora. Dowód deskryptora może być asymetrycznego deskryptora dowód, deskryptor dowód symetrycznego lub <see langword="null" /> w przypadku tokenu elementu nośnego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana z domyślnej potok wydawania tokenów zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
+ Ta metoda jest wywoływana z domyślnej potoku wystawiania tokenu jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
   
- Domyślna implementacja zwraca deskryptor potwierdzającego lub zgłasza wyjątek odpowiednie.  
+ Domyślna implementacja zwraca deskryptor weryfikacji lub zgłasza wyjątek odpowiednie.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">
-          <paramref name="request" /> jest <see langword="null" />.  - lub - <paramref name="scope" /> jest <see langword="null" />.</exception>
+          <paramref name="request" /> jest <see langword="null" />.  
+  
+—lub— 
+ <paramref name="scope" /> jest <see langword="null" />.</exception>
         <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
@@ -745,17 +751,17 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący przychodzącego żądania tokenu (RST).</param>
-        <summary>Pobiera dowód obiektu żądającego szyfrowania poświadczeń.</summary>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący przychodzące żądania tokenu (RST).</param>
+        <summary>Pobiera dowód żądającego szyfrowania poświadczeń.</summary>
         <returns>
-          <see cref="T:System.IdentityModel.Tokens.EncryptingCredentials" /> Obiekt, który reprezentuje obiekt żądający do szyfrowania poświadczeń.</returns>
+          <see cref="T:System.IdentityModel.Tokens.EncryptingCredentials" /> Obiekt, który reprezentuje obiekt żądający użytkownika szyfrowania poświadczeń.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Ta metoda jest wywoływana z <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> metody.  
   
- Domyślna implementacja wykonuje następujące czynności. Zwraca `null` Jeśli jest nie tokenu szyfrowania określony w żądaniu ( <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.ProofEncryption%2A?displayProperty=nameWithType> jest właściwość `null`). W przeciwnym razie, jeśli można uzyskać tokenu jako <xref:System.IdentityModel.Tokens.X509SecurityToken>, zwraca poświadczeń na podstawie tego tokenów. Jeśli nie można rozpoznać tokenu jako <xref:System.IdentityModel.Tokens.X509SecurityToken>, <xref:System.IdentityModel.RequestFailedException> jest generowany.  
+ Domyślna implementacja wykonuje następujące czynności. Zwraca `null` czy token nie szyfrowania określony w żądaniu ( <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken.ProofEncryption%2A?displayProperty=nameWithType> właściwość `null`). W przeciwnym razie, jeśli ją pobrać token jako <xref:System.IdentityModel.Tokens.X509SecurityToken>, funkcja zwraca poświadczeń opartych na ten token. Jeśli nie można rozwiązać, token jako <xref:System.IdentityModel.Tokens.X509SecurityToken>, <xref:System.IdentityModel.RequestFailedException> zgłaszany.  
   
  ]]></format>
         </remarks>
@@ -784,16 +790,16 @@
       </Parameters>
       <Docs>
         <param name="request">RST, który zawiera żądania tokenu.</param>
-        <param name="tokenDescriptor">Deskryptora token, który zawiera informacje na potrzeby wystawionego tokenu.</param>
-        <summary>Tworzy odpowiedź (odpowiedź RSTR), która zawiera wystawionego tokenu przy użyciu określonego żądania (RST) i tokenów deskryptora zabezpieczeń.</summary>
-        <returns>Odpowiedź (odpowiedź RSTR) lub <see langword="null" /> Jeśli odpowiedzi nie można utworzyć określonego żądania i deskryptora tokenu. Domyślna implementacja zwraca <see langword="null" /> Jeśli <paramref name="tokenDescriptor" /> parametr jest <see langword="null" />.</returns>
+        <param name="tokenDescriptor">Tokenu deskryptor, który zawiera informacje na potrzeby wystawiony token.</param>
+        <summary>Tworzy odpowiedź (RSTR), która zawiera wystawiony token przy użyciu określonego żądania (RST) i tokenu deskryptora zabezpieczeń.</summary>
+        <returns>Odpowiedź (RSTR) lub <see langword="null" /> Jeżeli odpowiedź nie można utworzyć z określonego żądania i deskryptora tokenu. Domyślna implementacja zwraca <see langword="null" /> Jeśli <paramref name="tokenDescriptor" /> parametr <see langword="null" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> Metoda jest wywoływana jako ostatni etap w potoku wystawiania tokenu, który jest implementowany przez <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Tworzy i zwraca odpowiedź (odpowiedź RSTR) przy użyciu oryginalnego żądania przychodzącego (RST) i deskryptora token, który został zbudowany w poprzednich krokach w potoku wystawiania tokenu.  
+ <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> Metoda jest wywoływana jako ostatni etap w potoku wystawiania tokenu jest implementowany przez <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody. Tworzy i zwraca odpowiedź (RSTR) przy użyciu oryginalnego żądania przychodzące (RST) i tokenu deskryptor, który został zbudowany w poprzednich krokach w potoku wystawiania tokenu.  
   
- Domyślna implementacja tworzy komunikacie RSTR przez przekazanie RST określony w parametrze żądania do <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse.%23ctor%28System.IdentityModel.Protocols.WSTrust.WSTrustMessage%29?displayProperty=nameWithType> konstruktora, wywoływania <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.ApplyTo%2A?displayProperty=nameWithType> przekazany do metody dla tokenu deskryptora <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> do jej właściwości w celu zastosowania nowo utworzyć odpowiedź RSTR, ustawienie <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.AppliesTo%2A> właściwości w komunikacie RSTR przy użyciu <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A> właściwość deskryptor tokenu i ostatecznie ustawienie <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> właściwości w komunikacie RSTR zgodnie z poniższą tabelą:  
+ Domyślna implementacja tworzy RSTR, przekazując RST określonego w parametrze żądania do <xref:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse.%23ctor%28System.IdentityModel.Protocols.WSTrust.WSTrustMessage%29?displayProperty=nameWithType> konstruktora, wywołując <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.ApplyTo%2A?displayProperty=nameWithType> metody deskryptora token przekazany do <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> do jego właściwości w celu zastosowania nowo utworzone RSTR, ustawienie <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.AppliesTo%2A> właściwość RSTR przy użyciu <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A> właściwości deskryptora token, a na koniec <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> właściwość RSTR zgodnie z poniższą tabelą:  
   
 |`RST.ReplyTo` Właściwość|<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.AppliesToAddress%2A?displayProperty=nameWithType> Właściwość.|`RSTR.ReplyTo` Właściwość|  
 |----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------|  
@@ -827,33 +833,33 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący klienta zgłoszenia żądania.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania przychodzącego (RST).</param>
-        <summary>Pobiera <see cref="T:System.IdentityModel.Scope" /> obiekt, który zawiera informacje dotyczące jednostki uzależnionej (RP) skojarzony z określonym żądaniem (RST). Należy przesłonić tę metodę w implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Scope" /> który hermetyzuje informacje RP skojarzone z żądaniem.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący klienta wysyłającego żądanie.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie przychodzące (RST).</param>
+        <summary>Pobiera <see cref="T:System.IdentityModel.Scope" /> obiektu, który zawiera informacje dotyczące jednostki uzależnionej (RP) skojarzonej z określonym żądaniem (RST). Należy przesłonić tę metodę w danej implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Scope" /> który hermetyzuje informacje RP skojarzony z tym żądaniem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metoda jest wywoływana z potoku wystawiania tokenu po <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> — metoda i powinien zwrócić <xref:System.IdentityModel.Scope> obiektu skonfigurowane dla żądania przychodzącego. (Potok wydawania tokenów jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.) <xref:System.IdentityModel.Scope> Obiekt hermetyzujący informacje o RP skojarzony z żądaniem tokenu zabezpieczeń (RST). Zawiera informacje dotyczące szyfrowania i podpisywania poświadczenia do użycia z planu odzyskiwania i czy nie można zaszyfrować wystawione tokeny i/lub kluczy symetrycznych w odpowiedzi. Niektóre typowe zadania wykonywane w <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metody są:  
+ <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metoda jest wywoływana z potoku wystawiania tokenu po <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> metody i powinien zwrócić <xref:System.IdentityModel.Scope> obiektu skonfigurowany do żądania przychodzącego. (Potoku wystawiania tokenu jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.) <xref:System.IdentityModel.Scope> Obiektu hermetyzuje informacje dotyczące jednostki Uzależnionej skojarzonej z żądaniem tokenu zabezpieczeń (RST). Zawiera informacje dotyczące szyfrowania i podpisywania poświadczenia do użycia z RP i umożliwia określenie, czy szyfrowanie wystawione tokeny i/lub klucze symetryczne w odpowiedzi. Niektóre typowe zadania wykonywane w <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metoda są:  
   
--   Ustalić, czy planu odzyskiwania, dla której jest przeznaczony ten token jest rozpoznany planu odzyskiwania. Jak to zrobić, zależy od implementacji. Jeśli danego planu odzyskiwania nie jest prawidłową planu odzyskiwania dla tej usługi STS, a następnie metoda powinien zgłosić <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
+-   Określić, czy jednostki Uzależnionej, dla których przeznaczony jest token jest rozpoznany jednostki Uzależnionej. Jak można to osiągnąć, zależy od implementacji. Jeśli zamierzony punktu przywracania nie jest prawidłową jednostkę Uzależnioną dla tej usługi STS, a następnie metoda powinno zgłosić <xref:System.IdentityModel.Protocols.WSTrust.InvalidRequestException>.  
   
--   Określić poświadczeń podpisywania używanych w odpowiedzi (odpowiedź RSTR) i ustawić <xref:System.IdentityModel.Scope.SigningCredentials%2A> właściwości odpowiednio.  
+-   Określić poświadczeń podpisywania używanych w odpowiedzi (RSTR) i ustaw <xref:System.IdentityModel.Scope.SigningCredentials%2A> właściwość odpowiednio.  
   
--   Ustal, czy ma być szyfrowana odpowiedzi i/lub klucze symetryczne dołączone i poświadczenia, które mają być używane do szyfrowania. Ustaw <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A>, <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A>, i <xref:System.IdentityModel.Scope.EncryptingCredentials%2A> właściwości odpowiednio.  
+-   Określ, czy odpowiedź i/lub klucze symetryczne dołączony powinien być zaszyfrowany i poświadczenia, które mają być używane do szyfrowania. Ustaw <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A>, <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A>, i <xref:System.IdentityModel.Scope.EncryptingCredentials%2A> właściwości odpowiednio.  
   
     > [!IMPORTANT]
-    >  Domyślnie <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A> i <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A> właściwości są ustawione `true` aby uniemożliwić wystawianie tokenów, które nie są zabezpieczone przez usługi STS. Zaleca się, że te właściwości nie można ustawić `false` w środowisku produkcyjnym.  
+    >  Domyślnie <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A> i <xref:System.IdentityModel.Scope.SymmetricKeyEncryptionRequired%2A> właściwości są ustawiane `true` aby uniemożliwić wystawianie tokenów, które nie są zabezpieczone przez usługi STS. Zalecane jest, że te nigdy nie można ustawić właściwości `false` w środowisku produkcyjnym.  
   
--   Określ adres, do którego ma zostać zwrócony odpowiedzi. Ustawić <xref:System.IdentityModel.Scope.AppliesToAddress%2A> lub <xref:System.IdentityModel.Scope.ReplyToAddress%2A> właściwości odpowiednio.  
+-   Określ adres, do którego ma zostać zwrócony odpowiedzi. Ustaw <xref:System.IdentityModel.Scope.AppliesToAddress%2A> lub <xref:System.IdentityModel.Scope.ReplyToAddress%2A> właściwość odpowiednio.  
   
    
   
 ## Examples  
- Przykładowy kod, który jest używany w tym temacie jest pobierana z `Custom Token` próbki. Ten przykład zawiera klas niestandardowych, które umożliwiają przetwarzania tokenów sieci Web proste (SWT), a także implementacja pasywnym STS jest w stanie obsłużyć SWT token. Na przykład sposobu wdrażania usługi tokenu Zabezpieczającego active widać `Federation Metadata` próbki. Dla informacji o te przykłady i inne przykłady, które są dostępne dla WIF i o tym, gdzie można je pobrać, zobacz [indeksu przykładowy kod WIF](~/docs/framework/security/wif-code-sample-index.md).  
+ Przykład kodu, który jest używany w tym temacie jest pobierana z `Custom Token` próbki. W tym przykładzie zawiera niestandardowych klas, które umożliwiają przetwarzanie tokenów sieci Web proste (SWT), a także implementacja pasywną usługą STS, który umożliwia obsługę tokenu SWT. Na przykład sposób implementacji aktywną usługą STS widać `Federation Metadata` próbki. Aby uzyskać informacji o tych przykładów i inne przykłady, które są dostępne dla programu WIF i o tym, gdzie można je pobrać, zobacz [Indeks przykładów kodu programu WIF](~/docs/framework/security/wif-code-sample-index.md).  
   
- Poniższy przykładowy kod przedstawia implementację <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metody. Ta implementacja sprawdza, czy RP jest rozpoznawany przez usługę STS, sprawdza poprawność <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> adresu w żądania i zestawy <xref:System.IdentityModel.Scope.ReplyToAddress%2A?displayProperty=nameWithType> właściwości w związku z tym i certyfikatów podpisywania i szyfrowania poświadczeń do użycia w usłudze RP oparte na zestawy, które w pliku, są zakodowane na stałe.  
+ Poniższy przykład kodu przedstawia implementację <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metody. Ta implementacja sprawdza, czy jednostki Uzależnionej jest rozpoznawany przez usługę STS, sprawdza poprawność <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.ReplyTo%2A> adres w żądaniu i zestawy <xref:System.IdentityModel.Scope.ReplyToAddress%2A?displayProperty=nameWithType> właściwość w związku z tym i certyfikatów podpisywania i szyfrowania poświadczeń do korzystania z jednostki Uzależnionej na podstawie zestawów stałe są w pliku.  
   
  [!code-csharp[WIFCustomTokenSTS#4](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#4)]  
 [!code-csharp[WIFCustomTokenSTS#5](~/samples/snippets/csharp/VS_Snippets_Misc/wifcustomtokensts/cs/passivests/customsecuritytokenservice.cs#5)]  
@@ -862,7 +868,7 @@
  ]]></format>
         </remarks>
         <block subset="none" type="overrides">
-          <para>Należy przesłonić tę metodę w implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</para>
+          <para>Należy przesłonić tę metodę w danej implementacji <see cref="T:System.IdentityModel.SecurityTokenService" /> klasy.</para>
         </block>
         <altmember cref="T:System.IdentityModel.Scope" />
         <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
@@ -888,15 +894,15 @@
       </Parameters>
       <Docs>
         <param name="requestedTokenType">Ciąg, który zawiera identyfikator URI żądanego typu tokenu.</param>
-        <summary>Pobiera program obsługi tokenów zabezpieczeń odpowiednich do wystawiania tokenu zabezpieczającego określonego typu.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Tokens.SecurityTokenHandler" /> reprezentujący programu obsługi tokenów służący do tworzenia tokenu zabezpieczeń. Zwraca <see langword="null" /> Jeśli żądany typ tokenu nie jest obsługiwane (braku obsługi skonfigurowane dla określonego typu tokenu).</returns>
+        <summary>Pobiera programu obsługi tokenów zabezpieczeń odpowiednich do wystawiania tokenu zabezpieczeń dla określonego typu.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Tokens.SecurityTokenHandler" /> reprezentujący programu obsługi tokenów służący do tworzenia tokenu zabezpieczeń. Zwraca <see langword="null" /> Jeśli żądany typ tokenu nie jest obsługiwany (Brak żadna procedura obsługi skonfigurowane dla określonego typu tokenu).</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W implementacji domyślnej Jeśli `requestedTokenType` jest `null` lub pusty ciąg, wartość domyślna jest używany typ tokenu z konfiguracji. Jest to określone przez <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenType%2A> dostępne za pośrednictwem obiektu konfiguracji usługi STS <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> właściwości.  
+ W implementacji domyślnej Jeśli `requestedTokenType` jest `null` lub pusty ciąg, domyślnie używany jest typ tokenu z konfiguracji. Jest to określone przez <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenType%2A> własności obiektu konfiguracji usługi STS, które są dostępne za pośrednictwem <xref:System.IdentityModel.SecurityTokenService.SecurityTokenServiceConfiguration%2A> właściwości.  
   
- Ta metoda jest wywoływana z domyślnej potok wydawania tokenów zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
+ Ta metoda jest wywoływana z domyślnej potoku wystawiania tokenu jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
   
  ]]></format>
         </remarks>
@@ -923,22 +929,22 @@
       </Parameters>
       <Docs>
         <param name="requestLifetime">A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> reprezentujący żądanego okresu istnienia.</param>
-        <summary>Pobiera okres istnienia wystawionego tokenu.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> reprezentujący nadanego okres istnienia.</returns>
+        <summary>Pobiera okres istnienia dla wystawiony token.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.Lifetime" /> reprezentujący udzielone okresu istnienia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana zwykle z okresu istnienia, który dostarczona RST. W implementacji domyślnej okres istnienia tokenu jest obliczane zgodnie z poniższą tabelą.  
+ Tej metody zwykle jest wywoływana z okresu istnienia, który dotarła RST. W implementacji domyślnej okres istnienia tokenu jest obliczany zgodnie z poniższą tabelą.  
   
-|Utworzony (ruch przychodzący)|Wygasa (ruch przychodzący)|Utworzony (ruch przychodzący)|Wygasa (out)|  
+|Utworzone (ruch przychodzący)|Wygasa (ruch przychodzący)|Utworzone (ruch przychodzący)|Wygasa (out)|  
 |--------------------|--------------------|--------------------|---------------------|  
 |`null`|`null`|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType>|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType> + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=nameWithType>|  
 |C|`null`|C|C + <xref:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration.DefaultTokenLifetime%2A?displayProperty=nameWithType>|  
 |`null`|E|<xref:System.DateTime.UtcNow%2A?displayProperty=nameWithType>|E|  
 |C|E|C|E|  
   
- Ta metoda jest wywoływana z domyślnej potok wydawania tokenów zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
+ Ta metoda jest wywoływana z domyślnej potoku wystawiania tokenu jest zaimplementowana w <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody.  
   
  ]]></format>
         </remarks>
@@ -965,35 +971,35 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <summary>Wystawia token zabezpieczający.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> zawierający token zabezpieczeń.</returns>
+        <returns>Element <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> zawierający tokenu zabezpieczeń.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda implementuje powiązania problem zdefiniowane w specyfikacji WS-Trust. Domyślna implementacja <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metoda przetwarza przychodzące żądanie (RST) przez potok wydawania tokenów (wystawiania oświadczeń) i zwraca albo odpowiedzi (odpowiedź RSTR), który zawiera token zabezpieczający z odpowiednich oświadczeń do uwierzytelniania Obiekt żądający z planu odzyskiwania lub odpowiednich wyjątków. Potok wydawania tokenów w implementacji domyślnej składa się z następujących metod wywołania (z <xref:System.IdentityModel.SecurityTokenService> klasy).  
+ Ta metoda implementuje powiązania problem z definicją w specyfikacji WS-Trust. Domyślna implementacja klasy <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metoda przetwarza żądanie przychodzące (RST) za pośrednictwem potoku wystawiania tokenu (wystawiania oświadczeń) i zwraca albo odpowiedzi (RSTR) zawierający token zabezpieczający z odpowiednie oświadczenia do uwierzytelniania Obiekt żądający z jednostki Uzależnionej lub odpowiedni wyjątek. Potoku wystawiania tokenów w implementacji domyślnej składa się z następujących metod wywołania (z <xref:System.IdentityModel.SecurityTokenService> klasy).  
   
 1.  <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> Metodę weryfikacji żądania (RST).  
   
-2.  <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metodę, aby pobrać <xref:System.IdentityModel.Scope> obiekt, który zawiera informacje dotyczące jednostki uzależnionej (RP) skojarzone z żądaniem. Należy przesłonić tę metodę. Jeśli <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> zwraca `null`, <xref:System.InvalidOperationException> jest generowany.  
+2.  <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> Metodę, aby uzyskać <xref:System.IdentityModel.Scope> obiektu, który zawiera informacje dotyczące jednostki uzależnionej (RP) skojarzonej z żądaniem. Należy przesłonić tę metodę. Jeśli <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> zwraca `null`, <xref:System.InvalidOperationException> zgłaszany.  
   
-3.  <xref:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor%2A> Metodę, aby zwrócić token deskryptor zabezpieczeń oparte na RST i <xref:System.IdentityModel.Scope> obiekt jest zwracany w poprzednim kroku. Deskryptor tokenu zabezpieczeń (<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor>) zawiera informacje o żądaniu w postaci mogą być używane przez program obsługi tokena. <xref:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor%2A?displayProperty=nameWithType> Właściwość jest ustawiona na deskryptora zwrócony przez wywołanie. Jeśli `null` jest zwracany lub, jeśli <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials%2A> właściwość deskryptora jest `null`, <xref:System.InvalidOperationException> jest generowany. Wyjątek jest również element zgłaszany, gdy <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A?displayProperty=nameWithType> właściwość jest `true` , ale <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials%2A> właściwość deskryptora zwracane jest `null`.  
+3.  <xref:System.IdentityModel.SecurityTokenService.CreateSecurityTokenDescriptor%2A> Metody zwracają token deskryptor zabezpieczeń oparte na RST i <xref:System.IdentityModel.Scope> obiekt jest zwracany w poprzednim kroku. Token deskryptora zabezpieczeń (<xref:System.IdentityModel.Tokens.SecurityTokenDescriptor>) zawiera informacje o żądaniu w formularzu, który może być używany przez program obsługi tokena. <xref:System.IdentityModel.SecurityTokenService.SecurityTokenDescriptor%2A?displayProperty=nameWithType> Właściwość jest ustawiona na deskryptora zwracany przez wywołanie. Jeśli `null` zwróceniem lub jeśli <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.SigningCredentials%2A> właściwości deskryptora `null`, <xref:System.InvalidOperationException> zgłaszany. Wyjątek również jest generowany, jeśli <xref:System.IdentityModel.Scope.TokenEncryptionRequired%2A?displayProperty=nameWithType> właściwość `true` ale <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.EncryptingCredentials%2A> właściwości deskryptora zwracany jest `null`.  
   
-4.  <xref:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler%2A> Metoda uzyskanie odpowiedniego programu obsługi tokenów oparta na rodzaj żądany token. Jeśli `null` jest zwracany, <xref:System.NotImplementedException> jest generowany.  
+4.  <xref:System.IdentityModel.SecurityTokenService.GetSecurityTokenHandler%2A> Metodę, aby uzyskać odpowiednie programu obsługi tokenów oparte na rodzaju żądanego tokenu. Jeśli `null` zwracany jest <xref:System.NotImplementedException> zgłaszany.  
   
-5.  <xref:System.IdentityModel.SecurityTokenService.GetIssuerName%2A> Metody można uzyskać nazwy wystawcy tokenu. Zgłasza wyjątek <xref:System.InvalidOperationException> Jeśli nazwa jest `null` lub pusty; w przeciwnym razie ustawia <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.TokenIssuerName%2A> właściwość deskryptora.  
+5.  <xref:System.IdentityModel.SecurityTokenService.GetIssuerName%2A> Metodę, aby uzyskać nazwę wystawcy dla tokenu. Zgłasza <xref:System.InvalidOperationException> Jeśli nazwa jest `null` lub pusty; w przeciwnym razie ustawia <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.TokenIssuerName%2A> właściwości deskryptora.  
   
-6.  <xref:System.IdentityModel.SecurityTokenService.GetTokenLifetime%2A> Metodę, aby pobrać okres istnienia tokenu i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Lifetime%2A> właściwość deskryptora.  
+6.  <xref:System.IdentityModel.SecurityTokenService.GetTokenLifetime%2A> Metodę, aby uzyskać okres istnienia tokenu i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Lifetime%2A> właściwości deskryptora.  
   
-7.  <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> Metodę, aby uzyskać token potwierdzenia do dołączenia wystawionego tokenu i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Proof%2A> właściwość deskryptora.  
+7.  <xref:System.IdentityModel.SecurityTokenService.GetProofToken%2A> Metodę, aby uzyskać token potwierdzenia, które mają zostać objęte wystawiony token i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Proof%2A> właściwości deskryptora.  
   
-8.  <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metodę, aby pobrać oświadczenia do dołączenia wystawionego tokenu i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Subject%2A> właściwość deskryptora. Należy przesłonić tę metodę.  
+8.  <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> Metodę, aby uzyskać oświadczenia, które mają zostać objęte wystawiony token i zestawy <xref:System.IdentityModel.Tokens.SecurityTokenDescriptor.Subject%2A> właściwości deskryptora. Należy przesłonić tę metodę.  
   
-9. <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> Metody do tworzenia odpowiedzi (odpowiedź RSTR), który zawiera wystawionego tokenu.  
+9. <xref:System.IdentityModel.SecurityTokenService.GetResponse%2A> Metody do tworzenia odpowiedzi (RSTR), który zawiera wystawiony token.  
   
- Można zastąpić <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody do zaimplementowania potok wydawania tokenów niestandardowych; jednak nie jest to zazwyczaj konieczne w przypadku środowisk projektowania i testowania, które najbardziej niestandardowych implementacji <xref:System.IdentityModel.SecurityTokenService> klasy są przeznaczone. W wielu przypadkach można zastąpić <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> i <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metod i opcjonalnie Przesłoń <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> metodę w celu zapewnienia obsługiwanych STS dla danego środowiska. Są niezbędne dodatkowe dostosowania można często udostępniają go przez zastąpienie metody, które implementuje każdego etapu domyślne potok wydawania tokenów wymienionych powyżej.  
+ Można zastąpić <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody do zaimplementowania potoku wystawiania tokenów niestandardowych; jednak nie jest to zazwyczaj konieczne w środowiskach deweloperskich i testowych, które najbardziej niestandardowych implementacji <xref:System.IdentityModel.SecurityTokenService> klasy są przeznaczone. W wielu przypadkach możesz zastąpić <xref:System.IdentityModel.SecurityTokenService.GetOutputClaimsIdentity%2A> i <xref:System.IdentityModel.SecurityTokenService.GetScope%2A> metod i opcjonalnie zastąpić <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> metody w celu zapewnienia zdatne do użytku usługi STS w danym środowisku. Są niezbędne dodatkowe dostosowania często zapewnia go poprzez zastąpienie metody, które implementują każdy etap potoku wystawiania tokenu wymienionych powyżej domyślne.  
   
  ]]></format>
         </remarks>
@@ -1040,10 +1046,10 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
         <summary>W przypadku przesłonięcia w klasie pochodnej, przetwarza żądanie odnowienia WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1071,7 +1077,7 @@
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia żądanie tokenu zabezpieczeń (RST) skojarzone z bieżącym wystąpieniem.</summary>
-        <value>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> zawierający żądania.</value>
+        <value>Element <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> zawierający żądania.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1092,7 +1098,7 @@
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia zakres skojarzony z bieżącym wystąpieniem.</summary>
-        <value>A <see cref="T:System.IdentityModel.Scope" /> reprezentujący konfigurację dla żądania wydawania tokenów.</value>
+        <value>A <see cref="T:System.IdentityModel.Scope" /> reprezentujący konfigurację dla żądania wystawiania tokenu.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1115,7 +1121,7 @@
         <summary>Pobiera lub ustawia <see cref="T:System.IdentityModel.Tokens.SecurityTokenDescriptor" /> skojarzone z bieżącym wystąpieniem.</summary>
         <value>Token deskryptora zabezpieczeń skojarzony z bieżącym wystąpieniem.</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException">Próba ustawioną właściwość <see langword="null" /> występuje.</exception>
+        <exception cref="T:System.ArgumentNullException">Podjęto próbę ustawienia właściwości <see langword="null" /> występuje.</exception>
       </Docs>
     </Member>
     <Member MemberName="SecurityTokenServiceConfiguration">
@@ -1135,7 +1141,7 @@
       </ReturnValue>
       <Docs>
         <summary>Pobiera właściciela wystąpienia konfiguracji.</summary>
-        <value>A <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> zawierający konfiguracji dla bieżącego wystąpienia.</value>
+        <value>Element <see cref="T:System.IdentityModel.Configuration.SecurityTokenServiceConfiguration" /> zawierający konfigurację dla bieżącego wystąpienia.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -1159,10 +1165,10 @@
         <Parameter Name="request" Type="System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" />
       </Parameters>
       <Docs>
-        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamość żądającego tokenu.</param>
-        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądania tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klienta powiązane informacje, takie jak kontekst autoryzacji.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, przetwarza żądanie zweryfikowania WS-Trust.</summary>
-        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący odpowiedź RSTR, aby powrócić do obiektu wywołującego.</returns>
+        <param name="principal">A <see cref="T:System.Security.Claims.ClaimsPrincipal" /> reprezentujący tożsamości obiektu żądającego tokenu.</param>
+        <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie tokenu zabezpieczeń. W tym żądaniu wiadomości, a także innych klientów powiązane informacje, takie jak kontekst autoryzacji.</param>
+        <summary>W przypadku przesłonięcia w klasie pochodnej, przetwarza żądanie weryfikacji WS-Trust.</summary>
+        <returns>A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityTokenResponse" /> reprezentujący RSTR, aby powrócić do obiektu wywołującego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1193,20 +1199,29 @@
       </Parameters>
       <Docs>
         <param name="request">A <see cref="T:System.IdentityModel.Protocols.WSTrust.RequestSecurityToken" /> reprezentujący żądanie.</param>
-        <summary>Weryfikuje żądanie tokenu zabezpieczeń (RST) hermetyzowany przez to wystąpienie.</summary>
+        <summary>Weryfikuje żądanie tokenu zabezpieczeń (RST) zamknięte przez to wystąpienie.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> Metoda jest wywoływana z potoku wystawiania tokenu ( <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody) do sprawdzania poprawności przychodzących RST. RST jest weryfikowana pod kątem wymagań usługi STS (zasady) i jest zgłaszany wyjątek odpowiednie, jeśli nie jest prawidłowy.  
+ <xref:System.IdentityModel.SecurityTokenService.ValidateRequest%2A> Metoda jest wywoływana z potoku wystawiania tokenu ( <xref:System.IdentityModel.SecurityTokenService.Issue%2A> metody) do sprawdzania poprawności RST przychodzących. RST jest weryfikowane względem wymagań (zasady) usługi STS i odpowiedni wyjątek jest generowany, jeśli jest on nieprawidłowy.  
   
- Domyślna implementacja <xref:System.IdentityModel.SecurityTokenService> klasa obsługuje tylko wzorzec odpowiedź RSTR RST oraz tylko powiązanie problem ze specyfikacją WS-Trust ( <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType%2A> musi mieć ustawioną właściwość żądania <xref:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue?displayProperty=nameWithType>). Domyślna implementacja tej metody wymusza tych wymagań (i innych wymienionych w sekcji wyjątki). Można przesłonić tę metodę, jeśli muszą wymuszać weryfikacji różne wymagania dotyczące z STS niestandardowych.  
+ Domyślna implementacja klasy <xref:System.IdentityModel.SecurityTokenService> klasy obsługuje tylko wzorzec RST RSTR i powiązania w problem specyfikacji WS-Trust ( <xref:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType%2A> musi być równa właściwości żądania <xref:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue?displayProperty=nameWithType>). Domyślna implementacja tej metody wymusza tych wymagań (i innych wymienionych w sekcji wyjątki). Mogą przesłaniać tę metodę, jeśli muszą wymuszać wymagań różnych weryfikacji dla swojej niestandardowej usługi STS.  
   
  ]]></format>
         </remarks>
         <exception cref="T:System.IdentityModel.Protocols.WSTrust.InvalidRequestException">
-          <paramref name="request" /> jest <see langword="null" />.  - lub - <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType" /> nie ustawiono właściwości żądania <see cref="F:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue" />.  - lub - <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> właściwość żądania nie jest <see langword="null" /> lub jednego z stałe zdefiniowane w <see cref="T:System.IdentityModel.Protocols.WSTrust.KeyTypes" /> klasy.  - lub - <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> żądań <see cref="F:System.IdentityModel.Protocols.WSTrust.KeyTypes.Bearer" /> i <see langword="KeySize" /> element jest obecny, ale jego wartość nie jest równa zero.</exception>
-        <exception cref="T:System.IdentityModel.UnsupportedTokenTypeBadRequestException">Usługa tokenu Zabezpieczającego nie obsługuje żądania tokenu typu (na podstawie wartości z <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.TokenType" /> właściwości żądania).</exception>
+          <paramref name="request" /> jest <see langword="null" />.  
+  
+—lub— 
+<see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.RequestType" /> Nie ustawiono właściwości żądania <see cref="F:System.IdentityModel.Protocols.WSTrust.RequestTypes.Issue" />.  
+  
+—lub— 
+<see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> Właściwość żądania nie jest <see langword="null" /> lub jednej ze stałych zdefiniowane w <see cref="T:System.IdentityModel.Protocols.WSTrust.KeyTypes" /> klasy.  
+  
+—lub— 
+<see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.KeyType" /> Żądania jest <see cref="F:System.IdentityModel.Protocols.WSTrust.KeyTypes.Bearer" /> i <see langword="KeySize" /> element jest obecny, ale jego wartość nie jest równa zero.</exception>
+        <exception cref="T:System.IdentityModel.UnsupportedTokenTypeBadRequestException">Usługa tokenu Zabezpieczającego nie obsługuje typu token żądania (na podstawie wartości z <see cref="P:System.IdentityModel.Protocols.WSTrust.WSTrustMessage.TokenType" /> właściwości żądania).</exception>
         <altmember cref="M:System.IdentityModel.SecurityTokenService.Issue(System.Security.Claims.ClaimsPrincipal,System.IdentityModel.Protocols.WSTrust.RequestSecurityToken)" />
       </Docs>
     </Member>
