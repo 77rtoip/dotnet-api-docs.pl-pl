@@ -1,11 +1,11 @@
 <Type Name="WorkflowIdleBehavior" FullName="System.ServiceModel.Activities.Description.WorkflowIdleBehavior">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ff24fb01a2d881eacb78df569e7a060f4b39cc0b" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="c75a5dc713f5a4b3557e624b4c0c3445812a1e30" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36622325" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39848208" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class WorkflowIdleBehavior : System.ServiceModel.Description.IServiceBehavior" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit WorkflowIdleBehavior extends System.Object implements class System.ServiceModel.Description.IServiceBehavior" />
@@ -33,9 +33,9 @@
 ## Remarks  
   
 > [!IMPORTANT]
->  Gdy <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> jest ustawiona na wartość większą niż wartość <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> i przepływ pracy przejdzie bezczynności (ze względu na działaniu Delay) Jeśli wystąpienia przepływu pracy nie uległ zmianie zostanie usunięta z pamięci wywołuje metodę Abort, zamiast pośrednictwa normalnych Zwalnianie procesu... Jest to optymalizacji środowiska wykonawczego i nie zostały utracone żadne dane, ale dewelopera w dzienniku śledzenia mogą być widoczne śledzenia przerwania oczekiwano śledzenia Unload.  
+>  Gdy <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> jest ustawiona na wartość wyższą niż wartość <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> i przepływ pracy przejdzie bezczynności (ze względu na działanie opóźnienie) Jeśli wystąpienie przepływu pracy nie uległy zmianie. zostanie on usunięty z pamięci przez wywołanie przerwania, a nie przy użyciu normalnych Zwalnianie procesu... Jest to optymalizacji środowiska wykonawczego i zostaną utracone żadne dane, ale deweloperem planującym w dzienniku śledzenia może zostać wyświetlony śledzenia przerwanie, gdy oczekiwano śledzenia zwolnienia.  
   
- Przykład sposobu użycia tego zachowania, zobacz [rozszerzalność hosta usługi przepływu pracy](~/docs/framework/wcf/feature-details/workflow-service-host-extensibility.md)  
+ Aby uzyskać przykład sposobu użycia tego zachowania, zobacz [rozszerzalność hosta usługi przepływu pracy](~/docs/framework/wcf/feature-details/workflow-service-host-extensibility.md)  
   
  ]]></format>
     </remarks>
@@ -85,7 +85,7 @@
         <param name="serviceDescription">Opis usługi.</param>
         <param name="serviceHostBase">Host usługi.</param>
         <param name="endpoints">Punkty końcowe udostępnianych przez usługę.</param>
-        <param name="bindingParameters">Powiązanie parametrów wymaganych do wdrożenia zachowanie.</param>
+        <param name="bindingParameters">Parametry powiązań, trzeba zaimplementować to zachowanie.</param>
         <summary>Implementuje <see cref="M:System.ServiceModel.Description.IServiceBehavior.AddBindingParameters(System.ServiceModel.Description.ServiceDescription,System.ServiceModel.ServiceHostBase,System.Collections.ObjectModel.Collection{System.ServiceModel.Description.ServiceEndpoint},System.ServiceModel.Channels.BindingParameterCollection)" /> metody.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -130,17 +130,22 @@
         <AssemblyName>System.ServiceModel.Activities</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość określającą <see cref="T:System.TimeSpan" /> występuje między czasem przepływu pracy, staje się bezczynności i jest trwały.</summary>
+        <summary>Pobiera lub ustawia wartość określającą <see cref="T:System.TimeSpan" /> występuje między czas przepływu pracy staje się bezczynności i jest trwały.</summary>
         <value>Przedział czasu używany w celu określenia, kiedy przepływ pracy jest trwały.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.TimeSpan> Rozpoczyna się upłynąć, gdy wystąpienie przepływu pracy, staje się bezczynności. Ta właściwość jest przydatna, jeśli chcesz bardziej agresywnie utrwalenie wystąpienia przepływu pracy, jednocześnie zachowując wystąpienia w pamięci tak długo, jak to możliwe. Wartość domyślna dla tej właściwości to <xref:System.TimeSpan.MaxValue>. <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> Właściwość jest tylko wtedy, gdy jego wartość jest mniejsza niż <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A>. Jeśli jest większa, jest ignorowana. Jeśli <xref:System.TimeSpan> określonego przez <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> upływa przed <xref:System.TimeSpan> określonego przez <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A>, trwałości musi zakończyć się przed przepływ pracy zostanie zwolniony. Oznacza to, że operacja zwolnienia mogą być opóźnione aż do przepływu pracy jest trwały. Warstwa trwałości jest odpowiedzialny za obsługę dowolnego powtórzeń przejściowy błędów i tylko na błędy bez nieodwracalny zgłasza wyjątek wyjątków. Dlatego wyjątki zgłaszane w trwałości są traktowane jako krytyczny, a wystąpienie przepływu pracy zostało przerwane.  
+ <xref:System.TimeSpan> Rozpoczyna upłynąć, gdy wystąpienie przepływu pracy staje się nieaktywna. Ta właściwość jest przydatna, jeśli chcesz utrwalić wystąpienia przepływu pracy agresywniej jednocześnie zachowując wystąpienie w pamięci tak długo, jak to możliwe. Wartość domyślna tej właściwości to <xref:System.TimeSpan.MaxValue>. <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> Właściwość jest tylko wtedy, gdy jej wartość jest mniejsza niż <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A>. Jeśli jest większa, jest ignorowana. Jeśli <xref:System.TimeSpan> określony przez <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToPersist%2A> upłynie przed <xref:System.TimeSpan> określony przez <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A>, trwałości należy ukończyć przepływ pracy zostanie zwolniony. Oznacza to, że operacja zwolnienia może być opóźniony, dopóki nie jest trwały przepływu pracy. Warstwa trwałości jest odpowiedzialny za obsługę dowolnego powtórzeń przejściowy błędów i tylko na błędy bez nieodwracalny zgłasza wyjątek wyjątków. Dlatego wyjątki zgłaszane w trwałości są traktowane jako krytyczny, a wystąpienie przepływu pracy zostało przerwane.  
   
  ]]></format>
         </remarks>
@@ -158,17 +163,22 @@
         <AssemblyName>System.ServiceModel.Activities</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość określającą <see cref="T:System.TimeSpan" /> występuje między czasem przepływu pracy, staje się bezczynności i zostanie zwolniona.</summary>
+        <summary>Pobiera lub ustawia wartość określającą <see cref="T:System.TimeSpan" /> występuje między czas przepływu pracy staje się bezczynności i jest zwalniana.</summary>
         <value>Przedział czasu używany w celu określenia, kiedy zwolniony jest przepływ pracy.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wartość domyślna to 1 minutę. Zwalnianie przepływu pracy oznacza to również utrwalone. Jeśli <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> jest ustawiony na zero, wystąpienie przepływu pracy jest utrwalona i zwalnianie natychmiast po bezczynności przepływ pracy. Ustawienie <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> do <xref:System.TimeSpan.MaxValue> wyłącza operacja zwolnienia. Wystąpienia przepływu pracy bezczynności nigdy nie są usuwane.  
+ Wartość domyślna to 1 minutę. Zwalnianie przepływu pracy oznacza również utrwalone. Jeśli <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> jest równa zero wystąpienie przepływu pracy jest trwały i zwolnione natychmiast po zakończeniu przepływu pracy staje się nieaktywna. Ustawienie <xref:System.ServiceModel.Activities.Description.WorkflowIdleBehavior.TimeToUnload%2A> do <xref:System.TimeSpan.MaxValue> skutecznie wyłącza operacja zwolnienia. Wystąpienia przepływu pracy bezczynności nigdy nie są usuwane.  
   
  ]]></format>
         </remarks>
