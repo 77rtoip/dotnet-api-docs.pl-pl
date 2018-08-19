@@ -1,11 +1,11 @@
 <Type Name="ExecutionDataflowBlockOptions" FullName="System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="2441cee5ecf4a65633b6e22821a6642ef80abbdf" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="f6ed406f08ca73250453c73b3b78d48e63b85040" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36407415" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39929064" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class ExecutionDataflowBlockOptions : System.Threading.Tasks.Dataflow.DataflowBlockOptions" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit ExecutionDataflowBlockOptions extends System.Threading.Tasks.Dataflow.DataflowBlockOptions" />
@@ -24,8 +24,13 @@
     <BaseTypeName>System.Threading.Tasks.Dataflow.DataflowBlockOptions</BaseTypeName>
   </Base>
   <Interfaces />
+  <Attributes>
+    <Attribute FrameworkAlternate="netcore-1.0;netcore-1.1">
+      <AttributeName>System.Diagnostics.DebuggerDisplay("TaskScheduler = {TaskScheduler}, MaxMessagesPerTask = {MaxMessagesPerTask}, BoundedCapacity = {BoundedCapacity}, MaxDegreeOfParallelism = {MaxDegreeOfParallelism}")</AttributeName>
+    </Attribute>
+  </Attributes>
   <Docs>
-    <summary>Zawiera opcje używane do konfigurowania przetwarzania wykonywane przez bloków przepływu danych, które przetwarzają każdego komunikatu za pośrednictwem wywołania delegata dostarczane przez użytkownika. Bloki przepływu danych są takie jak <see cref="T:System.Threading.Tasks.Dataflow.ActionBlock`1" /> i <see cref="T:System.Threading.Tasks.Dataflow.TransformBlock`2" />.</summary>
+    <summary>Zawiera opcje używane do konfigurowania przetwarzania wykonywane przez bloków przepływu danych, których przetworzenie każdego komunikatu za pośrednictwem wywołania delegata podanego przez użytkownika. Są to bloków przepływu danych takich jak <see cref="T:System.Threading.Tasks.Dataflow.ActionBlock`1" /> i <see cref="T:System.Threading.Tasks.Dataflow.TransformBlock`2" />.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -35,17 +40,17 @@
   
  <xref:System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions> jest modyfikowalna i można je skonfigurować za pomocą jego właściwości.  
   
- Podczas opcje określonej konfiguracji nie są ustawione, są używane następujące wartości domyślne:  
+ Gdy opcje konfiguracji nie są ustawione, używane są następujące wartości domyślne:  
   
 |Opcje|Domyślny|  
 |-------------|-------------|  
 |TaskScheduler|<xref:System.Threading.Tasks.TaskScheduler.Default%2A>|  
-|CancellationToken|<xref:System.Threading.CancellationToken.None%2A>|  
+|Token anulowania|<xref:System.Threading.CancellationToken.None%2A>|  
 |MaxMessagesPerTask|DataflowBlockOptions.Unbounded (-1)|  
 |BoundedCapacity|DataflowBlockOptions.Unbounded (-1)|  
 |MaxDegreeOfParallelism|1|  
   
- Bloku przepływu danych przechwytywania stanu opcji na ich konstrukcji. Kolejne zmiany w udostępnionej klasie <xref:System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions> wystąpienia nie wpływają na zachowanie bloku przepływu danych.  
+ Blok przepływu danych przechwytywania stanu opcji w ich konstrukcji. Kolejne zmiany podanego <xref:System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions> wystąpienia nie wpływają na zachowanie bloku przepływu danych.  
   
  ]]></format>
     </remarks>
@@ -67,7 +72,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Inicjuje nowy <see cref="T:System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions" />.</summary>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -90,7 +95,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera maksymalną liczbę wiadomości, które mogą być jednocześnie przetwarzane przez bloku.</summary>
+        <summary>Pobiera maksymalną liczbę wiadomości, które mogą być jednocześnie przetwarzane przez blok.</summary>
         <value>Maksymalna liczba komunikatów.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -114,13 +119,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera czy kodu za pomocą bloku przepływu danych jest ograniczona do jednego producenta naraz.</summary>
+        <summary>Pobiera informacje, czy kod za pomocą bloku przepływu danych jest ograniczony do jednego producenta w danym momencie.</summary>
         <value>Zwraca <see cref="T:System.Boolean" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta właściwość jest domyślnie False, tak, aby blok mogą być używane przez wielu producentów jednocześnie. Tej właściwości można ustawić tylko na true, jeśli kod przy użyciu bloku może zagwarantować, że tylko będzie on używany przez jednego producenta (np. źródła połączone z bloku) w czasie, co oznacza, że metody, takie jak Post, Zakończ usterek i OfferMessage zostanie nigdy nie zostaną wywołane jednoczesnych Zastosuj. Niektóre bloki może dołączyć do wielką na wiedzy, które będą istnieć tylko jeden producent naraz w celu zapewnienia lepszej wydajności.  
+ Ta właściwość ma domyślnie wartość false, taki sposób, że blok mogą być używane przez wielu producentów jednocześnie. Tę właściwość można ustawić tylko wartość true, jeśli kod przy użyciu bloku może zagwarantować, że tylko posłuży przez jednego producenta (np. źródłem połączone z bloku) w czasie, co oznacza, że metod, takich jak Post, zakończone, błędów i OfferMessage będzie nigdy nie zostanie wywołana współbieżne Zastosuj. Niektóre bloki mają możliwość możesz wykorzystać wiedzę, która będzie istnieć tylko jeden z producentów w danym momencie w celu zapewnienia lepszej wydajności.  
   
  ]]></format>
         </remarks>
