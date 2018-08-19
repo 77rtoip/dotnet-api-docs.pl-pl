@@ -1,11 +1,11 @@
 <Type Name="InstanceStore" FullName="System.Runtime.DurableInstancing.InstanceStore">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="d14fb4c0552691179d47eb6e214410054e826b0f" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="8972e8c961043629bb8c0c72a45e02d752733a77" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36540129" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39993466" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class InstanceStore" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit InstanceStore extends System.Object" />
@@ -27,12 +27,12 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dostawca trwałości zapewnia dostęp do sklepu wystąpienie za pośrednictwem konkretną implementację <xref:System.Runtime.DurableInstancing.InstanceStore> klasy.  
+ Dostawcy stanów trwałych zapewnia dostęp do sklepu wystąpienie za pośrednictwem konkretną implementację <xref:System.Runtime.DurableInstancing.InstanceStore> klasy.  
   
- Dostawców trwałości może wywołać InstanceHandle.Free na dojściach przekazany do metody TryCommand, nawet po zakończeniu wykonywania polecenia podczas wykonywania. Ale trwałości, który dostawców nie musi posiadać silne odwołuje się do obiektu InstanceHandle lub obiektu InstanceOwner obiektów, jak to może uniemożliwić obiektu InstanceStore bezużytecznych.  
+ Dostawcy stanów trwałych mogą wezwać InstanceHandle.Free uchwyty przekazany do TryCommand, nawet w przypadku, po zakończeniu wykonywania polecenia podczas wykonywania. Ale trwałości, którą dostawców nie musi posiadać silne odwołuje się do InstanceHandle lub InstanceOwner obiektów, ponieważ może to uniemożliwić objekt InstanceStore jako elementu bezużytecznego zbierane.  
   
 > [!WARNING]
->  Nie można zmienić definicji przepływu pracy utrwalonych przepływów pracy. Zmiana definicji przepływu pracy po jego zachowania środowiska uruchomieniowego przepływu pracy ulegnie awarii po załadowaniu przepływu pracy.  
+>  Nie można zmienić definicji przepływu pracy dla utrwalonych przepływów pracy. Zmiana definicji przepływu pracy po jego jest trwały, środowisko wykonawcze przepływów pracy ulegnie awarii po załadowaniu przepływu pracy.  
   
  ]]></format>
     </remarks>
@@ -51,7 +51,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Inicjuje wystąpienie klasy <see cref="T:System.Runtime.DurableInstancing.InstanceStore" /> klasy.</summary>
+        <summary>Inicjuje wystąpienie <see cref="T:System.Runtime.DurableInstancing.InstanceStore" /> klasy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -81,15 +81,15 @@
         <param name="handle">Dojście wystąpienia.</param>
         <param name="command">Polecenie do wykonania.</param>
         <param name="timeout">Wartość limitu czasu wykonywania polecenia.</param>
-        <param name="callback">Delegat asynchroniczne wywołanie zwrotne, która odbiera powiadomienia o ukończeniu operacji asynchronicznej.</param>
+        <param name="callback">Delegat asynchroniczne wywołanie zwrotne, który odbiera powiadomienie o zakończeniu operacji asynchronicznej.</param>
         <param name="state">Informacje o stanie.</param>
-        <summary>Asynchronicznie wykonuje polecenia trwałości, takich jak <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> i <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
+        <summary>Asynchronicznie wykonuje takich jak polecenia trwałości <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> i <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
         <returns>Stan operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołuje hosta <xref:System.Runtime.DurableInstancing.InstanceStore.BeginExecute%2A> metody do wykonania polecenia trwałości przed dojście wystąpienia asynchronicznie. Host uzyskuje dojście wystąpienia wywołując <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> metody. Dojście wystąpienia może być powiązany z jednostek, które reprezentują kontekstu i temat tego polecenia, takie jak wystąpienia, właściciela wystąpienia lub blokady wystąpienia.  Tylko jedno polecenie może być wystawiony na podstawie dojście wystąpienia w czasie.  
+ Wywołuje hosta <xref:System.Runtime.DurableInstancing.InstanceStore.BeginExecute%2A> metody asynchroniczne wykonywanie polecenia trwałości względem dojście wystąpienia. Host uzyskuje dojście wystąpienia, wywołując <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> metody. Dojście wystąpienia może być powiązany z jednostek reprezentujących kontekstu i podmiotu polecenia, takie jak wystąpienia, właściciel wystąpienie lub wystąpienia blokady.  Tylko jedno polecenie może być wystawiony na podstawie dojście wystąpienia w danym momencie.  
   
  ]]></format>
         </remarks>
@@ -119,20 +119,20 @@
       </Parameters>
       <Docs>
         <param name="context">Kontekst wystąpienia.</param>
-        <param name="command">Do wykonania polecenia trwałości.</param>
+        <param name="command">Polecenie trwałości do wykonania.</param>
         <param name="timeout">Wartość limitu czasu wykonywania polecenia.</param>
-        <param name="callback">Delegat asynchroniczne wywołanie zwrotne, która odbiera powiadomienia o ukończeniu operacji asynchronicznej.</param>
+        <param name="callback">Delegat asynchroniczne wywołanie zwrotne, który odbiera powiadomienie o zakończeniu operacji asynchronicznej.</param>
         <param name="state">Informacje o stanie.</param>
-        <summary>Dostawca trwałości implementuje ta metoda, która określa, czy można wykonać polecenie określonego trwałości. Jeśli można wykonać polecenia, wykonuje polecenie asynchronicznie.</summary>
+        <summary>Dostawcy stanów trwałych implementuje ta metoda, która określa, czy można wykonywać polecenia określonego stanu trwałego. Jeśli to polecenie można wykonać, wykonuje polecenie asynchronicznie.</summary>
         <returns>Stan operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli można wykonać polecenia, dostawca trwałości wywołuje odpowiednich metod w obiekcie InstancePersistenceContext w celu udostępniania wyników polecenia.  
+ Jeśli to polecenie można wykonać, dostawcy stanów trwałych wzywa odpowiednich metod InstancePersistenceContext zapewnienie wyniki polecenia.  
   
 > [!WARNING]
->  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, brak żadnej implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
+>  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, Brak implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
   
  ]]></format>
         </remarks>
@@ -161,11 +161,11 @@
       </Parameters>
       <Docs>
         <param name="handle">Dojście wystąpienia.</param>
-        <param name="timeout">Okres, po którym upłynie limit czasu operacji.</param>
+        <param name="timeout">Okres, po której upłynie limit czasu operacji.</param>
         <param name="callback">Metoda wywoływana po zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt zawierający informacje o stanie skojarzone z operacji asynchronicznej.</param>
-        <summary>Rozpoczyna operację asynchroniczną do nasłuchiwania zdarzeń zgłoszone przez wystąpienia w sklepie dojście określone wystąpienie.</summary>
-        <returns>Zwraca <see cref="T:System.IAsyncResult" /> obiektu.</returns>
+        <param name="state">Obiekt zawierający informacje o stanie związane z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna operację asynchroniczną do nasłuchiwania zdarzeń zgłoszone przez wystąpienia w sklepie dojście do konkretnego wystąpienia.</summary>
+        <returns>Zwraca <see cref="T:System.IAsyncResult" /> obiektu...</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -175,7 +175,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tworzy dojście wystąpienia. Jeśli ustawiono domyślnego, wartość jest automatycznie powiązany jako właściciela wystąpienia nowy uchwyt.</summary>
+        <summary>Tworzy dojście wystąpienia. Jeśli ustawiono DefaultInstanceOwner, wartość zostanie automatycznie powiązany jako nowy uchwyt wystąpienia właściciela.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CreateInstanceHandle">
@@ -219,8 +219,8 @@
         <Parameter Name="instanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="instanceId">Identyfikator wystąpienia. Nie może mieć wartości Guid.Empty.</param>
-        <summary>Tworzy dojście wystąpienia.  Jeśli ustawiono domyślnego, wartość jest automatycznie powiązany jako właściciela wystąpienia nowy uchwyt.  Identyfikator wystąpienia przekazany jako parametr automatycznie jest powiązany jako nowe dojście wystąpienia.</summary>
+        <param name="instanceId">Identyfikator wystąpienia. Nie może być Guid.Empty.</param>
+        <summary>Tworzy dojście wystąpienia.  Jeśli ustawiono DefaultInstanceOwner, wartość zostanie automatycznie powiązany jako nowy uchwyt wystąpienia właściciela.  Identyfikator wystąpienia przekazany jako parametr zostanie automatycznie powiązany jako nowy uchwyt wystąpienia.</summary>
         <returns>Dojście wystąpienia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -245,8 +245,8 @@
       </Parameters>
       <Docs>
         <param name="owner">Właściciel wystąpienia.</param>
-        <summary>Tworzy dojście wystąpienia. Jeśli właściciela wystąpienia przekazany jako parametr nie jest zerowa, wartość jest automatycznie powiązany jako właściciela wystąpienia nowy uchwyt.  (W przeciwnym razie nie wystąpienia jest powiązany właściciel, nawet jeśli jest ustawiona właściwość DefaultInstanceOwner.)</summary>
-        <returns>Dojście wystąpienia. Wartości null wskazuje, czy nowy uchwyt nie powinien automatycznie powiązany z właścicielem wystąpienia.</returns>
+        <summary>Tworzy dojście wystąpienia. Jeśli właściciel wystąpienia przekazany jako parametr nie ma wartość null, wartość zostanie automatycznie powiązany jako nowy uchwyt wystąpienia właściciela.  (W przeciwnym razie nie ma właściciela wystąpienia jest powiązana, nawet wtedy, gdy ustawiono DefaultInstanceOwner.)</summary>
+        <returns>Dojście wystąpienia. Wartość zerowa wskazuje, że nowy uchwyt nie powinny automatycznie powiązany z właścicielem wystąpienia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -270,9 +270,9 @@
         <Parameter Name="instanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="owner">Obiekt InstanceOwner, który reprezentuje właściciela wystąpienia. Należy przekazać wartość null jako wartość tego parametru wskazać, czy nowy uchwyt nie powinien automatycznie powiązany z właścicielem wystąpienia.</param>
-        <param name="instanceId">Identyfikator wystąpienia. Nie może mieć wartości Guid.Empty.</param>
-        <summary>Tworzy dojście wystąpienia. Jeśli właściciela wystąpienia przekazany jako parametr nie jest zerowa, wartość jest automatycznie powiązany jako właściciela wystąpienia nowy uchwyt.  (W przeciwnym razie nie wystąpienia jest powiązany właściciel, nawet jeśli jest ustawiona właściwość DefaultInstanceOwner.) Identyfikator wystąpienia przekazany jako parametr automatycznie jest powiązany jako nowe dojście wystąpienia.</summary>
+        <param name="owner">Obiekt InstanceOwner, który reprezentuje właścicielem wystąpienia usługi. Należy przekazać wartości null jako wartość tego parametru, aby wskazać, że nowy uchwyt nie powinny automatycznie powiązany z właścicielem wystąpienia.</param>
+        <param name="instanceId">Identyfikator wystąpienia. Nie może być Guid.Empty.</param>
+        <summary>Tworzy dojście wystąpienia. Jeśli właściciel wystąpienia przekazany jako parametr nie ma wartość null, wartość zostanie automatycznie powiązany jako nowy uchwyt wystąpienia właściciela.  (W przeciwnym razie nie ma właściciela wystąpienia jest powiązana, nawet wtedy, gdy ustawiono DefaultInstanceOwner.) Identyfikator wystąpienia przekazany jako parametr zostanie automatycznie powiązany jako nowy uchwyt wystąpienia.</summary>
         <returns>Dojście wystąpienia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -289,22 +289,30 @@
         <AssemblyName>System.Runtime.DurableInstancing</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Runtime.DurableInstancing.InstanceOwner</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia domyślnego właściciela wystąpienia.</summary>
-        <value>Domyślnego właściciela wystąpienia.</value>
+        <summary>Pobiera lub ustawia domyślny właściciel wystąpienia.</summary>
+        <value>Domyślnym właścicielem wystąpienia.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Niektóre hosty wnioskować właściciela wystąpienia do użycia przy odczycie tej właściwości. Tej właściwości można użyć obiektu WorkflowApplication. Obiekt WorkflowServiceHost nie używa tej właściwości.  
+ Niektóre hosty wywnioskować właściciela wystąpienia do użycia przez czytanie tej właściwości. WorkflowApplication można użyć tej właściwości. WorkflowServiceHost nie używa tej właściwości.  
   
- Właściwość właściwość DefaultInstanceOwner musi mieć ustawioną wartość null, gdy nie jest już konieczne. Obiektu InstanceStore obiekty mogą nie być bezużytecznych, jeśli właściwość DefaultInstanceOwner nie jest zerowa.  
+ Podawany DefaultInstanceOwner musi być równa null, gdy nie jest już konieczne. Objekt InstanceStore obiekty mogą nie być bezużyteczne, jeśli DefaultInstanceOwner nie ma wartości null.  
   
 > [!WARNING]
->  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, brak żadnej implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
+>  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, Brak implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
   
  ]]></format>
         </remarks>
@@ -331,12 +339,12 @@
       <Docs>
         <param name="result">Wynik operacji.</param>
         <summary>Kończy operację asynchroniczną.</summary>
-        <returns>Obiekt InstanceView reprezentujący znanego stanu wystąpienia po pomyślnym zakończeniu polecenia.</returns>
+        <returns>Obiekt InstanceView reprezentujący znanego stanu wystąpienia po pomyślnym wykonaniu tego polecenia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli BeginExecute została wywołana w ramach transakcji, ten stan może obejmować niezatwierdzone dane. Gdy transakcja została pomyślnie przekazana, dane w InstanceView obiektu jest uznawana za zatwierdzone.  
+ Jeśli BeginExecute została wywołana w ramach transakcji, ten stan może zawierać niezatwierdzone dane. Gdy transakcja została zatwierdzona pomyślnie, dane w InstanceView obiektu jest uznawana za zatwierdzone.  
   
  ]]></format>
         </remarks>
@@ -363,14 +371,14 @@
       <Docs>
         <param name="result">Wynik operacji.</param>
         <summary>Kończy operację asynchroniczną.</summary>
-        <returns>Implementacja dostawcy trwałości powinna zostać zwrócona wartość false, jeśli go nie obsługuje polecenia przekazywany do metody BeginTryCommand. W przeciwnym razie go powinna zwrócić wartość true lub zgłosić wyjątek.</returns>
+        <returns>Powinna zostać zwrócona wartość false, jeśli go nie obsługuje polecenia przekazywany do metody BeginTryCommand implementacji dostawcy stanów stałych. W przeciwnym razie jest powinien zwrócić wartość true lub zgłosić wyjątek.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 > [!WARNING]
->  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, brak żadnej implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
+>  Mimo że ta metoda jest zadeklarowany jako `virtual` zamiast `abstract`, Brak implementacji. Ta metoda musi zostać zastąpiona w celu zapewnienia funkcji.  
   
  ]]></format>
         </remarks>
@@ -395,8 +403,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result">Obiekt IAsyncResult, który został przekazany do klienta przez metodę Begin.</param>
-        <summary>Kończy operację asynchroniczną inicjowane przez <see cref="M:System.Runtime.DurableInstancing.InstanceStore.BeginWaitForEvents(System.Runtime.DurableInstancing.InstanceHandle,System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</summary>
+        <param name="result">Obiekt IAsyncResult został przekazany do klienta przez metody Begin.</param>
+        <summary>Kończy operację asynchroniczną, inicjowane przez <see cref="M:System.Runtime.DurableInstancing.InstanceStore.BeginWaitForEvents(System.Runtime.DurableInstancing.InstanceHandle,System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</summary>
         <returns>Zwraca listę <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> obiektów...</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -425,18 +433,18 @@
         <param name="handle">Dojście wystąpienia.</param>
         <param name="command">Polecenie do wykonania.</param>
         <param name="timeout">Wartość limitu czasu dla operacji.</param>
-        <summary>Wykonuje polecenia trwałości synchronicznie. Przykłady poleceń trwałości: <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> i <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
-        <returns>Obiekt InstanceView reprezentujący znanego stanu wystąpienia po pomyślnym zakończeniu polecenia.  Jeśli wykonanie została wywołana w ramach transakcji, ten stan może obejmować niezatwierdzone dane. Gdy transakcja została pomyślnie przekazana, dane w InstanceView obiektu jest uznawana za zatwierdzone</returns>
+        <summary>Polecenie trwałości jest wykonywana synchronicznie. Przykłady poleceń trwałości: <see cref="T:System.Activities.DurableInstancing.LoadWorkflowCommand" /> i <see cref="T:System.Activities.DurableInstancing.SaveWorkflowCommand" />.</summary>
+        <returns>Obiekt InstanceView reprezentujący znanego stanu wystąpienia po pomyślnym wykonaniu tego polecenia.  Jeśli wykonanie została wywołana w ramach transakcji, ten stan może zawierać niezatwierdzone dane. Gdy transakcja została zatwierdzona pomyślnie, dane w InstanceView obiektu jest uznawana za zatwierdzone</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołuje hosta <xref:System.Runtime.DurableInstancing.InstanceStore.Execute%2A> metody do wykonania przed dojście wystąpienia, która uzyskuje hosta za pomocą polecenia trwałości <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> metody. Dojście wystąpienia może być powiązany z jednostek, które reprezentują kontekstu i temat tego polecenia, takie jak wystąpienia, właściciela wystąpienia lub blokady wystąpienia.  Tylko jedno polecenie może być wystawiony na podstawie dojście wystąpienia w czasie.  
+ Wywołuje hosta <xref:System.Runtime.DurableInstancing.InstanceStore.Execute%2A> metodę, aby wykonać polecenie trwałości względem dojście wystąpienia, która hosta uzyskuje się za pomocą wywołania <xref:System.Runtime.DurableInstancing.InstanceStore.CreateInstanceHandle%2A> metody. Dojście wystąpienia może być powiązany z jednostek reprezentujących kontekstu i podmiotu polecenia, takie jak wystąpienia, właściciel wystąpienie lub wystąpienia blokady.  Tylko jedno polecenie może być wystawiony na podstawie dojście wystąpienia w danym momencie.  
   
 > [!WARNING]
->  Jeśli ta metoda jest wykonywane z <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>, utworzy on <xref:System.Runtime.DurableInstancing.InstanceOwner> i powiąż go z wystąpieniem. Oznacza to, że żaden inny proces nie będzie mógł uzyskać dostępu do tego przepływu pracy; proces zakończy działanie, przepływ pracy nie można odzyskać lub wykonywane. Jeśli przepływ pracy jest wykonywane ponownie, <xref:System.Runtime.DurableInstancing.InstanceLockedException> zostanie wygenerowany.  
+>  Jeśli ta metoda jest wykonywane przy użyciu <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand>, utworzy on <xref:System.Runtime.DurableInstancing.InstanceOwner> i powiąż go z wystąpieniem. Oznacza to, że żaden inny proces będą mogli korzystać z tego przepływu pracy; zakończenia procesu, przepływ pracy nie można odzyskać ani wykonywane. Jeśli przepływ pracy zostanie wykonany ponownie <xref:System.Runtime.DurableInstancing.InstanceLockedException> zostanie zgłoszony.  
 >   
->  Jeśli <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand> jest nieużywane, w magazynie wystąpień spowoduje utworzenie tymczasowego <xref:System.Runtime.DurableInstancing.InstanceOwner> które zostaną usunięte po zakończeniu procesu. Jednak jeśli proces kończy się przed punktu końcowego utrwalania przepływu pracy, to zostanie wygenerowany wyjątek, chyba że okres określony w **HostLockRenewalPeriod** parametru utracił ważność.  
+>  Jeśli <xref:System.Activities.DurableInstancing.CreateWorkflowOwnerCommand> jest nie używane magazyn wystąpienia spowoduje utworzenie tymczasowego <xref:System.Runtime.DurableInstancing.InstanceOwner> , zostaną usunięte po zakończeniu procesu. Jednak jeśli proces zakończy się przed punktu końcowego trwałość przepływu pracy, to zostanie zgłoszony wyjątek, chyba że okres określony w **HostLockRenewalPeriod** parametru utracił ważność.  
   
  ]]></format>
         </remarks>
@@ -462,8 +470,8 @@
       </Parameters>
       <Docs>
         <param name="owner">
-          <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> Obiekt reprezentujący właściciela wystąpienia.</param>
-        <summary>Pobiera wszystkie sygnałowego zdarzenia powiązane z <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> obiektu.</summary>
+          <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> Obiekt reprezentujący właścicielem wystąpienia usługi.</param>
+        <summary>Pobiera wszystkie powiązane zdarzenia sygnałowego <see cref="T:System.Runtime.DurableInstancing.InstanceOwner" /> obiektu.</summary>
         <returns>Zwraca tablicę <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> obiektów...</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -485,8 +493,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera każdego obiektu InstanceOwner, który jest powiązany z dojścia prawidłowego wystąpienia lub nie została wyrzucona jako element bezużyteczny.</summary>
-        <returns>Właściciel tego wystąpienia.</returns>
+        <summary>Pobiera obiekt każdego InstanceOwner, który jest powiązany z uchwyt prawidłowego wystąpienia lub nie zostało usunięte.</summary>
+        <returns>Właściciel wystąpienia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -516,9 +524,9 @@
         <Parameter Name="userContext" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="instanceHandle">Dojście wystąpienia, który został zwolniony.</param>
-        <param name="userContext">Dostawca trwałości użytkownika informacje o kontekście zwrócony przez OnNewInstanceHandle lub wartość null, jeśli OnNewInstanceHandle nie zostanie zastąpiona.</param>
-        <summary>Wywoływane, gdy zostanie zwolniona dojście wystąpienia.</summary>
+        <param name="instanceHandle">Dojście wystąpienia, która została zwolniona.</param>
+        <param name="userContext">Informacje kontekstu użytkownika dostawcy stanów trwałych, który został zwrócony z OnNewInstanceHandle lub wartość null, jeśli OnNewInstanceHandle nie zostanie zastąpione.</param>
+        <summary>Wywoływane, gdy dojście wystąpienia jest zwalniana.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -541,8 +549,8 @@
       </Parameters>
       <Docs>
         <param name="instanceHandle">Dojście wystąpienia.</param>
-        <summary>Wywoływane, gdy jest tworzony nowy dojście wystąpienia.</summary>
-        <returns>Obiekt.  Tego obiektu kontekstu użytkownika będzie dostępne dla dostawcy trwałości, gdy polecenia są wykonywane przy użyciu dojścia i gdy dojście zostanie zwolniona.</returns>
+        <summary>Wywoływane, gdy zostanie utworzony nowy dojście wystąpienia.</summary>
+        <returns>Obiekt.  Ten obiekt kontekstu użytkownika będą dostępne dla dostawcy stanów trwałych, gdy polecenia są wykonywane przy użyciu dojścia i uchwyt jest zwalniana.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -566,9 +574,9 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="persistenceEvent">Zdarzenia trwałości, który został wcześniej sygnalizowane i zostaną zresetowane.</param>
-        <param name="owner">Właściciela wystąpienia, skojarzone ze zdarzeniem trwałości.</param>
-        <summary>Resetuje sygnałowego zdarzeń i usuwa zdarzenia z listy zdarzeń sygnałowego obsługiwanego przez właściciela wystąpienia.</summary>
+        <param name="persistenceEvent">Zdarzenie trwałości, które zostało wcześniej sygnalizowane i zostaną zresetowane.</param>
+        <param name="owner">Właściciel wystąpienia skojarzone ze zdarzeniem trwałości.</param>
+        <summary>Resetuje zdarzenia sygnałowego i usuwa zdarzenie z listy zdarzeń sygnałowego utrzymywane przez właściciela wystąpienia.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -592,9 +600,9 @@
         <Parameter Name="owner" Type="System.Runtime.DurableInstancing.InstanceOwner" />
       </Parameters>
       <Docs>
-        <param name="persistenceEvent">Zdarzenia trwałości zasygnalizować.</param>
-        <param name="owner">Właściciela wystąpienia.</param>
-        <summary>Magazyn wystąpienia wywołuje tę metodę w celu sygnału zdarzenia. Hosta przepływu pracy, które subskrybuje dla tego zdarzenia trwałości odbiera on i podejmuje odpowiednie działania.</summary>
+        <param name="persistenceEvent">Zdarzenie trwałości, który ma być zasygnalizowany.</param>
+        <param name="owner">Właściciel wystąpienia.</param>
+        <summary>Magazyn wystąpień wywołuje tę metodę w celu zasygnalizowania zdarzenia. Hosta przepływu pracy, które subskrybuje dla tego zdarzenia trwałości odebraniu i podejmuje odpowiednie działania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -622,13 +630,13 @@
         <param name="context">Kontekst wystąpienia.</param>
         <param name="command">Polecenie do wykonania.</param>
         <param name="timeout">Wartość limitu czasu dla operacji.</param>
-        <summary>Dostawca trwałości implementuje ta metoda, która określa, czy polecenia trwałości określonego mogą być wykonywane i czy można wykonać polecenia wykonuje on asynchronicznie.</summary>
-        <returns>Implementacja dostawcy trwałości powinien zwrócić <see langword="false" /> Jeśli go nie obsługuje polecenia przekazany jako parametr; w przeciwnym razie powinien on zwrócić <see langword="true" /> lub zgłosić wyjątek.</returns>
+        <summary>Dostawcy stanów trwałych implementuje ta metoda, która określa, czy polecenie trwałości określonej mogą być wykonywane i jeśli może zostać wykonane polecenie wykonuje go asynchronicznie.</summary>
+        <returns>Implementacja dostawcy stanów trwałych powinna zwrócić <see langword="false" /> Jeśli go nie obsługuje polecenia przekazany jako parametr; w przeciwnym razie powinien zostać zwrócony <see langword="true" /> lub zgłosić wyjątek.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli można wykonać polecenia, dostawca trwałości wywołuje odpowiednich metod w <xref:System.Runtime.DurableInstancing.InstancePersistenceContext> do udostępniania wyników polecenia.  
+ Jeśli to polecenie można wykonać, dostawcy stanów trwałych wywołuje odpowiednich metod na <xref:System.Runtime.DurableInstancing.InstancePersistenceContext> zapewnienie wyniki polecenia.  
   
  ]]></format>
         </remarks>
@@ -654,9 +662,9 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="handle">Dojście wystąpienia, który jest powiązany ze zdarzeniem.</param>
-        <param name="timeout">Przedział czasu, po którym oczekiwania upłynął limit czasu operacji.</param>
-        <summary>Hosta przepływów pracy zwykle wywołuje tę metodę oczekiwania na zdarzenie, aby zostać zgłoszony.</summary>
+        <param name="handle">Dojście wystąpienia, który jest powiązany z zdarzenia.</param>
+        <param name="timeout">Przedział czasu, po upływie limitu czasu operacji oczekiwania.</param>
+        <summary>Hosta przepływu pracy jest zwykle wywołuje tę metodę w celu oczekiwania na zdarzenie ma być zasygnalizowany.</summary>
         <returns>Lista <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> obiektów.</returns>
         <remarks>To be added.</remarks>
       </Docs>

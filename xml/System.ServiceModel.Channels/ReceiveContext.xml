@@ -1,11 +1,11 @@
 <Type Name="ReceiveContext" FullName="System.ServiceModel.Channels.ReceiveContext">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="f794035e056eef560fc9aeb46a68f9c5a2d12da9" />
-    <Meta Name="ms.sourcegitcommit" Value="6a0b904069161bbaec4ffd02aa7d9cf38c61e72e" />
+    <Meta Name="ms.openlocfilehash" Value="5f7c33a6d97d68cafa5ab014f15d63dfe76ad5b0" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="06/24/2018" />
-    <Meta Name="ms.locfileid" Value="36525016" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39996281" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class ReceiveContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ReceiveContext extends System.Object" />
@@ -22,12 +22,12 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Pochodzi od tej klasy do zaimplementowania automatu stanów niestandardowych do odbierania funkcji kontekstu.</summary>
+    <summary>Pochodzi z tej klasy do zaimplementowania automacie stanów niestandardowych do odbierania kontekstu.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Odbieranie funkcja kontekstu jest dwukrotne. Po otrzymaniu pracy z kanałem umieszczonych w kolejce, kontekst umożliwia blokowanie wiadomości przed jego przetworzeniem. Jeśli wystąpi błąd, komunikat jest zablokowany, dzięki czemu usługa, która przetwarza komunikat zachowuje własność (innej usługi nie odbierały i przetwarzały ten sam komunikat) i mogą wykonywać w niej innych działań. Po otrzymaniu pracy z kanałem jednokierunkowe kontekstu umożliwia usłudze kontroli, gdy wysyła komunikat potwierdzenia lub może on wskazywać problem, wysyłając wiadomość negatywna. Następnie klienta można ponownie wysłać wiadomość po otrzymaniu potwierdzenia ujemny lub jeśli nie otrzyma potwierdzenie w danym okresie czasu.  
+ Odbieranie funkcji kontekst składa się z dwóch etapów. Po otrzymaniu pracę z kanałem umieszczonych w kolejce, kontekst służy do blokowania wiadomości przed jego przetworzeniem. Jeśli wystąpi błąd, komunikat jest zablokowany, dzięki czemu usługa, która przetwarza komunikat zachowuje własność (inna usługa nie może odbierać i przetwarzać tę samą wiadomość) i mają możliwość wykonywania innych akcji na nim. Praca z jednokierunkową kanał, otrzymują kontekst zezwala na usługi do kontrolowania, kiedy wysyła komunikat potwierdzenia lub go może wskazywać na problem, wysyłając wiadomość negatywnego potwierdzenia. Klienta można następnie wyślij ponownie wiadomość, jeżeli otrzyma negatywnego potwierdzenia lub Jeśli otrzymasz potwierdzenie w określonym czasie.  
   
  ]]></format>
     </remarks>
@@ -56,12 +56,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Powoduje, że komputer stanu do przejścia do stanu porzucone.</summary>
+        <summary>Powoduje, że automatu stanów, do którego nastąpi przejście do stanu porzucone.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> może zostać zawieszone, gdy istnieje transakcja otoczenia i <xref:System.ServiceModel.Channels.ReceiveContext.Complete%2A> nosi nazwę, a następnie transakcja zostanie wycofana. Jeśli <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> jest wywoływana przed ukończeniu wycofywania transakcji, wyścigu będzie istnieć, co powoduje wywołanie <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> zawieszenie. To może zilustrowane w poniższym przykładzie pseudo-kodu  
+ <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> może się zawiesić, gdy istnieje transakcja otoczenia i <xref:System.ServiceModel.Channels.ReceiveContext.Complete%2A> nazywa się i później transakcja zostanie wycofana. Jeśli <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> jest wywoływana przed ukończenie wycofywania transakcji, będzie istnieć wyścigu, co powoduje wywołanie <xref:System.ServiceModel.Channels.ReceiveContext.Abandon%2A> zawiesi się. To może zilustrowane w poniższym przykładzie pseudo-kodu  
   
 ```  
 using (TransactionScope ts = new TransactionScope())   
@@ -79,7 +79,7 @@ using (TransactionScope ts = new TransactionScope())
   
 ```  
   
- Nie jest zalecane wzorzec do pracy z T:System.ServiceModel.Channels.RecieveContext. Zamiast tego bloku try/catch powinny być umieszczone poza zasięgiem transakcji.  
+ Nie jest zalecany wzorzec do pracy z T:System.ServiceModel.Channels.RecieveContext. Zamiast tego bloku try/catch powinny być umieszczone poza zakres transakcji.  
   
  ]]></format>
         </remarks>
@@ -97,6 +97,11 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -104,8 +109,8 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <summary>Powoduje, że komputer stanu do przejścia do stanu porzuconych z określoną wartością limitu czasu.</summary>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <summary>Powoduje, że automatu stanów, do którego nastąpi przejście do stanu porzuconych z określona wartość limitu czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -128,9 +133,9 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="exception">Wyjątek, który powoduje, że operacja porzucenia.</param>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <summary>Powoduje, że komputer stanu do przejścia do stanu porzuconych z określonego wyjątku i wartość limitu czasu.</summary>
+        <param name="exception">Wyjątek, który powoduje, że operacja odrzuceniu.</param>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <summary>Powoduje, że automatu stanów, do którego nastąpi przejście do stanu porzuconych z określonego wyjątku i wartość limitu czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -140,7 +145,7 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Rozpoczyna operację asynchroniczną porzucenia.</summary>
+        <summary>Rozpoczyna operację asynchroniczną odrzuceniu.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="BeginAbandon">
@@ -155,6 +160,11 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.IAsyncResult</ReturnType>
       </ReturnValue>
@@ -164,11 +174,11 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane stanu użytkownika.</param>
-        <summary>Rozpoczyna operację porzucenia asynchroniczną określony limit czasu, asynchroniczne wywołanie zwrotne i danych stanu użytkownika.</summary>
-        <returns>A <see cref="T:System.IAsyncResult" /> , która odwołuje się operacja porzucenia asynchroniczną.</returns>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Rozpoczyna operację asynchroniczną abandon z określony limit czasu, asynchroniczne wywołanie zwrotne i dane o stanie zdefiniowane przez użytkownika.</summary>
+        <returns>A <see cref="T:System.IAsyncResult" /> odwołujący się operacji asynchronicznych odrzuceniu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -193,13 +203,13 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="exception">Wyjątek, który zawiera przyczynę operacji porzucenia.</param>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane stanu użytkownika.</param>
-        <summary>Rozpoczyna operację porzucenia asynchroniczną, używając określonego wyjątku, limit czasu, asynchroniczne wywołanie zwrotne i dane stanu użytkownika.</summary>
+        <param name="exception">Wyjątek, który zawiera przyczynę operacji odrzuceniu.</param>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Rozpoczyna operację asynchroniczną abandon z określony wyjątek, limit czasu, asynchroniczne wywołanie zwrotne i dane o stanie zdefiniowane przez użytkownika.</summary>
         <returns>
-          <see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja porzucenia asynchroniczną.</returns>
+          <see cref="T:System.IAsyncResult" /> Odwołujący się operacji asynchronicznych odrzuceniu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -224,11 +234,11 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu ukończenia operacji do wykonania.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane stanu użytkownika.</param>
-        <summary>Rozpoczyna operację asynchroniczną pełną określony limit czasu, asynchroniczne wywołanie zwrotne i danych stanu użytkownika.</summary>
-        <returns>A <see cref="T:System.IAsyncResult" /> który odwołuje się do ukończenia operacji asynchronicznej.</returns>
+        <param name="timeout">Limit czasu, aby zakończyć operację zakończyć.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Rozpoczyna operację asynchroniczną pełną określony limit czasu, asynchroniczne wywołanie zwrotne i dane o stanie zdefiniowane przez użytkownika.</summary>
+        <returns>A <see cref="T:System.IAsyncResult" /> odwołujący się zakończenie operacji asynchronicznej.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -251,8 +261,8 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu ukończenia operacji do wykonania.</param>
-        <summary>Powoduje, że komputer stanu do przejścia do stanu ukończone z określoną wartością limitu czasu.</summary>
+        <param name="timeout">Limit czasu, aby zakończyć operację zakończyć.</param>
+        <summary>Powoduje, że automatu stanów, do którego nastąpi przejście do stanu zakończony wartością określony limit czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -277,7 +287,7 @@ using (TransactionScope ts = new TransactionScope())
       <Docs>
         <param name="result">
           <see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do jednego z <see cref="Overload:System.ServiceModel.Activities.WorkflowControlClient.BeginAbandon" /> metody.</param>
-        <summary>Kończy operację asynchroniczną porzucenia.</summary>
+        <summary>Kończy operację asynchroniczną odrzuceniu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -301,8 +311,8 @@ using (TransactionScope ts = new TransactionScope())
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do <see cref="M:System.ServiceModel.Channels.ReceiveContext.BeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>Kończy operację asynchroniczną pełne.</summary>
+          <see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.Channels.ReceiveContext.BeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
+        <summary>Kończy się zakończenie operacji asynchronicznej.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -323,7 +333,7 @@ using (TransactionScope ts = new TransactionScope())
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Powoduje, że do przejścia do stanu błędnej komputer stanu.</summary>
+        <summary>Powoduje, że automatu stanów, do którego nastąpi przejście stanie błędu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -373,7 +383,7 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzucone.</summary>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu porzucone.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="OnAbandon">
@@ -395,8 +405,8 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do porzuconych stan o wartości określonego limitu czasu.</summary>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do opuszczoną stanu z określona wartość limitu czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -411,6 +421,11 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -419,9 +434,9 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="exception">Wyjątek, który zawiera przyczynę operacji porzucenia.</param>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzuconych z określonego wyjątku i wartość limitu czasu.</summary>
+        <param name="exception">Wyjątek, który zawiera przyczynę operacji odrzuceniu.</param>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu porzuconych z określonego wyjątku i wartość limitu czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -431,7 +446,7 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzuconych asynchronicznie.</summary>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu opuszczoną asynchronicznie.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="OnBeginAbandon">
@@ -455,10 +470,10 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane o stanie zdefiniowanych przez użytkownika.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzuconych asynchronicznie z określoną wartością limitu czasu wywołania zwrotnego i dane o stanie.</summary>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu opuszczoną asynchronicznie z określoną wartością limitu czasu wywołania zwrotnego i dane o stanie.</summary>
         <returns>A <see cref="T:System.IAsyncResult" /> , która odwołuje się operacja asynchroniczna.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -474,6 +489,11 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.IAsyncResult</ReturnType>
       </ReturnValue>
@@ -484,11 +504,11 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="exception">Wyjątek, który zawiera przyczynę operacji porzucenia.</param>
-        <param name="timeout">Limit czasu na ukończenie operacji porzucenia.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane stanu użytkownika.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzuconych asynchronicznie z określony wyjątek, wartość limitu czasu wywołania zwrotnego i dane o stanie.</summary>
+        <param name="exception">Wyjątek, który zawiera przyczynę operacji odrzuceniu.</param>
+        <param name="timeout">Limit czasu na zakończenie operacji odrzuceniu.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu opuszczoną asynchronicznie przy użyciu określonego wyjątku, wartość limitu czasu, wywołanie zwrotne i dane o stanie.</summary>
         <returns>A <see cref="T:System.IAsyncResult" /> , która odwołuje się operacja asynchroniczna.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -514,10 +534,10 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu ukończenia operacji do wykonania.</param>
-        <param name="callback">Asynchroniczne wywołanie zwrotne delegata, który otrzyma powiadomienie o ukończeniu operacji asynchronicznej.</param>
-        <param name="state">Dane stanu użytkownika.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu ukończenia asynchronicznie z określonego limitu czasu wywołania zwrotnego i dane o stanie.</summary>
+        <param name="timeout">Limit czasu, aby zakończyć operację zakończyć.</param>
+        <param name="callback">Asynchroniczne wywołanie zwrotne delegat, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
+        <param name="state">Dane o stanie zdefiniowane przez użytkownika.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu ukończenia asynchronicznie przy użyciu określonego limitu czasu wywołania zwrotnego i dane o stanie.</summary>
         <returns>A <see cref="T:System.IAsyncResult" /> , która odwołuje się operacja asynchroniczna.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -541,8 +561,8 @@ using (TransactionScope ts = new TransactionScope())
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">Limit czasu ukończenia operacji do wykonania.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu ukończenia o wartości określonego limitu czasu.</summary>
+        <param name="timeout">Limit czasu, aby zakończyć operację zakończyć.</param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu zakończony wartością określony limit czasu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -567,7 +587,7 @@ using (TransactionScope ts = new TransactionScope())
       <Docs>
         <param name="result">
           <see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do jednego z <see cref="Overload:System.ServiceModel.Channels.ReceiveContext.OnBeginAbandon" /> metody.</param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu porzuconych asynchronicznie.</summary>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu opuszczoną asynchronicznie.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -591,8 +611,8 @@ using (TransactionScope ts = new TransactionScope())
       </Parameters>
       <Docs>
         <param name="result">
-          <see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do <see cref="M:System.ServiceModel.Channels.ReceiveContext.OnBeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" /></param>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do stanu ukończenia asynchronicznie.</summary>
+          <see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.Channels.ReceiveContext.OnBeginComplete(System.TimeSpan,System.AsyncCallback,System.Object)" /></param>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanu ukończenia asynchronicznie.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -613,7 +633,7 @@ using (TransactionScope ts = new TransactionScope())
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wywoływane, gdy komputer stanu są przenoszone do błędnej stanu.</summary>
+        <summary>Wywołuje się, gdy automatu stanów są przenoszone do stanie błędu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -629,12 +649,20 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>set: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.ServiceModel.Channels.ReceiveContextState</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia stan komputera stanu.</summary>
-        <value>Bieżący odbierać kontekstu stan komputera stanu.</value>
+        <summary>Pobiera lub ustawia stan automatu stanów.</summary>
+        <value>Bieżący wyświetlony stan kontekstu automatu stanów.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -650,11 +678,16 @@ using (TransactionScope ts = new TransactionScope())
         <AssemblyName>System.ServiceModel</AssemblyName>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>get: System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Obiekt używany do blokowania <see cref="T:System.ServiceModel.Channels.ReceiveContext" /> wystąpienia.</summary>
+        <summary>Obiekt służący do blokowania <see cref="T:System.ServiceModel.Channels.ReceiveContext" /> wystąpienia.</summary>
         <value>
           <see cref="T:System.Object" />.</value>
         <remarks>To be added.</remarks>
@@ -685,14 +718,14 @@ using (TransactionScope ts = new TransactionScope())
       </ReturnValue>
       <Parameters>
         <Parameter Name="message" Type="System.ServiceModel.Channels.Message" />
-        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext&amp;" RefType="out" />
+        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext" RefType="out" />
       </Parameters>
       <Docs>
         <param name="message">Komunikat.</param>
-        <param name="property">Kontekst odbierania.</param>
+        <param name="property">Kontekstu odbierania.</param>
         <summary>Próbuje pobrać kontekstu odbierania z określonego komunikatu.</summary>
         <returns>
-          <see langword="true" /> Jeśli kontekst odbierania jest pobierany pomyślnie; w przeciwnym razie <see langword="false" />.</returns>
+          <see langword="true" /> w przypadku kontekstu odbierania jest pomyślnie; do pobrania. w przeciwnym razie <see langword="false" />.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -713,14 +746,14 @@ using (TransactionScope ts = new TransactionScope())
       </ReturnValue>
       <Parameters>
         <Parameter Name="properties" Type="System.ServiceModel.Channels.MessageProperties" />
-        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext&amp;" RefType="out" />
+        <Parameter Name="property" Type="System.ServiceModel.Channels.ReceiveContext" RefType="out" />
       </Parameters>
       <Docs>
         <param name="properties">Kolekcja właściwości komunikatu.</param>
-        <param name="property">Kontekst odbierania.</param>
+        <param name="property">Kontekstu odbierania.</param>
         <summary>Próbuje pobrać kontekstu odbierania z kolekcji właściwości określonego komunikatu.</summary>
         <returns>
-          <see langword="true" /> Jeśli kontekst odbierania jest pobierany pomyślnie; w przeciwnym razie <see langword="false" />.</returns>
+          <see langword="true" /> w przypadku kontekstu odbierania jest pomyślnie; do pobrania. w przeciwnym razie <see langword="false" />.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
