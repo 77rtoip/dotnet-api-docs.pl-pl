@@ -1,11 +1,11 @@
 <Type Name="DesignerActionService" FullName="System.ComponentModel.Design.DesignerActionService">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="88aef9e8c4732cac7db903011c2c029fe5358c95" />
-    <Meta Name="ms.sourcegitcommit" Value="5a49536d99d2d0b54e4cb7280870903e043272df" />
+    <Meta Name="ms.openlocfilehash" Value="42dcb34d43a78ca3caa207a4d231e6a0f025e330" />
+    <Meta Name="ms.sourcegitcommit" Value="d877ae76e9e11799bf919379507239e2c4072742" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="07/03/2018" />
-    <Meta Name="ms.locfileid" Value="37696846" />
+    <Meta Name="ms.lasthandoff" Value="08/09/2018" />
+    <Meta Name="ms.locfileid" Value="39841828" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class DesignerActionService : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DesignerActionService extends System.Object implements class System.IDisposable" />
@@ -149,9 +149,9 @@
 ## Remarks  
  <xref:System.ComponentModel.Design.DesignerActionService.Add%2A> Metoda reprezentuje model wypychania, dodawanie tagów inteligentnych. Model ściągania alternatywne opiera się na zastępowanie <xref:System.ComponentModel.Design.ComponentDesigner.ActionLists%2A> właściwość w Projektancie dla odpowiadającego składnika.  
   
- Gdy wywoływana jest ta metoda, listy do dodania są skanowane pod kątem dowolnego <xref:System.ComponentModel.Design.DesignerActionMethodItem> z właściwością <xref:System.ComponentModel.Design.DesignerActionMethodItem.IncludeAsDesignerVerb%2A> ustawioną na `true`. Wyszukuje model wypychania tagów inteligentnych typu <xref:System.ComponentModel.Design.MenuCommandService.AddVerb%2A?displayProperty=nameWithType>, a następnie dodaje je do podane  kolekcji.  
+ Gdy wywoływana jest ta metoda, listy do dodania są skanowane pod kątem dowolnego <xref:System.ComponentModel.Design.DesignerActionMethodItem> z właściwością <xref:System.ComponentModel.Design.DesignerActionMethodItem.IncludeAsDesignerVerb%2A> ustawioną na `true`. Te elementy są dodawane do listy zleceń projektanta dla tego składnika, za pomocą wywołania <xref:System.ComponentModel.Design.MenuCommandService.AddVerb%2A?displayProperty=nameWithType> metody.  
   
- Powoduje usunięcie co najmniej jedną listę tagów inteligentnych z co najmniej jednego składnika. Lista tagów inteligentnych do usunięcia.  
+ Tagi inteligentne są zarządzane na podstawie wystąpienia składnika. Zarządzana Kolekcja może zawierać zduplikowanych wpisów.  
   
  Ta metoda wywołuje <xref:System.ComponentModel.Design.DesignerActionService.DesignerActionListsChanged> zdarzeń.  
   
@@ -195,9 +195,9 @@
 ## Remarks  
  <xref:System.ComponentModel.Design.DesignerActionService.Add%2A> Metoda reprezentuje model wypychania, dodawanie tagów inteligentnych. Model ściągania alternatywne opiera się na zastępowanie <xref:System.ComponentModel.Design.ComponentDesigner.ActionLists%2A> właściwość w Projektancie dla odpowiadającego składnika.  
   
- Gdy wywoływana jest ta metoda, listy do dodania są skanowane pod kątem dowolnego <xref:System.ComponentModel.Design.DesignerActionMethodItem> z właściwością <xref:System.ComponentModel.Design.DesignerActionMethodItem.IncludeAsDesignerVerb%2A> ustawioną na `true`. Wyszukuje model wypychania tagów inteligentnych typu <xref:System.ComponentModel.Design.MenuCommandService.AddVerb%2A?displayProperty=nameWithType>, a następnie dodaje je do podane  kolekcji.  
+ Gdy wywoływana jest ta metoda, listy do dodania są skanowane pod kątem dowolnego <xref:System.ComponentModel.Design.DesignerActionMethodItem> z właściwością <xref:System.ComponentModel.Design.DesignerActionMethodItem.IncludeAsDesignerVerb%2A> ustawioną na `true`. Te elementy są dodawane do listy zleceń projektanta dla tego składnika, za pomocą wywołania <xref:System.ComponentModel.Design.MenuCommandService.AddVerb%2A?displayProperty=nameWithType> metody.  
   
- Powoduje usunięcie co najmniej jedną listę tagów inteligentnych z co najmniej jednego składnika. Lista tagów inteligentnych do usunięcia.  
+ Tagi inteligentne są zarządzane na podstawie wystąpienia składnika. Zarządzana Kolekcja może zawierać zduplikowanych wpisów.  
   
  Ta metoda wywołuje <xref:System.ComponentModel.Design.DesignerActionService.DesignerActionListsChanged> zdarzeń.  
   
@@ -228,15 +228,15 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ta wersja  metoda jest zwykle używane przez projektantów narzędzi projektowania, ponieważ składnik Deweloperzy zazwyczaj nie wiesz, jakie inne składniki istnieje w bieżącej przestrzeni projektu.</summary>
+        <summary>Zwalnia wszystkie składniki z zarządzania, a następnie usuwa wszystkie listy tagów inteligentnych model wypychania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli operacja się powiedzie, ta metoda wywołuje <xref:System.ComponentModel.Design.DesignerActionService.Clear%2A> zdarzeń.  
+ <xref:System.ComponentModel.Design.DesignerActionService.Clear%2A> Metoda opróżnia tabeli wewnętrznej do przechowywania informacji z listy tagów inteligentnych o składniki i ich model wypychania.  
   
 > [!CAUTION]
->  Składnik, aby usunąć skojarzenie tagi inteligentne. Usuwa wszystkie listy tagów inteligentnych skojarzone z określonego składnika. W przypadku powodzenia <xref:System.ComponentModel.Design.DesignerActionService.Remove%2A> wywołuje metodę  zdarzeń.  
+>  Ponieważ ta metoda ma wpływ na wszystkie składniki zarządzane przez usługę bieżący, a nie tylko bieżącego składnika, tej metody należy używać z rozwagą. Zazwyczaj dewelopera narzędzie projektowania używa go podczas resetowania powierzchni projektowej. Deweloperzy składników należy użyć jednej z <xref:System.ComponentModel.Design.DesignerActionService.Remove%2A> metody zamiast tego można usunąć tagu inteligentnego poszczególnych elementów lub wyświetla ich listę.  
   
  Zdarzenie <xref:System.ComponentModel.Design.DesignerActionService.DesignerActionListsChanged> jest wywoływane dla każdego komponentu, który wcześniej był zarządzany przez bieżącą usługę.  
   
@@ -267,7 +267,7 @@
       <Docs>
         <param name="comp">
           <see cref="T:System.ComponentModel.IComponent" /> Do wyszukania.</param>
-        <summary>Usuwa listy określonego tagu inteligentnego z określonego składnika.</summary>
+        <summary>Określa, czy bieżąca usługa tagu inteligentnego zarządza listy akcji dla określonego składnika.</summary>
         <returns>
           <see langword="true" /> Jeśli składnik jest zarządzany przez bieżący usługi; w przeciwnym razie <see langword="false" />.</returns>
         <remarks>
@@ -353,6 +353,11 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -421,7 +426,7 @@
         </remarks>
         <block subset="none" type="overrides">
           <para>
-            <see langword="Dispose" /> może być wywoływana wiele razy przez inne obiekty. Podczas zastępowania <see langword="Dispose(Boolean)" /> Uważaj, aby nie odwołują się do obiektów, które zostały wcześniej zlikwidowane wcześniejszym wywołaniem do <see langword="Dispose" />. Aby uzyskać więcej informacji o sposobie wdrażania <see langword="Dispose(Boolean)" />, zobacz [Implementowanie Method](~/docs/standard/garbage-collection/implementing-dispose.md) Dispose.  Aby uzyskać więcej informacji na temat <see langword="Dispose" /> i <see cref="M:System.Object.Finalize" />, zobacz [czyszczenia Resources](~/docs/standard/garbage-collection/unmanaged.md) niezarządzanych i [Overriding the Finalize Method] (http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).</para>
+            <see langword="Dispose" /> może być wywoływana wiele razy przez inne obiekty. Podczas zastępowania <see langword="Dispose(Boolean)" /> Uważaj, aby nie odwołują się do obiektów, które zostały wcześniej zlikwidowane wcześniejszym wywołaniem do <see langword="Dispose" />. Aby uzyskać więcej informacji o sposobie wdrażania <see langword="Dispose(Boolean)" />, zobacz [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  Aby uzyskać więcej informacji na temat <see langword="Dispose" /> i <see cref="M:System.Object.Finalize" />, zobacz [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) i [Overriding the Finalize Method](http://msdn.microsoft.com/library/8026cb68-fe93-43fc-96c1-c09ad7d64cd3).</para>
         </block>
         <altmember cref="Overload:System.ComponentModel.Design.IServiceContainer.RemoveService" />
         <altmember cref="T:System.ComponentModel.Design.IComponentChangeService" />
@@ -449,6 +454,11 @@
         <AssemblyVersion>2.0.0.0</AssemblyVersion>
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <Attributes>
+        <Attribute FrameworkAlternate="netframework-4.0">
+          <AttributeName>System.Runtime.TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")</AttributeName>
+        </Attribute>
+      </Attributes>
       <ReturnValue>
         <ReturnType>System.ComponentModel.Design.DesignerActionListCollection</ReturnType>
       </ReturnValue>
