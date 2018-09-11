@@ -1,0 +1,2 @@
+> [!IMPORTANT]
+> Wywoływanie metody z klasy, które implementują ten interfejs z niezaufanych danych stanowi zagrożenie bezpieczeństwa. Wywoływanie metody z klasy, które implementują ten interfejs tylko z zaufanych danych. Aby uzyskać więcej informacji, zobacz [sprawdzanie poprawności danych](https://www.owasp.org/index.php/Data_Validation).

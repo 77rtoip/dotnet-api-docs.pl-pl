@@ -1,0 +1,2 @@
+> [!IMPORTANT]
+> Wywołanie tej metody z niezaufanych danych stanowi zagrożenie bezpieczeństwa. Wywołanie tej metody tylko z zaufanych danych. Aby uzyskać więcej informacji, zobacz [sprawdzanie poprawności danych](https://www.owasp.org/index.php/Data_Validation).

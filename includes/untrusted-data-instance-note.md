@@ -1,0 +1,2 @@
+> [!IMPORTANT]
+> Za pomocą wystąpienia obiektu z niezaufanych danych stanowi zagrożenie bezpieczeństwa. Ten obiekt jest używany tylko z zaufanych danych. Aby uzyskać więcej informacji, zobacz [sprawdzanie poprawności danych](https://www.owasp.org/index.php/Data_Validation).
