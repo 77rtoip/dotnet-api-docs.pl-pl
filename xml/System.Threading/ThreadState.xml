@@ -1,11 +1,11 @@
 <Type Name="ThreadState" FullName="System.Threading.ThreadState">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="5caa2caa6d22a6bccdc3cfc010bb3f89f6737e58" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="e347d6f31f6e3a0e045084f27299e2c9a67567e7" />
+    <Meta Name="ms.sourcegitcommit" Value="4a914b6378c5c53d63aedc4881f870359361672e" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48595343" />
+    <Meta Name="ms.lasthandoff" Value="10/25/2018" />
+    <Meta Name="ms.locfileid" Value="50027064" />
   </Metadata>
   <TypeSignature Language="C#" Value="public enum ThreadState" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed ThreadState extends System.Enum" />
@@ -55,30 +55,38 @@
  <xref:System.Threading.ThreadState> definiuje zestaw stanów możliwe wykonanie wszystkich wątków. Po utworzeniu wątku, jest w co najmniej jednym ze stanów do momentu zakończenia jego działania. Utworzone w ramach środowiska uruchomieniowego języka wspólnego wątki są początkowo `Unstarted` stanu, gdy zewnętrznych wątki, które dochodzą do środowiska uruchomieniowego są już w `Running` stanu. `Unstarted` Wątku jest przenoszone do `Running` stanu przez wywołanie metody <xref:System.Threading.Thread.Start%2A>. Nie wszystkie kombinacje `ThreadState` wartości są prawidłowe; na przykład wątku nie może być zarówno `Aborted` i `Unstarted` stanów.  
   
 > [!IMPORTANT]
->  Istnieją dwa wyliczenia stan wątku,<xref:System.Threading.ThreadState?displayProperty=nameWithType> i <xref:System.Diagnostics.ThreadState?displayProperty=nameWithType>.  
+>  Istnieją dwa wyliczenia stan wątku: <xref:System.Threading.ThreadState?displayProperty=nameWithType> i <xref:System.Diagnostics.ThreadState?displayProperty=nameWithType>.  
   
  W poniższej tabeli przedstawiono akcje, które powodują zmiany stanu.  
   
 |Akcja|ThreadState|  
 |------------|-----------------|  
-|Wątek jest tworzony w ramach środowiska uruchomieniowego języka wspólnego.|Nierozpoczęte|  
-|Inny wątek wywoła <xref:System.Threading.Thread.Start%2A?displayProperty=nameWithType> zwraca nowego wątku i wywołania metody.<br /><br /> <xref:System.Threading.Thread.Start%2A> Metoda nie zwraca do momentu nowy wątek rozpoczęło działanie. Nie istnieje sposób, aby dowiedzieć się, w którym momencie nowy wątek rozpocznie się podczas wywołania <xref:System.Threading.Thread.Start%2A>.|Uruchomienie|  
-|Wywołania wątku <xref:System.Threading.Thread.Sleep%2A>|WaitSleepJoin|  
-|Wywołania wątku <xref:System.Threading.Monitor.Wait%2A> na inny obiekt.|WaitSleepJoin|  
-|Wywołania wątku <xref:System.Threading.Thread.Join%2A> w innym wątku.|WaitSleepJoin|  
-|Inny wątek wywoła <xref:System.Threading.Thread.Interrupt%2A>|Uruchomienie|  
-|Inny wątek wywoła <xref:System.Threading.Thread.Suspend%2A>|SuspendRequested|  
-|Wątek reaguje na <xref:System.Threading.Thread.Suspend%2A> żądania.|Suspended|  
-|Inny wątek wywoła <xref:System.Threading.Thread.Resume%2A>|Uruchomienie|  
-|Inny wątek wywoła <xref:System.Threading.Thread.Abort%2A>|AbortRequested|  
-|Wątek reaguje na <xref:System.Threading.Thread.Abort%2A> żądania.|Zatrzymany|  
+|Wątek jest tworzony w ramach środowiska uruchomieniowego języka wspólnego.|<xref:System.Threading.ThreadState.Unstarted>|  
+|Inny wątek wywoła <xref:System.Threading.Thread.Start%2A?displayProperty=nameWithType> zwraca nowego wątku i wywołania metody.<br /><br /> <xref:System.Threading.Thread.Start%2A> Metoda nie zwraca do momentu nowy wątek rozpoczęło działanie. Nie istnieje sposób, aby dowiedzieć się, w którym momencie nowy wątek rozpocznie się podczas wywołania <xref:System.Threading.Thread.Start%2A>.|<xref:System.Threading.ThreadState.Running>|  
+|Wywołania wątku <xref:System.Threading.Thread.Sleep%2A>|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|Wywołania wątku <xref:System.Threading.Monitor.Wait%2A> na inny obiekt.|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|Wywołania wątku <xref:System.Threading.Thread.Join%2A> w innym wątku.|<xref:System.Threading.ThreadState.WaitSleepJoin>|  
+|Inny wątek wywoła <xref:System.Threading.Thread.Interrupt%2A>|<xref:System.Threading.ThreadState.Running>|  
+|Inny wątek wywoła <xref:System.Threading.Thread.Suspend%2A>|<xref:System.Threading.ThreadState.SuspendRequested>|  
+|Wątek reaguje na <xref:System.Threading.Thread.Suspend%2A> żądania.|<xref:System.Threading.ThreadState.Suspended>|  
+|Inny wątek wywoła <xref:System.Threading.Thread.Resume%2A>|<xref:System.Threading.ThreadState.Running>|  
+|Inny wątek wywoła <xref:System.Threading.Thread.Abort%2A>|<xref:System.Threading.ThreadState.AbortRequested>|  
+|Wątek reaguje na <xref:System.Threading.Thread.Abort%2A> żądania.|<xref:System.Threading.ThreadState.Stopped>|  
 |Wątek zostanie zakończony.|Zatrzymany|  
   
- Oprócz państw, o których wspomniano powyżej, istnieje również `Background` stanu, który wskazuje, czy wątek jest uruchomiony w pierwszego planu i tła.  
+ Oprócz państw, o których wspomniano powyżej, istnieje również <xref:System.Threading.ThreadState.Background> stanu, który wskazuje, czy wątek jest uruchomiony w pierwszego planu i tła.  
   
- Wątek może być w stanie więcej niż jeden w danym momencie. Na przykład, jeśli wątek jest zablokowany w wywołaniu <xref:System.Threading.Monitor.Wait%2A>i inny wątek wywoła <xref:System.Threading.Thread.Abort%2A> na zablokowany wątek będzie zablokowany wątek w obu `WaitSleepJoin` i `AbortRequested` Państwa, w tym samym czasie. W tym przypadku tak szybko, jak wątek wraca z wywołania <xref:System.Threading.Monitor.Wait%2A> lub jest przerwany, będzie ona otrzymywać <xref:System.Threading.ThreadAbortException> umożliwiającą zostanie przerwany.  
+ Wątek może być w stanie więcej niż jeden w danym momencie. Na przykład, jeśli wątek jest zablokowany w wywołaniu <xref:System.Threading.Monitor.Wait%2A>i inny wątek wywoła <xref:System.Threading.Thread.Abort%2A> na zablokowany wątek będzie zablokowany wątek w obu <xref:System.Threading.ThreadState.WaitSleepJoin> i <xref:System.Threading.ThreadState.AbortRequested> Państwa, w tym samym czasie. W tym przypadku tak szybko, jak wątek wraca z wywołania <xref:System.Threading.Monitor.Wait%2A> lub jest przerwany, będzie ona otrzymywać <xref:System.Threading.ThreadAbortException> umożliwiającą zostanie przerwany.  
   
- <xref:System.Threading.Thread.ThreadState%2A?displayProperty=nameWithType> Wątku dostarcza bieżący stan wątku. Aplikacje muszą używać maską bitów, aby ustalić, czy wątek jest uruchomiony. Ponieważ wartość `Running` jest wartość zero (0), sprawdź, czy wątek jest uruchomiony przy użyciu kodu C#, takich jak `(myThread.ThreadState & (ThreadState.Stopped | ThreadState.Unstarted)) == 0` lub kod języka Visual Basic, takie jak `(myThread.ThreadState And (ThreadState.Stopped Or ThreadState.Unstarted)) = 0`.  
+ <xref:System.Threading.Thread.ThreadState%2A?displayProperty=nameWithType> Wątku dostarcza bieżący stan wątku. Aplikacje muszą używać Maska bitów, aby ustalić, czy wątek jest uruchomiony. Ponieważ wartość <xref:System.Threading.ThreadState.Running> jest wartość zero (0), sprawdź, czy wątek jest uruchomiony przez następujący kod:
+
+```csharp
+(myThread.ThreadState & (ThreadState.Stopped | ThreadState.Unstarted)) == 0
+```
+
+```vb
+(myThread.ThreadState And (ThreadState.Stopped Or ThreadState.Unstarted)) = 0
+```
   
  ]]></format>
     </remarks>
@@ -216,7 +224,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>Wątek został uruchomiony, nie jest zablokowany i braku oczekujących <see cref="T:System.Threading.ThreadAbortException" />.</summary>
+        <summary>Wątek została uruchomiona i jeszcze nie został zatrzymany.</summary>
       </Docs>
     </Member>
     <Member MemberName="Stopped">
