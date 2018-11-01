@@ -1,11 +1,11 @@
 <Type Name="Interlocked" FullName="System.Threading.Interlocked">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ee8e3ad4fa7d212927fd8df4c3f8b47b7edb9fd4" />
-    <Meta Name="ms.sourcegitcommit" Value="9df583fc6d4a3b1ce771cad475bdf090de38fc54" />
+    <Meta Name="ms.openlocfilehash" Value="e3783410a63cbfca0d609cbeca86292bd685d162" />
+    <Meta Name="ms.sourcegitcommit" Value="17be041cedb5ed3cefe84485b1c4f2cf36c16aff" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/18/2018" />
-    <Meta Name="ms.locfileid" Value="49401561" />
+    <Meta Name="ms.lasthandoff" Value="10/31/2018" />
+    <Meta Name="ms.locfileid" Value="50408933" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class Interlocked" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Interlocked extends System.Object" />
@@ -61,7 +61,8 @@
  <xref:System.Threading.Interlocked.Add%2A> Metoda niepodzielnie dodaje wartość do zmiennej całkowitej i zwraca nową wartość zmiennej.  
   
  <xref:System.Threading.Interlocked.Exchange%2A> Metoda niepodzielnie wymienia wartości zmiennych określony. <xref:System.Threading.Interlocked.CompareExchange%2A> Metoda łączy dwie operacje: porównanie dwóch wartości i przechowywanie trzecią wartość w jednej ze zmiennych w oparciu o wyniki porównania. Porównanie atomowe i wymianę operacji jako operację niepodzielną.  
-  
+
+ Upewnij się, że wszelkie zapisu lub odczytu w udostępnionej zmiennej atomic. W przeciwnym razie danych może być uszkodzony lub załadować wartość może być niepoprawny.    
    
   
 ## Examples  
@@ -197,8 +198,6 @@
   
 ## Remarks  
  Ta metoda obsługuje warunek przepełnienia opakowując: Jeśli wartość w `location1` jest <xref:System.Int64.MaxValue?displayProperty=nameWithType> i `value` wynosi 1, wynik jest <xref:System.Int64.MinValue?displayProperty=nameWithType>; Jeśli `value` wynosi 2, wynik jest (<xref:System.Int64.MinValue?displayProperty=nameWithType> + 1); i tak dalej. Jest zgłaszany żaden wyjątek.  
-  
- <xref:System.Threading.Interlocked.Read%2A> Metody i 64-bitowych przeciążenia <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, i <xref:System.Threading.Interlocked.Add%2A> metody są naprawdę atomic tylko w systemach gdzie <xref:System.IntPtr?displayProperty=nameWithType> jest 64-bitowy, długie. W innych systemach te metody są niepodzielne, w odniesieniu do siebie nawzajem, ale nie w odniesieniu do innych sposobów uzyskiwania dostępu do danych. W związku z tym, aby zapewniać bezpieczeństwo wątkowe w systemach 32-bitowych, należy dokonać dostępu na wartość 64-bitowych za pomocą elementów członkowskich <xref:System.Threading.Interlocked> klasy.  
   
  ]]></format>
         </remarks>
@@ -819,8 +818,6 @@
 ## Remarks  
  Ta metoda obsługuje warunek przepełnienia opakowując: Jeśli `location`  =  <xref:System.Int64.MinValue?displayProperty=nameWithType>, `location` - 1 = <xref:System.Int64.MaxValue?displayProperty=nameWithType>. Jest zgłaszany żaden wyjątek.  
   
- <xref:System.Threading.Interlocked.Read%2A> Metody i 64-bitowych przeciążenia <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, i <xref:System.Threading.Interlocked.Add%2A> metody są naprawdę atomic tylko w systemach gdzie <xref:System.IntPtr?displayProperty=nameWithType> jest 64-bitowy, długie. W innych systemach te metody są niepodzielne, w odniesieniu do siebie nawzajem, ale nie w odniesieniu do innych sposobów uzyskiwania dostępu do danych. W związku z tym, aby zapewniać bezpieczeństwo wątkowe w systemach 32-bitowych, należy dokonać dostępu na wartość 64-bitowych za pomocą elementów członkowskich <xref:System.Threading.Interlocked> klasy.  
-  
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">Adres <paramref name="location" /> jest wskaźnikiem wartości null.</exception>
@@ -1361,8 +1358,6 @@
 ## Remarks  
  Ta metoda obsługuje warunek przepełnienia opakowując: Jeśli `location`  =  <xref:System.Int64.MaxValue?displayProperty=nameWithType>, `location` + 1 = <xref:System.Int64.MinValue?displayProperty=nameWithType>. Jest zgłaszany żaden wyjątek.  
   
- <xref:System.Threading.Interlocked.Read%2A> Metody i 64-bitowych przeciążenia <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, i <xref:System.Threading.Interlocked.Add%2A> metody są naprawdę atomic tylko w systemach gdzie <xref:System.IntPtr?displayProperty=nameWithType> jest 64-bitowy, długie. W innych systemach te metody są niepodzielne, w odniesieniu do siebie nawzajem, ale nie w odniesieniu do innych sposobów uzyskiwania dostępu do danych. W związku z tym, aby zapewniać bezpieczeństwo wątkowe w systemach 32-bitowych, należy dokonać dostępu na wartość 64-bitowych za pomocą elementów członkowskich <xref:System.Threading.Interlocked> klasy.  
-  
  ]]></format>
         </remarks>
         <exception cref="T:System.NullReferenceException">Adres <paramref name="location" /> jest wskaźnikiem wartości null.</exception>
@@ -1490,11 +1485,6 @@
   
 ## Remarks  
  <xref:System.Threading.Interlocked.Read%2A> Metoda jest wykorzystywana w systemach 64-bitowych w przypadku, ponieważ 64-bitowe operacje odczytu są już niepodzielne. W 32-bitowych systemach 64-bitowe operacje odczytu nie są niepodzielne, o ile nie jest wykonywane przy użyciu <xref:System.Threading.Interlocked.Read%2A>.  
-  
- <xref:System.Threading.Interlocked.Read%2A> Metody i 64-bitowych przeciążenia <xref:System.Threading.Interlocked.Increment%2A>, <xref:System.Threading.Interlocked.Decrement%2A>, i <xref:System.Threading.Interlocked.Add%2A> metody są naprawdę atomic tylko w systemach gdzie <xref:System.IntPtr?displayProperty=nameWithType> jest 64-bitowy, długie. W innych systemach te metody są niepodzielne, w odniesieniu do siebie nawzajem, ale nie w odniesieniu do innych sposobów uzyskiwania dostępu do danych. W związku z tym, aby zapewniać bezpieczeństwo wątkowe w systemach 32-bitowych, należy dokonać dostępu na wartość 64-bitowych za pomocą elementów członkowskich <xref:System.Threading.Interlocked> klasy.  
-  
-> [!NOTE]
->  <xref:System.IntPtr> jest typem danych specyficznych dla platformy.  
   
  ]]></format>
         </remarks>
