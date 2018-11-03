@@ -1,11 +1,11 @@
 <Type Name="Thread" FullName="System.Threading.Thread">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="7c33ebbf7fda315ea7cdcd851f00c29b10d280bd" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="38eda2875476a401d6a3442e5e40cebc592a4863" />
+    <Meta Name="ms.sourcegitcommit" Value="996ba67625b61917bcf75bfefe6dcb016019c2d8" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48741633" />
+    <Meta Name="ms.lasthandoff" Value="11/02/2018" />
+    <Meta Name="ms.locfileid" Value="50965477" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class Thread : System.Runtime.ConstrainedExecution.CriticalFinalizerObject, System.Runtime.InteropServices._Thread" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Thread extends System.Runtime.ConstrainedExecution.CriticalFinalizerObject implements class System.Runtime.InteropServices._Thread" />
@@ -142,7 +142,11 @@
 <a name="Culture"></a>   
 ## <a name="culture-and-threads"></a>Kultura i wątki  
  Każdy wątek ma kultury, reprezentowane przez <xref:System.Threading.Thread.CurrentCulture%2A> właściwości i kultury UI, reprezentowane przez <xref:System.Threading.Thread.CurrentUICulture%2A> właściwości.  Bieżącej kultury obsługuje takie operacje zależne od kultury jako analizowania i formatowania, porównywania ciągów i sortowania, a także kontroluje, system pisma i kalendarz używany przez wątek. Bieżąca kultura interfejsu użytkownika umożliwia pobranie wrażliwość na ustawienia kulturowe zasoby w plikach zasobów.  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentCulture> i <xref:System.Threading.Thread.CurrentUICulture> właściwości nie działają niezawodnie, gdy jest używane z żadnym z wątków niż bieżący wątek. W programie .NET Framework odczytywanie tych właściwości jest niezawodne, mimo że ustawienie tych właściwości dla wątku niż bieżący wątek nie jest. Na platformie .NET Core <xref:System.InvalidOperationException> jest generowany, jeśli wątek próbował odczytać lub zapisać tych właściwości w innym wątku.
+> Firma Microsoft zaleca użycie <xref:System.Globalization.CultureInfo.CurrentCulture?displayProperty=nameWithType> i <xref:System.Globalization.CultureInfo.CurrentUICulture?displayProperty=nameWithType> właściwości, aby pobierać i ustawiać bieżącej kultury.
+
  Podczas tworzenia wystąpienia nowego wątku jego kultury i kultury UI zdefiniowano Bieżąca kultura systemu i kultura interfejsu użytkownika, a nie przez kultury i kultury UI, wątku, z którego jest tworzony nowy wątek. Oznacza to, na przykład, że bieżąca kultura systemu jest angielski (Stany Zjednoczone) i bieżącej kultury wątku aplikacji głównej jest francuski (Francja), kultura nowy wątek, utworzonych przez wywoływanie <xref:System.Threading.Thread.%23ctor%28System.Threading.ParameterizedThreadStart%29> konstruktora z wątku głównego jest angielski (Stany Zjednoczone), francuski (Francja). Aby uzyskać więcej informacji, zobacz sekcję "Kultura i wątki" <xref:System.Globalization.CultureInfo> temat poświęcony klasie.  
   
 > [!IMPORTANT]
@@ -153,9 +157,9 @@
 -   Możesz przekazać <xref:System.Globalization.CultureInfo> obiekt, który reprezentuje tę kulturę do <xref:System.Threading.ParameterizedThreadStart> delegować lub <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%2CSystem.Object%29?displayProperty=nameWithType> metody.  
   
 -   Dla aplikacji działających w [!INCLUDE[net_v45](~/includes/net-v45-md.md)] i nowsze wersje, można zdefiniować kultury i kultury UI, który ma być przypisana do wszystkich wątków, utworzone w domenie aplikacji, ustawiając wartość <xref:System.Globalization.CultureInfo.DefaultThreadCurrentCulture%2A?displayProperty=nameWithType> i <xref:System.Globalization.CultureInfo.DefaultThreadCurrentUICulture%2A?displayProperty=nameWithType> właściwości. Należy pamiętać, że to ustawienie domeny na aplikację.  
-  
- Aby uzyskać więcej informacji i przykładów, zobacz sekcję "Kultura i wątki" <xref:System.Globalization.CultureInfo> temat poświęcony klasie.  
-  
+
+ Aby uzyskać więcej informacji i przykładów, zobacz sekcję "Kultura i wątki" <xref:System.Globalization.CultureInfo> temat poświęcony klasie.
+
 <a name="Properties"></a>   
 ## <a name="getting-information-about-and-controlling-threads"></a>Pobieranie informacji o i sterowanie wątkami  
  Możesz pobrać wiele wartości właściwości, które zawierają informacje o wątku. W niektórych przypadkach można również ustawić te wartości właściwości do sterowania działaniem wątku. Te właściwości wątku zawierać:  
@@ -1105,13 +1109,15 @@ Ważne dla częściowo zaufanego kodu, <c>maxStackSize</c> jest ignorowana, jeś
   
 ## Remarks  
  <xref:System.Globalization.CultureInfo> Obiektu, który jest zwracany przez tę właściwość, wraz z jego skojarzone obiekty określenia domyślnego formatu daty, godziny, numery, wartości waluty, sortowanie kolejność tekstu, wielkość liter konwencje i porównywania ciągów. Zobacz <xref:System.Globalization.CultureInfo> klasy, aby dowiedzieć się więcej o nazwy i identyfikatory i różnice między niezmienne, neutralne i nacechowane kultury i informacji o kulturze sposób wpływa na wątki i domen aplikacji. Zobacz <xref:System.Globalization.CultureInfo.CurrentCulture%2A?displayProperty=nameWithType> właściwości, aby dowiedzieć się sposób ustalania kultury domyślnej dla wątku i jak użytkownicy ustawić informacje o ustawieniach kulturowych na swoich komputerach.  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentCulture> Właściwości nie działa niezawodnie, gdy jest używane z żadnym z wątków niż bieżący wątek. W programie .NET Framework odczytu właściwości jest wiarygodna, mimo że ustawienie dla wątku niż bieżący wątek nie jest. Na platformie .NET Core <xref:System.InvalidOperationException> jest generowany, jeśli wątek podejmuje próbę odczytu lub zapisu <xref:System.Threading.Thread.CurrentCulture> właściwości w innym wątku.
+> Firma Microsoft zaleca użycie <xref:System.Globalization.CultureInfo.CurrentCulture?displayProperty=nameWithType> właściwości, aby pobrać i ustawić bieżącej kultury.
+
  Począwszy od [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], można ustawić <xref:System.Threading.Thread.CurrentCulture%2A> właściwości kultury neutralnej. Jest to spowodowane zachowanie <xref:System.Globalization.CultureInfo> klasy został zmieniony: gdy reprezentuje kultury neutralnej wartości właściwości (w szczególności <xref:System.Globalization.CultureInfo.Calendar%2A>, <xref:System.Globalization.CultureInfo.CompareInfo%2A>, <xref:System.Globalization.CultureInfo.DateTimeFormat%2A>, <xref:System.Globalization.CultureInfo.NumberFormat%2A>, i <xref:System.Globalization.CultureInfo.TextInfo%2A> właściwości) teraz odzwierciedlają określoną kulturę, który jest skojarzony z wykorzystaniem kultury neutralnej. We wcześniejszych wersjach programu .NET Framework <xref:System.Threading.Thread.CurrentCulture%2A> zgłosił właściwość <xref:System.NotSupportedException> wyjątek, jeśli przypisano kultury neutralnej.  
   
-   
-  
 ## Examples  
- Poniższy przykład kodu pokazuje wątkowości instrukcji, która umożliwia interfejsu użytkownika formularzy Windows w celu wyświetlenia w kulturze, który jest ustawiony w Panelu sterowania. Dodatkowy kod jest wymagany.  
+ Poniższy przykład pokazuje wątkowości instrukcji, która zezwala na interfejsie użytkownika aplikacji Windows Forms do wyświetlenia w kulturze, który jest ustawiony w Panelu sterowania. Dodatkowy kod jest wymagany.  
   
  [!code-cpp[System.Threading.Thread.Culture#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Thread.Culture/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Thread.Culture#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Thread.Culture/CS/source.cs#1)]
@@ -1120,6 +1126,7 @@ Ważne dla częściowo zaufanego kodu, <c>maxStackSize</c> jest ignorowana, jeś
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException">Właściwość jest ustawiona na <see langword="null" />.</exception>
+        <exception cref="T:System.InvalidOperationException">.NET core: odczytywania lub zapisywania kultury wątku z innego wątku nie jest obsługiwana.</exception>
         <permission cref="T:System.Security.Permissions.SecurityPermission">do ustawiania właściwości. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlThread" /></permission>
       </Docs>
     </Member>
@@ -1283,7 +1290,11 @@ Ważne dla częściowo zaufanego kodu, <c>maxStackSize</c> jest ignorowana, jeś
   
 ## Remarks  
  Kultura interfejsu użytkownika określa zasoby, aplikacja musi obsługiwać dane wejściowe użytkownika i danych wyjściowych i domyślnie jest taka sama jak kultury systemu operacyjnego. Zobacz <xref:System.Globalization.CultureInfo> klasy, aby dowiedzieć się więcej o nazwy i identyfikatory i różnice między niezmienne, neutralne i nacechowane kultury i informacji o kulturze sposób wpływa na wątki i domen aplikacji. Zobacz <xref:System.Globalization.CultureInfo.CurrentUICulture%2A?displayProperty=nameWithType> właściwości, aby dowiedzieć się, jak kultura interfejsu użytkownika domyślnego dla wątku jest określana.  
-  
+
+> [!IMPORTANT]
+> <xref:System.Threading.Thread.CurrentUICulture> Właściwości nie działa niezawodnie, gdy jest używane z żadnym z wątków niż bieżący wątek. W programie .NET Framework odczytu właściwości jest wiarygodna, mimo że ustawienie dla wątku niż bieżący wątek nie jest. Na platformie .NET Core <xref:System.InvalidOperationException> jest generowany, jeśli wątek podejmuje próbę odczytu lub zapisu <xref:System.Threading.Thread.CurrentUICulture> właściwości w innym wątku.
+> Firma Microsoft zaleca użycie <xref:System.Globalization.CultureInfo.CurrentUICulture?displayProperty=nameWithType> właściwości, aby pobrać i ustawić bieżącej kultury.
+
  <xref:System.Globalization.CultureInfo> Zwracane przez tę właściwość można kultury neutralnej. Nie należy używać kultury neutralnej za pomocą metod formatowania, takich jak <xref:System.String.Format%28System.IFormatProvider%2CSystem.String%2CSystem.Object%5B%5D%29?displayProperty=nameWithType>, <xref:System.DateTime.ToString%28System.String%2CSystem.IFormatProvider%29?displayProperty=nameWithType>, i <xref:System.Convert.ToString%28System.Char%2CSystem.IFormatProvider%29?displayProperty=nameWithType>. Użyj <xref:System.Globalization.CultureInfo.CreateSpecificCulture%2A?displayProperty=nameWithType> metodę, aby pobrać określoną kulturę, lub użyj <xref:System.Threading.Thread.CurrentCulture%2A> właściwości.  
   
 > [!NOTE]
@@ -1307,6 +1318,7 @@ Ważne dla częściowo zaufanego kodu, <c>maxStackSize</c> jest ignorowana, jeś
         </remarks>
         <exception cref="T:System.ArgumentNullException">Właściwość jest ustawiona na <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException">Nazwa kultury, która nie może być używana do lokalizowania plików zasobów jest właściwością. W nazwach plików zasobów mogą zawierać wyłącznie litery, cyfry, łączniki i podkreślenia.</exception>
+        <exception cref="T:System.InvalidOperationException">.NET core: odczytywania lub zapisywania kultury wątku z innego wątku nie jest obsługiwana.</exception>
       </Docs>
     </Member>
     <Member MemberName="DisableComObjectEagerCleanup">
