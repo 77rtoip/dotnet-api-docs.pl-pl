@@ -1,11 +1,11 @@
 <Type Name="Uri" FullName="System.Uri">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="bc748165070ca7c2fc35cc5a3d821923907161f7" />
-    <Meta Name="ms.sourcegitcommit" Value="41742a1055cefdeaf2f9d76364f4bad3c9f83126" />
+    <Meta Name="ms.openlocfilehash" Value="6a2e8da0423adb69adab3d2953a45d27b12eeb0c" />
+    <Meta Name="ms.sourcegitcommit" Value="dc6ea82452beeb642259a38f3c2fad756ebd3d9f" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/16/2018" />
-    <Meta Name="ms.locfileid" Value="48689802" />
+    <Meta Name="ms.lasthandoff" Value="11/07/2018" />
+    <Meta Name="ms.locfileid" Value="51264570" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Uri : System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit Uri extends System.Object implements class System.Runtime.Serialization.ISerializable" />
@@ -71,7 +71,9 @@
 -   Jeśli nazwa hosta jest adres IPv6, Kanoniczny adres IPv6 jest używany. Właściwości ScopeId i inne opcjonalne dane IPv6 są usuwane.  
   
 -   Usuwa domyślne i numery portów puste.
-
+  
+-   Konwertuje ścieżki plików jawne ze schematem file:// ścieżki plików niejawne bez ze schematem file:// (na przykład "C:\my\file").
+  
 -   Znaki ucieczki przestają być (znany także jako procent, kodowane w oktetach), które nie mają zastrzeżone przeznaczenia są dekodowane (znany także jako trwa o niezmienionym znaczeniu). Obejmuje niezastrzeżone znaki wielkich i łącznik cyfry dziesiętne (30-% 39), małe litery (% 41-% 5A i % 7A 61%) (% 2D), kropki (% 2E), znaku podkreślenia (% 5F), a tylda (% 7E).
 
 -   Canonicalizes ścieżki hierarchicznej identyfikatory URI przez sekwencje kompaktowania takich jak /. /, /... /, a / / (czy sekwencji jest poprzedzone znakiem zmiany znaczenia). Należy pamiętać, że istnieją niektóre schematy, dla których nie skompaktowany jest tych sekwencji.
@@ -168,6 +170,14 @@ http://myUrl/
  <xref:System.GenericUriParser?displayProperty=nameWithType> Klasy ma również rozszerzone możliwości tworzenia dostosowywalne analizatora składni, która obsługuje IRI i IDN. Zachowanie <xref:System.GenericUriParser?displayProperty=nameWithType> obiektu jest określony przez przekazanie bitowa kombinacja wartości, które są dostępne w <xref:System.GenericUriParserOptions?displayProperty=nameWithType> wyliczeniu, aby <xref:System.GenericUriParser?displayProperty=nameWithType> konstruktora. <xref:System.GenericUriParserOptions.IriParsing?displayProperty=nameWithType> Typ wskazuje parser obsługuje reguły analizy składni określony w RFC 3987 dla międzynarodowych identyfikatorów zasobów (IRI). Czy ma być używana IRI jest zależna od wartości konfiguracji omówionych wcześniej.  
   
  <xref:System.GenericUriParserOptions.Idn?displayProperty=nameWithType> Typ wskazuje parser obsługuje międzynarodowych nazw domen (IDN) podczas analizowania (IDN) nazw hostów. Czy ma być używana IDN jest zależna od wartości konfiguracji omówionych wcześniej.  
+  
+## <a name="implicit-file-path-support"></a>Obsługa ścieżki plików niejawne
+ <xref:System.Uri> również może służyć do reprezentowania ścieżki systemu plików lokalnych. Te ścieżki mogą być reprezentowane *jawnie* identyfikatorów URI, który zaczyna się schematem file:// i *niejawnie* identyfikatorów URI, które nie mają ze schematem file://. W konkretnym przykładzie następujące dwa identyfikatory URI są obie prawidłowe i reprezentują tej samej ścieżki pliku:
+```csharp
+Uri uri1 = new Uri("C:/test/path/file.txt") // Implicit file path.
+Uri uri2 = new Uri("file:///C:/test/path/file.txt") // Explicit file path.
+```
+ Te ścieżki plików niejawne nie są zgodne ze specyfikacją identyfikatora URI i dlatego należy unikać gdy jest to możliwe. Przy użyciu platformy .NET Core w systemach opartych na systemie Unix, ścieżki plików niejawne może być szczególnie kłopotliwe w sytuacji, ponieważ jest ścieżka bezwzględna do pliku niejawne *nierozróżnialne* ze ścieżką względną. Jeśli występuje takie niejednoznaczności <xref:System.Uri> domyślnie interpretowanie ścieżkę jako bezwzględny identyfikator URI.
   
 ## <a name="performance-considerations"></a>Zagadnienia dotyczące wydajności  
  Jeśli używasz *Web.config * plik, który zawiera identyfikatory URI w celu zainicjowania czasu aplikacji, dodatkowe wymagane do przetwarzania identyfikatory URI, jeśli ich identyfikatorów schematu są niestandardowe. W takim przypadku zainicjować częściami aplikacji, gdy identyfikatory URI są wymagane, nie o godzinie rozpoczęcia.  
