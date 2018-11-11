@@ -1,11 +1,11 @@
 <Type Name="TransactionScope" FullName="System.Transactions.TransactionScope">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="a82d108607f3f18ca21c7c9b6212a340a2a97bc3" />
-    <Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" />
+    <Meta Name="ms.openlocfilehash" Value="45dd699021cf8a33b96b1b8974ed6335d84a9f52" />
+    <Meta Name="ms.sourcegitcommit" Value="610a413147ca5b230ff99a6df778612e165a6cdf" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/04/2018" />
-    <Meta Name="ms.locfileid" Value="48705993" />
+    <Meta Name="ms.lasthandoff" Value="11/10/2018" />
+    <Meta Name="ms.locfileid" Value="51506177" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class TransactionScope : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit TransactionScope extends System.Object implements class System.IDisposable" />
@@ -763,11 +763,11 @@ Kiedy używasz `transactionOptions` parametru do określenia <xref:System.Transa
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołanie tej metody oznacza koniec zakresu transakcji. Jeśli <xref:System.Transactions.TransactionScope> utworzony obiekt transakcji oraz <xref:System.Transactions.TransactionScope.Complete%2A> została wywołana na zakres, <xref:System.Transactions.TransactionScope> obiekt próbuje zatwierdzić transakcji, gdy ta metoda jest wywoływana.  
+ Wywołanie tej metody oznacza koniec zakresu transakcji. Jeśli <xref:System.Transactions.TransactionScope> utworzony obiekt transakcji oraz <xref:System.Transactions.TransactionScope.Complete%2A> została wywołana na zakres, <xref:System.Transactions.TransactionScope> obiekt próbuje zatwierdzić transakcji, gdy ta metoda jest wywoływana. W tym przypadku to bloki metody do pierwszej fazy przetwarzania transakcji jest pełny. Pierwsza faza kończy się po wszystkich menedżerów zasobów i rejestracji w transakcji ma pod głosowanie w wyniku transakcji i <xref:System.Transactions.TransactionManager> trwale zdecydował się na zatwierdzenia lub przerwania transakcji. Drugi etap przetwarzania jest zawsze asynchroniczna. W związku z tym nie ma żadnej gwarancji, że dane tylko zatwierdzone z w ramach danej transakcji będą natychmiast dostępne później bez korzystania z innej transakcji do wyświetlenia tych danych.  
   
  Korzystanie z języka C# `using` konstrukcji gwarantuje, że ta metoda jest wywoływana, nawet jeśli wystąpi wyjątek. Wyjątki, które mogą występować po wywołaniu tej metody nie może mieć wpływ na transakcji. Ta metoda również przywraca otoczenia transakcji jej stanu pierwotnego. Element <xref:System.Transactions.TransactionAbortedException> jest generowany, jeśli transakcja nie jest faktycznie.  
   
- Ta metoda jest synchroniczne i blokuje, aż zatwierdzeniu lub przerwaniu transakcji. W związku z tym należy zachować ostrożność bardzo przy użyciu tej metody w aplikacji formularza Windows (formularza systemu Windows) lub zakleszczenia mogą wystąpić. Jeśli wywołanie tej metody w ramach jednego zdarzenia kontrolki formularza systemu Windows (np. Kliknięcie przycisku) i użyj synchronicznej <xref:System.Windows.Forms.Control.Invoke%2A> metody bezpośrednie kontrolki do wykonania niektórych zadań interfejsu użytkownika (na przykład zmiany kolorów) w trakcie przetwarzania transakcji nastąpi zakleszczenia. Jest to spowodowane <xref:System.Windows.Forms.Control.Invoke%2A> metoda jest synchroniczne i blokuje wątku roboczego zakończenie wątku interfejsu użytkownika swojego zadania. Jednak w naszym scenariuszu wątku interfejsu użytkownika również czeka, aż wątek roboczy można zatwierdzić transakcji. Wynik jest brak jest w stanie kontynuować i zakresu przez czas nieokreślony oczekuje na zakończenie zatwierdzania. Należy używać <xref:System.Windows.Forms.Control.BeginInvoke%2A> zamiast <xref:System.Windows.Forms.Control.Invoke%2A> wszędzie tam, gdzie to możliwe, ponieważ jest asynchroniczne i w związku z tym są mniej podatne na zakleszczenie.  
+ Ponieważ to bloki metoda zakończeniem pierwszej fazy przetwarzania transakcji, należy zachować ostrożność bardzo przy użyciu tej metody w aplikacji formularza Windows (formularza systemu Windows) lub zakleszczenie mogą wystąpić. Jeśli wywołanie tej metody w ramach jednego zdarzenia kontrolki formularza systemu Windows (np. Kliknięcie przycisku) i użyj synchronicznej <xref:System.Windows.Forms.Control.Invoke%2A> metody bezpośrednie kontrolki do wykonania niektórych zadań interfejsu użytkownika (na przykład zmiany kolorów) w trakcie przetwarzania transakcji nastąpi zakleszczenia. Jest to spowodowane <xref:System.Windows.Forms.Control.Invoke%2A> metoda jest synchroniczne i blokuje wątku roboczego zakończenie wątku interfejsu użytkownika swojego zadania. Jednak w naszym scenariuszu wątku interfejsu użytkownika również czeka, aż wątek roboczy można zatwierdzić transakcji. Wynik jest brak jest w stanie kontynuować i zakresu przez czas nieokreślony oczekuje na zakończenie zatwierdzania. Należy używać <xref:System.Windows.Forms.Control.BeginInvoke%2A> zamiast <xref:System.Windows.Forms.Control.Invoke%2A> wszędzie tam, gdzie to możliwe, ponieważ jest asynchroniczne i w związku z tym są mniej podatne na zakleszczenie.  
   
  Aby uzyskać więcej informacji na temat korzystania z tej metody, zobacz [implementacji niejawnej transakcji przy użyciu zakresu transakcji](~/docs/framework/data/transactions/implementing-an-implicit-transaction-using-transaction-scope.md) tematu.  
   

@@ -1,11 +1,11 @@
 <Type Name="Span&lt;T&gt;" FullName="System.Span&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ed04128e65524eee587eec2d84c3879e4073a91a" />
-    <Meta Name="ms.sourcegitcommit" Value="9dda17222b9f7d3edf130133bfb1370d5b410a4b" />
+    <Meta Name="ms.openlocfilehash" Value="882e05e21dfecfb02fbc683ac8abfa9b1e46c5c7" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="09/22/2018" />
-    <Meta Name="ms.locfileid" Value="46641005" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51310914" />
   </Metadata>
   <TypeSignature Language="C#" Value="public struct Span&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Span`1&lt;T&gt; extends System.ValueType" />
@@ -42,9 +42,51 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
-`Span<T>` jest [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) który jest przydzielony na stosie, a nie na stosie zarządzanym. Typy struktury REF mają kilku ograniczeniom, aby upewnić się, że nie można awansować do zarządzanej sterty, w tym, że ich nie może być ujęty w ramkach, i nie można przypisać do zmiennych typu <xref:System.Object>, `dynamic`i dowolny typ interfejsu.
+`Span<T>` jest [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) który jest przydzielony na stosie, a nie na stosie zarządzanym. Typy struktury REF mają kilku ograniczeniom, aby upewnić się, że nie można awansować do zarządzanej sterty, w tym, że ich nie może być zapakowany, nie można przypisać do zmiennych typu <xref:System.Object>, `dynamic` lub dowolny typ interfejsu nie mogą być polami Typ odwołania, dlatego nie można użyć poza `await` i `yield` granic. Dodatkowo, wywołania dwóch metod <xref:System.Span%601.Equals(System.Object)> i <xref:System.Span%601.GetHashCode%2A>, throw <xref:System.NotSupportedException>. 
 
-A `Span<T>` wystąpienia jest często używana do przechowywania elementów tablicy lub część tablicy. W przeciwieństwie do tablicy, jednak `Span<T>` pamięci zarządzanej, natywnej pamięci może wskazywać wystąpienie lub zarządzanych pamięci stosu.
+> [!IMPORTANT]
+> Ponieważ jest on tylko do stosu typem `Span<T>` nie nadaje się do wielu scenariuszy, które wymagają przechowywania odwołań do buforów na stosie. Ta zasada obowiązuje, na przykład z procedur, które asynchrous wywołania metody. W przypadku takich scenarious można użyć bezpłatnego oprogramowania <xref:System.Memory%601?displayProperty=nameWithType> i <xref:System.ReadOnlyMemory%601?displayProperty=nameWithType> typów.
+
+Zakresy, które reprezentują struktur niezmienne lub tylko do odczytu, można użyć <xref:System.ReadOnlySpan%601?displayProperty=nameWithType>.
+
+## <a name="spant-and-memory"></a>Zakres\<T > i pamięci
+
+A `Span<T>` reprezentuje dla niego ciągły region dowolnego pamięci. A `Span<T>` wystąpienia jest często używana do przechowywania elementów tablicy lub część tablicy. W przeciwieństwie do tablicy, jednak `Span<T>` pamięci zarządzanej, natywnej pamięci może wskazywać wystąpienie lub zarządzanych pamięci stosu. Poniższy przykład tworzy `Span<Byte>` z tablicy:
+
+[!code-csharp[Creating a Span\<Byte> from an array](~/samples/snippets/csharp/api/system/span/program.cs#1)]
+     
+Poniższy przykład tworzy `Span<Byte>` ze 100 bajtów pamięci natywnej:
+
+[!code-csharp[Creating a Span\<Byte> from native memory](~/samples/snippets/csharp/api/system/span/program.cs#2)]
+
+W poniższym przykładzie użyto C# [stackalloc](~/docs/csharp/language-reference/keywords/stackalloc.md) — słowo kluczowe przydzielić pamięci na stosie 100 bajtów:
+
+[!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#3)]
+
+Ponieważ `Span<T>` to Abstrakcja za pośrednictwem dowolnego bloku pamięci, metody `Span<T>` klasy i metody o `Span<T>` parametry działać na dowolnym `Span<T>` obiektu, niezależnie od rodzaju hermetyzuje pamięci. Na przykład każda z oddzielnymi sekcjami kodu, które zainicjować zakresu i obliczania sumy jej elementów można zmienić w jednym inicjowania i metody obliczeń w poniższym przykładzie przedstawiono:
+
+[!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#4)]
+
+## <a name="spant-and-arrays"></a>Zakres\<T > i tablice
+
+Gdy otacza tablicę, `Span<T>` można opakować całej tablicy, tak jak w przykładach w [zakres\<T > i pamięci](#spant-and-memory) sekcji. Ponieważ obsługa tworzenia wycinków, `Span<T>` może też wskazywać dowolny zakres sąsiadujących w tablicy.  
+
+Poniższy przykład tworzy wycinek środkowej pięć elementów tablicy 10-elementowej liczby całkowitej. Należy pamiętać, że kod rozwiązanie quorum zwiększa dwukrotnie wartości Każda liczba całkowita w wycinku. Dane wyjściowe pokazują, zmiany wprowadzone przez zakres są odzwierciedlane w wartości tablicy.
+
+[!code-csharp[Creating a slice from a portion of a span](~/samples/snippets/csharp/api/system/span/slice/program.cs)]
+
+## <a name="spant-and-slices"></a>Zakres\<T > i wycinków
+
+`Span\<T>` obejmuje dwa przeciążenia metody <xref:System.Span%601.Slice%2A> metodę, która tworzą wycinek z bieżącego zakresu, który rozpoczyna się od określonego indeksu. Dzięki temu można traktować dane w `Span\<T>` jako zbiór logiczne fragmentów, które mogą być przetwarzane odpowiednio do potrzeb części potok przetwarzania danych, z niewielkimi wpływu. Na przykład ponieważ serwer nowoczesnych protokołów są często oparte na tekście, manipulowania ciągami znaków i podciągów jest szczególnie ważne. W <xref:System.String> klasy głównej metody wyodrębnianie podciągów jest <xref:System.String.Substring%2A>. W przypadku potoki danych, które polegają na manipulowanie ciągami rozbudowane jego użycie oferuje niektóre spadku wydajności, ponieważ:
+
+1. Tworzy nowy ciąg, aby pomieścić podciąg.
+
+2. Kopiuje podciąg znaków z oryginalnego ciągu do nowego ciągu znaków.
+
+Ta operacja alokacji i skopiuj mogą zostać usunięte przy użyciu `Span\<T>` lub <xref:System.ReadOnlySpan%601>, jak pokazano w poniższym przykładzie:
+
+[!code-csharp[Creating a slice from a substring](~/samples/snippets/csharp/api/system/span/slice2/program.cs)]
+
 
       ]]></format>
     </remarks>

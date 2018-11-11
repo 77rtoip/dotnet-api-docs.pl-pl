@@ -1,11 +1,11 @@
 <Type Name="IMemoryOwner&lt;T&gt;" FullName="System.Buffers.IMemoryOwner&lt;T&gt;">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="0b66b1cd00957bab71346d1d3ffcafa777dba01e" />
-    <Meta Name="ms.sourcegitcommit" Value="9edc1e08bc8793bd984730153f0deb0817ad53c9" />
+    <Meta Name="ms.openlocfilehash" Value="891577a0c3fb5be4a19d18ed9374211c9ee0c900" />
+    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="10/30/2018" />
-    <Meta Name="ms.locfileid" Value="50245398" />
+    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
+    <Meta Name="ms.locfileid" Value="51317297" />
   </Metadata>
   <TypeSignature Language="C#" Value="public interface IMemoryOwner&lt;T&gt; : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IMemoryOwner`1&lt;T&gt; implements class System.IDisposable" />
@@ -30,14 +30,23 @@
   </Interfaces>
   <Docs>
     <typeparam name="T">Typ elementów do przechowywania w pamięci.</typeparam>
-    <summary>Określa właściciela odpowiedzialnego za zarządzanie okresem istnienia <see cref="System.Memory`1" /> buforu.</summary>
+    <summary>Określa właściciela bloku pamięci, który jest odpowiedzialny za usuwanie Podstawowa pamięć odpowiednio.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
-`IMemoryOwner<T>` Interfejs definiuje właściciela odpowiedzialnego za zarządzanie okresem istnienia <xref:System.Memory%601> buforu, odpowiedzialnemu za usuwanie Podstawowa pamięć odpowiednio.
-Wystąpienie `IMemoryOwner<T>` zwracany jest interfejs <xref:System.Buffers.MemoryPool%601.Rent%2A?displayProperty=nameWithType> metody.
-    
-]]></format>
+`IMemoryOwner<T>` Interfejs jest używany do definiowania właściciela odpowiedzialnego za zarządzanie okresem istnienia <xref:System.Memory%601> buforu. Wystąpienie `IMemoryOwner<T>` interfejsu jest zwracany przez metodę < xef:System.Buffers.MemoryPool%601.Rent%2A?displayProperty=nameWithType >. 
+
+Natomiast bufor może mieć wielu odbiorców, w danym momencie może mieć tylko jednego właściciela. Właściciel wykonywać następujące czynności:
+
+- Utwórz buforu, bezpośrednio lub przez wywołanie metody fabryki.
+
+- Przenieść własność na innego konsumenta. W tym przypadku poprzedni właściciel nie należy używać buforu.
+
+- Bufor należy zniszczyć, gdy nie jest już używana.
+
+Ponieważ `IMemoryOwner<T>` obiekt implementuje <xref:System.IDisposable> interfejsu, należy wywołać jej <xref:System.IDisposable.Dispose%2A> metody tylko wtedy, gdy wartość bufora pamięci nie jest już potrzebny, i zostały zniszczone go. Należy *nie* dysponowania `IMemoryOnwer<T>` obiektu, natomiast odwołanie do pamięci jest dostępny. Oznacza to, że typ, w którym `IMemoryOwner<T>` zadeklarowano nie powinny mieć <xref:System.Object.Finalize%2A> metody.
+
+   ]]></format>
     </remarks>
   </Docs>
   <Members>
@@ -60,8 +69,8 @@ Wystąpienie `IMemoryOwner<T>` zwracany jest interfejs <xref:System.Buffers.Memo
         <ReturnType>System.Memory&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera skojarzony <see cref="System.Memory`1" /> buforu.</summary>
-        <value>Skojarzone <see cref="System.Memory`1" /> buforu.</value>
+        <summary>Pobiera pamięć należących do tego właściciela.</summary>
+        <value>Pamięć należących do tego właściciela.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
