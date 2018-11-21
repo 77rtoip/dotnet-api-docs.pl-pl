@@ -1,11 +1,11 @@
 <Type Name="BindingOperations" FullName="System.Windows.Data.BindingOperations">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="51eef6572002081a616a5d4355aca43a61a9c451" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
+    <Meta Name="ms.openlocfilehash" Value="4601fcaf8f086826132c17425f722a0180d270b0" />
+    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="08/24/2018" />
-    <Meta Name="ms.locfileid" Value="37579258" />
+    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
+    <Meta Name="ms.locfileid" Value="52236442" />
   </Metadata>
   <TypeSignature Language="C#" Value="public static class BindingOperations" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit BindingOperations extends System.Object" />
@@ -58,7 +58,7 @@
         <param name="collection">Kolekcja do uzyskania dostępu.</param>
         <param name="accessMethod">Akcja do wykonania w kolekcji.</param>
         <param name="writeAccess">
-          <see langword="true" /> Jeśli <c>accessMethod</c> będzie zapisywać w kolekcji; w przeciwnym razie <see langword="false" />.</param>
+          <see langword="true" /> Jeśli <paramref name="accessMethod" /> będzie zapisywać w kolekcji; w przeciwnym razie <see langword="false" />.</param>
         <summary>Zapewnia dostęp do kolekcji przy użyciu mechanizmu synchronizacji, czy aplikacja określiła, gdy jest ona wywoływana EnableCollectionSynchronization.</summary>
         <remarks>To be added.</remarks>
       </Docs>
@@ -238,12 +238,10 @@
   
 ## Remarks  
 
-Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
- 
-Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji odpowiedzialność za zapewnienie zsynchronizowane dostępu ("wątkowo") do kolekcji.   Zazwyczaj jest to wykonywane przy użyciu mechanizmu prostą blokadą lub bardziej rozbudowany mechanizm synchronizacji takich jak semaforów, resetowania, zdarzenia itp. 
- 
-Gdy należy zsynchronizować dostęp aplikacji do kolekcji, musisz również zagwarantować, że dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji.  Można to zrobić, wywołując <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization%2A> metody.
- 
+Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
+ 
+Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji odpowiedzialność za zapewnienie zsynchronizowane dostępu ("wątkowo") do kolekcji.   Zazwyczaj jest to wykonywane przy użyciu mechanizmu prostą blokadą lub bardziej rozbudowany mechanizm synchronizacji takich jak semaforów, resetowania, zdarzenia itp.   Gdy należy zsynchronizować dostęp aplikacji do kolekcji, musisz również zagwarantować, że dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji.  Można to zrobić, wywołując <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization%2A> metody.
+ 
 Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu użytkownika, który jest właścicielem <xref:System.Windows.Controls.ItemsControl>, aplikacja ma następujące obowiązki:
 
 1. Wybierz mechanizm synchronizacji.
@@ -258,13 +256,13 @@ Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu u�
 
    - Wywołaj <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object)> przeciążenia, jeśli przy użyciu mechanizmu prostą blokadą; wywołania <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object,System.Windows.Data.CollectionSynchronizationCallback)> przeciążenia, jeśli przy użyciu mechanizmu bardziej rozbudowany.
 
-1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
+1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
 
-1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
+1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
 
 1. Jeśli chcesz korzystać z tej samej kolekcji na wiele wątków interfejsu użytkownika, należy wywołać <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization%2A> (i <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, jeśli to konieczne) oddzielnie w każdym wątku interfejsu użytkownika.
 
-1. Należy unikać zakleszczenia.  To już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale należy również wziąć pod uwagę WPF uczestnictwa w synchronizacji, zgodnie z opisem w poniższej akapitu.
+1. Należy unikać zakleszczenia.  To już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale należy również wziąć pod uwagę WPF uczestnictwa w synchronizacji, zgodnie z opisem w poniższej akapitu.
 
 W zamian WPF zapewnia następujące zachowanie:
 
@@ -276,9 +274,9 @@ W zamian WPF zapewnia następujące zachowanie:
 
 - Oczekujące zdarzenia są stosowane do kopii w tle asynchronicznie w wątku interfejsu użytkownika, gdy ma on taką możliwość.
 
-- <xref:System.Windows.Data.CollectionView> Bezpośrednio nie będzie używać inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
+- <xref:System.Windows.Data.CollectionView> Bezpośrednio nie będzie używać inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
 
-Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
+Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
 
  ]]></format>
         </remarks>
@@ -312,10 +310,10 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
 
 ## Remarks
 
-Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
- 
-Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji Ty ponosisz odpowiedzialność za zapewnienie synchronizacji ("wątkowo") dostęp do kolekcji, a także za zapewnienie dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji. Przez wywołanie metody <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object)> metody, można to zrobić za pomocą mechanizmu prostą blokadą. 
- 
+Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
+ 
+Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji Ty ponosisz odpowiedzialność za zapewnienie synchronizacji ("wątkowo") dostęp do kolekcji, a także za zapewnienie dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji. Przez wywołanie metody <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object)> metody, można to zrobić za pomocą mechanizmu prostą blokadą. 
+ 
 Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu użytkownika, który jest właścicielem <xref:System.Windows.Controls.ItemsControl>, należy wykonać następujące czynności:
 
 1. Tworzy obiekt do zablokowania podczas uzyskiwania dostępu do kolekcji.
@@ -328,13 +326,13 @@ Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu u�
 
    - Wywołanie musi wystąpić przed użyciem kolekcji w innym wątku niż dołączania kolekcji <xref:System.Windows.Controls.ItemsControl>, która kwota jest nowszy.
 
-1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
+1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
 
-1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
+1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
 
 1. Jeśli chcesz korzystać z tej samej kolekcji na wiele wątków interfejsu użytkownika, należy wywołać <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization%2A> (i <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, jeśli to konieczne) oddzielnie w każdym wątku interfejsu użytkownika.
 
-1. Należy unikać zakleszczenia.  Ten element jest już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale jej należy również wziąć pod uwagę w WPF uczestnictwa w synchronizacji. (Zobacz więcej informacji, poniżej).
+1. Należy unikać zakleszczenia.  Ten element jest już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale jej należy również wziąć pod uwagę w WPF uczestnictwa w synchronizacji. (Zobacz więcej informacji, poniżej).
 
 W zamian WPF zapewnia następujące zachowanie:
 
@@ -346,9 +344,9 @@ W zamian WPF zapewnia następujące zachowanie:
 
 - Oczekujące zdarzenia są stosowane do kopii w tle asynchronicznie w wątku interfejsu użytkownika, gdy ma on taką możliwość.
 
-- <xref:System.Windows.Data.CollectionView> Zostanie bezpośrednio Użyj inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
+- <xref:System.Windows.Data.CollectionView> Zostanie bezpośrednio Użyj inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
 
-Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
+Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
   
  ]]></format>
         </remarks>
@@ -384,11 +382,9 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
   
 ## Remarks  
 
-Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
- 
-Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji Ty ponosisz odpowiedzialność za zapewnienie synchronizacji ("wątkowo") dostęp do kolekcji, a także za zapewnienie dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji. Przez wywołanie metody <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object,System.Windows.Data.CollectionSynchronizationCallback)> metody, można to zrobić za pomocą mechanizmu synchronizacji, takie jak semaforów, zdarzeniach, resetowanego itp. 
- 
-Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu użytkownika, który jest właścicielem <xref:System.Windows.Controls.ItemsControl>, należy wykonać następujące czynności:
+Aplikacja WPF można wyświetlić kolekcję danych przy użyciu <xref:System.Windows.Controls.ItemsControl> lub jedna z jej podklasach (<xref:System.Windows.Controls.ListBox>, <xref:System.Windows.Controls.DataGrid>, <xref:System.Windows.Controls.TreeView>, <xref:System.Windows.Controls.ListView>itp.). WPF kanałów jego dostęp do kolekcji za pomocą podklasą <xref:System.Windows.Data.CollectionView>. Zarówno <xref:System.Windows.Controls.ItemsControl> i <xref:System.Windows.Data.CollectionView> miał koligacje do wątku, na którym <xref:System.Windows.Controls.ItemsControl> został utworzony, co oznacza, że ich użycie w innym wątku jest zabroniona i zgłasza wyjątek. W efekcie to ograniczenie obowiązuje również w kolekcji.
+ 
+Można użyć kolekcji w wielu wątkach.   Na przykład chcesz zaktualizować kolekcji (Dodawanie lub usuwanie elementów) w wątku "zbieranie danych", podczas wyświetlania wyników w wątku "interfejs użytkownika", dzięki czemu interfejs użytkownika reaguje podczas gromadzenia danych dzieje się. W takiej sytuacji Ty ponosisz odpowiedzialność za zapewnienie synchronizacji ("wątkowo") dostęp do kolekcji, a także za zapewnienie dostęp z WPF (w szczególności z <xref:System.Windows.Data.CollectionView>) uczestniczy w ten sam mechanizm synchronizacji. Przez wywołanie metody <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization(System.Collections.IEnumerable,System.Object,System.Windows.Data.CollectionSynchronizationCallback)> metody, można to zrobić za pomocą mechanizmu synchronizacji, takie jak semaforów, zdarzeniach, resetowanego itp.   Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu użytkownika, który jest właścicielem <xref:System.Windows.Controls.ItemsControl>, należy wykonać następujące czynności:
 
 1. Wybierz mechanizm synchronizacji.
 
@@ -400,13 +396,13 @@ Aby użyć kolekcji w wielu wątkach, z których jedna jest wątku interfejsu u�
 
    - Wywołanie musi wystąpić przed użyciem kolekcji w innym wątku niż dołączania kolekcji <xref:System.Windows.Controls.ItemsControl>, która kwota jest nowszy.
 
-1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
+1. Upewnij się, że zmiany do kolekcji i powiadomienia o tej zmianie (za pośrednictwem <xref:System.Collections.Specialized.INotifyCollectionChanged>) są niepodzielne; Brak dostępu z innych wątków może interwencji.  (Jest to zazwyczaj bezpłatne. For instance <xref:System.Collections.ObjectModel.ObservableCollection%601> gwarantuje to, pod warunkiem, że wszystkie zmiany są chronione przy użyciu synchronizacji.)
 
-1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
+1. Jeśli wywołasz <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, że wywołanie również musi wystąpić w wątku interfejsu użytkownika.
 
 1. Jeśli chcesz korzystać z tej samej kolekcji na wiele wątków interfejsu użytkownika, należy wywołać <xref:System.Windows.Data.BindingOperations.EnableCollectionSynchronization%2A> (i <xref:System.Windows.Data.BindingOperations.DisableCollectionSynchronization%2A>, jeśli to konieczne) oddzielnie w każdym wątku interfejsu użytkownika.
 
-1. Należy unikać zakleszczenia.  Ten element jest już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale jej należy również wziąć pod uwagę w WPF uczestnictwa w synchronizacji. (Zobacz więcej informacji, poniżej).
+1. Należy unikać zakleszczenia.  Ten element jest już odpowiedzialność aplikacji po jej zdecydował się użyć synchronizacji, ale jej należy również wziąć pod uwagę w WPF uczestnictwa w synchronizacji. (Zobacz więcej informacji, poniżej).
 
 W zamian WPF zapewnia następujące zachowanie:
 
@@ -425,9 +421,9 @@ W zamian WPF zapewnia następujące zachowanie:
 
 - Oczekujące zdarzenia są stosowane do kopii w tle asynchronicznie w wątku interfejsu użytkownika, gdy ma on taką możliwość.
 
-- <xref:System.Windows.Data.CollectionView> Zostanie bezpośrednio Użyj inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
+- <xref:System.Windows.Data.CollectionView> Zostanie bezpośrednio Użyj inny mechanizm synchronizacji, widoczny dla aplikacji. Jest WPF w sposób uniknięcia zakleszczenie (zobacz poprzednią pozycję 7).   
 
-Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
+Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmiany są widoczne po pewnym czasie w <xref:System.Windows.Controls.ItemsControl> kiedy wątek interfejsu użytkownika ma czas "Łap".  Implementacja ma została dostosowana do ograniczania szybkości, że zmiany przepływu w wątku interfejsu użytkownika, aby zachować tła wątki określanie nasycenia wątku interfejsu użytkownika i poszczególne odpowiedzi na dane wejściowe zwykłego użytkownika.
 
  `context` Parametr jest dowolnego obiektu, który jest przekazywany do `callback`. Służy do określenia mechanizm synchronizacji, używane do kontrolowania dostępu do `collection`. `Context` może być `null`.  
  
@@ -456,7 +452,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania z którego mają zostać pobrane powiązania.</param>
         <summary>Pobiera <see cref="T:System.Windows.Data.Binding" /> obiektu, który jest ustawiony dla określonej właściwości.</summary>
         <returns>
@@ -491,7 +487,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania, z którego mają zostać pobrane <see cref="T:System.Windows.Data.BindingBase" /> obiektu.</param>
         <summary>Pobiera <see cref="T:System.Windows.Data.BindingBase" /> obiektu, który jest ustawiony dla określonej właściwości.</summary>
         <returns>
@@ -530,7 +526,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt docelowy powiązania gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt docelowy powiązania gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania, z którego mają zostać pobrane <see cref="T:System.Windows.Data.BindingExpression" /> obiektu.</param>
         <summary>Zwraca <see cref="T:System.Windows.Data.BindingExpression" /> obiekt skojarzony z właściwością target określone powiązanie określonego obiektu.</summary>
         <returns>
@@ -581,7 +577,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania, z którego mają zostać pobrane <see cref="T:System.Windows.Data.BindingExpressionBase" /> obiektu.</param>
         <summary>Pobiera <see cref="T:System.Windows.Data.BindingExpressionBase" /> obiektu, który jest ustawiony dla określonej właściwości.</summary>
         <returns>
@@ -620,7 +616,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania z którego mają zostać pobrane powiązania.</param>
         <summary>Pobiera <see cref="T:System.Windows.Data.MultiBinding" /> obiektu, który jest ustawiony dla określonej właściwości.</summary>
         <returns>
@@ -653,7 +649,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt docelowy powiązania gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt docelowy powiązania gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania, z którego mają zostać pobrane <see cref="T:System.Windows.Data.MultiBindingExpression" /> obiektu.</param>
         <summary>Zwraca <see cref="T:System.Windows.Data.MultiBindingExpression" /> obiekt skojarzony z właściwością target określone powiązanie określonego obiektu.</summary>
         <returns>
@@ -694,7 +690,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania z którego mają zostać pobrane powiązania.</param>
         <summary>Pobiera <see cref="T:System.Windows.Data.PriorityBinding" /> obiektu, który jest ustawiony dla określonej właściwości.</summary>
         <returns>
@@ -727,7 +723,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt docelowy powiązania gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt docelowy powiązania gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość target powiązania, z którego mają zostać pobrane <see cref="T:System.Windows.Data.PriorityBindingExpression" /> obiektu.</param>
         <summary>Zwraca <see cref="T:System.Windows.Data.PriorityBindingExpression" /> obiekt skojarzony z właściwością target określone powiązanie określonego obiektu.</summary>
         <returns>
@@ -825,7 +821,7 @@ Efektem sieciowym jest, można zmienić kolekcji na żadnym z wątków, a te zmi
         <Parameter Name="dp" Type="System.Windows.DependencyProperty" />
       </Parameters>
       <Docs>
-        <param name="target">Obiekt gdzie <c>dp</c> jest.</param>
+        <param name="target">Obiekt gdzie <paramref name="dp" /> jest.</param>
         <param name="dp">Właściwość zależności do sprawdzenia.</param>
         <summary>Zwraca wartość wskazującą, czy określona właściwość jest obecnie powiązany z danymi.</summary>
         <returns>
