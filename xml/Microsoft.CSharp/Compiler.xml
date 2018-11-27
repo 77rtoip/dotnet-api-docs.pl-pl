@@ -1,11 +1,11 @@
 <Type Name="Compiler" FullName="Microsoft.CSharp.Compiler">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="6ce05ee44ac65d4c530556eb4f9a715ed7fb72f9" />
-    <Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" />
-    <Meta Name="ms.translationtype" Value="HT" />
+    <Meta Name="ms.openlocfilehash" Value="4ebe858bd0ef0f633556c3dd514dab3d691fe54f" />
+    <Meta Name="ms.sourcegitcommit" Value="03ae8a826acc0f58b2393b33fa482575baa2bd18" />
+    <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="08/25/2018" />
-    <Meta Name="ms.locfileid" Value="39858520" />
+    <Meta Name="ms.lasthandoff" Value="11/26/2018" />
+    <Meta Name="ms.locfileid" Value="52301944" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class Compiler" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Compiler extends System.Object" />
@@ -15,6 +15,7 @@
   <TypeSignature Language="F#" Value="type Compiler = class" />
   <AssemblyInfo>
     <AssemblyName>cscompmgd</AssemblyName>
+    <AssemblyVersion>7.0.5000.0</AssemblyVersion>
     <AssemblyVersion>8.0.0.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
@@ -27,8 +28,17 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>**Uwaga: Ten interfejs API jest już przestarzały.** Nieprzestarzała alternatywa to <see cref="T:Microsoft.CSharp.CSharpCodeProvider" />.
+
+Zarządzany otok dla C# kompilatora.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Aby skompilować C\# kodu w trakcie wywołania <xref:Microsoft.CSharp.Compiler.Compile(System.String[],System.String[],System.String,System.String[],System.Collections.IDictionary)>.
+
+]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Compile">
@@ -41,6 +51,7 @@
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>cscompmgd</AssemblyName>
+        <AssemblyVersion>7.0.5000.0</AssemblyVersion>
         <AssemblyVersion>8.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
@@ -54,14 +65,74 @@
         <Parameter Name="options" Type="System.Collections.IDictionary" />
       </Parameters>
       <Docs>
-        <param name="sourceTexts">To be added.</param>
-        <param name="sourceTextNames">To be added.</param>
-        <param name="target">To be added.</param>
-        <param name="imports">To be added.</param>
-        <param name="options">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sourceTexts">Tablica typu string, każdy przy użyciu języka C\# kodu.</param>
+        <param name="sourceTextNames">Tablica typu string, która zawiera nazwy pliku dla każdego sourceTexts.</param>
+        <param name="target">Nazwa pliku wyjściowego. Ten argument jest wymagany.</param>
+        <param name="imports">Tablica typu ciąg, pliki do odwołania.</param>
+        <param name="options">
+          <see cref="T:System.Collections.IDictionary" /> Opcji kompilatora.</param>
+        <summary>Kompiluje danego C# źródeł do podanego pliku docelowego.</summary>
+        <returns>Zwraca komunikatów diagnostycznych w postaci tablicy typu <see cref="T:Microsoft.CSharp.CompilerError" />. Jeśli tablica jest pusta lub wszystkie elementy są ostrzeżenia, kompilacja zakończyła się pomyślnie.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Każdego ciągu w parametrze sourceTexts jest odpowiednik w jednym pliku źródłowym. Musi istnieć co najmniej jeden element sourceTexts.
+
+Nazwy plików w parametrze sourceTextNames są używane na potrzeby diagnostyki kompilatora i informacje o debugowaniu. Tablica jest wymagany, ale mogą być lokalnie zastąpione przy użyciu \#line — dyrektywa. Tablica musi mieć taką samą liczbę elementów jak parametr sourceTexts.
+
+Parametr importu jest taka sama jak/Reference — opcja kompilatora. Ten parametr może być <see langword="null" />.
+
+Dla parametru options klucz jest krótka opcji kompilatora. Wartość jest wartością żądanego dla opcji. Parametr opcji może być <see langword="null" />. Niektóre opcje kompilatora nie są rozpoznawane. Rozpoznane opcji i wartości:
+
+| Nazwa klucza | Użycie |
+| --- | --- |
+| addmodule | Lista modułów, aby uwzględnić w tym zestawie. Nazwy modułów muszą być oddzielone pionowy pasek lub znaku kreski pionowej. Wartość musi być typu <xref:System.String>. Zobacz [- addmodule — (C# opcje kompilatora)](https://msdn.microsoft.com/library/1s46f83c). |
+| BaseAddress | Adres podstawowy bibliotek. Wartość musi być typu <xref:System.UInt32>. Zobacz [- baseaddress — (C# opcje kompilatora)](~/docs/csharp/language-reference/compiler-options/baseaddress-compiler-option.md). |
+| bugreport — | Tworzy plik raportu o błędach. Wartość musi być typu <xref:System.String>. Zobacz [- bugreport (C# opcje kompilatora)](https://msdn.microsoft.com/library/kaky3xy9). |
+| checked | Ustaw domyślne Obliczanie wyrażenia zaznaczone (lub usunięcia zaznaczenia). Wartość musi być typu <xref:System.Boolean>. Zobacz [-zaznaczone (C# opcje kompilatora)](https://msdn.microsoft.com/library/h25wtyxf). |
+| d | Lista średnik rozdzielonych symbole, aby zdefiniować. Wartość musi być typu <xref:System.String>. Zobacz [— zdefiniuj (C# opcje kompilatora)](https://msdn.microsoft.com/library/0feaad6z). |
+| debugowanie | Emituj informacje o debugowaniu z danymi wyjściowymi. Wartość musi być typu <xref:System.Boolean>. Nie można określić pełną lub tylko do pliku pdb. Zobacz [-debug (C# opcje kompilatora)](https://msdn.microsoft.com/library/8cw0bt21). |
+| dokument | Nazwa pliku, należy umieścić komentarze XML w. Wartość musi być typu <xref:System.String>. Zobacz [-doc (C# opcje kompilatora)](https://msdn.microsoft.com/library/3260k4x7). |
+| filealign | Rozmiar wyrównania sekcji PE. Wartość musi być typu <xref:System.UInt32>. Zobacz [- filealign — (C# opcje kompilatora)](https://msdn.microsoft.com/library/0s4tzdf2). |
+| incr | Włącz ponownej kompilacji przyrostowej. Wartość musi być typu <xref:System.Boolean>. |
+| lib | Dodatkowe ścieżki wyszukiwania podczas lokalizowania modułach i zestawach. Wartość musi być typu <xref:System.String>. Zobacz [-lib (C# opcje kompilatora)](https://msdn.microsoft.com/library/s5bac5fx). |
+| Linkres — | Łączenie zasobów zarządzanych do zestawu. Wartość musi być typu <xref:System.String>. Zobacz [- linkresource — (C# opcje kompilatora)](https://msdn.microsoft.com/library/xawyf94k). |
+| m | Typ do przeszukania dla metody Main. Wartość musi być typu <xref:System.String>. Zobacz [-głównego (C# opcje kompilatora)](https://msdn.microsoft.com/library/x3eht538). |
+| nostdlib | Czy nie auto-reference mscorlib.dll. Wartość musi być typu <xref:System.Boolean>. Zobacz [- nostdlib (C# opcje kompilatora)](https://msdn.microsoft.com/library/fa13yay7). |
+| nowarn | Lista średnik rozdzielonych numery ostrzeżeń nie raportu. Wartość musi być typu <xref:System.String>. Zobacz [- nowarn — (C# opcje kompilatora)](https://msdn.microsoft.com/library/7f28x9z3). |
+| o | Włącz optymalizacje kompilatora. Wartość musi być typu <xref:System.Boolean>. Zobacz [-Optymalizuj (C# opcje kompilatora)](https://msdn.microsoft.com/library/t0hfscdc). |
+| r | Przywoływanych zestawów. Wartość musi być typu String. Jeśli więcej niż jeden zestaw jest określony, nazwa pliku muszą być oddzielone pionowy pasek lub znaku kreski pionowej. Zobacz [— odwołanie (C# opcje kompilatora)](https://msdn.microsoft.com/library/yabyz3h4). |
+| res | Osadź zarządzany zasób. Wartość musi być typu <xref:System.String>. Zobacz [-zasobów (C# opcje kompilatora)](~/docs/csharp/language-reference/compiler-options/resource-compiler-option.md). |
+| Docelowy | Plik docelowy typ, jedną z następujących danych wyjściowych: "library", "exe", "winexe" lub "module". Wartość musi być typu <xref:System.String>. Zobacz [-target (C# opcje kompilatora)](https://msdn.microsoft.com/library/6h25dztx). |
+| unsafe | Zezwalaj na niebezpieczne konstrukcje. Wartość musi być typu <xref:System.Boolean>. Zobacz [-unsafe (C# opcje kompilatora)](https://msdn.microsoft.com/library/ct597kb0). |
+| w | Poziom ostrzeżeń (0-4). Wartość musi być typu <xref:System.String>. Zobacz [-warn (C# opcje kompilatora)](https://msdn.microsoft.com/library/13b90fz7). |
+| warnaserror — | Raportuj diagnostykę ostrzeżenia jako błędy. Wartość musi być typu <xref:System.Boolean>. Zobacz [- warnaserror — (C# opcje kompilatora)](https://msdn.microsoft.com/library/406xhdz3). |
+| win32icon | Ikona Win32 dla automatycznie wygenerowany zasób Win32. Wartość musi być typu <xref:System.String>. Zobacz [-win32icon (C# opcje kompilatora)](https://msdn.microsoft.com/library/2aaxe43f). |
+| win32res | Plik zasobów Win32. Wartość musi być typu <xref:System.String>. Zobacz [-win32res (C# opcje kompilatora)](https://msdn.microsoft.com/library/8f2f5x2e). |
+
+]]></format>
+        </remarks>
+        <altmember cref="T:Microsoft.CSharp.Compiler" />
+        <exception cref="T:System.ArgumentNullException">
+          <paramref name="sourceTexts" /> jest <see langword="null" />.
+          
+—lub—
+
+<paramref name="sourceTextNames" /> jest <see langword="null" />.
+
+—lub—
+
+<paramref name="target" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">
+          <paramref name="sourceTexts" /> jest pusta tablica.
+
+—lub—
+
+<paramref name="sourceTextNames" /> nie jest taki sam rozmiar jak <paramref name="sourceTexts" />.</exception>
+        <related type="Article" href="~/docs/csharp/language-reference/preprocessor-directives/preprocessor-line.md">#line (odwołanie w C#)</related>
+        <related type="Article" href="~/docs/csharp/language-reference/compiler-options/reference-compiler-option.md">— Odwołanie (opcje kompilatora C#)</related>
+        <related type="Article" href="~/docs/csharp/language-reference/compiler-options/index.md">Opcje kompilatora C#</related>
       </Docs>
     </Member>
   </Members>
