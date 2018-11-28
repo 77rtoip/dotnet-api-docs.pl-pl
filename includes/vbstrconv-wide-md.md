@@ -1,1 +1,1 @@
-Konwersja może używać normalizacji formularza C, nawet jeśli znak wejściowy jest już pełnej szerokości. Na przykład ciąg "は゛" (która jest już pełnej szerokości) jest znormalizowane do "ば". Zobacz [formuły normalizacji Unicode](http://unicode.org/reports/tr15).
+Konwersja może używać formularzu C normalizacji, nawet jeśli wprowadzanych znaków jest już pełnej szerokości. Na przykład ciąg "は゛" (która jest już pełnej szerokości) jest znormalizować do "ば". Zobacz [form normalizacji Unicode](https://unicode.org/reports/tr15).
