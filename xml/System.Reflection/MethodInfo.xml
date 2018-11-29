@@ -1,11 +1,11 @@
 <Type Name="MethodInfo" FullName="System.Reflection.MethodInfo">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="51c9bddeb48e1d46688f89fef8fe0a4915b26d3e" />
-    <Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" />
+    <Meta Name="ms.openlocfilehash" Value="7cac9e186e446ab240ca469ac048ef85a355e3e0" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/27/2018" />
-    <Meta Name="ms.locfileid" Value="52379924" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52599490" />
   </Metadata>
   <TypeSignature Language="C#" Value="public abstract class MethodInfo : System.Reflection.MethodBase, System.Runtime.InteropServices._MethodInfo" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract serializable beforefieldinit MethodInfo extends System.Reflection.MethodBase implements class System.Runtime.InteropServices._MethodInfo" />
@@ -150,9 +150,47 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera wartość wskazującą, czy metody ogólnej zawiera parametry typu ogólnego nieprzypisane.</summary>
+        <value>
+          <see langword="true" /> Jeśli bieżący <see cref="T:System.Reflection.MethodInfo" /> zawiera parametry typu ogólnego nieprzypisane; w przeciwnym razie <see langword="false" />.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Aby wywołać metody rodzajowej, musi być nie definicji typu ogólnego lub Otwórz typy utworzone w argumentach typu sama metoda lub w dowolnym typie otaczającym. Oznaczanie cykliczne co może być trudne. Dla wygody, a także aby zmniejszyć prawdopodobieństwo wystąpienia błędu `ContainsGenericParameters` właściwość udostępnia standardowy sposób odróżnić zamknięte skonstruowany metod, które mogą być wywoływane, i otwórz zbudowane metody, które nie. Jeśli `ContainsGenericParameters` właściwość zwraca wartość true, nie można wywołać metody.
+
+`ContainsGenericParameters` Właściwość przeszukiwane rekursywnie dla parametrów typu. Na przykład zwraca `true` dla dowolnej metody w ramach typu otwartego `A<T>` (`A(Of T)` w języku Visual Basic), nawet jeśli sama metoda nie jest ogólna. Natomiast to zachowanie <xref:System.Reflection.MethodInfo.IsGenericMethod> właściwość, która zwraca `false` takie metody.
+
+Aby uzyskać listę niezmiennych warunków dla terminów specyficznych dla metod ogólnych, zobacz <xref:System.Reflection.MethodInfo.IsGenericMethod> właściwości. Aby uzyskać listę niezmiennych warunków dla innych terminów używanych w odbiciu rodzajowym, zobacz <xref:System.Type.IsGenericType> właściwości.
+
+## Examples  
+Poniższy przykład kodu wykorzystuje `ContainsGenericParameters` właściwość, aby wyświetlić komunikat wskazujący, czy <xref:System.Reflection.MethodInfo> jest otwarty metody ogólnej (oznacza to, czy ma niezwiązane parametry typu).
+
+W tym przykładzie jest częścią większego przykładu przewidzianego dla <xref:System.Reflection.MethodInfo.MakeGenericMethod%2A> metody.
+
+```vb
+Console.WriteLine(vbTab _
+    & "Does it have unassigned generic parameters? {0}", _
+    mi.ContainsGenericParameters)
+```
+
+```csharp
+Console.WriteLine("\tDoes it have unassigned generic parameters? {0}", 
+    mi.ContainsGenericParameters);
+```
+
+```cpp
+Console::WriteLine("\tDoes it have unassigned generic parameters? {0}", 
+    mi->ContainsGenericParameters);
+```
+
+]]></format>
+        </remarks>
+        <altmember cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])" />
+        <altmember cref="P:System.Reflection.MethodInfo.IsGenericMethod" />
+        <altmember cref="P:System.Reflection.MethodInfo.IsGenericMethodDefinition" />
+        <related type="Article" href="~/docs/framework/reflection-and-codedom/reflection-and-generic-types.md">Odbicie i typy ogólne</related>
+        <related type="Article" href="~/docs/csharp/programming-guide/generics/introduction-to-generics.md">Wprowadzenie do typów ogólnych (Przewodnik programowania w języku C#)</related>
       </Docs>
     </Member>
     <MemberGroup MemberName="CreateDelegate">
@@ -731,9 +769,124 @@ public:
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera wartość wskazującą czy bieżący <see cref="T:System.Reflection.MethodInfo" /> reprezentuje definicję metody rodzajowej.</summary>
+        <value>
+          <see langword="true" /> Jeśli <see cref="T:System.Reflection.MethodInfo" /> obiekt reprezentuje definicję metody ogólnej; w przeciwnym razie <see langword="false" />.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Jeśli bieżący <xref:System.Reflection.MethodInfo> reprezentuje definicję metody rodzajowej, następnie:
+
+  - `IsGenericMethodDefinition` Zwraca `true`.
+
+  - Dla każdego <xref:System.Type> obiektów w tablicy zwracanej przez <xref:System.Reflection.MethodInfo.GetGenericArguments> metody:
+
+      - <xref:System.Type.IsGenericParameter?displayProperty=nameWithType> Właściwość zwraca `true`.
+
+      - <xref:System.Type.DeclaringMethod?displayProperty=nameWithType> Zwraca bieżącą <xref:System.Reflection.MethodInfo>.
+
+      - <xref:System.Type.GenericParameterPosition?displayProperty=nameWithType> Właściwości jest taka sama jak pozycja <xref:System.Type> obiektów w tablicy.
+
+Użyj `IsGenericMethodDefinition` właściwości w celu określenia, czy argumenty typu zostały przypisane do parametrów typu metody ogólnej. Jeśli argumenty typu zostały przypisane, `IsGenericMethodDefinition` właściwość zwraca wartość false, nawet jeśli niektóre z argumentów typu <xref:System.Type> obiektami, które reprezentują parametry typu otaczającej typów. Na przykład, należy wziąć pod uwagę następujące C\#, Visual Basic i kodu w języku C++:
+
+    ```cs
+    class C
+    {
+        T N<T,U>(T t, U u) {...}
+        public V M<V>(V v)
+        {
+            return N<V,int>(v, 42);
+        }
+    }
+    ```
+
+    ```vb
+    Class C
+        Public Function N(Of T,U)(ByVal ta As T, ByVal ua As U) As T
+            ...
+        End Function
+        Public Function M(Of V)(ByVal va As V ) As V
+            Return N(Of V, Integer)(va, 42)
+        End Function
+    End Class
+    ```
+
+    ```cpp
+    ref class C
+    {
+    private:
+        generic <typename T, typename U> T N(T t, U u) {...}
+    public:
+        generic <typename V> V M(V v)
+        {
+            return N<V, int>(v, 42);
+        }
+    };
+    ```
+
+Treść metody M zawiera wywołanie metody N, określając parametr typu M i typ <xref:System.Int32>. `IsGenericMethodDefinition` Właściwość zwraca wartość false dla metody `N<V,int>`.
+
+> [!NOTE]
+> Mimo że Otwórz skonstruowany metoda `N<V,int>` jest nie wystąpi, gdy odzwierciedlający za pośrednictwem klasy C, jego musi zostać wygenerowany przy użyciu <xref:System.Reflection.MethodInfo.MakeGenericMethod%2A> aby emitować C jako dynamiczną.
+
+
+Jeśli definicja metody ogólnej zawiera parametrom typu deklarującego, nastąpi definicję metody ogólnej właściwe dla każdego skonstruowanego typu. Na przykład, należy wziąć pod uwagę następujące C\# i kodu języka Visual Basic:
+
+    ```csharp
+    class B<U,V> {}
+    class C<T> { public B<T,S> M<S>() {...}}
+    ```
+
+    ```vb
+    Class B(Of U, V)
+    End Class
+    Class C(Of T)
+        Public Function M(Of S)() As B(Of T, S)
+            ...
+        End Function
+    End Class
+    ```
+
+    ```cpp
+    generic <typename U, typename V> ref class B {};
+    generic <typename T> ref class C
+    {
+    public:
+        generic <typename S> B<T,S>^ M() {...};
+    };
+    ```
+
+Do skonstruowanego typu `C<int>` (`C(Of Integer)` w języku Visual Basic), zwraca metody ogólnej M `B<int, S>`. W przypadku typu otwartego `C<T>`, zwraca M `B<T, S>`. W obu przypadkach `IsGenericMethodDefinition` właściwość zwraca `true` dla <xref:System.Reflection.MethodInfo> reprezentujący M.
+
+Aby uzyskać listę niezmiennych warunków dla terminów specyficznych dla metod ogólnych, zobacz <xref:System.Reflection.MethodInfo.IsGenericMethod> właściwości. Aby uzyskać listę niezmiennych warunków dla innych terminów używanych w odbiciu rodzajowym, zobacz <xref:System.Type.IsGenericType> właściwości.
+
+## Examples  
+Poniższy przykład kodu wykorzystuje `IsGenericMethodDefinition` właściwość, aby wyświetlić komunikat wskazujący, czy <xref:System.Reflection.MethodInfo> reprezentuje definicję metody rodzajowej.
+
+W tym przykładzie jest częścią większego przykładu przewidzianego dla <xref:System.Reflection.MethodInfo.MakeGenericMethod%2A> metody.
+
+```vb
+Console.WriteLine(vbTab _
+    & "Is this a generic method definition? {0}", _
+    mi.IsGenericMethodDefinition)
+```
+
+```csharp
+Console.WriteLine("\tIs this a generic method definition? {0}", 
+    mi.IsGenericMethodDefinition);
+```
+
+```cpp
+Console::WriteLine("\tIs this a generic method definition? {0}", 
+    mi->IsGenericMethodDefinition);
+```
+
+]]></format>
+        </remarks>
+        <altmember cref="M:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])" />
+        <related type="Article" href="~/docs/framework/reflection-and-codedom/reflection-and-generic-types.md">Odbicie i typy ogólne</related>
+        <related type="Article" href="~/docs/csharp/programming-guide/generics/introduction-to-generics.md">Wprowadzenie do typów ogólnych (Przewodnik programowania w języku C#)</related>
       </Docs>
     </Member>
     <Member MemberName="MakeGenericMethod">
