@@ -1,11 +1,11 @@
 <Type Name="BufferedStream" FullName="System.IO.BufferedStream">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="844e045e034922791bd6f5c66770ed7166f90a00" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="9cf5c6dc99590b2f24b7725c166fa854be4af0d8" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52255084" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52598918" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class BufferedStream : System.IO.Stream" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit BufferedStream extends System.IO.Stream" />
@@ -569,8 +569,52 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Zamyka strumienia i zwalnia wszystkie zasoby (szczególnie zasobów systemowych, takich jak gniazda i dojścia do plików) skojarzony z bieżącym buforowanego strumienia.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Wszystkie dane, które wcześniej zapisany do buforu jest kopiowany do bazowego źródła danych lub repozytorium, przed zamknięciem buforowanego strumienia. W związku z tym, nie jest konieczne do wywołania <xref:System.IO.BufferedStream.Flush> przed wywołaniem Zamknij. Po wywołaniu Close żadnych operacji na buforowanego strumienia mogą zgłaszać wyjątki.
+
+Opróżnianie strumienia nie opróżnić jego podstawowej kodera, chyba że jawnie wywołać <xref:System.IO.BufferedStream.Flush> lub zamknąć. Ustawienie <xref:System.IO.StreamWriter.AutoFlush> na wartość true oznacza, że dane zostaną opróżnione z buforu do strumienia, ale nie zostaną opróżnione stanu kodera. Dzięki temu kodera zapewnienie jego stan (częściowa znaków), aby ją poprawnie kodowanie kolejny blok znaków. Ten scenariusz dotyczy UTF8 i UTF7, w których niektóre znaki mogą być zakodowane tylko po kodera odbiera sąsiadujących znak lub znaki.
+
+Podjęto próbę manipulowania strumień po jego zamknięciu może zgłosić <xref:System.ObjectDisposedException>.
+
+## Examples  
+Ten przykład kodu jest częścią większego przykładu przewidzianego dla <xref:System.IO.BufferedStream> klasy.
+
+```vb
+' When bufStream is closed, netStream is in turn 
+' closed, which in turn shuts down the connection 
+' and closes clientSocket.
+Console.WriteLine(vbCrLf & "Shutting down the connection.")
+bufStream.Close()
+```
+
+```csharp
+// When bufStream is closed, netStream is in turn
+// closed, which in turn shuts down the connection
+// and closes clientSocket.
+Console.WriteLine("\nShutting down the connection.");
+bufStream.Close();
+```
+
+```cpp
+// When bufStream is closed, netStream is in turn closed,
+// which in turn shuts down the connection and closes
+// clientSocket.
+Console::WriteLine( "\nShutting down connection." );
+bufStream->Close();
+
+```
+
+]]></format>
+        </remarks>
+        <exception cref="T:System.IO.IOException">Wystąpił błąd podczas próby zamknięcia w strumieniu.</exception>
+        <altmember cref="M:System.IO.BufferedStream.Flush" />
+        <related type="Article" href="~/docs/standard/io/index.md">We/Wy plików i strumieni</related>
+        <related type="Article" href="~/docs/standard/io/how-to-read-text-from-a-file.md">Porady: odczyt tekstu z pliku</related>
+        <related type="Article" href="~/docs/standard/io/how-to-write-text-to-a-file.md">Porady: wpisywanie tekstu do pliku</related>
       </Docs>
     </Member>
     <Member MemberName="Dispose">

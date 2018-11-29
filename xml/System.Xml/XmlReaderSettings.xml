@@ -1,11 +1,11 @@
 <Type Name="XmlReaderSettings" FullName="System.Xml.XmlReaderSettings">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="fe2bb2f5551c3db251f04af2ee0ef2e39e696dae" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="52f4f41e920ed2951fff4589215925f116e9d6a2" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52252432" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52600543" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class XmlReaderSettings" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XmlReaderSettings extends System.Object" />
@@ -925,7 +925,30 @@ Dim markup As String = _
     "<!DOCTYPE Root [" + Environment.NewLine + _  
     "  <!ENTITY anEntity ""Expands to more than 30 characters"">" + Environment.NewLine + _  
     "  <!ELEMENT Root (#PCDATA)>" + Environment.NewLine + _  
-    ]]></format>
+    "]>" + Environment.NewLine + _  
+    "<Root>Content &anEntity;</Root>"  
+  
+Dim settings As XmlReaderSettings = New XmlReaderSettings()  
+settings.DtdProcessing = DtdProcessing.Parse;  
+settings.ValidationType = ValidationType.DTD  
+settings.MaxCharactersFromEntities = 30  
+  
+Try  
+    Dim reader As XmlReader = XmlReader.Create(New StringReader(markup), settings)  
+    While (reader.Read())  
+    End While  
+Catch ex As XmlException  
+    Console.WriteLine(ex.Message)  
+End Try  
+```  
+  
+ Ten przykład generuje następujące wyniki:  
+  
+```  
+There is an error in XML document (MaxCharactersFromEntities, ).  
+```  
+  
+ ]]></format>
         </remarks>
       </Docs>
     </Member>
