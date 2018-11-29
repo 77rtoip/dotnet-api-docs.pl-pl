@@ -1,11 +1,11 @@
 <Type Name="AutoResetEvent" FullName="System.Threading.AutoResetEvent">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="8fce8768b4a2ba80422edde0871cb31a0a891d1f" />
-    <Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" />
+    <Meta Name="ms.openlocfilehash" Value="c64c681a3837ebc150b0f23474a66a22791e1e98" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/17/2018" />
-    <Meta Name="ms.locfileid" Value="51871746" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52605574" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class AutoResetEvent : System.Threading.EventWaitHandle" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit AutoResetEvent extends System.Threading.EventWaitHandle" />
@@ -88,7 +88,6 @@
     <threadsafe>Ta klasa jest bezpieczny dla wątków.</threadsafe>
     <altmember cref="T:System.Threading.WaitHandle" />
     <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
-    <related type="Article" href="https://msdn.microsoft.com/library/6d39c48d-6b37-4a9b-8631-f2924cfd9c18">AutoResetEvent</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -149,7 +148,6 @@
         </remarks>
         <altmember cref="T:System.Threading.WaitHandle" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d39c48d-6b37-4a9b-8631-f2924cfd9c18">AutoResetEvent</related>
       </Docs>
     </Member>
     <Member MemberName="Reset">
@@ -175,8 +173,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Ustawia stan zdarzenia w celu nonsignaled, co powoduje, że wątki w celu blokowania.</summary>
+        <returns>
+          <see langword="true" /> Jeśli operacja się powiedzie; w przeciwnym razie <see langword="false" />.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -203,9 +202,20 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Ustawia stan zdarzenia, które ma być zasygnalizowany, co pozwala na większości jeden wątek oczekiwania aby kontynuować.</summary>
+        <returns>
+          <see langword="true" /> Jeśli operacja się powiedzie; w przeciwnym razie <see langword="false" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Metoda Set zwalnia jednego wątku. Jeśli nie istnieją wątki oczekujące, dojście oczekiwania pozostaje sygnałowego, aż wątek próby poczekaj na nim lub dopóki nie zostanie wywołana jego metoda resetowania.
+
+> [!IMPORTANT]
+> Nie ma żadnej gwarancji, że każde wywołanie metody Set zwolni wątku. Jeśli dwa wywołania są zbyt blisko siebie, tak, aby drugie wywołanie występuje przed wydano wątku, tylko jeden wątek jest zwalniana — tak, jakby nie nastąpiły drugie wywołanie. Ponadto jeśli metoda zestaw jest wywoływana, gdy nie istnieją wątki oczekujące i <xref:System.Threading.AutoResetEvent> już jest sygnalizowane, wywołanie nie ma wpływu.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>
