@@ -1,11 +1,11 @@
 <Type Name="ResourceReader" FullName="System.Resources.ResourceReader">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="ee5874cf193a3a84faeadb6d46aed14c7dfc76bc" />
-    <Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" />
+    <Meta Name="ms.openlocfilehash" Value="f2814539bf76d998ae0f4c7bdb789f22102804ce" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/09/2018" />
-    <Meta Name="ms.locfileid" Value="51315737" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52602194" />
   </Metadata>
   <TypeSignature Language="C#" Value="public sealed class ResourceReader : System.Resources.IResourceReader" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ResourceReader extends System.Object implements class System.Collections.IEnumerable, class System.IDisposable, class System.Resources.IResourceReader" />
@@ -761,8 +761,102 @@ Label11="Mobile Phone:"
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Zwalnia zasoby używane przez <see cref="T:System.Resources.ResourceReader" />.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Wywołanie metody Dispose umożliwia zasoby używane przez <xref:System.Resources.ResourceReader> zostają przeniesione do innych celów. Aby uzyskać więcej informacji na temat usuwania, zobacz [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md).
+
+## Examples  
+Poniższy przykładowy kod przechodzi przez zasobów plików i wyświetla wszystkie pary klucz/wartość, które znajdzie. Następnie kod używa metody theIDisposable.Dispose zamknięcia <xref:System.Resources.ResourceReader> i zwalnia wszelkie zasoby używane przez niego.
+
+```vb
+Imports System
+Imports System.Resources
+Imports System.Collections
+
+Public Class ReadResources
+
+    Public Shared Sub Main(args() As String)
+        ' Create a resource reader for items.resources 
+        ' and get an enumerator to iterate through the file. 
+        Dim reader As IResourceReader = New ResourceReader("items.resources")
+        Dim en As IDictionaryEnumerator = reader.GetEnumerator()
+
+        ' Iterate through the file, printing the key and value pairs. 
+        While en.MoveNext()
+            Console.WriteLine()
+            Console.WriteLine("Name: {0}", en.Key)
+            Console.WriteLine("Value: {0}", en.Value)
+        End While 
+
+        ' Clean up all resources associated with the reader. 
+        ' Calling Dispose is equivalent to calling Close.
+        reader.Dispose()
+    End Sub 
+
+End Class
+```
+
+```csharp
+using System;
+using System.Resources;
+using System.Collections;
+
+public class ReadResources 
+{
+    public static void Main(string[] args) 
+    {
+        // Create a resource reader for items.resources 
+        // and get an enumerator to iterate through the file.
+        IResourceReader reader = new ResourceReader("items.resources");
+        IDictionaryEnumerator en = reader.GetEnumerator();
+
+        // Iterate through the file, printing the key/value pairs. 
+        while (en.MoveNext()) 
+        {
+            Console.WriteLine();
+            Console.WriteLine("Name: {0}", en.Key);
+            Console.WriteLine("Value: {0}", en.Value);
+        }
+
+        // Clean up all resources associated with the reader. 
+        // Calling Dispose is equivalent to calling Close.
+        reader.Dispose();
+    }
+}
+```
+
+```cpp
+using namespace System;
+using namespace System::Resources;
+using namespace System::Collections;
+int main()
+{
+   array<String^>^args = Environment::GetCommandLineArgs();
+
+   // Create a resource reader for items.resources 
+   // and get an enumerator to iterate through the file.
+   IResourceReader^ reader = gcnew ResourceReader( "items.resources" );
+   IDictionaryEnumerator^ en = reader->GetEnumerator();
+
+   // Iterate through the file, printing the key/value pairs. 
+   while ( en->MoveNext() )
+   {
+      Console::WriteLine();
+      Console::WriteLine( "Name: {0}", en->Key );
+      Console::WriteLine( "Value: {0}", en->Value );
+   }
+
+   // Clean up all resources associated with the reader. 
+   // Calling the destructor is equivalent to calling Close.
+   reader->~IResourceReader();
+}
+```
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

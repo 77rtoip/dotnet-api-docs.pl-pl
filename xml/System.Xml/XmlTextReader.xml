@@ -1,11 +1,11 @@
 <Type Name="XmlTextReader" FullName="System.Xml.XmlTextReader">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="90c77f83b2fbfa6e63a1bd5b61d10dfe1d19eaf4" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="5cb88eb979766bf7bddf81d0b3c1e58bf53f76d8" />
+    <Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52244281" />
+    <Meta Name="ms.lasthandoff" Value="11/29/2018" />
+    <Meta Name="ms.locfileid" Value="52602337" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class XmlTextReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XmlTextReader extends System.Xml.XmlReader implements class System.Xml.IXmlLineInfo, class System.Xml.IXmlNamespaceResolver" />
@@ -111,7 +111,7 @@ Począwszy od programu .NET Framework 2.0, firma Microsoft zaleca użycie <see c
     <block subset="none" type="overrides">
       <para>Ta klasa posiada dziedziczenia. Pełne zaufanie musi dziedziczyć <see langword="XmlTextReader" />.</para>
     </block>
-    <related type="Article" href="https://msdn.microsoft.com/library/e695047f-3c0f-4045-8708-5baea91cc380">Dokumenty i dane XML</related>
+    <related type="Article" href="~/docs/standard/data/xml/index.md">Dokumenty i dane XML</related>
   </Docs>
   <Members>
     <MemberGroup MemberName=".ctor">
@@ -1373,7 +1373,25 @@ Wystąpił błąd podczas przetwarzania żądania.</exception>
  Aby zilustrować różnica między jednostki tryby obsługi należy wziąć pod uwagę następujący kod XML:  
   
 ```  
-<!DOCTYPE doc [<!ENTITY num "123"]]></format>
+<!DOCTYPE doc [<!ENTITY num "123">]>  
+    <doc> &#65; &num; </doc>  
+```  
+  
+ Gdy `EntityHandling` ustawiono `ExpandEntities` węzeł element "doc" zawiera jeden węzeł tekstowy z tekstem rozwiniętej jednostki:  
+  
+|Głębokość|Typ węzła|Nazwa|Wartość|  
+|-----------|---------------|----------|-----------|  
+|1|`Text`||A 123|  
+  
+ Gdy `EntityHandling` ustawiono `ExpandCharEntites`, i <xref:System.Xml.XmlTextReader.WhitespaceHandling%2A> ustawiono `Significant` lub `All`, element "doc" rozwija jednostki znaku i zwraca ogólne jednostki jako węzeł:  
+  
+|Głębokość|Typ węzła|Nazwa|Wartość|  
+|-----------|---------------|----------|-----------|  
+|1|`Text`||ELEMENT|  
+|1|`EntityReference`|Liczba||  
+|1|`SignificantWhitespace`|||  
+  
+ ]]></format>
         </remarks>
         <altmember cref="T:System.Xml.XmlReader" />
       </Docs>
@@ -4108,9 +4126,18 @@ if (XmlNodeType.Element == reader.NodeType && "thing" == reader.Name)
         <ReturnType>System.Xml.XmlReaderSettings</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera <see cref="T:System.Xml.XmlReaderSettings" /> użyty do utworzenia tego obiektu <see cref="T:System.Xml.XmlTextReader" /> wystąpienia.</summary>
+        <value>
+          <see cref="T:System.Xml.XmlReaderSettings" /> Użyty do utworzenia tego obiektu <see cref="T:System.Xml.XmlTextReader" /> wystąpienia klasy <see langword="null" /> Jeśli czytnik nie został utworzony przy użyciu <see cref="Overload:System.Xml.XmlReader.Create" /> metody.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+
+> W [!INCLUDE[dnprdnext](~/includes/dnprdnext-md.md)], zalecaną praktyką jest utworzenie <xref:System.Xml.XmlReader> wystąpień przy użyciu <xref:System.Xml.XmlReaderSettings> klasy i <xref:System.Xml.XmlReader.Create%2A> metody. Dzięki temu można w pełni korzystać z nowych funkcji wprowadzonych w [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)]. Aby uzyskać więcej informacji, zobacz sekcję Uwagi w <xref:System.Xml.XmlReader> odwołania do stron.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Skip">
@@ -4195,9 +4222,17 @@ if (XmlNodeType.Element == reader.NodeType && "thing" == reader.Name)
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Aby uzyskać opis tego elementu członkowskiego, zobacz <see cref="M:System.Xml.IXmlLineInfo.HasLineInfo" />.</summary>
+        <returns>
+          <see langword="true" /> Jeśli <see cref="P:System.Xml.IXmlLineInfo.LineNumber" /> i <see cref="P:System.Xml.IXmlLineInfo.LinePosition" /> może być podany; w przeciwnym razie <see langword="false" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks  
+Ten element jest jawną implementacją członków. Mogą być używane tylko wtedy, gdy <xref:System.Xml.XmlTextReader> wystąpienia jest rzutowany na <xref:System.Xml.IXmlLineInfo> interfejsu.
+
+]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="System.Xml.IXmlNamespaceResolver.GetNamespacesInScope">
