@@ -1,11 +1,11 @@
 <Type Name="EventWrittenEventArgs" FullName="System.Diagnostics.Tracing.EventWrittenEventArgs">
   <Metadata>
-    <Meta Name="ms.openlocfilehash" Value="46860fca723a945b6916f0d8377e0f4796e46365" />
-    <Meta Name="ms.sourcegitcommit" Value="9e06b87bcfa4347dbbaaa4b3cc36b43b93b5badb" />
+    <Meta Name="ms.openlocfilehash" Value="6267829fa563f5420f5249f7a6248c140d093992" />
+    <Meta Name="ms.sourcegitcommit" Value="9d1bf7e4c6d697123f26c810c1a049a755634634" />
     <Meta Name="ms.translationtype" Value="MT" />
     <Meta Name="ms.contentlocale" Value="pl-PL" />
-    <Meta Name="ms.lasthandoff" Value="11/20/2018" />
-    <Meta Name="ms.locfileid" Value="52240043" />
+    <Meta Name="ms.lasthandoff" Value="12/06/2018" />
+    <Meta Name="ms.locfileid" Value="52981971" />
   </Metadata>
   <TypeSignature Language="C#" Value="public class EventWrittenEventArgs : EventArgs" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit EventWrittenEventArgs extends System.EventArgs" />
@@ -37,7 +37,29 @@
   <Interfaces />
   <Docs>
     <summary>Udostępnia dane dla <see cref="M:System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)" /> wywołania zwrotnego.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Zawsze, gdy zdarzenie jest wysyłane do <xref:System.Diagnostics.Tracing.EventListener>, <xref:System.Diagnostics.Tracing.EventListener.OnEventWritten%2A?displayProperty=nameWithType> wywoływana jest metoda wywołania zwrotnego. Jest przekazywana `EventWrittenEventArgs` wystąpienia, który zawiera informacje skojarzone ze zdarzeniem. Wszystkie wartości właściwości `EventWrittenEventArgs` klasy są prawidłowe tylko w trakcie wywołania zwrotnego. 
+
+Poniższe sekcje zawierają dodatkowe informacje na temat poszczególnych `EventWrittenEventArgs` właściwości.
+
+### <a name="activityid-property"></a>Właściwość identyfikatora działania
+
+Korzystając z <xref:System.Activities.Activity?displayProperty=nameWithType> i jej klasy pochodne wątków może być oznaczona jako posiadające działanie skojarzone z nimi. `ActivityId` Właściwość zwraca identyfikator działania wątku, który rejestrowane zdarzenia. Uwaga wątków nie muszą mieć działania, w tym przypadku właściwość ta zwraca <xref:System.Guid.Empty?displayProperty=nameWithType>.
+
+### <a name="osthreadid-and-timestamp-properties"></a>Właściwości elementu OSThreadId i znacznik czasu: 
+
+Począwszy od platformy .NET Core 2.2, <xref:System.Diagnostics.Tracing.EventListener> obiekty mogą subskrybować zdarzenia natywnego środowiska uruchomieniowego (na przykład zdarzenia GC, JIT i threadpool) oprócz zdarzeń wyemitowane przez <xref:System.Diagnostics.Tracing.EventSource> obiektów. W poprzednich wersjach programu .NET Core i wszystkich wersji programu .NET Framework, identyfikator wątku i sygnaturę czasową można gromadzić ze środowiska, ponieważ są one wysyłane synchronicznie w tym samym wątku, który emitowane je. Nie wszystkie zdarzenia natywnego środowiska uruchomieniowego mogą być wysyłane synchronicznie, jednak. Niektóre zdarzenia, takie jak zdarzenia GC są emitowane po zarządzanych wątków wykonanie programu jest zawieszone. Zdarzenia te są buforowane w kodzie natywnym i są wysyłane przez wątek dyspozytora po kodzie zarządzanym można wykonać ponownie. Ponieważ zdarzenia te są buforowane, środowiska nie może służyć do pobierania niezawodne, identyfikator wątku i sygnaturę czasową. W związku z tym, począwszy od platformy .NET Core 2.2, identyfikator wątku i sygnatura czasowa informacje są dostępne jako elementy członkowskie `EventWrittenEventArgs` klasy.
+
+### <a name="relatedactivityid-property"></a>Właściwość RelatedActivityId
+
+ Powiązana aktywność to działanie, które jest silnie związane z obecnym. Zwykle jest albo działania, który spowodował bieżącego działania (zdarzeń za pomocą `Start` opcode to zazwyczaj) lub działania, który został utworzony przez bieżący (zdarzeń za pomocą `Send` opcode to zwykle). Gdy jest używany, `RelatedActivityID` jawnie jest przekazywany przez metodą robiącą rejestrowanie. Nie przekazuj wiele zdarzeń `RelatedActivityId`, w którym to przypadku właściwość ta zwraca <xref:System.Guid.Empty?displayProperty=nameWithType>.
+
+ ]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="ActivityId">
@@ -76,18 +98,7 @@
       <Docs>
         <summary>Pobiera identyfikator działania w wątku, który zostało zapisane zdarzenie.</summary>
         <value>Identyfikator działania w wątku, który zostało zapisane zdarzenie.</value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Pobieranie wartości <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A> właściwość uzyskuje dostęp do pamięci lokalnej wątku. Ma to następujące skutki:  
-  
--   <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A> Pole jest prawidłowe tylko na czas trwania <xref:System.Diagnostics.Tracing.EventListener.OnEventWritten%2A?displayProperty=nameWithType> wywołania zwrotnego.  
-  
--   Jeśli identyfikator działania to ulegnie zmianie podczas wywołania zwrotnego, identyfikator działania zwrócony przez <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A> właściwość jest nieprawidłowa.  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
         <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId" />
         <altmember cref="M:System.Diagnostics.Tracing.EventSource.SetCurrentThreadActivityId(System.Guid)" />
       </Docs>
@@ -390,8 +401,8 @@
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Pobiera identyfikator wątku dla wątku systemu operacyjnego, który napisał zdarzenia. (.NET core 2,2 i późniejsze.)</summary>
+        <value>Identyfikator wątku dla wątku systemu operacyjnego, który zapisano zdarzenia.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -499,14 +510,7 @@
       <Docs>
         <summary>Pobiera identyfikator działanie, które jest związane z działaniem, reprezentowane przez bieżące wystąpienie.</summary>
         <value>Identyfikator powiązane działania lub <see cref="F:System.Guid.Empty" /> Jeśli nie ma powiązane działania.</value>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.RelatedActivityId%2A> Jest elementem podrzędnym <xref:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId%2A> właściwości. Identyfikator działania może być skojarzony z wielu powiązanych identyfikatory działań.  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
         <altmember cref="P:System.Diagnostics.Tracing.EventWrittenEventArgs.ActivityId" />
         <altmember cref="M:System.Diagnostics.Tracing.EventSource.WriteEventWithRelatedActivityId(System.Int32,System.Guid,System.Object[])" />
       </Docs>
@@ -601,8 +605,8 @@
         <ReturnType>System.DateTime</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Pobiera czas, który pierwotnie wygenerowania zdarzenia jako <see cref="System.DateTime" /> sygnatury czasowej. (.NET core 2,2 i późniejsze.)</summary>
+        <value>Data i godzina, kiedy zdarzenie zostało zarejestrowane. System próbuje być dokładny jak to możliwe.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
