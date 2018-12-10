@@ -1,1 +1,1 @@
-<span data-ttu-id="e7ec3-101">Tekst sformatowany (RTF)</span><span class="sxs-lookup"><span data-stu-id="e7ec3-101">Rich Text Format (RTF)</span></span>
+<span data-ttu-id="e50ad-101">Tekst sformatowany (RTF)</span><span class="sxs-lookup"><span data-stu-id="e50ad-101">Rich Text Format (RTF)</span></span>
