@@ -1,18 +1,18 @@
-Za pomocą opartego na znakach indeksowanie z <xref:System.Text.StringBuilder.Chars%2A> właściwość może być bardzo wolno w następujących warunkach:
+Za pomocą opartego na znakach indeksowanie z <xref:System.Text.StringBuilder.Chars%2A> właściwość może być bardzo wolne działanie w następujących warunkach:
 
-- <xref:System.Text.StringBuilder> Wystąpienia jest duży (na przykład składa się z kilku dziesiątki tysięcy znaków).
-- <xref:System.Text.StringBuilder> Jest "ociężale". Oznacza to, takich jak powtarzane wywołania metod <xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType> automatycznie zostały rozszerzone obiektu <xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType> właściwości i przydzielone fragmentów nowej pamięci do niego.
+- <xref:System.Text.StringBuilder> Wystąpienia jest duży (na przykład składa się z dziesiątków tysięcy znaków).
+- <xref:System.Text.StringBuilder> Jest "podzielonym." Oznacza to, takich jak wielokrotne wywołania metody <xref:System.Text.StringBuilder.Append%2A?displayProperty=nameWithType> automatycznie zostały rozszerzone obiektu <xref:System.Text.StringBuilder.Capacity%2A?displayProperty=nameWithType> właściwość i przydzielone nowych fragmentów w pamięci do niego.
 
-Wydajność jest znacznemu obniżeniu, ponieważ dostęp do każdego znaku przeprowadzi całe połączonej listy fragmentów, aby znaleźć poprawne buforu indeksu w.
+Jest znaczny wpływ na wydajność, ponieważ dostęp do każdego znaku opisano połączone całą listę fragmentach, aby znaleźć poprawne buforu na indeksowanie.
 
 > [!NOTE]
->  Nawet w przypadku dużego "ociężale" <xref:System.Text.StringBuilder> obiekt, za pomocą <xref:System.Text.StringBuilder.Chars%2A> właściwość opartego na indeksie dostępu do jednej lub kilku małych znaków ma negatywny wpływ na wydajność nieznaczny; zazwyczaj jest **0(n)** operacji. Wpływ na wydajność znaczących występuje podczas wykonywania iteracji w znaki <xref:System.Text.StringBuilder> obiektu, który jest **O(n^2)** operacji. 
+>  Nawet w przypadku dużych "podzielonym" <xref:System.Text.StringBuilder> obiektu przy użyciu <xref:System.Text.StringBuilder.Chars%2A> właściwość opartego na indeksie dostęp do jednej lub niewielkiej liczby znaków ma wpływ na wydajność niewielkie; zazwyczaj jest **0(n)** operacji. Wpływ na wydajność znaczące występuje podczas iteracji znaków w <xref:System.Text.StringBuilder> obiektu, który jest **O(n^2)** operacji. 
 
-Jeśli wystąpią problemy z wydajnością, gdy za pomocą opartego na znakach indeksowanie z <xref:System.Text.StringBuilder> obiekty, można użyć dowolnego z następujących rozwiązań:
+Jeśli napotkasz problemy z wydajnością, korzystając z opartego na znakach indeksowanie za pomocą <xref:System.Text.StringBuilder> obiektów, możesz użyć dowolnej z poniższych rozwiązań:
 
-- Konwertuj <xref:System.Text.StringBuilder> wystąpienie do <xref:System.String> przez wywołanie metody <xref:System.Text.StringBuilder.ToString%2A> metody, dostęp do znaków w ciągu.
+- Konwertuj <xref:System.Text.StringBuilder> wystąpienia do <xref:System.String> przez wywołanie metody <xref:System.Text.StringBuilder.ToString%2A> metody, uzyskiwać dostęp do znaków w ciągu.
 
-- Kopiuj zawartość istniejącej <xref:System.Text.StringBuilder> obiektu na nowy wstępnie o rozmiarze <xref:System.Text.StringBuilder> obiektu. Zwiększa wydajność, ponieważ nowy <xref:System.Text.StringBuilder> obiekt nie jest ociężale. Na przykład:
+- Skopiuj zawartość istniejącego <xref:System.Text.StringBuilder> nowy obiekt wstępnie wielkości <xref:System.Text.StringBuilder> obiektu. Zwiększa wydajność, ponieważ nowy <xref:System.Text.StringBuilder> obiekt nie jest podzielonym. Na przykład:
 
    ```csharp
    // sbOriginal is the existing StringBuilder object
@@ -22,4 +22,4 @@ Jeśli wystąpią problemy z wydajnością, gdy za pomocą opartego na znakach i
    ' sbOriginal is the existing StringBuilder object
    Dim sbNew = New StringBuilder(sbOriginal.ToString(), sbOriginal.Length)
    ```
-- Wartość początkowa pojemność <xref:System.Text.StringBuilder> obiektu wartość jest równa około maksymalnego rozmiaru oczekiwany przez wywołanie metody <xref:System.Text.StringBuilder.%23ctor(System.Int32)> konstruktora. Należy pamiętać, że to przydziela cały blok pamięci, nawet jeśli <xref:System.Text.StringBuilder> rzadko osiągnie maksymalną pojemność.
+- Ustaw początkową pojemność <xref:System.Text.StringBuilder> obiektu wartość, która jest w przybliżeniu równa maksymalny rozmiar oczekiwany przez wywołanie metody <xref:System.Text.StringBuilder.%23ctor(System.Int32)> konstruktora. Należy pamiętać, że to przydziela cały blok pamięci nawet wtedy, gdy <xref:System.Text.StringBuilder> rzadko osiąga limit maksymalnej pojemności.
