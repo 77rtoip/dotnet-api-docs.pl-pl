@@ -1,1 +1,1 @@
-<span data-ttu-id="85c49-101">punkty na cal (dpi)</span><span class="sxs-lookup"><span data-stu-id="85c49-101">dots per inch (dpi)</span></span>
+<span data-ttu-id="dc9e4-101">punkty na cal (dpi)</span><span class="sxs-lookup"><span data-stu-id="dc9e4-101">dots per inch (dpi)</span></span>
