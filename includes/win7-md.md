@@ -1,1 +1,1 @@
-<span data-ttu-id="9a2cb-101">Windows 7</span><span class="sxs-lookup"><span data-stu-id="9a2cb-101">Windows 7</span></span>
+<span data-ttu-id="c9e94-101">Windows 7</span><span class="sxs-lookup"><span data-stu-id="c9e94-101">Windows 7</span></span>

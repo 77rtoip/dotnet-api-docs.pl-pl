@@ -1,1 +1,1 @@
-<span data-ttu-id="72a2e-101">Komputer typu tablet</span><span class="sxs-lookup"><span data-stu-id="72a2e-101">Tablet PC</span></span>
+<span data-ttu-id="6687f-101">Komputer typu tablet</span><span class="sxs-lookup"><span data-stu-id="6687f-101">Tablet PC</span></span>

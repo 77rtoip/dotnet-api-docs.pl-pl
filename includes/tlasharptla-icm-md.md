@@ -1,1 +1,1 @@
-<span data-ttu-id="424bf-101">Zarządzanie kolorami obrazu (ICM)</span><span class="sxs-lookup"><span data-stu-id="424bf-101">Image Color Management (ICM)</span></span>
+<span data-ttu-id="ff069-101">Zarządzanie kolorami obrazu (ICM)</span><span class="sxs-lookup"><span data-stu-id="ff069-101">Image Color Management (ICM)</span></span>
