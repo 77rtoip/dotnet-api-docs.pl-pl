@@ -1,1 +1,1 @@
-<span data-ttu-id="5acb1-101">Microsoft Active Accessibility</span><span class="sxs-lookup"><span data-stu-id="5acb1-101">Microsoft Active Accessibility</span></span>
+<span data-ttu-id="deb38-101">Microsoft Active Accessibility</span><span class="sxs-lookup"><span data-stu-id="deb38-101">Microsoft Active Accessibility</span></span>

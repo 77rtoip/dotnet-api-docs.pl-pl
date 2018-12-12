@@ -1,1 +1,1 @@
-<span data-ttu-id="deb2a-101">identyfikatory (ID)</span><span class="sxs-lookup"><span data-stu-id="deb2a-101">identifiers (IDs)</span></span>
+<span data-ttu-id="ab35a-101">identyfikatory (ID)</span><span class="sxs-lookup"><span data-stu-id="ab35a-101">identifiers (IDs)</span></span>

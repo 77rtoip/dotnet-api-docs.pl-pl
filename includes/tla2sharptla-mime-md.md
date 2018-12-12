@@ -1,1 +1,1 @@
-<span data-ttu-id="1c29a-101">MIME</span><span class="sxs-lookup"><span data-stu-id="1c29a-101">MIME</span></span>
+<span data-ttu-id="22f69-101">MIME</span><span class="sxs-lookup"><span data-stu-id="22f69-101">MIME</span></span>

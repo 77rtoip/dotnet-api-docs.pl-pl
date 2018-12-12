@@ -1,1 +1,1 @@
-<span data-ttu-id="e0b9e-101">Identyfikatory</span><span class="sxs-lookup"><span data-stu-id="e0b9e-101">IDs</span></span>
+<span data-ttu-id="c70c0-101">Identyfikatory</span><span class="sxs-lookup"><span data-stu-id="c70c0-101">IDs</span></span>

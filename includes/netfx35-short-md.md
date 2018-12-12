@@ -1,1 +1,1 @@
-<span data-ttu-id="38090-101">Program .NET Framework 3,5</span><span class="sxs-lookup"><span data-stu-id="38090-101">.NET Framework 3.5</span></span>
+<span data-ttu-id="f7194-101">Program .NET Framework 3,5</span><span class="sxs-lookup"><span data-stu-id="f7194-101">.NET Framework 3.5</span></span>

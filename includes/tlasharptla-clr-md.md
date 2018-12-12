@@ -1,1 +1,1 @@
-<span data-ttu-id="17562-101">środowisko uruchomieniowe języka wspólnego (CLR)</span><span class="sxs-lookup"><span data-stu-id="17562-101">common language runtime (CLR)</span></span>
+<span data-ttu-id="7bfa8-101">środowisko uruchomieniowe języka wspólnego (CLR)</span><span class="sxs-lookup"><span data-stu-id="7bfa8-101">common language runtime (CLR)</span></span>

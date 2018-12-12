@@ -1,1 +1,1 @@
-<span data-ttu-id="a18fc-101">Usługi danych WCF</span><span class="sxs-lookup"><span data-stu-id="a18fc-101">WCF Data Services</span></span>
+<span data-ttu-id="72494-101">Usługi danych WCF</span><span class="sxs-lookup"><span data-stu-id="72494-101">WCF Data Services</span></span>

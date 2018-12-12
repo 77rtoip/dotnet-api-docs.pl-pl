@@ -1,1 +1,1 @@
-<span data-ttu-id="28a36-101">mapa bitowa (BMP)</span><span class="sxs-lookup"><span data-stu-id="28a36-101">bitmap (BMP)</span></span>
+<span data-ttu-id="68917-101">mapa bitowa (BMP)</span><span class="sxs-lookup"><span data-stu-id="68917-101">bitmap (BMP)</span></span>
