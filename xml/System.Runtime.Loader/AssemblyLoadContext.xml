@@ -1,5 +1,5 @@
 <Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1a5798f3c81e8fb04f46cc72b9ff78a79f39acec" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="36536423" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d94f0ea7088ccab0622ff14804fdf4c480aa9e68" /><Meta Name="ms.sourcegitcommit" Value="d8bd5d494445ce3fcad1321267cb87548d23a45b" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/15/2018" /><Meta Name="ms.locfileid" Value="53447451" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
@@ -20,8 +20,54 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
-    <remarks>To be added.</remarks>
+    <summary>Reprezentuje pojęcie w środowisku uruchomieniowym zakresu dla wiązania. Ta klasa jest abstrakcyjna.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext> Reprezentuje kontekstu ładowania. Model kontekstu ładowania tworzy zakres dla ładowania, rozpoznawanie i potencjalnie zwalnianie zbiór zestawów.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext> jest klasą abstrakcyjną. <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> Musi zostać wdrożone do tworzenia konkretnych klas.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext> Istnieje głównie w celu zapewnienia izolacji powiązań zestawów. Umożliwia ona wiele wersji tego samego zestawu do załadowania w ramach jednego procesu. Zastępuje on programy mechanizmów izolacji wielu <xref:System.AppDomain> wystąpienia w programie .NET Framework.
+ 
+ > [!NOTE]
+ > <xref:System.Runtime.Loader.AssemblyLoadContext> nie zapewnia żadnych funkcji zabezpieczeń. Cały kod ma pełne uprawnienia procesu.
+
+### <a name="usage-in-the-runtime"></a>Użycie w środowisku uruchomieniowym
+ Środowisko uruchomieniowe implementuje dwa konteksty ładowania zestawu: * <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType> reprezentuje kontekstu powiązania domyślne w środowisku uruchomieniowym, który jest używany dla zestawu głównego aplikacji i jego zależności statyczne.
+* <xref:System.Reflection.Assembly.LoadFile(System.String)?displayProperty=nameWithType> Metoda izoluje zestawy ładuje przez utworzenie wystąpienia najbardziej podstawowym <xref:System.Runtime.Loader.AssemblyLoadContext>. Ma ona schemat uproszczony izolacji, który ładuje każdego zestawu we własnym <xref:System.Runtime.Loader.AssemblyLoadContext> z nie rozpoznawania zależności.
+ 
+### <a name="application-usage"></a>Użycie aplikacji
+ Aplikacja może utworzyć swój własny <xref:System.Runtime.Loader.AssemblyLoadContext> do tworzenia niestandardowego rozwiązania na potrzeby zaawansowanych scenariuszy powiązania. Dostosowanie koncentruje się na temat definiowania mechanizmów rozpoznawania zależności.
+ 
+ <xref:System.Runtime.Loader.AssemblyLoadContext> Zawiera dwa punkty rozszerzenia do zaimplementowania rozwiązania zarządzanego zestawu: 1. <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> Zapewnia pierwszej szansy dla <xref:System.Runtime.Loader.AssemblyLoadContext> można rozpoznać zestawu, załaduj go i przywrócić go. Jeśli <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> zwraca `null`, moduł ładujący podejmie próbę załadowania zestawu do <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType>.
+2. Jeśli <xref:System.Runtime.Loader.AssemblyLoadContext.Default?displayProperty=nameWithType> nie można rozpoznać zestawu, oryginalnym <xref:System.Runtime.Loader.AssemblyLoadContext> pobiera drugą szansę, aby rozwiązać zestawu. Środowisko wykonawcze zgłasza <xref:System.Runtime.Loader.AssemblyLoadContext.Resolving> zdarzeń.
+ 
+ Ponadto <xref:System.Runtime.Loader.AssemblyLoadContext.LoadUnmanagedDll(System.String)?displayProperty=nameWithType> metody wirtualnej umożliwia dostosowanie domyślnego niezarządzanych rozpoznawania zestawu. Domyślna implementacja zwraca `null`, co powoduje, że wyszukiwanie środowiska uruchomieniowego, aby użyć jego domyślne zasady wyszukiwania, które są wystarczające dla większości scenariuszy.
+
+### <a name="technical-challenges"></a>Techniczne wyzwania
+ * Nie jest możliwe załadować wiele wersji środowiska uruchomieniowego w pojedynczym procesie.
+     > [!CAUTION]
+     > Trwa ładowanie wielu kopii lub różne wersje zestawów framework może prowadzić do nieoczekiwanych i trudne do zdiagnozowania zachowanie.
+     
+     > [!TIP]
+     > Aby rozwiązać ten problem izolacji, użyj granice procesu z wywołaniem funkcji zdalnych i/lub komunikacji międzyprocesowej.
+ 
+ * Czas ładowania zestawu może utrudnić testowanie i debugowanie. Zestawy są zwykle ładowane bez ich zależności, bezpośrednio rozwiązane. Zależności są załadowane, ponieważ są one potrzebne:
+     * Gdy kod przechodzi do zestawu zależnego.
+     * Gdy kod ładuje zasoby.
+     * Gdy kod jawnie ładuje zestawy.
+ 
+ * Implementacja <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)?displayProperty=nameWithType> można dodać nowe zależności, w których konieczne może być izolowane, aby zezwolić na inne wersje do istnieje. Implementacja najbardziej naturalnych umieszczenie tych zależności w kontekście domyślnym. Należy je uważnie projektować odizolować nowych zależności.
+ 
+ * Proces izolacji wiązania tworzy wiele typów o takiej samej nazwie typu.
+     * Może to prowadzić do mylące komunikaty o błędach, na przykład "typ Foo.Foo nie można rzutować na typ Foo.Foo."
+     * Zarządzany w granicach izolacji jest trywialny. Typowym rozwiązaniem byłoby jest używany interfejs zdefiniowany w zestawie, który jest ładowany tylko domyślny kontekst ładowania.
+ 
+ ]]></format>
+    </remarks>
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR, dokument projektowy</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -43,8 +89,16 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> klasy.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+Ten konstruktor jest chroniony. Może być wywołana tylko z <xref:System.Runtime.Loader.AssemblyLoadContext> klasy lub klas pochodnych.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Default">
@@ -69,8 +123,8 @@
         <ReturnType>System.Runtime.Loader.AssemblyLoadContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Pobiera domyślny <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />. Domyślny kontekst zawiera zestawu głównej aplikacji i jego zależności statyczne.</summary>
+        <value>Domyślny kontekst ładowania zestawu.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -99,11 +153,14 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assemblyPath">Ścieżka do zestawu.</param>
+        <summary>Pobiera <see cref="T:System.Reflection.AssemblyName" /> dla ścieżki zestawu.</summary>
+        <returns>Obiekt, który zawiera nazwę zestawu w pełni przeanalizowany zestawu w <paramref name="assemblyPath" />.</returns>
         <remarks>To be added.</remarks>
-      </Docs>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.IO.FileNotFoundException">Nie można odnaleźć zestawu.</exception>
+        <exception cref="T:System.BadImageFormatException">Zestaw nie jest prawidłowym zestawem.</exception>
+       </Docs>
     </Member>
     <Member MemberName="GetLoadContext">
       <MemberSignature Language="C#" Value="public static System.Runtime.Loader.AssemblyLoadContext GetLoadContext (System.Reflection.Assembly assembly);" />
@@ -129,10 +186,11 @@
         <Parameter Name="assembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">Zestaw.</param>
+        <summary>Pobiera <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> zawierający określony <see cref="T:System.Reflection.Assembly" />.</summary>
+        <returns>Zestaw obciążenia zawierający kontekst <paramref name="assembly" />.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -159,10 +217,20 @@
         <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
       </Parameters>
       <Docs>
-        <param name="assemblyName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="assemblyName">Obiekt, który opisuje zestawie, który ma zostać załadowany.</param>
+        <summary>Po przesłonięciu w klasie pochodnej, umożliwia można rozpoznać zestawu i załadowany na podstawie jego <see cref="T:System.Reflection.AssemblyName" />.</summary>
+        <returns>Załadowany zestaw lub <see langword="null" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+ 
+## Remarks
+ Podczas rozpoznawania zestawu <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)> metoda ma pierwszy szansę, aby rozpoznać nazwę zestawu załadowany zestaw. Jego załadowania zestawu, lub zwróć `null`. Jeśli zostanie zwrócona `null`, rozpoznawanie proces jest kontynuowany. Zobacz <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)> opisu pełny proces.
+ 
+ > [!IMPORTANT]
+ > Aby uniknąć przepełnienia stosu cykliczne, nie należy wywoływać metody to wystąpienie <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName(System.Reflection.AssemblyName)> metody z tej metody.
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadFromAssemblyName">
@@ -189,10 +257,32 @@
         <Parameter Name="assemblyName" Type="System.Reflection.AssemblyName" />
       </Parameters>
       <Docs>
-        <param name="assemblyName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="assemblyName">Obiekt, który opisuje zestawu do załadowania.</param>
+        <summary>Rozpoznaje i ładuje zestaw, biorąc pod uwagę jej <see cref="T:System.Reflection.AssemblyName" />.</summary>
+        <returns>Załadowany zestaw lub zgłasza wyjątek.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.Runtime.Loader.AssemblyLoadContext.LoadFromAssemblyName%2A> ładuje zestaw, rozwiązując <xref:System.Reflection.AssemblyName>. Spowoduje to wyzwolenie pełnej rozdzielczości. Sekwencja rezerwowego rozpoznawania następujące tego procesu: 1. Wywołań metod <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)>.
+         > [!IMPORTANT]
+         > <xref:System.Runtime.Loader.AssemblyLoadContext.Load(System.Reflection.AssemblyName)> must not call this method to prevent recursive stack overflow.
+     2. Unless the assembly is loaded or an exception is thrown, the method attempts to load the assembly in the default <xref:System.Runtime.Loader.AssemblyLoadContext>.
+     3. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.Runtime.Loader.AssemblyLoadContext.Resolving> event.
+     4. Unless the assembly is loaded or an exception is thrown, the method fires the <xref:System.AppDomain.AssemblyResolve> event.
+ 
+ > [!NOTE]
+ > <xref:System.IO.FileLoadException> jest generowany, jeśli `assemblyRef` Określa nazwę pełnego zestawu, a pierwszy zestaw, który jest zgodny z prostą nazwą ma niezgodną wersję lub kultury. Moduł ładujący nie będzie sondowania dla innych zestawów, które jest zgodna z nazwą proste.
+ 
+ Każdy <xref:System.Runtime.Loader.AssemblyLoadContext> mogą ładować tylko: * jedną wersję zestawu pliku wykonywalnego.
+* Jedną wersję zestawu satelickiego dla każdej kultury.
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyName" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="assemblyName" /> Nie można odnaleźć.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyName" /> nie jest prawidłowym zestawem.</exception>
+        <exception cref="T:System.IO.FileLoadException">Zestaw lub moduł został załadowany, który jest niezgodny <paramref name="assemblyName" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromAssemblyPath">
@@ -220,10 +310,15 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assemblyPath">W pełni kwalifikowana ścieżka pliku do załadowania.</param>
+        <summary>Ładuje zawartość pliku zestawu w określonej ścieżce.</summary>
+        <returns>Załadowany zestaw.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> Argument nie jest ścieżką bezwzględną.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assemblyPath" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.IO.FileLoadException">Nie można załadować pliku, który został znaleziony.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="assemblyPath" /> Parametr jest pustym ciągiem ("") lub nie istnieje.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" /> nie jest prawidłowym zestawem.</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromNativeImagePath">
@@ -252,11 +347,26 @@
         <Parameter Name="assemblyPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="nativeImagePath">To be added.</param>
-        <param name="assemblyPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="nativeImagePath">W pełni kwalifikowana ścieżka pliku do załadowania.</param>
+        <param name="assemblyPath">W pełni kwalifikowaną ścieżkę IL wersję pliku do załadowania, lub <see langword="null" />.</param>
+        <summary>Ładuje zawartość obrazu natywnego pliku zarządzanego zestawu w określonej ścieżce.</summary>
+        <returns>Załadowany zestaw.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Obrazów natywnych dla zestawu zarządzanego jest wstępnie trybie JIT do optymalizacji na określonej platformie.
+ 
+ Ścieżka zestawu odwołuje się do ścieżki do IL wersję zestawu. Opcjonalny argument jest jak IL jest najczęściej przygotowywanych do uwzględnienia w obrazie natywnym. Może służyć przez środowisko uruchomieniowe jako rezerwowe w przypadku nieodnalezienia obrazu natywnego.
+ 
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="nativeImagePath" /> Argument nie jest ścieżką bezwzględną.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="assemblyPath" /> Argument nie jest ścieżką bezwzględną.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="nativeImagePath" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.IO.FileLoadException">Nie można załadować pliku, który został znaleziony.</exception>
+        <exception cref="T:System.IO.FileNotFoundException"><paramref name="nativeImagePath" /> Parametr jest pustym ciągiem ("") lub nie istnieje.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assemblyPath" /> nie jest prawidłowym zestawem.</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromStream">
@@ -283,10 +393,12 @@
         <Parameter Name="assembly" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">Tablica bajtów, która jest obrazem formacie coff, zawierające zestaw zarządzany.</param>
+        <summary>Ładuje zestaw za pomocą wspólny format plików obiektu (COFF)-na podstawie obrazu zawierającego zestaw zarządzany.</summary>
+        <returns>Załadowany zestaw.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" /> nie jest prawidłowym zestawem.</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadFromStream">
@@ -314,11 +426,13 @@
         <Parameter Name="assemblySymbols" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="assembly">To be added.</param>
-        <param name="assemblySymbols">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="assembly">Tablica bajtów, która jest obrazem formacie coff, zawierające zestaw zarządzany.</param>
+        <param name="assemblySymbols">Tablica bajtów zawierająca bajty pierwotne reprezentujący symbole dla zestawu.</param>
+        <summary>Ładuje zestaw za pomocą wspólny format plików obiektu (COFF)-na podstawie obrazu zawierającego zestaw zarządzany, opcjonalnie tym symbole dla zestawu.</summary>
+        <returns>Załadowany zestaw.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.BadImageFormatException"><paramref name="assembly" /> nie jest prawidłowym zestawem.</exception>
       </Docs>
     </Member>
     <Member MemberName="LoadUnmanagedDll">
@@ -346,10 +460,19 @@
         <Parameter Name="unmanagedDllName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="unmanagedDllName">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="unmanagedDllName">Nazwa biblioteki niezarządzanej. Zazwyczaj jest to nazwa pliku bez jego ścieżki i rozszerzenia.</param>
+        <summary>Umożliwia klasy pochodnej w celu załadowania biblioteki niezarządzanej według nazwy.</summary>
+        <returns>Dojście do załadować biblioteki lub <see langword="null" />.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Domyślna implementacja zwracana zawsze `null`. Gdy `null` ma zostać zwrócona, środowisko uruchomieniowe ładuje biblioteki za pomocą jego domyślne zasady.
+ 
+ Tej metody wirtualnej może zostać zastąpiona w celu dostosowywania algorytmu wyszukiwania biblioteki niezarządzanej. W przypadku przesłonięcia nazwa może służyć do identyfikowania biblioteki. Załadowane biblioteki muszą być zgodne, żądanie nazwy, ale można je przekształcać zgodnie z potrzebami. Może to obejmować Dopasowywanie nazw nazewnictwa określonych platform.
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="LoadUnmanagedDllFromPath">
@@ -377,10 +500,13 @@
         <Parameter Name="unmanagedDllPath" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="unmanagedDllPath">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="unmanagedDllPath">Ścieżka do biblioteki niezarządzanej.</param>
+        <summary>Ładuje biblioteką niezarządzaną z określonej ścieżki.</summary>
+        <returns>Dojście do załadować biblioteki.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="unmanagedDllPath" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="unmanagedDllPath" /> Argument nie jest ścieżką bezwzględną.</exception>
+        <exception cref="T:System.IO.FileNotFoundException">Nie można odnaleźć biblioteki niezarządzanej.</exception>
       </Docs>
     </Member>
     <Member MemberName="Resolving">
@@ -405,8 +531,22 @@
         <ReturnType>System.Func&lt;System.Runtime.Loader.AssemblyLoadContext,System.Reflection.AssemblyName,System.Reflection.Assembly&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Występuje, gdy rozpoznawania zestawu nie powiodło się podczas próby załadowania w kontekście ładowania tego zestawu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Jest odpowiedzialny za obsługi dla tego zdarzenia, aby zwrócić zestaw, który jest określony lub w celu zwrócenia `null` , jeśli zestaw nie jest rozpoznany.
+ 
+ > [!IMPORTANT]
+ >  Jeśli więcej niż jeden program obsługi zdarzeń jest zarejestrowany dla tego zdarzenia, programy obsługi zdarzeń są wywoływane w kolejności, dopóki program obsługi zdarzeń nie zwróci wartość, która nie jest `null`. Programy obsługi zdarzeń kolejnych są ignorowane.
+ 
+ Aby uzyskać więcej informacji na temat obsługi zdarzeń, zobacz [Handling and Raising Events](~/docs/standard/events/index.md).
+ 
+ Jest warte zauważenia, czy można dodać program obsługi dla tego zdarzenia na dowolnym <xref:System.Runtime.Loader.AssemblyLoadContext>, łącznie z kontekstem domyślne.
+ 
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SetProfileOptimizationRoot">
@@ -491,7 +631,7 @@
         <ReturnType>System.Action&lt;System.Runtime.Loader.AssemblyLoadContext&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Występuje, gdy <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> jest zwalniana.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
