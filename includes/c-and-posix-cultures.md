@@ -1,0 +1,2 @@
+> [!NOTE]
+> **.NET core uruchomiony tylko w systemach Linux i macOS:** Zachowanie sortowania dla języków C i Posix zawsze jest wielkość liter, ponieważ te kultur nie należy używać w oczekiwanej kolejności colation Unicode. Zalecamy użycie kultury innej niż C lub Posix dla operacji wrażliwych na kulturę, bez uwzględniania wielkości liter sortowania.  
