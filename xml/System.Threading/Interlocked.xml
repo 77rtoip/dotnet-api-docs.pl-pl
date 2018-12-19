@@ -1,5 +1,5 @@
 <Type Name="Interlocked" FullName="System.Threading.Interlocked">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="a8c91429c4211b1e1da8ab9a2544c92e96f992ae" /><Meta Name="ms.sourcegitcommit" Value="1654a92bac785a221098172d9cacd405ceaac9b7" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/01/2018" /><Meta Name="ms.locfileid" Value="52732254" /></Metadata><TypeSignature Language="C#" Value="public static class Interlocked" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3b2fdb41b1e5f8614494e0d69b0a97131cab338e" /><Meta Name="ms.sourcegitcommit" Value="662f143e6be46d519ff8ab4451d543d91e651478" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/18/2018" /><Meta Name="ms.locfileid" Value="53567033" /></Metadata><TypeSignature Language="C#" Value="public static class Interlocked" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Interlocked extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Interlocked" />
   <TypeSignature Language="VB.NET" Value="Public Class Interlocked" />
@@ -741,7 +741,7 @@ Jeśli `comparand` i obiekt w `location1` są równe według odwołania, następ
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda obsługuje warunek przepełnienia opakowując: Jeśli `location`  =  <xref:System.Int32.MinValue?displayProperty=nameWithType>, `location` - 1 = <xref:System.Int32.MaxValue?displayProperty=nameWithType>. Jest zgłaszany żaden wyjątek.  
+ Ta metoda obsługuje warunek przepełnienia, opakowując: Jeśli `location`  =  <xref:System.Int32.MinValue?displayProperty=nameWithType>, `location` - 1 = <xref:System.Int32.MaxValue?displayProperty=nameWithType>. Jest zgłaszany żaden wyjątek.  
   
    
   
@@ -1395,7 +1395,7 @@ Jeśli `comparand` i obiekt w `location1` są równe według odwołania, następ
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Synchronizuje dostęp do pamięci w następujący sposób: procesora, który jest wykonywany bieżący wątek nie można zmienić kolejności instrukcje w taki sposób, że pamięć uzyskuje dostęp do przed wywołaniem do <see cref="M:System.Threading.Interlocked.MemoryBarrier" /> wykonaj po dostępy do pamięci, które należy wykonać wywołanie <see cref="M:System.Threading.Interlocked.MemoryBarrier" />.</summary>
+        <summary>Synchronizuje dostęp do pamięci w następujący sposób: Procesor, który jest wykonywany bieżący wątek nie można zmienić kolejności instrukcje w taki sposób, że pamięć uzyskuje dostęp do przed wywołaniem do <see cref="M:System.Threading.Interlocked.MemoryBarrier" /> wykonaj po dostępy do pamięci, które należy wykonać wywołanie <see cref="M:System.Threading.Interlocked.MemoryBarrier" />.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1434,8 +1434,24 @@ Jeśli `comparand` i obiekt w `location1` są równe według odwołania, następ
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Zapewnia barierę pamięci dla procesu, który zapewnia, że odczytuje i zapisuje z dowolny procesor CPU nie można przenieść między barierę.</summary>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+`MemoryBarrierProcessWide` Metoda różni się od "normal" <xref:System.Threading.Interlocked.MemoryBarrier%2A> metody w następujący sposób:
+
+- Barierę normalne pamięci gwarantuje, że odczyty i zapisy, z bieżący procesor CPU, nie można przenieść między barierę. Bariera pamięci dla procesu gwarantuje, że zapisu lub odczytu z dowolny procesor CPU, używany w procesie nie można przenieść między barierę.
+
+- Barierę normalne pamięci umożliwia uzasadnione dostępu współdzielonego, jeśli *co* bariery korzysta z wątku, dostęp do danych. Wymusza barierę pamięci dla procesu *inne procesory CPU* do synchronizacji z pamięci procesu (na przykład aby opróżnić zapisu buforów i zsynchronizować buforów odczytu). Dzięki temu-blokowanej operacji na niektóre wątki i nadal ma uzasadnione dostęp współdzielony. 
+
+- Bariera normalne pamięci nakłada niewielkim zapasem; normalne operacje blokowane prawdopodobnie koszt mniej niż sto cykli. Bariera pamięci całego procesu jest bardzo kosztowny. Ma wymusić każdy Procesor w procesie wykonaj na bardziej prawdopodobne kosztów tysięcy cykli. 
+
+`MemoryBarrierProcessWide` Metoda również odczuwa precyzyjnie programowania wolne od blokady. Niemniej jednak ta metoda może być bardzo przydatne, gdy jest potrzebna do wywołania, powinny być rzadko.
+
+Ta metoda zawija wywołanie do [FlushProcessWriteBuffers](/windows/desktop/api/processthreadsapi/nf-processthreadsapi-flushprocesswritebuffers) na Windows i [sys_membarrier](https://lore.kernel.org/patchwork/patch/188708/) w systemie Linux.
+
+         ]]></format>
+         </remarks>
       </Docs>
     </Member>
     <Member MemberName="Read">
