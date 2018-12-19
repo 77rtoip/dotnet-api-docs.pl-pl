@@ -1,5 +1,5 @@
 <Type Name="FileStream" FullName="System.IO.FileStream">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="7a06f70b77d575d1a15d0e980c99c1c5daf7ad47" /><Meta Name="ms.sourcegitcommit" Value="c5fd6b431a16f0412349201a0e93a9eacddf4b35" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/14/2018" /><Meta Name="ms.locfileid" Value="53395490" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="dc5ed181a3b71bafd66689b0d61664367786fda3" /><Meta Name="ms.sourcegitcommit" Value="662f143e6be46d519ff8ab4451d543d91e651478" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/18/2018" /><Meta Name="ms.locfileid" Value="53568710" /></Metadata><TypeSignature Language="C#" Value="public class FileStream : System.IO.Stream" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit FileStream extends System.IO.Stream" />
   <TypeSignature Language="DocId" Value="T:System.IO.FileStream" />
   <TypeSignature Language="VB.NET" Value="Public Class FileStream&#xA;Inherits Stream" />
@@ -1489,14 +1489,18 @@ Strumień został zamknięty.</exception>
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">Bufor do wczytania danych.</param>
+        <param name="offset">Przesunięcie w bajtach w <paramref name="array" /> jaką ma rozpocząć się odczyt.</param>
+        <param name="numBytes">Maksymalna liczba bajtów do odczytania.</param>
+        <param name="userCallback">Metoda wywoływana, gdy operacja odczytu asynchroniczną zostanie zakończona.</param>
+        <param name="stateObject">Obiekt dostarczony przez użytkownika, który odróżnia to asynchroniczne żądanie odczytu od innych żądań.</param>
+        <summary>Rozpoczyna operację odczytu asynchronicznego. Należy rozważyć użycie <see cref="M:System.IO.FileStream.ReadAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" /> zamiast tego.</summary>
+        <returns>Obiekt, który odwołuje się do asynchronicznego odczytu.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">Długość tablicy minus <paramref name="offset" /> jest mniejsza niż <paramref name="numBytes" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> lub <paramref name="numBytes" /> jest ujemna.</exception>
+        <exception cref="T:System.IO.IOException">Odczyt asynchroniczny podjęto próbę poza końcem pliku.</exception>
       </Docs>
     </Member>
     <Member MemberName="BeginWrite">
@@ -1540,14 +1544,20 @@ Strumień został zamknięty.</exception>
         <Parameter Name="stateObject" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="array">To be added.</param>
-        <param name="offset">To be added.</param>
-        <param name="numBytes">To be added.</param>
-        <param name="userCallback">To be added.</param>
-        <param name="stateObject">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="array">Bufor zawierający dane do zapisu do bieżącego strumienia.</param>
+        <param name="offset">Zerze przesunięcie w <paramref name="array" /> od którego należy zacząć kopiowanie bajtów do bieżącego strumienia.</param>
+        <param name="numBytes">Maksymalna liczba bajtów do zapisania.</param>
+        <param name="userCallback">Metoda wywoływana po zakończeniu asynchroniczny zapis operacji.</param>
+        <param name="stateObject">Obiekt dostarczony przez użytkownika, który odróżnia to żądanie określonego asynchroniczny zapis od innych żądań.</param>
+        <summary>Rozpoczyna operację asynchronicznego zapisu. Należy rozważyć użycie <see cref="M:System.IO.FileStream.WriteAsync(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)" /> zamiast tego.</summary>
+        <returns>Obiekt, który odwołuje się do asynchronicznego zapisu.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="array" /> Długość minus <paramref name="offset" /> jest mniejsza niż <paramref name="numBytes" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> lub <paramref name="numBytes" /> jest ujemna.</exception>
+        <exception cref="T:System.NotSupportedException">Strumień nie obsługuje zapisywania.</exception>
+        <exception cref="T:System.ObjectDisposedException">Strumień jest zamknięty.</exception>
+        <exception cref="T:System.IO.IOException">Wystąpił błąd we/wy.</exception>
       </Docs>
     </Member>
     <Member MemberName="CanRead">
@@ -2368,7 +2378,7 @@ Obiekt wywołujący nie posiada wymaganych uprawnień.</exception>
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą czy <see langword="FileStream" /> otwarto asynchronicznie lub synchronicznie.</summary>
+        <summary>Pobiera wartość wskazującą, czy <see langword="FileStream" /> otwarto asynchronicznie lub synchronicznie.</summary>
         <value><see langword="true" /> Jeśli <see langword="FileStream" /> otwarto asynchronicznie; w przeciwnym razie <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
