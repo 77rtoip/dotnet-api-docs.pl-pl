@@ -1,5 +1,5 @@
 <Type Name="Enum" FullName="System.Enum">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="a7a137de938199a0dd7dc074b7bb42e54b3c7461" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52359930" /></Metadata><TypeSignature Language="C#" Value="public abstract class Enum : ValueType, IComparable, IConvertible, IFormattable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f4922a1d1b0f0515d3bff5e3792f8a607712d05b" /><Meta Name="ms.sourcegitcommit" Value="e3904cb57bb8e1854a7de1615afac7a569a2064b" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/14/2019" /><Meta Name="ms.locfileid" Value="54252895" /></Metadata><TypeSignature Language="C#" Value="public abstract class Enum : ValueType, IComparable, IConvertible, IFormattable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract serializable beforefieldinit Enum extends System.ValueType implements class System.IComparable, class System.IConvertible, class System.IFormattable" />
   <TypeSignature Language="DocId" Value="T:System.Enum" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class Enum&#xA;Inherits ValueType&#xA;Implements IComparable, IConvertible, IFormattable" />
@@ -349,6 +349,7 @@
         <exception cref="T:System.ArgumentException"><paramref name="target" /> i to wystąpienie są tego samego typu.</exception>
         <exception cref="T:System.InvalidOperationException">To wystąpienie nie jest typem <see cref="T:System.SByte" />, <see cref="T:System.Int16" />, <see cref="T:System.Int32" />, <see cref="T:System.Int64" />, <see cref="T:System.Byte" />, <see cref="T:System.UInt16" />, <see cref="T:System.UInt32" />, lub <see cref="T:System.UInt64" />.</exception>
         <altmember cref="M:System.Enum.Equals(System.Object)" />
+        <exception cref="T:System.NullReferenceException">To wystąpienie ma wartość null.</exception>
       </Docs>
     </Member>
     <Member MemberName="Equals">
@@ -2154,11 +2155,13 @@ Można określić, czy wiele pola bitowe są ustawiane przez wywołanie metody <
         <Parameter Name="provider" Type="System.IFormatProvider" />
       </Parameters>
       <Docs>
-        <param name="format">To be added.</param>
+        <param name="format">Specyfikacja formatu.</param>
         <param name="provider">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Tego przeciążenia metody jest przestarzała; Użyj <see cref="M:System.Enum.ToString(System.String)" />.</summary>
+        <returns>Ciąg reprezentujący wartość tego wystąpienia określony parametrami <paramref name="format" />.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.FormatException"><paramref name="format" /> nie zawiera specyfikacji prawidłowy format.</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="format" /> jest równy "X", ale typ wyliczeniowy jest nieznany.</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="ToObject">
@@ -2786,7 +2789,7 @@ Można określić, czy wiele pola bitowe są ustawiane przez wywołanie metody <
         </remarks>
         <block subset="none" type="usage"><para>Jeśli wiele elementów członkowskich wyliczenia mają taką samą wartość podstawowych i próbują pobrać ciąg reprezentujący nazwę elementu członkowskiego wyliczenia, na podstawie jego podstawowej wartości, kod nie powinna dokonywać czynić żadnych założeń o nazwie, który zwróci metoda. Na przykład, poniższy wyliczenie definiuje dwa elementy członkowskie, <c>Shade.Gray</c> i <c>Shade.Grey</c>, które mają taką samą wartość podstawowy.  
   
-[! code-csharp[System.Enum.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#1)] [! kodu vb[System.Enum.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#1)] 
+[!code-csharp[System.Enum.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#1)] [!code-vb[System.Enum.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#1)] 
 Następujące wywołanie metody podejmie próbę pobrania nazwy członka <c>odcień</c> wyliczenie, którego podstawowym wartością jest 1. Metoda może zwrócić "Szarym" lub "Grey", a Twój kod, nie należy wprowadzać żadnych założeń, o których zostanie zwrócony ciąg.  
   
 [! code-csharp[System.Enum.ToString#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#2)] [! kodu vb[System.Enum.ToString#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#2)]</para></block>
@@ -2903,10 +2906,10 @@ Następujące wywołanie metody podejmie próbę pobrania nazwy członka <c>odci
         <exception cref="T:System.InvalidOperationException"><paramref name="format" /> jest równy "X", ale typ wyliczeniowy jest nieznany.</exception>
         <block subset="none" type="usage"><para>Jeśli wiele elementów członkowskich wyliczenia mają taką samą wartość podstawowych i próbują pobrać ciąg reprezentujący nazwę elementu członkowskiego wyliczenia, na podstawie jego podstawowej wartości, kod nie powinna dokonywać czynić żadnych założeń o nazwie, który zwróci metoda. Na przykład, poniższy wyliczenie definiuje dwa elementy członkowskie, <c>Shade.Gray</c> i <c>Shade.Grey</c>, które mają taką samą wartość podstawowy.  
   
-[! code-csharp[System.Enum.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#1)] [! kodu vb[System.Enum.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#1)] 
+[!code-csharp[System.Enum.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#1)] [!code-vb[System.Enum.ToString#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#1)] 
 Następujące wywołanie metody podejmie próbę pobrania nazwy członka <c>odcień</c> wyliczenie, którego podstawowym wartością jest 1. Metoda może zwrócić "Szarym" lub "Grey", a Twój kod, nie należy wprowadzać żadnych założeń, o których zostanie zwrócony ciąg.  
   
-[! code-csharp[System.Enum.ToString#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#3)] [! kodu vb[System.Enum.ToString#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#3)]</para></block>
+[!code-csharp[System.Enum.ToString#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.enum.tostring/cs/tostringbyvalue1.cs#3)] [!code-vb[System.Enum.ToString#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.enum.tostring/vb/tostringbyvalue1.vb#3)]</para></block>
         <altmember cref="M:System.Enum.Format(System.Type,System.Object,System.String)" />
         <altmember cref="M:System.Enum.Parse(System.Type,System.String)" />
         <altmember cref="M:System.IFormattable.ToString(System.String,System.IFormatProvider)" />
