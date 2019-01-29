@@ -1,5 +1,5 @@
 <Type Name="CultureTypes" FullName="System.Globalization.CultureTypes">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="90d1c338aff0fdcc586e0c7ccc25f989c82f8e2e" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52357161" /></Metadata><TypeSignature Language="C#" Value="public enum CultureTypes" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="caa908feb7e94236c27b517f82513196ba6daa07" /><Meta Name="ms.sourcegitcommit" Value="a489a0c68ea6b109393f1400bbd772073b4befd4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/20/2019" /><Meta Name="ms.locfileid" Value="54416972" /></Metadata><TypeSignature Language="C#" Value="public enum CultureTypes" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed CultureTypes extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Globalization.CultureTypes" />
   <TypeSignature Language="VB.NET" Value="Public Enum CultureTypes" />
@@ -44,10 +44,22 @@
 
 Te wartości typu kultury są zwracane przez <xref:System.Globalization.CultureInfo.CultureTypes%2A?displayProperty=nameWithType> właściwości, a także jako filtr, który ogranicza kultur zwrócony przez <xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType> metody. Aby uzyskać więcej informacji na temat kultur, zobacz <xref:System.Globalization.CultureInfo>.  
   
-Ogólnie rzecz biorąc, wyliczanie wszystkich języków za pomocą aplikacji `CultureTypes.AllCultures` wartość. Dzięki temu wyliczenie niestandardowych kultur, jak również inne typy kultury.  
+Ogólnie rzecz biorąc, wyliczanie wszystkich języków za pomocą `CultureTypes.AllCultures` wartości. Dzięki temu wyliczenie niestandardowych kultur, jak również inne typy kultury.  
   
 Należy pamiętać, że wszystkie `CultureTypes` elementy członkowskie zostały wycofane z wyjątkiem `CultureTypes.AllCultures`, `CultureTypes.NeutralCultures`, i `CultureTypes.SpecificCultures`.  
+
+.NET rozpoznaje następujących typów kultury, które są objęte wyliczenia zwrócony przez `CultureTypes.AllTypes` element członkowski wyliczenia:
+
+- **Określonych kultur**, które określą, kraj/region i język. Nazwy tych kultur postępuj zgodnie z RFC 4646. Format jest `<languagecode2>-<country/regioncode2>`, gdzie `<languagecode2>` jest mała litera kodu dwuliterowych pochodną ISO 639-1 i `<country/regioncode2>` jest wielką kodu dwuliterowych pochodną ISO 3166. Na przykład "en US" dla języka angielskiego (Stany Zjednoczone) jest określonej kultury. Niestandardowe określonych kultur (czyli kultur, w których są aplikacji — zamiast zdefiniowaną przez system) może mieć dowolną nazwę określonego przez użytkownika, nie tylko jeden zgodny ze standardami.  
+
+- **Neutralne kultury**, które określą języka bez żądań kraj/region. Nazwy kultury neutralnej składają się z małych liter kodu dwuliterowych pochodną ISO 639-1. Na przykład: "en" (w języku angielskim) to kultura neutralna. Niestandardowe kultury neutralnej (czyli kultur, w których są aplikacji — zamiast zdefiniowaną przez system) może mieć dowolną nazwę określonego przez użytkownika, nie tylko dwuliterowy kod.
   
+  Niezmienna kultura znajduje się w tablicy kultur zwrócony przez <xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType> metody, która określa tę wartość.  
+
+- **Kultury niestandardowe**, które są zdefiniowane przez aplikację kultur. Kultury niestandardowe mogą reprezentować kultury neutralnej lub określonej kultury i może mieć dowolną nazwę określonej aplikacji. 
+
+   W wersjach Windows wcześniejszych niż Windows 10 `UserCustomCulture` wartość jest przypisywana do kultury niestandardowe utworzone przez dewelopera. W systemie Windows 10 `UserCustomCulture` wartości jest przypisany do kultur systemu, które nie są wspierane przez kompletny zestaw danych kultury i które nie mają unikatowych identyfikatorów lokalnego. (Wszystkich kultur typu `UserCustomCulture` udostępnianie <xref:System.Globalization.CultureInfo.LCID%2A?displayProperty=nameWithType> wartość `LOCALE_CUSTOM_UNSPECIFIED` (0x1000 lub 4096)). W rezultacie `CultureInfo.GetCultures(CultureTypes.UserCustomCulture)` metoda zwraca różne zestawy kultur, w różnych wersjach Windows.  
+
 ## Examples  
 
 W poniższym przykładzie pokazano `CultureTypes.AllCultures` element członkowski wyliczenia i <xref:System.Globalization.CultureInfo.CultureTypes%2A> właściwości.  
@@ -201,17 +213,6 @@ W poniższym przykładzie pokazano `CultureTypes.AllCultures` element członkows
       <MemberValue>1</MemberValue>
       <Docs>
         <summary>Kultury, które są skojarzone z językiem, ale nie są specyficzne dla kraju/regionu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-
-Nazwy kultury .NET składają się z małych liter kodu dwuliterowych pochodną ISO 639-1. Na przykład: "en" (w języku angielskim) to kultura neutralna. Kultury niestandardowe (czyli kultur, w których są aplikacji — zamiast zdefiniowaną przez system) może mieć dowolną nazwę określonego przez użytkownika, nie tylko dwuliterowy kod.  
-  
- Niezmienna kultura znajduje się w tablicy kultur zwrócony przez <xref:System.Globalization.CultureInfo.GetCultures%2A?displayProperty=nameWithType> metody, która określa tę wartość.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ReplacementCultures">
@@ -275,17 +276,6 @@ Nazwy kultury .NET składają się z małych liter kodu dwuliterowych pochodną 
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Kultury, które są specyficzne dla kraju/regionu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks 
-
-Nazwy tych kultur postępuj zgodnie z RFC 4646 (Windows Vista i nowszych). Format to "&lt;languagecode2&gt;-&lt;kraju/regioncode2&gt;", gdzie &lt;languagecode2&gt; jest małe dwuliterowy kod tworzony na podstawie obrazu ISO 639-1 i &lt;kraju/regioncode2&gt; jest wielką kodu dwuliterowych pochodną ISO 3166. Na przykład "en US" dla języka angielskiego (Stany Zjednoczone) jest określonej kultury.
-
-Kultury niestandardowe (czyli kultur, w których są aplikacji — zamiast zdefiniowaną przez system) może mieć dowolną nazwę określonego przez użytkownika, nie tylko jeden standardowy zgodne.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="UserCustomCulture">
@@ -317,15 +307,6 @@ Kultury niestandardowe (czyli kultur, w których są aplikacji — zamiast zdefi
       <MemberValue>8</MemberValue>
       <Docs>
         <summary>**Ten element członkowski jest przestarzały.** Kultury niestandardowe utworzone przez użytkownika.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
-
-W wersjach Windows wcześniejszych niż Windows 10 `UserCustomCulture` wartość jest przypisywana do kultury niestandardowe utworzone przez dewelopera. W systemie Windows 10 `UserCustomCulture` wartości jest przypisany do kultur systemu, które nie są wspierane przez kompletny zestaw danych kultury i które nie mają unikatowych identyfikatorów lokalnego. (Wszystkich kultur typu `UserCustomCulture` udostępnianie <xref:System.Globalization.CultureInfo.LCID%2A?displayProperty=nameWithType> wartość `LOCALE_CUSTOM_UNSPECIFIED` (0x1000 lub 4096)). W rezultacie `CultureInfo.GetCultures(CultureTypes.UserCustomCulture)` metoda zwraca różne zestawy kultur, w różnych wersjach Windows.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="WindowsOnlyCultures">

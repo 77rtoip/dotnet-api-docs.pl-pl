@@ -1,5 +1,5 @@
 <Type Name="BindingFlags" FullName="System.Reflection.BindingFlags">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="73fce1aa21d20f45653df555c778b466bca7fbbb" /><Meta Name="ms.sourcegitcommit" Value="c0c07dbd19cd7017243f9ac36915755f79bc8da6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/27/2018" /><Meta Name="ms.locfileid" Value="52368186" /></Metadata><TypeSignature Language="C#" Value="public enum BindingFlags" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="61b76576a70d04513a7283ac5ace3dbd7521f391" /><Meta Name="ms.sourcegitcommit" Value="a489a0c68ea6b109393f1400bbd772073b4befd4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/20/2019" /><Meta Name="ms.locfileid" Value="54416959" /></Metadata><TypeSignature Language="C#" Value="public enum BindingFlags" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed BindingFlags extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.BindingFlags" />
   <TypeSignature Language="VB.NET" Value="Public Enum BindingFlags" />
@@ -50,7 +50,7 @@
 ## Remarks  
  Te `BindingFlags` kontrolować powiązanie dla doskonałym wiele klas w `System`, `System.Reflection`, i `System.Runtime` przestrzenie nazw, które wywołania, tworzenie, pobieranie, ustaw i elementów członkowskich i typy.  
   
- `BindingFlags` są używane w następującym <xref:System.Type> metod oraz innych miejsc, takich jak <xref:System.Reflection.MethodBase.Invoke%2A?displayProperty=nameWithType> :  
+ `BindingFlags` są używane w następującym <xref:System.Type> metod oraz innych miejsc, takich jak <xref:System.Reflection.MethodBase.Invoke%2A?displayProperty=nameWithType>:  
   
 -   <xref:System.Reflection.MethodBase.Invoke%2A?displayProperty=nameWithType>  
   
@@ -90,12 +90,12 @@
   
 |Identyfikowane za pomocą ułatwień dostępu|Identyfikowane przez powiązanie argumentu|Identyfikowane za pomocą operacji|  
 |---------------------------------|------------------------------------|-----------------------------|  
-|DeclaredOnly<br /><br /> flattenHierarchy<br /><br /> IgnoreCase<br /><br /> IgnoreReturn<br /><br /> Wystąpienie<br /><br /> NonPublic<br /><br /> Public<br /><br /> Static|ExactBinding<br /><br /> OptionalParamBinding|CreateInstance —<br /><br /> GetField<br /><br /> SetField<br /><br /> GetProperty<br /><br /> Metoda setProperty<br /><br /> InvokeMethod<br /><br /> PutDispProperty<br /><br /> PutRefDispProperty|  
+|DeclaredOnly<br /><br /> FlattenHierarchy<br /><br /> IgnoreCase<br /><br /> IgnoreReturn<br /><br /> Wystąpienie<br /><br /> NonPublic<br /><br /> Public<br /><br /> Static|ExactBinding<br /><br /> OptionalParamBinding|CreateInstance<br /><br /> GetField<br /><br /> SetField<br /><br /> GetProperty<br /><br /> SetProperty<br /><br /> InvokeMethod<br /><br /> PutDispProperty<br /><br /> PutRefDispProperty|  
   
 > [!NOTE]
 >  Należy określić `Instance` lub `Static` wraz z `Public` lub `NonPublic` lub zostanie zwrócony żaden z elementów członkowskich.  
   
- W poniższej tabeli wymieniono coercions domyślnie przeprowadzane <xref:System.Reflection.Binder.ChangeType%2A?displayProperty=nameWithType>. Ta tabela ma zastosowanie szczególnie `ExactBinding` powiązanie flagi.  
+ W poniższej tabeli wymieniono coercions domyślnie przeprowadzane <xref:System.Reflection.Binder.ChangeType%2A?displayProperty=nameWithType>. Ta tabela ma zastosowanie szczególnie `BindingFlags.ExactBinding` powiązanie flagi. Ogólną zasadą jest fakt, że <xref:System.Reflection.Binder.ChangeType%2A> należy wykonać tylko rozszerzanie coercions, które nigdy nie utracą danych. Przykładem rozszerzającą wymuszenia jest coercing wartość całkowita 32-bitowa wartość całkowita 64-bitowych. Jest to odróżnić od zawężające wymuszenia, która może spowodować utratę danych. Przykładem zawężające wymuszenia jest coercing całkowita 64-bitowego do 32-bitowych całkowita. 
   
 |Typ źródła|Typ docelowy|  
 |-----------------|-----------------|  
@@ -112,8 +112,13 @@
 |`Int64`|`Single`, `Double`|  
 |`Single`|`Double`|  
 |Non-reference|Przez odwołanie.|  
+
+Gdy `BindingFlags.ExactBinding` powiązanie flaga jest używana, odbicie modele reguły ułatwień dostępu wspólny system typów. Na przykład jeśli obiekt wywołujący znajduje się w tym samym zestawie, obiekt wywołujący nie potrzebne żadne specjalne uprawnienia dla wewnętrznych składowych. W przeciwnym razie wywołujący musi mieć <xref:System.Security.Permissions.ReflectionPermission>. Jest to zgodne z wyszukiwania elementów członkowskich, które są chronione, prywatne i tak dalej.  
   
    
+  
+   
+     
   
 ## Examples  
  W poniższym przykładzie pokazano wiele flag powiązania.  
@@ -312,19 +317,7 @@ Ta flaga jest przekazywany do <see langword="InvokeMember" /> metody do wywołan
       </ReturnValue>
       <MemberValue>65536</MemberValue>
       <Docs>
-        <summary>Określa, czy typy podanych argumentów musi dokładnie odpowiadać typy odpowiednich parametrów formalnych. Odbicie zgłasza wyjątek, jeśli obiekt wywołujący dostarcza inną niż null <see langword="Binder" /> obiektu, ponieważ oznacza to, że obiekt wywołujący jest dostarczanie <see langword="BindToXXX" /> implementacji, które wybierze odpowiednią metodę.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Odbicie modeli reguły ułatwień dostępu wspólny system typów. Na przykład jeśli obiekt wywołujący znajduje się w tym samym zestawie, obiekt wywołujący nie potrzebne żadne specjalne uprawnienia dla wewnętrznych składowych. W przeciwnym razie wywołujący musi mieć <xref:System.Security.Permissions.ReflectionPermission>. Jest to zgodne z wyszukiwania elementów członkowskich, które są chronione, prywatne i tak dalej.  
-  
- Ogólną zasadą jest fakt, że <xref:System.Reflection.Binder.ChangeType%2A> należy wykonać tylko rozszerzanie coercions, które nigdy nie utracą danych. Przykładem rozszerzającą wymuszenia jest coercing wartość całkowita 32-bitowa wartość całkowita 64-bitowych. Jest to odróżnić od zawężające wymuszenia, która może spowodować utratę danych. Przykładem zawężające wymuszenia jest coercing całkowita 64-bitowego do 32-bitowych całkowita.  
-  
- Domyślny integrator ignoruje ta flaga podczas integratorów niestandardowe można zaimplementować semantykę tę flagę.  
-  
- ]]></format>
-        </remarks>
+        <summary>Określa, czy typy podanych argumentów musi dokładnie odpowiadać typy odpowiednich parametrów formalnych. Odbicie zgłasza wyjątek, jeśli obiekt wywołujący dostarcza inną niż null <see langword="Binder" /> obiektu, ponieważ oznacza to, że obiekt wywołujący jest dostarczanie <see langword="BindToXXX" /> implementacji, które wybierze odpowiednią metodę. Domyślny integrator ignoruje ta flaga podczas integratorów niestandardowe można zaimplementować semantykę tę flagę.</summary>
       </Docs>
     </Member>
     <Member MemberName="FlattenHierarchy">
@@ -679,15 +672,7 @@ Ta flaga jest przekazywany do <see langword="InvokeMember" /> metody do wywołan
       </ReturnValue>
       <MemberValue>262144</MemberValue>
       <Docs>
-        <summary>Zwraca zestaw elementów członkowskich, których liczba parametrów jest zgodna z liczbą przekazanych argumentów. Ta flaga powiązania jest używany dla metody z parametrami, które mają przypisane wartości domyślne i metody ze zmiennymi argumentami (VARARG). Ta flaga powinna służyć wyłącznie przy użyciu <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Parametrów mających wartości domyślne są używane tylko w wywołaniach, gdzie końcowe argumenty są pomijane. Muszą być ostatnie argumenty.  
-  
- ]]></format>
-        </remarks>
+        <summary>Zwraca zestaw elementów członkowskich, których liczba parametrów jest zgodna z liczbą przekazanych argumentów. Ta flaga powiązania jest używany dla metody z parametrami, które mają przypisane wartości domyślne i metody ze zmiennymi argumentami (VARARG). Ta flaga powinna służyć wyłącznie przy użyciu <see cref="M:System.Type.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])" />.<br /><br />Parametrów mających wartości domyślne są używane tylko w wywołaniach, gdzie końcowe argumenty są pomijane. Muszą być ostatnie argumenty.</summary>
       </Docs>
     </Member>
     <Member MemberName="Public">
