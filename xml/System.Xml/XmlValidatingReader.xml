@@ -1,5 +1,5 @@
 <Type Name="XmlValidatingReader" FullName="System.Xml.XmlValidatingReader">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="a626a1ce07ebe4d2685cc2edfcf127e618e5dfaf" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55395681" /></Metadata><TypeSignature Language="C#" Value="public class XmlValidatingReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b43f18340acc1dd4fed4f6c69c6560e2773a0960" /><Meta Name="ms.sourcegitcommit" Value="22744e2f9d07a51900a968efffd9e390117d64a1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/03/2019" /><Meta Name="ms.locfileid" Value="55673920" /></Metadata><TypeSignature Language="C#" Value="public class XmlValidatingReader : System.Xml.XmlReader, System.Xml.IXmlLineInfo, System.Xml.IXmlNamespaceResolver" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit XmlValidatingReader extends System.Xml.XmlReader implements class System.Xml.IXmlLineInfo, class System.Xml.IXmlNamespaceResolver" />
   <TypeSignature Language="DocId" Value="T:System.Xml.XmlValidatingReader" />
   <TypeSignature Language="VB.NET" Value="Public Class XmlValidatingReader&#xA;Inherits XmlReader&#xA;Implements IXmlLineInfo, IXmlNamespaceResolver" />
@@ -679,7 +679,38 @@ Ta klasa jest przestarzała. Począwszy od programu .NET Framework 2.0, firma Mi
  Aby zilustrować różnica między jednostki tryby obsługi należy wziąć pod uwagę następujący kod XML:  
   
 ```xml  
-<!DOCTYPE doc [<!ENTITY num "123"]]></format>
+<!DOCTYPE doc [<!ENTITY num "123">]>  
+ <doc> &#65; &num; </doc>  
+```  
+  
+ Gdy `EntityHandling` ustawiono `ExpandEntities` węzeł element "doc" zawiera jeden węzeł tekstowy z tekstem rozwiniętej jednostki:  
+  
+|Głębokość|Element NodeType|Nazwa|Wartość|  
+|-----------|--------------|----------|-----------|  
+|1|Tekst||A 123|  
+  
+ Gdy `EntityHandling` jest ustawiona na `ExpandCharEntites`, i <xref:System.Xml.XmlTextReader.WhitespaceHandling%2A> ustawiono znaczących lub wszystkie, "doc" element rozwija jednostki znaku i zwraca ogólne jednostki jako węzeł:  
+  
+|Głębokość|Element NodeType|Nazwa|Wartość|  
+|-----------|--------------|----------|-----------|  
+|1|Tekst||ELEMENT|  
+|1|Obiekt EntityReference|Liczba||  
+|1|SignificantWhitespace|||  
+  
+   
+  
+## Examples  
+ W poniższym przykładzie użyto `ResolveEntity` metodę, aby rozwinąć ogólne jednostki.  
+  
+ [!code-cpp[Classic WebData XmlValidatingReader.ResolveEntity Example#1](~/samples/snippets/cpp/VS_Snippets_Data/Classic WebData XmlValidatingReader.ResolveEntity Example/CPP/source.cpp#1)]
+ [!code-csharp[Classic WebData XmlValidatingReader.ResolveEntity Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XmlValidatingReader.ResolveEntity Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XmlValidatingReader.ResolveEntity Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XmlValidatingReader.ResolveEntity Example/VB/source.vb#1)]  
+  
+ W przykładzie użyto pliku `book1.xml`, jako danych wejściowych.  
+  
+ [!code-xml[Classic WebData XmlValidatingReader.ResolveEntity Example#2](~/samples/snippets/xml/VS_Snippets_Data/Classic WebData XmlValidatingReader.ResolveEntity Example/XML/source.xml#2)]  
+  
+ ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException">Określono nieprawidłową wartość.</exception>
         <altmember cref="T:System.Xml.XmlReader" />
@@ -1189,6 +1220,37 @@ String dt4 = reader.GetAttribute("dt",http://www.w3.org/2000/xmlns/);
       </Parameters>
       <Docs>
         <param name="i">To be added.</param>
+        <summary>To be added.</summary>
+        <value>To be added.</value>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="Item">
+      <MemberSignature Language="C#" Value="public override string this[string name] { get; }" />
+      <MemberSignature Language="ILAsm" Value=".property instance string Item(string)" />
+      <MemberSignature Language="DocId" Value="P:System.Xml.XmlValidatingReader.Item(System.String)" />
+      <MemberSignature Language="VB.NET" Value="Default Public Overrides ReadOnly Property Item(name As String) As String" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual property System::String ^ default[System::String ^] { System::String ^ get(System::String ^ name); };" />
+      <MemberSignature Language="F#" Value="member this.Item(string) : string" Usage="System.Xml.XmlValidatingReader.Item" />
+      <MemberType>Property</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml</AssemblyName>
+        <AssemblyVersion>1.0.5000.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>System.Xml.ReaderWriter</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.String</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="name" Type="System.String" Index="0" FrameworkAlternate="netframework-1.1" />
+      </Parameters>
+      <Docs>
+        <param name="name">To be added.</param>
         <summary>To be added.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
