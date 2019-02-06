@@ -1,0 +1,3 @@
+> [!NOTE]
+>  Ustawienie wartości właściwości wizualnej tylko obowiązuje, jeśli ta właściwość jest obecny w formantu domyślnego szablonu i są ustawiane przy użyciu [TemplateBinding](~/docs/framework/wpf/advanced/templatebinding-markup-extension.md). Można znaleźć listy właściwości wizualne w [zmianie Visual struktury kontrolki](~/docs/framework/wpf/controls/customizing-the-appearance-of-an-existing-control.md#changing-the-visual-structure-of-a-control) sekcji [Dostosowywanie wyglądu istniejącego formantu przez stworzenie ControlTemplate](~/docs/framework/wpf/controls/customizing-the-appearance-of-an-existing-control.md) artykułu.
+  
