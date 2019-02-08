@@ -1,5 +1,5 @@
 <Type Name="Base64" FullName="System.Buffers.Text.Base64">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="bd26f05d3faf0be64d011b599382cd4414c163b6" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/25/2018" /><Meta Name="ms.locfileid" Value="39792222" /></Metadata><TypeSignature Language="C#" Value="public static class Base64" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6e867549bad18c4e522116cc020182629a8708f6" /><Meta Name="ms.sourcegitcommit" Value="9cee676b7864fa9dcb91319dcf5c339f3a724fbf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/07/2019" /><Meta Name="ms.locfileid" Value="55828993" /></Metadata><TypeSignature Language="C#" Value="public static class Base64" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Base64 extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Buffers.Text.Base64" />
   <TypeSignature Language="VB.NET" Value="Public Class Base64" />
@@ -15,7 +15,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Konwertuje między danych binarnych i UTF-8 kodowany w formacie tekstowym, która jest reprezentowana w base 64.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -42,14 +42,27 @@
         <Parameter Name="isFinalBlock" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="utf8">To be added.</param>
-        <param name="bytes">To be added.</param>
-        <param name="bytesConsumed">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <param name="isFinalBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="utf8">Zakres danych wejściowych, zawierający UTF-8 kodowany w formacie tekstu w base 64, który ma zostać zdekodowane.</param>
+        <param name="bytes">Zakres danych wyjściowych, który zawiera wynik operacji, czyli dekodowane dane binarne.</param>
+        <param name="bytesConsumed">Liczba bajtów wejściowych używane podczas operacji. To może służyć do tworzenia wycinków danych wejściowych dla kolejnych wywołań, jeśli to konieczne.</param>
+        <param name="bytesWritten">Liczba bajtów zapisanych na zakres danych wyjściowych. To może służyć do tworzenia wycinków danych wyjściowych dla kolejnych wywołań, jeśli to konieczne.</param>
+        <param name="isFinalBlock"><see langword="true" /> (domyślnie), jeśli zakres danych wejściowych zawiera całe dane do odkodowania. <see langword="false" /> Jeśli zakres danych wejściowych zawiera częściowe dane z większej ilości danych, aby wykonać.</param>
+        <summary>Dekoduje zakres tekstu kodowany w formacie UTF-8, reprezentowane jako base-64 w danych binarnych. Jeśli dane wejściowe nie jest wielokrotnością liczby 4, będzie dekodowania, jak to możliwe do najbliższej wielokrotności 4.</summary>
+        <returns>Jedna z wartości wyliczenia, które wskazuje stan operacji dekodowania.</returns>
+        <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Zwracana wartość może być w następujący sposób:
+
+- <xref:System.Buffers.OperationStatus.Done?displayProperty=nameWithType>: Przetworzono cały zakres danych wejściowych.
+- <xref:System.Buffers.OperationStatus.DestinationTooSmall?displayProperty=nameWithType>: W zakresie danych wyjściowych do zapisania zdekodowany danych wejściowych jest za mało miejsca.
+- <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>: `isFinalBlock` jest `false` i danych wejściowych nie jest wielokrotnością liczby 4. W przeciwnym razie jest uznawany za częściowe dane wejściowe <xref:System.Buffers.OperationStatus.InvalidData>.
+- <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>: Dane wejściowe zawiera bajtów poza oczekiwanym zakresem 64 podstawowego, jest nieprawidłowy lub więcej niż dwa znaki dopełnienie lub nie została ukończona (czyli nie jest wielokrotnością liczby 4) i `isFinalBlock` jest `true`.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DecodeFromUtf8InPlace">
@@ -73,11 +86,24 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="buffer">Zakres danych wejściowych zawiera dane tekstowe base-64, który ma zostać zdekodowane.</param>
+        <param name="bytesWritten">Liczba bajtów zapisanych w buforze.</param>
+        <summary>Dekoduje zakres tekstu kodowany w formacie UTF-8 w base-64 (miejscowe) na dane binarne. Zdekodowany binarne dane wyjściowe jest mniejszy niż dane tekstowe, zawarte w danych wejściowych (operacja deflates danych). Jeśli dane wejściowe nie jest wielokrotnością liczby 4, metoda będzie go zdekodować do żadnych danych.</summary>
+        <returns>Jedna z wartości wyliczenia, które wskazuje stan operacji dekodowania.</returns>
+        <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Zwracana wartość może być w następujący sposób:
+
+- <xref:System.Buffers.OperationStatus.Done?displayProperty=nameWithType>: Przetworzono cały zakres danych wejściowych.
+- <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>: Dane wejściowe zawiera bajtów poza oczekiwanym zakresem 64 podstawowego, jest nieprawidłowy lub więcej niż dwa znaki dopełnienie lub nie została ukończona (czyli nie jest wielokrotnością liczby 4).
+
+Ta metoda nie może zwracać <xref:System.Buffers.OperationStatus.DestinationTooSmall?displayProperty=nameWithType> i <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType> wartości.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="EncodeToUtf8">
@@ -103,14 +129,29 @@
         <Parameter Name="isFinalBlock" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="bytes">To be added.</param>
-        <param name="utf8">To be added.</param>
-        <param name="bytesConsumed">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <param name="isFinalBlock">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="bytes">Zakres danych wejściowych, zawierający dane binarne, które musi być zakodowany.</param>
+        <param name="utf8">Zakres danych wyjściowych, który zawiera wynik operacji, czyli UTF-8 kodowany w formacie tekstu w base 64.</param>
+        <param name="bytesConsumed">Liczba bajtów wejściowych używane podczas operacji. To może służyć do tworzenia wycinków danych wejściowych dla kolejnych wywołań, jeśli to konieczne.</param>
+        <param name="bytesWritten">Liczba bajtów zapisanych na zakres danych wyjściowych. To może służyć do tworzenia wycinków danych wyjściowych dla kolejnych wywołań, jeśli to konieczne.</param>
+        <param name="isFinalBlock"><see langword="true" /> (ustawienie domyślne), jeśli dane wejściowe obejmują zawiera całe dane do zakodowania. <see langword="false" /> Jeśli zakres danych wejściowych zawiera częściowe dane z większej ilości danych, aby wykonać.</param>
+        <summary>Koduje zakres danych binarnych w tekst kodowany w formacie UTF-8, reprezentowane jako base-64.</summary>
+        <returns>Jedna z wartości wyliczenia, które wskazuje stan operację kodowania.</returns>
+        <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Zwracana wartość może być w następujący sposób:
+
+- <xref:System.Buffers.OperationStatus.Done?displayProperty=nameWithType>: Przetworzono cały zakres danych wejściowych.
+- <xref:System.Buffers.OperationStatus.DestinationTooSmall?displayProperty=nameWithType>: Nie ma wystarczającej ilości miejsca w zakresie danych wyjściowych, aby dopasować zakodowanych danych wejściowych.
+- <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>: `isFinalBlock` jest `false`. W przeciwnym razie, jeśli `isFinalBlock` jest `true`, dane wyjściowe są dopełniane, jeśli dane wejściowe nie jest wielokrotnością liczby 3.
+
+Ta metoda nie może zwracać <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType> ponieważ nie jest możliwe kodowanie base-64.
+
+ ]]></format>
+        </remarks>
+
       </Docs>
     </Member>
     <Member MemberName="EncodeToUtf8InPlace">
@@ -135,12 +176,25 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="buffer">To be added.</param>
-        <param name="dataLength">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="buffer">Zakres danych wejściowych, zawierający dane binarne, które musi być zakodowany. Ponieważ metoda przeprowadza konwersję w miejscu, musi być wystarczająco duży, aby przechować wynik operacji.</param>
+        <param name="dataLength">Liczba bajtów zawartych w buforu, który musi być zakodowany danych binarnych. Ta wartość musi być mniejsza niż długość buforu.</param>
+        <param name="bytesWritten">Liczba bajtów zapisanych w buforze.</param>
+        <summary>Koduje zakres danych binarnych (w miejscu) w tekst kodowany w formacie UTF-8, reprezentowane jako base-64. Zakodowany tekst wyjściowy jest większy niż dane binarne zawarte w danych wejściowych (operacja zwiększa ilość danych).</summary>
+        <returns>Jedna z wartości wyliczenia, które wskazuje stan operację kodowania.</returns>
+        <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Zwracana wartość może być w następujący sposób:
+
+- <xref:System.Buffers.OperationStatus.Done?displayProperty=nameWithType>: Przetwarzanie całego bufora zakończyło się pomyślnie.
+- <xref:System.Buffers.OperationStatus.DestinationTooSmall?displayProperty=nameWithType>: Nie ma wystarczającej ilości miejsca w buforze poza `dataLength` do wyniku kodowania danych wejściowych.
+
+Ta metoda nie może zwracać <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType> i <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMaxDecodedFromUtf8Length">
@@ -164,9 +218,10 @@
       </Parameters>
       <Docs>
         <param name="length">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Zwraca maksymalną długość (w bajtach), w wyniku, gdyby dekodowania tekstowej szyfrowanej algorytmem base-64 zakresu bajtów o rozmiarze <paramref name="length" />.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="length" /> jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetMaxEncodedToUtf8Length">
@@ -190,9 +245,10 @@
       </Parameters>
       <Docs>
         <param name="length">To be added.</param>
-        <summary>To be added.</summary>
+        <summary>Zwraca maksymalną długość (w bajtach), w wyniku, gdyby kodowanie danych binarnych zakresu bajtów o rozmiarze <paramref name="length" />.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="length" /> jest mniejsza niż 0 lub większy niż 1610612733 (ponieważ kodowanie zwiększa ilość danych przez 4/3).</exception>
       </Docs>
     </Member>
   </Members>

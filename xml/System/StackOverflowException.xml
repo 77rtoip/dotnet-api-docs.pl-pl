@@ -1,5 +1,5 @@
 <Type Name="StackOverflowException" FullName="System.StackOverflowException">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1f6d3a4b551412dd113545524fabdb90f2a0abd9" /><Meta Name="ms.sourcegitcommit" Value="0e1f030650a307c745ee84ed547ef858acaea587" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/29/2018" /><Meta Name="ms.locfileid" Value="52606081" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="991aa9f4b94575c2f58703680ad95ac0d43e46c1" /><Meta Name="ms.sourcegitcommit" Value="9cee676b7864fa9dcb91319dcf5c339f3a724fbf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/07/2019" /><Meta Name="ms.locfileid" Value="55828890" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit StackOverflowException extends System.SystemException" />
   <TypeSignature Language="DocId" Value="T:System.StackOverflowException" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class StackOverflowException&#xA;Inherits SystemException" />
@@ -39,21 +39,25 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.StackOverflowException> jest generowany dla wykonywania błędy przepełnienia stosu, zwykle w przypadku rekursji bardzo szczegółowe lub niepowiązane.  
+ `StackOverflowException` jest generowany dla wykonywania błędy przepełnienia stosu, zwykle w przypadku rekursji bardzo szczegółowe lub niepowiązane. Dlatego upewnij się, że Twój kod nie ma w nieskończonej pętli lub nieskończoną rekursję.
   
- <xref:System.StackOverflowException> używa COR_E_STACKOVERFLOW HRESULT, która ma wartość 0x800703E9. <xref:System.Reflection.Emit.OpCodes.Localloc> Instrukcji języka pośredniego (IL) zgłasza <xref:System.StackOverflowException>. Aby uzyskać listę początkowe wartości właściwości <xref:System.StackOverflowException> obiektu, zobacz <xref:System.StackOverflowException.%23ctor%2A> konstruktorów.  
+ `StackOverflowException` używa COR_E_STACKOVERFLOW HRESULT, która ma wartość 0x800703E9. <xref:System.Reflection.Emit.OpCodes.Localloc> Instrukcji języka pośredniego (IL) zgłasza `StackOverflowException`. Aby uzyskać listę początkowe wartości właściwości `StackOverflowException` obiektu, zobacz <xref:System.StackOverflowException.%23ctor%2A> konstruktorów.  
   
-## <a name="version-considerations"></a>Uwagi dotyczące wersji  
- W .NET Framework 1.0 i 1.1, można przechwytywać <xref:System.StackOverflowException> obiektu (na przykład, aby odzyskać sprawność niepowiązaną rekursję). Począwszy od programu .NET Framework 2.0, nie może przechwytywać <xref:System.StackOverflowException> obiekt z `try` / `catch` bloku, a odpowiedni proces zostanie zakończony domyślnie. W związku z tym należy napisać kod do wykrywania i zapobiegania przepełnienia stosu. Na przykład jeśli aplikacja jest zależna od rekursji, umożliwia licznik lub warunek stanu zakończenia pętli cykliczne. W poniższym przykładzie użyto licznika, aby upewnić się, czy liczba cyklicznego wywołań `Execute` metody nie przekroczyć zdefiniowane przez stałą MAX_RECURSIVE_CALLS.  
+ Począwszy od programu .NET Framework 2.0, nie może przechwytywać `StackOverflowException` obiekt z `try` / `catch` bloku, a odpowiedni proces zostanie zakończony domyślnie. W związku z tym należy napisać kod do wykrywania i zapobiegania przepełnienia stosu. Na przykład jeśli aplikacja jest zależna od rekursji, umożliwia licznik lub warunek stanu zakończenia pętli cykliczne.
+W sekcji (Examples)(#examples) ilustrację tej techniki.
+ 
+> [!NOTE]
+>  Stosowanie <xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute> atrybutu do metody, która zgłasza `StackOverflowException` nie ma wpływu. Nadal nie może obsłużyć wyjątek z kodu użytkownika.
+
+ Jeśli aplikacja hostuje środowisko uruchomieniowe języka wspólnego (CLR), można określić, że środowisko CLR powinien zwolnienie domeny aplikacji, w którym wyjątek przepełnienia stosu występuje i pozwól na kontynuowanie procesu odpowiednie. Aby uzyskać więcej informacji, zobacz [iclrpolicymanager — interfejs](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md).
+
+## Examples
+
+ W poniższym przykładzie użyto licznika, aby upewnić się, czy liczba cyklicznego wywołań `Execute` metody nie przekroczyć zdefiniowane przez stałą MAX_RECURSIVE_CALLS.
   
  [!code-csharp[System.StackOverflowException.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.stackoverflowexception.class/cs/example1a.cs#1)]
  [!code-vb[System.StackOverflowException.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.stackoverflowexception.class/vb/example1a.vb#1)]  
-  
-> [!NOTE]
->  Stosowanie <xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute> atrybutu do metody, która zgłasza <xref:System.StackOverflowException> nie ma wpływu. Nadal nie może obsłużyć wyjątek z kodu użytkownika.  
-  
- Jeśli aplikacja hostuje środowisko uruchomieniowe języka wspólnego (CLR), można określić, że środowisko CLR powinien zwolnienie domeny aplikacji, w którym wyjątek przepełnienia stosu występuje i pozwól na kontynuowanie procesu odpowiednie. Aby uzyskać więcej informacji, zobacz [iclrpolicymanager — interfejs](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md).  
-  
+
  ]]></format>
     </remarks>
     <altmember cref="T:System.Exception" />
