@@ -1,5 +1,5 @@
 <Type Name="EnvironmentVariableTarget" FullName="System.EnvironmentVariableTarget">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="35b8f0d5b4debc17bc81714e0a0ee7e3f6e08297" /><Meta Name="ms.sourcegitcommit" Value="0ec122ee5f3681159b8460ab15b409fd6e3d3ae0" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="10/04/2018" /><Meta Name="ms.locfileid" Value="48662937" /></Metadata><TypeSignature Language="C#" Value="public enum EnvironmentVariableTarget" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5a4d836a089d03d2689103f2472f27e07a81d5b5" /><Meta Name="ms.sourcegitcommit" Value="3f21796619d6e69ad383c958cc013ce44c0678de" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/11/2019" /><Meta Name="ms.locfileid" Value="56067323" /></Metadata><TypeSignature Language="C#" Value="public enum EnvironmentVariableTarget" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed EnvironmentVariableTarget extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.EnvironmentVariableTarget" />
   <TypeSignature Language="VB.NET" Value="Public Enum EnvironmentVariableTarget" />
@@ -34,12 +34,22 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.EnvironmentVariableTarget> Wyliczenie jest używane przez niektóre przeciążenia <xref:System.Environment.SetEnvironmentVariable%2A>, <xref:System.Environment.GetEnvironmentVariable%2A>, i <xref:System.Environment.GetEnvironmentVariables%2A> metody, aby określić lokalizację lub obiektu docelowego, jeśli nazwę i wartość zmiennej środowiskowej jest przechowywany lub pobrać.  
+ <xref:System.EnvironmentVariableTarget> Wyliczenie jest używane przez niektóre przeciążenia <xref:System.Environment.SetEnvironmentVariable%2A?displayProperty=nameWithType>, <xref:System.Environment.GetEnvironmentVariable%2A?displayProperty=nameWithType>, i <xref:System.Environment.GetEnvironmentVariables%2A?displayProperty=nameWithType> metody, aby określić lokalizację lub obiektu docelowego, jeśli nazwę i wartość zmiennej środowiskowej jest przechowywany lub pobrać.  
   
- Element docelowy może być jednym z trzech miejscach: blok środowiska skojarzonego z bieżącego procesu, Windows systemu operacyjnego klucz rejestru zarezerwowane dla zmiennych środowiskowych skojarzonych z bieżącym użytkownikiem lub klucz rejestru zarezerwowane dla środowiska zmienne skojarzone z wszystkich użytkowników na komputerze lokalnym.  
-  
+ Element docelowy może być jednym z trzech miejscach: 
+ 
+ - Blok środowiska, skojarzone z bieżącym procesem (`EnvironmentVariableTarget.Process`).
+
+   Użytkownik tworzy zmienną środowiskową w operacji zestawu. Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie.
+
+ - Windows systemu operacyjnego klucz rejestru zarezerwowane dla zmiennych środowiskowych skojarzonych z bieżącym użytkownikiem (`EnvironmentVariableTarget.User`).
+ 
+   Podczas tworzenia zmiennej środowiskowej w operacji zestawu, systemu operacyjnego są przechowywane w zmiennej środowiskowej w rejestrze systemowym, ale nie w bieżącym procesie. Jeśli użytkownik uruchamia nowy proces, system operacyjny kopiuje zmienną środowiskową z rejestru dla tego procesu. Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie. Jednak zmiennej środowiskowej w rejestrze utrzymuje, dopóki użytkownik usunie je programowo lub za pomocą narzędzia systemu operacyjnego.  
    
-  
+ - Klucz rejestru zarezerwowane w zmiennych środowiskowych skojarzone z wszystkich użytkowników na komputerze lokalnym (`EnvironmentVariableTarget.Machine`). 
+
+    Gdy użytkownik tworzy zmienną środowiskową w operacji zestawu, system operacyjny przechowuje zmienną środowiskową, w rejestrze systemowym, ale nie w bieżącym procesie. W przypadku każdego użytkownika na komputerze lokalnym uruchamia nowy proces, system operacyjny kopiuje zmienną środowiskową z rejestru dla tego procesu. Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie. Jednak zmiennej środowiskowej w rejestrze utrzymuje, dopóki użytkownik usunie je programowo lub za pomocą narzędzia systemu operacyjnego.
+ 
 ## Examples  
  Poniższy przykład kodu demonstruje <xref:System.EnvironmentVariableTarget> wyliczenia w metodach, które tworzenie, modyfikowanie i usuwanie zmiennych środowiskowych.  
   
@@ -80,16 +90,6 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Zmienna środowiskowa jest przechowywany lub pobierane <see langword="HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment" /> klucza w rejestrze systemu operacyjnego Windows.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Gdy użytkownik tworzy zmienną środowiskową w operacji zestawu, system operacyjny przechowuje zmienną środowiskową, w rejestrze systemowym, ale nie w bieżącym procesie. W przypadku każdego użytkownika na komputerze lokalnym uruchamia nowy proces, system operacyjny kopiuje zmienną środowiskową z rejestru dla tego procesu.  
-  
- Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie. Jednak zmiennej środowiskowej w rejestrze utrzymuje, dopóki użytkownik usunie je programowo lub za pomocą narzędzia systemu operacyjnego.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Process">
@@ -121,16 +121,6 @@
       <MemberValue>0</MemberValue>
       <Docs>
         <summary>Zmienna środowiskowa jest przechowywany lub pobierane blok środowiska, skojarzone z bieżącym procesie.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Użytkownik tworzy zmienną środowiskową w operacji zestawu.  
-  
- Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="User">
@@ -162,16 +152,6 @@
       <MemberValue>1</MemberValue>
       <Docs>
         <summary>Zmienna środowiskowa jest przechowywany lub pobierane <see langword="HKEY_CURRENT_USER\Environment" /> klucza w rejestrze systemu operacyjnego Windows.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Podczas tworzenia zmiennej środowiskowej w operacji zestawu, systemu operacyjnego są przechowywane w zmiennej środowiskowej w rejestrze systemowym, ale nie w bieżącym procesie. Jeśli użytkownik uruchamia nowy proces, system operacyjny kopiuje zmienną środowiskową z rejestru dla tego procesu.  
-  
- Gdy kończy proces, system operacyjny niszczy zmiennej środowiskowej, w tym procesie. Jednak zmiennej środowiskowej w rejestrze utrzymuje, dopóki użytkownik usunie je programowo lub za pomocą narzędzia systemu operacyjnego.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
   </Members>
