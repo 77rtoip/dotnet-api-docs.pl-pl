@@ -1,5 +1,5 @@
 <Type Name="Control" FullName="System.Windows.Forms.Control">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="79ea2058d331069bcc1f1c51ac914531d809b6fb" /><Meta Name="ms.sourcegitcommit" Value="756d085f27705e86604f1bba5f2086ee23761acf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/30/2019" /><Meta Name="ms.locfileid" Value="55334882" /></Metadata><TypeSignature Language="C#" Value="public class Control : System.ComponentModel.Component, IDisposable, System.ComponentModel.ISynchronizeInvoke, System.Windows.Forms.IBindableComponent, System.Windows.Forms.IDropTarget, System.Windows.Forms.IWin32Window" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a5e502b4c4bdb79be0bb97e049fc9f928a268ab9" /><Meta Name="ms.sourcegitcommit" Value="3f21796619d6e69ad383c958cc013ce44c0678de" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/11/2019" /><Meta Name="ms.locfileid" Value="56072926" /></Metadata><TypeSignature Language="C#" Value="public class Control : System.ComponentModel.Component, IDisposable, System.ComponentModel.ISynchronizeInvoke, System.Windows.Forms.IBindableComponent, System.Windows.Forms.IDropTarget, System.Windows.Forms.IWin32Window" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi Control extends System.ComponentModel.Component implements class System.ComponentModel.IComponent, class System.ComponentModel.ISynchronizeInvoke, class System.IDisposable, class System.Windows.Forms.IBindableComponent, class System.Windows.Forms.IDropTarget, class System.Windows.Forms.IWin32Window" />
   <TypeSignature Language="DocId" Value="T:System.Windows.Forms.Control" />
   <TypeSignature Language="VB.NET" Value="Public Class Control&#xA;Inherits Component&#xA;Implements IBindableComponent, IDisposable, IDropTarget, ISynchronizeInvoke, IWin32Window" />
@@ -2059,8 +2059,26 @@
   
  Aby uzyskać więcej informacji na temat obsługi zdarzeń, zobacz [Handling and Raising Events](~/docs/standard/events/index.md).  
   
-   
+## <a name="notes-to-inheritors"></a>Uwagi dotyczące obiektów dziedziczących
+
+Dziedziczenie z kontrolki formularzy Windows Forms standardowe i zmieniając `StandardClick` lub `StandardDoubleClick` wartości <xref:System.Windows.Forms.ControlStyles> do `true` może spowodować nieoczekiwane zachowanie lub nie mają wpływu na wszystkich Jeśli formant nie obsługuje <xref:System.Windows.Forms.Control.Click> lub <xref:System.Windows.Forms.Control.DoubleClick>zdarzenia.
   
+Poniższa tabela zawiera listę kontrolek formularzy Windows Forms i zdarzenia (<xref:System.Windows.Forms.Control.Click> lub <xref:System.Windows.Forms.Control.DoubleClick>) jest uruchamiany w odpowiedzi na akcję myszy określony.
+
+| formant | Kliknij lewy przycisk myszy | Kliknij dwukrotnie lewy przycisk myszy | Kliknij prawym przyciskiem myszy | Dwukrotnie kliknij prawym przyciskiem myszy | Kliknięcie środkowym przyciskiem myszy | Dwukrotnie kliknięcie środkowym myszą | Kliknięcie myszą XButton1 | Kliknij dwukrotnie plik XButton1 myszy | Kliknięcie myszą XButton2 | Kliknij dwukrotnie plik XButton2 myszy | 
+| ------- | ---------------- | ----------------------- | ----------------- | ------------------------ | ------------------ | ------------------------- | -------------------- | --------------------------- | -------------------- | --------------------------- |
+| <xref:System.Windows.Forms.MonthCalendar>, <xref:System.Windows.Forms.DateTimePicker>, <xref:System.Windows.Forms.HScrollBar>, <xref:System.Windows.Forms.VScrollBar> | brak | brak | brak | brak | brak | brak | brak | brak | brak | brak |
+| <xref:System.Windows.Forms.Button>, <xref:System.Windows.Forms.CheckBox>, <xref:System.Windows.Forms.RichTextBox>, <xref:System.Windows.Forms.RadioButton> | Kliknij | Kliknij pozycję | brak | brak | brak | brak | brak | brak | brak | brak |
+| <xref:System.Windows.Forms.ListBox>, <xref:System.Windows.Forms.CheckedListBox>, <xref:System.Windows.Forms.ComboBox> | Kliknij | Click, DoubleClick | brak | brak | brak | brak | brak | brak | brak | brak |
+| <xref:System.Windows.Forms.TextBox>, <xref:System.Windows.Forms.DomainUpDown>, <xref:System.Windows.Forms.NumericUpDown> | Kliknij | Click, DoubleClick | brak | brak | brak | brak | brak | brak | brak | brak |
+| \* <xref:System.Windows.Forms.TreeView>, \* <xref:System.Windows.Forms.ListView> | Kliknij | Click, DoubleClick | Kliknij | Click, DoubleClick | brak | brak | brak | brak | brak | brak |
+| <xref:System.Windows.Forms.ProgressBar>, <xref:System.Windows.Forms.TrackBar> | Kliknij | Kliknij pozycję | Kliknij | Kliknij pozycję | Kliknij | Kliknij pozycję | Kliknij | Kliknij pozycję | Kliknij | Kliknij pozycję |
+| <xref:System.Windows.Forms.Form>, <xref:System.Windows.Forms.DataGrid>, <xref:System.Windows.Forms.Label>, <xref:System.Windows.Forms.LinkLabel>, <xref:System.Windows.Forms.Panel>, <xref:System.Windows.Forms.GroupBox>, <xref:System.Windows.Forms.PictureBox>, <xref:System.Windows.Forms.Splitter>, <xref:System.Windows.Forms.StatusBar>, <xref:System.Windows.Forms.ToolBar>, <xref:System.Windows.Forms.TabPage>, \*\* <xref:System.Windows.Forms.TabControl> | Kliknij | Click, DoubleClick | Kliknij | Click, DoubleClick | Kliknij | Click, DoubleClick | Kliknij | Click, DoubleClick | Kliknij | Click, DoubleClick |
+
+\* Wskaźnik myszy musi być za pośrednictwem obiektu podrzędnego (<xref:System.Windows.Forms.TreeNode> lub <xref:System.Windows.Forms.ListViewItem>).  
+  
+ ** <xref:System.Windows.Forms.TabControl> Musi mieć co najmniej jeden <xref:System.Windows.Forms.TabPage> w jego <xref:System.Windows.Forms.TabControl.TabPages> kolekcji.
+
 ## Examples  
  Poniższy kod przedstawia przykład <xref:System.Windows.Forms.Control.Click> zdarzeń w obsłudze zdarzeń.  
   
@@ -2070,119 +2088,6 @@
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Dziedziczenie z kontrolki formularzy Windows Forms standardowe i zmieniając <see langword="StandardClick" /> lub <see langword="StandardDoubleClick" /> wartości <see cref="T:System.Windows.Forms.ControlStyles" /> do <see langword="true" /> może spowodować nieoczekiwane zachowanie lub nie mają wpływu na wszystkich Jeśli formant nie obsługuje <see cref="E:System.Windows.Forms.Control.Click" /> lub <see cref="E:System.Windows.Forms.Control.DoubleClick" />zdarzenia.  
-  
-Poniższa tabela zawiera listę kontrolek formularzy Windows Forms i zdarzenia (<see cref="E:System.Windows.Forms.Control.Click" /> lub <see cref="E:System.Windows.Forms.Control.DoubleClick" />) jest uruchamiany w odpowiedzi na akcję myszy określony.  
-  
- <list type="table"><listheader><term> Formant 
- </term><description> Kliknij lewy przycisk myszy 
- </description><description> Kliknij dwukrotnie lewy przycisk myszy 
- </description><description> Kliknij prawym przyciskiem myszy 
- </description><description> Dwukrotnie kliknij prawym przyciskiem myszy 
- </description><description> Kliknięcie środkowym przyciskiem myszy 
- </description><description> Dwukrotnie kliknięcie środkowym myszą 
- </description><description> Kliknięcie myszą XButton1 
- </description><description> Kliknij dwukrotnie plik XButton1 myszy 
- </description><description> Kliknięcie myszą XButton2 
- </description><description> Kliknij dwukrotnie plik XButton2 myszy 
- </description></listheader><item><term><see cref="T:System.Windows.Forms.MonthCalendar" />, 
- <see cref="T:System.Windows.Forms.DateTimePicker" />, 
- <see cref="T:System.Windows.Forms.HScrollBar" />, 
- <see cref="T:System.Windows.Forms.VScrollBar" /></term><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description></item><item><term><see cref="T:System.Windows.Forms.Button" />, 
- <see cref="T:System.Windows.Forms.CheckBox" />, 
- <see cref="T:System.Windows.Forms.RichTextBox" />, 
- <see cref="T:System.Windows.Forms.RadioButton" /></term><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description></item><item><term><see cref="T:System.Windows.Forms.ListBox" />, 
- <see cref="T:System.Windows.Forms.CheckedListBox" />, 
- <see cref="T:System.Windows.Forms.ComboBox" /></term><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description></item><item><term><see cref="T:System.Windows.Forms.TextBox" />, 
- <see cref="T:System.Windows.Forms.DomainUpDown" />, 
- <see cref="T:System.Windows.Forms.NumericUpDown" /></term><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description></item><item><term> * <see cref="T:System.Windows.Forms.TreeView" />, 
-\*<see cref="T:System.Windows.Forms.ListView" /></term><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description><description> brak 
- </description></item><item><term><see cref="T:System.Windows.Forms.ProgressBar" />, 
- <see cref="T:System.Windows.Forms.TrackBar" /></term><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description><description> Kliknij 
- </description><description> Kliknij pozycję 
- </description></item><item><term><see cref="T:System.Windows.Forms.Form" />, 
- <see cref="T:System.Windows.Forms.DataGrid" />, 
- <see cref="T:System.Windows.Forms.Label" />, 
- <see cref="T:System.Windows.Forms.LinkLabel" />, 
- <see cref="T:System.Windows.Forms.Panel" />, 
- <see cref="T:System.Windows.Forms.GroupBox" />, 
- <see cref="T:System.Windows.Forms.PictureBox" />, 
- <see cref="T:System.Windows.Forms.Splitter" />, 
- <see cref="T:System.Windows.Forms.StatusBar" />, 
- <see cref="T:System.Windows.Forms.ToolBar" />, 
- <see cref="T:System.Windows.Forms.TabPage" />, 
- ** <see cref="T:System.Windows.Forms.TabControl" /></term><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description><description> Kliknij 
- </description><description> Click, DoubleClick 
- </description></item></list>  
-
- \* Wskaźnik myszy musi być za pośrednictwem obiektu podrzędnego (<see cref="T:System.Windows.Forms.TreeNode" /> lub <see cref="T:System.Windows.Forms.ListViewItem" />).  
-  
-** <see cref="T:System.Windows.Forms.TabControl" /> Musi mieć co najmniej jeden <see cref="T:System.Windows.Forms.TabPage" /> w jego <see cref="P:System.Windows.Forms.TabControl.TabPages" /> kolekcji.</para></block>
         <altmember cref="M:System.Windows.Forms.Control.OnClick(System.EventArgs)" />
         <altmember cref="F:System.Windows.Forms.ControlStyles.StandardClick" />
         <altmember cref="E:System.Windows.Forms.Control.MouseClick" />
@@ -3699,7 +3604,7 @@ Poniższa tabela zawiera listę kontrolek formularzy Windows Forms i zdarzenia (
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wyliczenie: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
         <altmember cref="M:System.Windows.Forms.Control.WndProc(System.Windows.Forms.Message@)" />
       </Docs>
     </Member>
@@ -3729,7 +3634,7 @@ Poniższa tabela zawiera listę kontrolek formularzy Windows Forms i zdarzenia (
       <Docs>
         <summary>Niszczy uchwyt skojarzonego z kontrolką.</summary>
         <remarks>To be added.</remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wyliczenie: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
         <block subset="none" type="overrides"><para>Podczas zastępowania <see cref="M:System.Windows.Forms.Control.DestroyHandle" /> w klasie pochodnej, pamiętaj wywołać klasy bazowej <see cref="M:System.Windows.Forms.Control.DestroyHandle" /> metodę, aby upewnić się, że uchwyt jest niszczona.</para></block>
         <altmember cref="M:System.Windows.Forms.Control.CreateControl" />
         <altmember cref="M:System.Windows.Forms.Control.CreateHandle" />
@@ -4210,7 +4115,7 @@ Aby uzyskać więcej informacji na temat <see langword="Dispose" /> i <see cref=
   
 Poniższa tabela zawiera listę kontrolek formularzy Windows Forms i zdarzenia (<see cref="E:System.Windows.Forms.Control.Click" /> lub <see cref="E:System.Windows.Forms.Control.DoubleClick" />) jest uruchamiany w odpowiedzi na akcję myszy określony.  
   
- <list type="table"><listheader><term> Formant 
+ <list type="table"><listheader><term> formant 
  </term><description> Kliknij lewy przycisk myszy 
  </description><description> Kliknij dwukrotnie lewy przycisk myszy 
  </description><description> Kliknij prawym przyciskiem myszy 
@@ -13527,7 +13432,7 @@ MyControl.Font = New Font(MyControl.Font, _
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">w przypadku bezpośredniego obiektu wywołującego i dziedziczenie klas wywołać tę metodę. Powiązane wyliczenie: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">w przypadku bezpośredniego obiektu wywołującego i dziedziczenie klas wywołać tę metodę. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
         <block subset="none" type="overrides"><para>Podczas zastępowania <see cref="M:System.Windows.Forms.Control.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)" /> metody w klasie pochodnej, powinien zwrócić kontrolkę <see langword="true" /> do wskazania, że klucz został przetworzony. Aby uzyskać klucze, które nie zostały przetworzone przez kontrolkę, wynikiem wywołanie klasy bazowej <see cref="M:System.Windows.Forms.Control.ProcessCmdKey(System.Windows.Forms.Message@,System.Windows.Forms.Keys)" /> metoda powinna zostać zwrócona. Formanty rzadko, jeśli w ogóle, należy przesłonić tę metodę.</para></block>
       </Docs>
     </Member>
@@ -18117,7 +18022,7 @@ Aby uzyskać więcej informacji na temat rysowania kontrolek zobacz [renderowani
   
  ]]></format>
         </remarks>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wyliczenie: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">do bezpośredniego obiektu wywołującego można wywoływać kod niezarządzany. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" />.</permission>
         <block subset="none" type="overrides"><para>Dziedziczenie z kontrolki powinna wywołać klasy bazowej <see cref="M:System.Windows.Forms.Control.WndProc(System.Windows.Forms.Message@)" /> metody do przetwarzania komunikatów, które nie obsługują.</para></block>
         <altmember cref="M:System.Windows.Forms.Control.PreProcessMessage(System.Windows.Forms.Message@)" />
         <altmember cref="M:System.Windows.Forms.Control.DefWndProc(System.Windows.Forms.Message@)" />
