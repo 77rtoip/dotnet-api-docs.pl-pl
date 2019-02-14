@@ -1,5 +1,5 @@
 <Type Name="PerformanceCounterType" FullName="System.Diagnostics.PerformanceCounterType">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="795e77f42b86e69226603d9859d95cdbc9616196" /><Meta Name="ms.sourcegitcommit" Value="adc8598fd19d91438cacaa8fa7ce613e28c8218e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/11/2018" /><Meta Name="ms.locfileid" Value="53226857" /></Metadata><TypeSignature Language="C#" Value="public enum PerformanceCounterType" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b3ad39edd592450d54099ad5dbde83faf30f81ed" /><Meta Name="ms.sourcegitcommit" Value="35aacaa30ef9e16e0ad8ab336c8005724a13199c" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/13/2019" /><Meta Name="ms.locfileid" Value="56222398" /></Metadata><TypeSignature Language="C#" Value="public enum PerformanceCounterType" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed PerformanceCounterType extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.PerformanceCounterType" />
   <TypeSignature Language="VB.NET" Value="Public Enum PerformanceCounterType" />
@@ -28,23 +28,29 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Niektóre typy licznika reprezentują dla danych nieprzetworzonych, podczas gdy inne reprezentują wartości obliczeniowe, które opierają się na co najmniej jeden próbek licznika. Następujące kategorie klasyfikować typy dostępnych liczników.  
+## Remarks
+
+Niektóre typy licznika reprezentują dla danych nieprzetworzonych, podczas gdy inne reprezentują wartości obliczeniowe, które opierają się na co najmniej jeden próbek licznika. Następujące kategorie klasyfikować typy dostępnych liczników.  
   
--   Średnia: mierzenie wartość wraz z upływem czasu i wyświetlić średnią z ostatnich dwóch pomiarów. Skojarzone z każdego licznika średni jest podstawowy licznik, który śledzi liczbę próbek zaangażowane.  
+- **Średnia**: Mierzy wartość wraz z upływem czasu i wyświetla średnią z ostatnich dwóch pomiarów. Skojarzone z każdego licznika średni jest podstawowy licznik, który śledzi liczbę próbek zaangażowane.  
   
--   Różnica: odjąć ostatniego miary od poprzedniego i wyświetlić różnica, jeśli jest to właściwe; Jeśli jest negatywny, są wyświetlane zera.  
+- **Różnica**: Odejmuje ostatniego miary od poprzedniego i jest wyświetlana różnica, jeśli jest to właściwe; Jeśli jest negatywny, wyświetla wartość zero.  
   
--   Natychmiastowe: wyświetlić najbardziej aktualne miary.  
+- **Natychmiastowe**: Wyświetla ostatnią miarą.  
   
--   Wartość procentowa: wyświetlić obliczone wartości jako procent.  
+- **Wartość procentowa**: Wyświetla obliczone wartości w procentach.  
   
--   Kurs: Przykładowe zwiększa liczbę zdarzeń wraz z upływem czasu i dzielenia zmianę wartości liczby przez zmianę w czasie, aby wyświetlić szybkość działania.  
+- **Współczynnik**: Pobiera próbki zwiększa liczbę zdarzeń, wraz z upływem czasu i dzieli zmianę wartości liczby przez zmianę w czasie, aby wyświetlić szybkość działania.  
   
- Próbkowanie danych licznika wydajności, przy użyciu typu licznik, reprezentujące średnio można tworzyć dane pierwotne wartości istotnych do użycia. Na przykład, licznik nieprzetworzone dane `NumberOfItems64` mogą uwidocznić dane, które są stosunkowo losowe dla poszczególnych próbek. Formuła do obliczania średniej, wartości, które zwraca wartość licznika będzie mieć (X 0 + X 1 +... + X n) / n, gdzie każda X i znajduje się przykładowy pierwotnych liczników.  
+Próbkowanie danych licznika wydajności, przy użyciu typu licznik, reprezentujące średnio można tworzyć dane pierwotne wartości istotnych do użycia. Na przykład, licznik nieprzetworzone dane `NumberOfItems64` mogą uwidocznić dane, które są stosunkowo losowe dla poszczególnych próbek. Formuła do obliczania średniej, wartości, które zwraca wartość licznika będzie mieć (X 0 + X 1 +... + X n) / n, gdzie każda X i znajduje się przykładowy pierwotnych liczników.  
   
- Współczynnik liczniki są podobne do średnia liczników, ale bardziej użyteczny w sytuacjach, w których współczynnik zwiększa się w przypadku użycia zasobu. Jest formułę, która szybko oblicza średnią ((X n - 0) / (T n -T 0)) / częstotliwości, gdzie każda X i jest próbka licznika i każdy T i jest czas, który jest odpowiedni próbkę. Powoduje to średnie użycie na sekundę.  
-  
+Współczynnik liczniki są podobne do średnia liczników, ale bardziej użyteczny w sytuacjach, w których współczynnik zwiększa się w przypadku użycia zasobu. Jest formułę, która szybko oblicza średnią ((X n - 0) / (T n -T 0)) / częstotliwości, gdzie każda X i jest próbka licznika i każdy T i jest czas, który jest odpowiedni próbkę. Powoduje to średnie użycie na sekundę.  
+
+*Liczniki multitimer* zbieranie danych z więcej niż jedno wystąpienie składnika, takich jak procesor lub dysku. 
+ 
+*Liczniki odwrotność* do pomiaru czasu, który składnik nie jest aktywny i czas aktywności dziedziczyć po tej miary.  
+ 
+   
 > [!NOTE]
 >  O ile nie wskazano inaczej, podstawy czasu to liczba sekund.  
   
@@ -57,8 +63,56 @@
 |`RawBase`|`RawFraction`|  
 |`SampleBase`|`SampleFraction`|  
   
-   
+Formuły używane przez niektóre liczniki, które reprezentują obliczone wartości są następujące:
+
+- `AverageCount64`: (N1 - N0) /(B1-B0), gdzie N 1 i N 0 są odczyty liczników wydajności, a B1 i B0 odpowiadające im `AverageBase` wartości. W związku z tym licznik reprezentuje liczby elementów przetworzonych w przykładowym przedziale czasu, a mianownik — liczba operacji podane w ramach interwału próbkowania.   
   
+- `AverageTimer32`: ((N1 - N0) / f) /(B1-B0), gdzie N1, jak i N0 są odczyty liczników wydajności, B1 i B0 odpowiadające im `AverageBase` wartości, a F to liczba impulsów na sekundę. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund. W związku z tym licznik reprezentuje liczby taktów zliczonych podczas ostatniego interwału próbkowania, F reprezentuje częstotliwość znaczniki i mianownik reprezentuje liczbę operacje wykonane podczas ostatniego interwału próbkowania.
+
+- `CounterDelta32`: N1 - N0, gdzie N1, jak i N0 są odczyty liczników wydajności. 
+
+- `CounterDelta64`: N1 - N0, gdzie N1, jak i N0 są odczyty liczników wydajności.  
+
+- `CounterMultiTimer`: ((N1 - N0) / (D1 - D0)) x 100 / B, gdzie N1, jak i N0 są odczyty liczników wydajności, D1 i D0 są ich odpowiednich odczyty czasu w impulsach czasomierza wydajności systemu i zmienna B wskazuje podstawowy licznik dla monitorowanych składników (przy użyciu licznik podstawowy elementu ty PE `CounterMultiBase`). W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
+
+- `CounterMultiTimer100Ns`: ((N1 - N0) / (D1 - D0)) x 100 / B, w których odczyty liczników wydajności, D1 i D0 N1, jak i N0 są ich odpowiednich odczyty czasie w jednostkach 100-nanosekundowych, a zmienna B wskazuje podstawowy licznik dla monitorowanych składników (przy użyciu Licznik bazowy typu `CounterMultiBase`</c0>). W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.
+
+- `CounterMultiTimer100NsInverse`: (B - ((N1-N0) / (D1 - D0))) x 100, jeżeli mianownik reprezentuje całkowity upływ czasu interwału próbkowania licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy B reprezentuje liczbę monitorowanych składników , przy użyciu Licznik bazowy typu `CounterMultiBase`.  
+
+- `CounterMultiTimerInverse`: (B - ((N1-N0) / (D1 - D0))) x 100, jeżeli mianownik reprezentuje całkowity upływ czasu interwału próbkowania licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy B reprezentuje liczbę monitorowanych składników , przy użyciu Licznik bazowy typu `CounterMultiBase`.
+
+- `CounterTimer`: (N1 - N0) / (D1 - D0), gdzie N1, jak i N0 są odczyty liczników wydajności i D1 i D0 ich odpowiednich wartości czasu. W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
+
+- `CounterTimerInverse`: (1 - ((N1-N0) / (D1 - D0))) x 100, gdy licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
+
+- `CountPerTimeInterval32`: (N1 - N0) / (D1 - D0), gdy licznik przedstawia liczbę elementów w kolejce i mianownik reprezentuje czas, który upłynął podczas ostatniego interwału próbkowania.
+
+- `CountPerTimeInterval64`: (N1 - N0) / (D1 - D0), gdzie licznik przedstawia liczbę elementów w kolejce i mianownik reprezentuje czas, który upłynął w przykładowym przedziale czasu.
+
+- `ElapsedTime`: (D0 - N0) / F, gdzie D0 reprezentuje bieżący czas N0 reprezentuje czas uruchomienia obiektu, a także F — liczba jednostek czasu, które upłynąć w jednej sekundy. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
+  
+- `NumberOfItems32`: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu. 
+
+- `NumberOfItems64`: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu.
+
+- `NumberOfItemsHEX32`: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu.  
+
+- `NumberOfItemsHEX64`: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu  
+ 
+- `RateOfCountsPerSecond32`: (N1 - N0) / ((D1-D0) / F), gdzie N1, jak i N0 są odczyty liczników wydajności, D1 i D0 są ich odpowiednich odczyty czasu i F reprezentuje liczbę impulsów na sekundę. Dlatego licznik przedstawia liczbę operacji wykonywanych podczas ostatniego interwału próbkowania mianownik reprezentuje liczbę znaczników, który upłynął podczas ostatniego interwału próbkowania i F jest częstotliwość to znaczniki osi. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
+
+- `RateOfCountsPerSecond64`: (N1 - N0) / ((D1-D0) / F), gdzie N1, jak i N0 są odczyty liczników wydajności, D1 i D0 są ich odpowiednich odczyty czasu i F reprezentuje liczbę impulsów na sekundę. Dlatego licznik przedstawia liczbę operacji wykonywanych podczas ostatniego interwału próbkowania mianownik reprezentuje liczbę znaczników, który upłynął podczas ostatniego interwału próbkowania i F jest częstotliwość to znaczniki osi. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
+
+- `RawFraction`: (N0 / D0) x 100, gdzie D0 reprezentuje zmierzonego atrybutu (przy użyciu Licznik bazowy typu `RawBase`), a ciąg N0 reprezentuje jeden składnik tego atrybutu.
+
+- `SampleCounter`: (N1 - N0) / ((D1-D0) / F), gdy licznik (N) reprezentuje liczbę ukończonych operacji, mianownik (D) reprezentuje czas, który upłynął w jednostkach taktów czasomierza wydajności systemu i F reprezentuje liczbę znaczników, które upłynąć w jednej sekundy. F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.
+
+- `SampleFraction`: ((N1 - N0) / (D1 - D0)) x 100, gdy licznik przedstawia liczbę pomyślnych operacji podczas ostatniego interwału próbkowania i mianownik reprezentuje zmianę liczba wszystkich operacji (typu mierzony) podane w ramach interwału próbkowania, Korzystanie z liczników typu `SampleBase`.
+
+- `Timer100Ns`: (N1 - N0) / (D1 - D0) x 100, gdy licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne, a mianownik — całkowity upływ czasu interwału próbkowania.
+
+- `Timer100NsInverse`: (1 - ((N1-N0) / (D1 - D0))) x 100, gdy licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
+
 ## Examples  
  W poniższych przykładach pokazano kilka typów licznika w <xref:System.Diagnostics.PerformanceCounterType> wyliczenia.  
   
@@ -169,17 +223,7 @@
       </ReturnValue>
       <MemberValue>1073874176</MemberValue>
       <Docs>
-        <summary>Średnia licznik, który pokazuje, ile elementów są przetwarzane przeciętnie podczas operacji. Liczniki tego typu wyświetlić stosunek elementy przetworzone liczby operacje wykonane. Stosunek jest obliczana liczba elementów przetworzonych w ciągu ostatniego interwału liczby operacje wykonane podczas ostatniego interwału.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 -N 0) / (B 1 -B 0), gdzie N 1 i N 0 są odczyty liczników wydajności, a B 1 i B 0 są odpowiadające im `AverageBase` wartości. W związku z tym licznik reprezentuje liczby elementów przetworzonych w przykładowym przedziale czasu, a mianownik — liczba operacji podane w ramach interwału próbkowania.  
-  
- Liczniki tego typu obejmują PhysicalDisk\ średni Bajty/Transfer na dysku.  
-  
- ]]></format>
-        </remarks>
+        <summary>Średnia licznik, który pokazuje, ile elementów są przetwarzane przeciętnie podczas operacji. Liczniki tego typu wyświetlić stosunek elementy przetworzone liczby operacje wykonane. Stosunek jest obliczana liczba elementów przetworzonych w ciągu ostatniego interwału liczby operacje wykonane podczas ostatniego interwału. Liczniki tego typu obejmują PhysicalDisk\ średni Bajty/Transfer na dysku.</summary>
       </Docs>
     </Member>
     <Member MemberName="AverageTimer32">
@@ -205,17 +249,7 @@
       </ReturnValue>
       <MemberValue>805438464</MemberValue>
       <Docs>
-        <summary>Średnia liczników, służący do pomiaru czasu, jaki zajmuje, średnia, aby ukończyć proces lub operacja. Liczniki tego typu wyświetlenie stosunek całkowity upływ czasu interwału próbkowania liczba procesów lub operacje wykonane w tym samym czasie. Ten typ licznika mierzy czas taktów zegara systemowego.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: ((N 1 -N 0) /F) / B 1 -B 0, gdzie N 1 i N 0 są odczyty liczników wydajności, B 1 i B, 0 to odpowiadające im `AverageBase` wartości, a F to liczba impulsów na sekundę. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund. W związku z tym licznik reprezentuje liczby taktów zliczonych podczas ostatniego interwału próbkowania, F reprezentuje częstotliwość znaczniki i mianownik reprezentuje liczbę operacje wykonane podczas ostatniego interwału próbkowania.  
-  
- Liczniki tego typu obejmują PhysicalDisk\ średni Transfery dysku/s.  
-  
- ]]></format>
-        </remarks>
+        <summary>Średnia liczników, służący do pomiaru czasu, jaki zajmuje, średnia, aby ukończyć proces lub operacja. Liczniki tego typu wyświetlenie stosunek całkowity upływ czasu interwału próbkowania liczba procesów lub operacje wykonane w tym samym czasie. Ten typ licznika mierzy czas taktów zegara systemowego. Liczniki tego typu obejmują PhysicalDisk\ średni Transfery dysku/s.</summary>
       </Docs>
     </Member>
     <Member MemberName="CounterDelta32">
@@ -242,14 +276,6 @@
       <MemberValue>4195328</MemberValue>
       <Docs>
         <summary>Licznik różnica, który przedstawia zmiany w atrybucie mierzonego między dwa najnowsze interwałów próbkowania.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: N 1 -N 0, gdzie N 1 i N 0 są odczyty liczników wydajności.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CounterDelta64">
@@ -276,14 +302,6 @@
       <MemberValue>4195584</MemberValue>
       <Docs>
         <summary>Licznik różnica, który przedstawia zmiany w atrybucie mierzonego między dwa najnowsze interwałów próbkowania. Jest taka sama jak <see langword="CounterDelta32" /> Typ licznika, z wyjątkiem jest program większych pola w celu uwzględnienia większej wartości.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: N 1 -N 0, gdzie N 1 i N 0 są odczyty liczników wydajności.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CounterMultiBase">
@@ -335,17 +353,7 @@
       </ReturnValue>
       <MemberValue>574686464</MemberValue>
       <Docs>
-        <summary>Licznik procent, który wyświetla czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Ponieważ licznik rejestruje czas aktywności składników działających równocześnie, wynikowa wartość procentowa może przekroczyć 100 procent.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Ten licznik jest multitimer. Multitimers zbieranie danych z więcej niż jedno wystąpienie składnika, takich jak procesor lub dysku. Ten typ licznika różni się od `CounterMultiTimer100Ns` , mierzony czas w jednostkach taktów czasomierza wydajności systemu, a nie 100 nanosekund jednostek.  
-  
- Formuła: ((1 N - N 0) / (1 D - D 0)) x 100 / B, gdzie N 1 i N 0 są odczyty liczników wydajności, D 1 i D 0 są ich odpowiednich odczyty czasu w impulsach czasomierza wydajności systemu i zmienna B wskazuje podstawowy licznik dla monitorowanych składników (przy użyciu bas Licznik e typu `CounterMultiBase`). W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznik procent, który wyświetla czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Ponieważ licznik rejestruje czas aktywności składników działających równocześnie, wynikowa wartość procentowa może przekroczyć 100 procent. Ten typ licznika różni się od <see langword="CounterMultiTimer100Ns" /> , mierzony czas w jednostkach taktów czasomierza wydajności systemu, a nie 100 nanosekund jednostek. Ten typ licznika jest multitimer.</summary>
       </Docs>
     </Member>
     <Member MemberName="CounterMultiTimer100Ns">
@@ -371,17 +379,7 @@
       </ReturnValue>
       <MemberValue>575735040</MemberValue>
       <Docs>
-        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Mierzy czas w 100 nanosekund (ns) jednostek.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Ten typ licznika jest multitimer. Multitimers są przeznaczone do monitorowania więcej niż jedno wystąpienie składnika, takich jak procesor lub dysku.  
-  
- Formuła: ((1 N - N 0) / (1 D - D 0)) x 100 / B, gdzie N 1 i N 0 są odczyty liczników wydajności, D 1 i D 0 są ich odpowiednich odczyty czasie w jednostkach 100-nanosekundowych i zmienna B wskazuje podstawowy licznik dla monitorowanych składników (przy użyciu Licznik bazowy tego typu  `CounterMultiBase`). W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Mierzy czas w 100 nanosekund (ns) jednostek. Ten typ licznika jest multitimer.</summary>
       </Docs>
     </Member>
     <Member MemberName="CounterMultiTimer100NsInverse">
@@ -407,17 +405,7 @@
       </ReturnValue>
       <MemberValue>592512256</MemberValue>
       <Docs>
-        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Liczniki tego typu pomiaru czasu w 100 nanosekund (ns) jednostek. Pochodzą one czas aktywności przez pomiaru czasu, które składniki nie były aktywne i odejmowanie wynik mnożenia wartości 100 procent liczby monitorowanych obiektów.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Ten typ licznika jest odwrotny multitimer. Multitimers są przeznaczone do monitorowania więcej niż jedno wystąpienie składnika, takich jak procesor lub dysku. Odwrotny liczniki do pomiaru czasu, który składnik nie jest aktywny i dziedziczyć jego czas aktywności pomiaru czas nieaktywności  
-  
- Formuła: (B - ((N 1-N 0) / (1 D - D 0))) x 100, jeżeli mianownik reprezentuje całkowity upływ czasu interwału próbkowania licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy B reprezentuje liczbę monitorowanych składników , przy użyciu Licznik bazowy typu `CounterMultiBase`.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Liczniki tego typu pomiaru czasu w 100 nanosekund (ns) jednostek. Pochodzą one czas aktywności przez pomiaru czasu, które składniki nie były aktywne i odejmowanie wynik mnożenia wartości 100 procent liczby monitorowanych obiektów. Ten typ licznika jest odwrotny multitimer.</summary>
       </Docs>
     </Member>
     <Member MemberName="CounterMultiTimerInverse">
@@ -443,19 +431,7 @@
       </ReturnValue>
       <MemberValue>591463680</MemberValue>
       <Docs>
-        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Czas aktywności pochodzi pomiaru czasu, które składniki nie były aktywne, a odjęcie wynikiem 100 procent liczby monitorowanych obiektów.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Ten typ licznika jest odwrotny multitimer. Multitimers monitorowanie więcej niż jedno wystąpienie składnika, takich jak procesor lub dysku. Odwrotny liczniki do pomiaru czasu, który składnik nie jest aktywny i jego czas aktywności dziedziczyć po tej miary.  
-  
- Ten licznik różni się od `CounterMultiTimer100NsInverse` , mierzony czas w jednostkach taktów czasomierza wydajności systemu, a nie 100 nanosekund jednostek.  
-  
- Formuła: (B ((1 N - N 0) / (1 D - D 0))) x 100, jeżeli mianownik reprezentuje całkowity upływ czasu interwału próbkowania licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy B reprezentuje liczbę monitorowanych składników , przy użyciu Licznik bazowy typu `CounterMultiBase`.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznika procent, który pokazuje czas aktywności z co najmniej jednego składnika jako wartość procentowa łącznego czasu interwału próbkowania. Czas aktywności pochodzi pomiaru czasu, które składniki nie były aktywne, a odjęcie wynikiem 100 procent liczby monitorowanych obiektów. Ten typ licznika jest odwrotny multitimer. Różni się od `CounterMultiTimer100NsInverse` , mierzony czas w jednostkach taktów czasomierza wydajności systemu, a nie 100 nanosekund jednostek.</summary>
       </Docs>
     </Member>
     <Member MemberName="CounterTimer">
@@ -482,14 +458,6 @@
       <MemberValue>541132032</MemberValue>
       <Docs>
         <summary>Procent licznik, który pokazuje średni czas, czy składnik jest aktywny w procentach całkowita liczba przedziału czasu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / (1 D - D 0), gdzie N 1 i N 0 są odczyty liczników wydajności i D 1 i D 0 ich odpowiednich wartości czasu. W związku z tym licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne i mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CounterTimerInverse">
@@ -515,17 +483,7 @@
       </ReturnValue>
       <MemberValue>557909248</MemberValue>
       <Docs>
-        <summary>Procent licznik, który wyświetla średnią wartość procentową czasu active zaobserwowaną w przykładowym przedziale czasu. Wartości tych liczników jest obliczana przez monitorowanie procent czasu, przez jaki usługa była nieaktywna, a następnie odjęcie tej wartości od 100%.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Jest to typ odwrotność licznika. Miara odwrotność liczniki czas, który jest składnikiem Zanotuj active i czas aktywności dziedziczyć po tej miary. Ten typ licznika jest taka sama jak `CounterTimer100NsInv` z tą różnicą, że mierzy czas w jednostkach taktów czasomierza wydajności systemu, a nie w 100 nanosekund jednostek.  
-  
- Formuła: (1 – ((1 N - N 0) / (1 D - D 0))) x 100, gdy licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
-  
- ]]></format>
-        </remarks>
+        <summary>Procent licznik, który wyświetla średnią wartość procentową czasu active zaobserwowaną w przykładowym przedziale czasu. Wartości tych liczników jest obliczana przez monitorowanie procent czasu, przez jaki usługa była nieaktywna, a następnie odjęcie tej wartości od 100%. Jest to typ odwrotność licznika. Jest taka sama jak `CounterTimer100NsInv`, chyba że mierzy czas w jednostkach taktów czasomierza wydajności systemu, a nie w 100 nanosekund jednostek.</summary>
       </Docs>
     </Member>
     <Member MemberName="CountPerTimeInterval32">
@@ -552,14 +510,6 @@
       <MemberValue>4523008</MemberValue>
       <Docs>
         <summary>Licznik Średnia, zadaniem jest monitorowanie średnia długość kolejki do zasobu wraz z upływem czasu. Pokazuje różnicę między długości kolejki zaobserwowane w ciągu ostatnich dwóch interwałów próbkowania podzielona przez długość interwału. Tego rodzaju licznika zwykle jest używana do śledzenia liczby elementów, które są umieszczane w kolejce lub oczekiwania.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / (1 D - D 0), gdzie licznik przedstawia liczbę elementów w kolejce i mianownik reprezentuje czas, który upłynął podczas ostatniego interwału próbkowania.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CountPerTimeInterval64">
@@ -586,14 +536,6 @@
       <MemberValue>4523264</MemberValue>
       <Docs>
         <summary>Średnia licznik, który monitoruje średnia długość kolejki do zasobu wraz z upływem czasu. Liczniki tego typu wyświetlenia różnicy między długości kolejki zaobserwowane w ciągu ostatnich dwóch interwałów próbkowania, podzielona przez długość interwału. Ten typ licznika jest taka sama jak <see langword="CountPerTimeInterval32" /> różnicą, że korzysta większych pola do uwzględnienia większej wartości. Ten typ licznika zwykle jest używana do śledzenia mocno obciążające lub bardzo dużej liczby elementów, które oczekują w kolejce lub oczekiwania.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / (1 D - D 0), gdzie licznik przedstawia liczbę elementów w kolejce i mianownik reprezentuje czas, który upłynął w przykładowym przedziale czasu.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="ElapsedTime">
@@ -619,17 +561,7 @@
       </ReturnValue>
       <MemberValue>807666944</MemberValue>
       <Docs>
-        <summary>Czasomierz różnica, który przedstawia łączny czas między podczas uruchamiania składnika lub procesu i czasu, gdy ta wartość jest obliczana.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (D 0 - N 0) / F, gdzie D 0 reprezentuje bieżący czas N 0 reprezentuje czas uruchomienia obiektu, a także F — liczba jednostek czasu, które upłynąć w jednej sekundy. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
-  
- Liczniki tego typu obejmują czas działania systemu System\.  
-  
- ]]></format>
-        </remarks>
+        <summary>Czasomierz różnica, który przedstawia łączny czas między podczas uruchamiania składnika lub procesu i czasu, gdy ta wartość jest obliczana. Liczniki tego typu obejmują czas działania systemu System\.</summary>
       </Docs>
     </Member>
     <Member MemberName="NumberOfItems32">
@@ -655,17 +587,7 @@
       </ReturnValue>
       <MemberValue>65536</MemberValue>
       <Docs>
-        <summary>Natychmiastowe licznik, który wyświetla najbardziej niedawno odczytaną wartość. Używany, na przykład do obsługi proste liczba elementów lub operacji.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu.  
-  
- Liczniki tego typu obejmują pamięć\dostępna pamięć w bajtach.  
-  
- ]]></format>
-        </remarks>
+        <summary>Natychmiastowe licznik, który wyświetla najbardziej niedawno odczytaną wartość. Używany, na przykład do obsługi proste liczba elementów lub operacji. Liczniki tego typu obejmują pamięć\dostępna pamięć w bajtach.</summary>
       </Docs>
     </Member>
     <Member MemberName="NumberOfItems64">
@@ -692,14 +614,6 @@
       <MemberValue>65792</MemberValue>
       <Docs>
         <summary>Natychmiastowe licznik, który wyświetla najbardziej niedawno odczytaną wartość. Używany, na przykład do obsługi proste liczba bardzo dużej liczby elementów lub operacji. Jest taka sama jak <see langword="NumberOfItems32" /> różnicą, że korzysta większych pola do uwzględnienia większej wartości.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="NumberOfItemsHEX32">
@@ -726,14 +640,6 @@
       <MemberValue>0</MemberValue>
       <Docs>
         <summary>Natychmiastowe licznik, który wyświetla najbardziej niedawno odczytaną wartość w formacie szesnastkowym. Używany, na przykład do obsługi proste liczba elementów lub operacji.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="NumberOfItemsHEX64">
@@ -760,14 +666,6 @@
       <MemberValue>256</MemberValue>
       <Docs>
         <summary>Natychmiastowe licznik, który wyświetla najbardziej niedawno odczytaną wartość. Używany, na przykład do obsługi proste liczba bardzo dużej liczby elementów lub operacji. Jest taka sama jak <see langword="NumberOfItemsHEX32" /> różnicą, że korzysta większych pola do uwzględnienia większej wartości.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: Brak. Nie wyświetla średnią, ale zawiera dane pierwotne, zgodnie z ich zebraniu  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="RateOfCountsPerSecond32">
@@ -793,17 +691,7 @@
       </ReturnValue>
       <MemberValue>272696320</MemberValue>
       <Docs>
-        <summary>Licznik różnica, który przedstawia średnią liczbę operacji ukończone w ciągu każdej sekundy interwału próbkowania. Liczniki tego typu pomiaru czasu w taktach zegara systemowego.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / ((D 1 -D 0) / F), gdzie N 1 i N 0 są odczyty liczników wydajności, ich odpowiednich odczyty czasu są D 1 i D 0 i F reprezentuje liczbę impulsów na sekundę. Dlatego licznik przedstawia liczbę operacji wykonywanych podczas ostatniego interwału próbkowania mianownik reprezentuje liczbę znaczników, który upłynął podczas ostatniego interwału próbkowania i F jest częstotliwość to znaczniki osi. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
-  
- Liczniki tego typu obejmują operacje odczytu pliku System\ na sekundę.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznik różnica, który przedstawia średnią liczbę operacji ukończone w ciągu każdej sekundy interwału próbkowania. Liczniki tego typu pomiaru czasu w taktach zegara systemowego. Liczniki tego typu obejmują operacje odczytu pliku System\ na sekundę.</summary>
       </Docs>
     </Member>
     <Member MemberName="RateOfCountsPerSecond64">
@@ -829,17 +717,7 @@
       </ReturnValue>
       <MemberValue>272696576</MemberValue>
       <Docs>
-        <summary>Licznik różnica, który przedstawia średnią liczbę operacji ukończone w ciągu każdej sekundy interwału próbkowania. Liczniki tego typu pomiaru czasu w taktach zegara systemowego. Ten typ licznika jest taka sama jak <see langword="RateOfCountsPerSecond32" /> typu, ale program większych pola w celu uwzględnienia większej wartości do śledzenia mocno obciążające liczba elementów lub operacje na sekundę, takie jak szybkość transmisji bajtów.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / ((D 1 -D 0) / F), gdzie N 1 i N 0 są odczyty liczników wydajności, ich odpowiednich odczyty czasu są D 1 i D 0 i F reprezentuje liczbę impulsów na sekundę. Dlatego licznik przedstawia liczbę operacji wykonywanych podczas ostatniego interwału próbkowania mianownik reprezentuje liczbę znaczników, który upłynął podczas ostatniego interwału próbkowania i F jest częstotliwość to znaczniki osi. Wartość F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
-  
- Liczniki tego typu obejmują Odczyt pliku System\ bajty/s.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznik różnica, który przedstawia średnią liczbę operacji ukończone w ciągu każdej sekundy interwału próbkowania. Liczniki tego typu pomiaru czasu w taktach zegara systemowego. Ten typ licznika jest taka sama jak <see langword="RateOfCountsPerSecond32" /> typu, ale program większych pola w celu uwzględnienia większej wartości do śledzenia mocno obciążające liczba elementów lub operacje na sekundę, takie jak szybkość transmisji bajtów. Liczniki tego typu obejmują Odczyt pliku System\ bajty/s.</summary>
       </Docs>
     </Member>
     <Member MemberName="RawBase">
@@ -891,17 +769,7 @@
       </ReturnValue>
       <MemberValue>537003008</MemberValue>
       <Docs>
-        <summary>Licznika procent natychmiastowe, który pokazuje współczynnik podzestaw do jego zestawu jako wartości procentowej. Na przykład porównuje liczbę bajtów w użyciu na dysku do całkowita liczba bajtów na dysku. Liczniki tego typu jest wyświetlany bieżący procent tylko nie średnią wraz z upływem czasu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 0 / D 0) x 100, gdzie D 0 reprezentuje zmierzonego atrybutu (przy użyciu Licznik bazowy typu `RawBase`) i N 0 reprezentuje jeden składnik tego atrybutu.  
-  
- Liczniki tego typu obejmują plik stronicowania\\% szczytowego użycia.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznika procent natychmiastowe, który pokazuje współczynnik podzestaw do jego zestawu jako wartości procentowej. Na przykład porównuje liczbę bajtów w użyciu na dysku do całkowita liczba bajtów na dysku. Liczniki tego typu jest wyświetlany bieżący procent tylko nie średnią wraz z upływem czasu. Liczniki tego typu obejmują plik stronicowania\\% szczytowego użycia.</summary>
       </Docs>
     </Member>
     <Member MemberName="SampleBase">
@@ -954,14 +822,6 @@
       <MemberValue>4260864</MemberValue>
       <Docs>
         <summary>Średnia liczników, pokazujący średnią liczbę operacji ukończone w ciągu jednej sekundy. Gdy licznik tego typu próbkuje dane, każdy próbkowania przerwanie zwraca co najmniej zero. Dane liczników jest to liczba woluminów, które zostały poddane próbkowaniu. Mierzy czas w jednostkach taktów czasomierza wydajność systemu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / ((1 D - D 0) / F), gdy licznik (N) reprezentuje liczbę ukończonych operacji, mianownik (D) reprezentuje czas, który upłynął w jednostkach taktów czasomierza wydajności systemu i F reprezentuje liczbę znaczników, które upłynąć w jednej sekundy. F jest brana pod uwagę w równaniu tak, aby wyniki mogą być wyświetlane w ciągu kilku sekund.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="SampleFraction">
@@ -987,17 +847,7 @@
       </ReturnValue>
       <MemberValue>549585920</MemberValue>
       <Docs>
-        <summary>Licznik procent, który pokazuje średni współczynnik trafień do wszystkich operacji wykonywanych w ciągu ostatnich dwóch interwałów próbkowania.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: ((1 N - N 0) / (1 D - D 0)) x 100, gdy licznik przedstawia liczbę pomyślnych operacji podczas ostatniego interwału próbkowania i mianownik reprezentuje zmianę liczba wszystkich operacji (typu mierzony) podane w ramach przykładu interwał, przy użyciu liczników typu `SampleBase`.  
-  
- Liczniki tego typu obejmują pamięci podręcznej odczytu Cache\Pin %.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznik procent, który pokazuje średni współczynnik trafień do wszystkich operacji wykonywanych w ciągu ostatnich dwóch interwałów próbkowania. Liczniki tego typu obejmują pamięci podręcznej odczytu Cache\Pin %.</summary>
       </Docs>
     </Member>
     <Member MemberName="Timer100Ns">
@@ -1023,17 +873,7 @@
       </ReturnValue>
       <MemberValue>542180608</MemberValue>
       <Docs>
-        <summary>Licznika procent, który pokazuje czas aktywności składnika jako wartość procentowa całkowity upływ czasu interwału próbkowania. Mierzy czas w jednostkach 100 nanosekund (ns). Liczniki tego typu zostały zaprojektowane do mierzenia działalności jeden składnik w danym momencie.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Formuła: (N 1 - N 0) / (1 D - D 0) x 100, gdy licznik reprezentuje części interwał próbkowania, podczas którego monitorowanych składników były aktywne, a mianownik — całkowity upływ czasu interwału próbkowania.  
-  
- Liczniki tego typu obejmują Procesor\Czas % czas użytkownika.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznika procent, który pokazuje czas aktywności składnika jako wartość procentowa całkowity upływ czasu interwału próbkowania. Mierzy czas w jednostkach 100 nanosekund (ns). Liczniki tego typu zostały zaprojektowane do mierzenia działalności jeden składnik w danym momencie. Liczniki tego typu obejmują Procesor\Czas % czas użytkownika.</summary>
       </Docs>
     </Member>
     <Member MemberName="Timer100NsInverse">
@@ -1059,19 +899,7 @@
       </ReturnValue>
       <MemberValue>558957824</MemberValue>
       <Docs>
-        <summary>Licznik procent, który przedstawia średnią wartość procentową czasu active zaobserwowaną w przykładowym przedziale czasu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Jest to odwrotność licznika. Liczniki tego typu obliczyć czas aktywności przez pomiaru czasu, który usługa był nieaktywny, a następnie odjęcie procent czasu aktywności ze 100 procent.  
-  
- Formuła: (1 – ((1 N - N 0) / (1 D - D 0))) x 100, gdy licznik reprezentuje czas w interwale monitorowanych składników były nieaktywne, gdy mianownik reprezentuje całkowity upływ czasu interwału próbkowania.  
-  
- Liczniki tego typu obejmują Procesor\Czas % czasu procesora.  
-  
- ]]></format>
-        </remarks>
+        <summary>Licznik procent, który przedstawia średnią wartość procentową czasu active zaobserwowaną w przykładowym przedziale czasu. Jest to odwrotność licznika. Liczniki tego typu obejmują Procesor\Czas % czasu procesora.</summary>
       </Docs>
     </Member>
   </Members>
