@@ -1,5 +1,5 @@
 <Type Name="XmlNodeType" FullName="System.Xml.XmlNodeType">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="beb49da4e5041683aa68e9c41480c99fdd1e4848" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="37481774" /></Metadata><TypeSignature Language="C#" Value="public enum XmlNodeType" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="04bacc38c9db1952825e1f247c6611e9872c6ccb" /><Meta Name="ms.sourcegitcommit" Value="8b055c38cf00061b6c0b988ea5d824c2b4291a15" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/15/2019" /><Meta Name="ms.locfileid" Value="56306597" /></Metadata><TypeSignature Language="C#" Value="public enum XmlNodeType" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed XmlNodeType extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Xml.XmlNodeType" />
   <TypeSignature Language="VB.NET" Value="Public Enum XmlNodeType" />
@@ -29,7 +29,36 @@
   </Base>
   <Docs>
     <summary>Określa typ węzła.</summary>
-    <remarks>To be added.</remarks>
+    <remarks>
+      <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+
+Poniższa tabela zawiera dodatkowe informacje na temat węzłów XML, a także ich węzły nadrzędne i podrzędne.
+
+| Pole | Opis | Może mieć węzłów podrzędnych: | Może być elementem podrzędnym: |
+|---|---|---|---|
+|`Attribute`| |`EntityReference`, `Text`|Brak. Nie jest uznawane za elementem podrzędnym `Element`.|
+|`CDATA`| CDATA sekcje są używane jako znak ucieczki dla bloków tekstu, które w przeciwnym razie mogłyby został rozpoznany jako kod znaczników.|Brak.|`DocumentFragment`, `EntityReference`, i `Element`|
+|`Comment`| | Brak. |`Document`, `DocumentFragment`, `EntityReference`|
+|`Document`| |`XmlDeclaration`, `Element` (maksymalnie jeden), `ProcessingInstruction`, `Comment`, `DocumentType`|Brak|
+|`DocumentFragment`|Kojarzy węzła lub poddrzewo z dokumentu bez faktycznego zawarte w dokumencie.|`Element`, `ProcessingInstruction`, `Comment`, `Text`, `CDATA`, `EntityReference`|Brak. 
+|`DocumentType`| |`Notation`, `Entity`|Brak|
+|`Element`| |`Element`, `Text`, `Comment`, `ProcessingInstruction`, `CDATA`, `EntityReference`| `Document`, `DocumentFragment`, `EntityReference`, `Element`|
+|`EndElement`|Zwracane, jeśli <xref:System.Xml.XmlReader> pobiera-to-end elementu.| | |   
+|`EndEntity`| | | |
+|`Entity`| |Węzły podrzędne, które reprezentują rozwiniętej jednostki (na przykład `Text` i `EntityReference` węzły) |`DocumentType`|
+|`EntityReference`| |`Element`, `ProcessingInstruction`, `Comment`, `Text`, `CDATA`, `EntityReference` |`Attribute`, `DocumentFragment`, `Element`, `EntityReference` |
+|`None`| | | |
+|`Notation`| | Brak | `DocumentType`| 
+|`ProcessingInstruction`| | Brak | `Document`, `DocumentFragment`, `Element`, `EntityReference`|
+|`SignificantWhitespace`| | | |
+|`Text`| | Brak | `Attribute`, `DocumentFragment`, `Element`, `EntityReference` |
+|`Whitespace`| | | |
+|`XmlDeclaration`| Musi być pierwszym węzłem w dokumencie. Może mieć atrybuty, które są w wersji i informacji o kodowaniu. |Brak|`Document`|
+
+ ]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="Attribute">
@@ -65,14 +94,6 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Atrybut (na przykład <c>id = "123"</c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `Attribute` Węzeł może zawierać następujące typy węzłów podrzędnych: `Text` i `EntityReference`. `Attribute` Węzeł nie jest widoczny jako węzeł podrzędny innego typu węzła. Nie jest uznawane za elementem podrzędnym `Element`.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="CDATA">
@@ -107,15 +128,7 @@
       </ReturnValue>
       <MemberValue>4</MemberValue>
       <Docs>
-        <summary>Sekcja CDATA (na przykład <c> &lt;![CDATA [tekst ze zmienionym znaczeniem]]&gt; </c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- CDATA sekcje są używane jako znak ucieczki dla bloków tekstu, które w przeciwnym razie mogłyby został rozpoznany jako kod znaczników. A `CDATA` węzeł nie może mieć żadnych węzłów podrzędnych. Może być wyświetlany jako element podrzędny `DocumentFragment`, `EntityReference`, i `Element` węzłów.  
-  
- ]]></format>
-        </remarks>
+        <summary>Sekcja CDATA (na przykład <c>&lt;![CDATA [tekst ze zmienionym znaczeniem]]&gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="Comment">
@@ -150,15 +163,7 @@
       </ReturnValue>
       <MemberValue>8</MemberValue>
       <Docs>
-        <summary>Komentarz (na przykład <c> &lt;!--komentarza —&gt; </c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- A `Comment` węzeł nie może mieć żadnych węzłów podrzędnych. Może być wyświetlany jako element podrzędny `Document`, `DocumentFragment`, `Element`, i `EntityReference` węzłów.  
-  
- ]]></format>
-        </remarks>
+        <summary>Komentarz (na przykład <c>&lt;!--komentarza —&gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="Document">
@@ -194,14 +199,6 @@
       <MemberValue>9</MemberValue>
       <Docs>
         <summary>Obiekt dokumentu, który, jako katalog główny w drzewie dokumentu zapewnia dostęp do całego dokumentu XML.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- A `Document` węzeł może zawierać następujące typy węzłów podrzędnych: `XmlDeclaration`, `Element` (maksymalnie jeden), `ProcessingInstruction`, `Comment`, i `DocumentType`. Nie może występować jako element podrzędny wszystkie typy węzłów.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="DocumentFragment">
@@ -237,15 +234,7 @@
       <MemberValue>11</MemberValue>
       <Docs>
         <summary>Fragment dokumentu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `DocumentFragment` Węzła kojarzy węzła lub poddrzewo z dokumentu bez faktycznego zawarte w dokumencie. A `DocumentFragment` węzeł może zawierać następujące typy węzłów podrzędnych: `Element`, `ProcessingInstruction`, `Comment`, `Text`, `CDATA`, i `EntityReference`. Nie może występować jako element podrzędny wszystkie typy węzłów.  
-  
- ]]></format>
-        </remarks>
-      </Docs>
+       </Docs>
     </Member>
     <Member MemberName="DocumentType">
       <MemberSignature Language="C#" Value="DocumentType" />
@@ -279,15 +268,7 @@
       </ReturnValue>
       <MemberValue>10</MemberValue>
       <Docs>
-        <summary>Deklaracja typu dokumentu, wskazywanym przez następujący tag (na przykład <c> &lt;! DOCTYPE... &gt;</c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- A `DocumentType` węzeł może zawierać następujące typy węzłów podrzędnych: `Notation` i `Entity`. Może być wyświetlany jako element podrzędny `Document` węzła.  
-  
- ]]></format>
-        </remarks>
+        <summary>Deklaracja typu dokumentu, wskazywanym przez następujący tag (na przykład <c>&lt;! DOCTYPE... &gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="Element">
@@ -322,15 +303,7 @@
       </ReturnValue>
       <MemberValue>1</MemberValue>
       <Docs>
-        <summary>Element (na przykład <c> &lt;elementu&gt; </c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `Element` Węzeł może zawierać następujące typy węzłów podrzędnych: `Element`, `Text`, `Comment`, `ProcessingInstruction`, `CDATA`, i `EntityReference`. Może być elementem podrzędnym elementu `Document`, `DocumentFragment`, `EntityReference`, i `Element` węzłów.  
-  
- ]]></format>
-        </remarks>
+        <summary>Element (na przykład <c>&lt;elementu&gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="EndElement">
@@ -365,15 +338,7 @@
       </ReturnValue>
       <MemberValue>15</MemberValue>
       <Docs>
-        <summary>Tag końcowy element (na przykład <c> &lt;/item&gt; </c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `EndElement` węzły są zwracane, gdy <xref:System.Xml.XmlReader> pobiera-to-end elementu.  
-  
- ]]></format>
-        </remarks>
+        <summary>Tag końcowy element (na przykład <c>&lt;/item&gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="EndEntity">
@@ -443,15 +408,7 @@
       </ReturnValue>
       <MemberValue>6</MemberValue>
       <Docs>
-        <summary>Deklaracja jednostki (na przykład <c> &lt;! JEDNOSTKI... &gt;</c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `Entity` Węzeł może zawierać węzłów podrzędnych, które reprezentują rozwiniętej jednostki (na przykład `Text` i `EntityReference` węzłów). Może być wyświetlany jako element podrzędny `DocumentType` węzła.  
-  
- ]]></format>
-        </remarks>
+        <summary>Deklaracja jednostki (na przykład <c>&lt;! JEDNOSTKI... &gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="EntityReference">
@@ -486,15 +443,7 @@
       </ReturnValue>
       <MemberValue>5</MemberValue>
       <Docs>
-        <summary>Odwołanie do jednostki (na przykład <c> &amp;num;</c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- `EntityReference` Węzeł może zawierać następujące typy węzłów podrzędnych: `Element`, `ProcessingInstruction`, `Comment`, `Text`, `CDATA`, i `EntityReference`. Może być wyświetlany jako element podrzędny `Attribute`, `DocumentFragment`, `Element`, i `EntityReference` węzłów.  
-  
- ]]></format>
-        </remarks>
+        <summary>Odwołanie do jednostki (na przykład <c>&amp;num;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="None">
@@ -564,15 +513,7 @@
       </ReturnValue>
       <MemberValue>12</MemberValue>
       <Docs>
-        <summary>Notacja w deklaracji typu dokumentu (na przykład <c> &lt;! NOTACJA... &gt;</c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- A `Notation` węzeł nie może mieć żadnych węzłów podrzędnych. Może być wyświetlany jako element podrzędny `DocumentType` węzła.  
-  
- ]]></format>
-        </remarks>
+        <summary>Notacja w deklaracji typu dokumentu (na przykład <c>&lt;! NOTACJA... &gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="ProcessingInstruction">
@@ -607,15 +548,7 @@
       </ReturnValue>
       <MemberValue>7</MemberValue>
       <Docs>
-        <summary>Instrukcja przetwarzania (na przykład <c> &lt;? pi test?&gt; </c> ).</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- A `ProcessingInstruction` węzeł nie może mieć żadnych węzłów podrzędnych. Może być wyświetlany jako element podrzędny `Document`, `DocumentFragment`, `Element`, i `EntityReference` węzłów.  
-  
- ]]></format>
-        </remarks>
+        <summary>Instrukcja przetwarzania (na przykład <c>&lt;? pi test?&gt;</c> ).</summary>
       </Docs>
     </Member>
     <Member MemberName="SignificantWhitespace">
@@ -763,7 +696,7 @@
       </ReturnValue>
       <MemberValue>17</MemberValue>
       <Docs>
-        <summary>Deklaracja XML (na przykład <c> &lt;? wersji xml = "1.0'?&gt; </c> ).</summary>
+        <summary>Deklaracja XML (na przykład <c>&lt;? wersji xml = "1.0'?&gt;</c> ).</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
