@@ -1,5 +1,5 @@
 <Type Name="IBufferWriter&lt;T&gt;" FullName="System.Buffers.IBufferWriter&lt;T&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="cd890b9a02855189dbf57af223fa03cb5209e33a" /><Meta Name="ms.sourcegitcommit" Value="8e213bb5e6801f6e29861ba72664978ad00e34fa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/18/2019" /><Meta Name="ms.locfileid" Value="56387462" /></Metadata><TypeSignature Language="C#" Value="public interface IBufferWriter&lt;T&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="674f0a0d53c9622f7a10d3a2b32626681056eef4" /><Meta Name="ms.sourcegitcommit" Value="9e7aa84070156026697d2898b5311e6c025a1e6a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/28/2019" /><Meta Name="ms.locfileid" Value="56996723" /></Metadata><TypeSignature Language="C#" Value="public interface IBufferWriter&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IBufferWriter`1&lt;T&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Buffers.IBufferWriter`1" />
   <TypeSignature Language="VB.NET" Value="Public Interface IBufferWriter(Of T)" />
@@ -17,7 +17,7 @@
   <Interfaces />
   <Docs>
     <typeparam name="T">Typ elementów w <see cref="T:System.Buffers.IBufferWriter`1" />.</typeparam>
-    <summary>Reprezentuje <typeparamref name="T" /> ujścia.</summary>
+    <summary>Reprezentuje ujścia danych wyjściowych, w których <typeparamref name="T" /> mogą być zapisywane dane.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -43,8 +43,8 @@
       </Parameters>
       <Docs>
         <param name="count">Liczba elementów danych zapisane <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</param>
-        <summary>Powiadamia <see cref="T:System.Buffers.IBufferWriter`1" /> , <paramref name="count" /> elementów danych polegają na <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Powiadamia <see cref="T:System.Buffers.IBufferWriter`1" /> , <paramref name="count" /> elementów danych zostały napisane w danych wyjściowych <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</summary>
+        <remarks>Należy zażądać bufor nowego po wywołaniu zaawansowane, aby kontynuować zapisywanie większej ilości danych; Nie można zapisać wcześniej uzyskana buforu.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMemory">
@@ -67,10 +67,21 @@
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Rozmiar <see cref="T:System.Memory`1" /> żądanie. Jeśli jest to 0, żąda obecnie dostępnej pamięci.</param>
-        <summary>Żądania <see cref="T:System.Memory`1" /> to co najmniej <paramref name="sizeHint" /> rozmiaru, jeśli jest to możliwe.</summary>
-        <returns>A <see cref="T:System.Memory`1" /> o rozmiarze <paramref name="sizeHint" />, jeśli jest dostępna; w przeciwnym razie <see cref="T:System.Memory`1" /> z maksymalną ilość dostępnej pamięci. Jeśli <paramref name="sizeHint" /> 0, zwracana jest obecnie dostępna pamięć.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Memory`1" />. Jeśli jest to 0, zwracany jest pusty bufor.</param>
+        <summary>Zwraca <see cref="T:System.Memory`1" /> do zapisu jest co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />).</summary>
+        <returns>A <see cref="T:System.Memory`1" /> co najmniej rozmiar <paramref name="sizeHint" />. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor.</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+
+To nigdy nie musi zwracać <xref:System.Span%601.Empty?displayProperty=nameWithType>, ale może zgłosić, jeśli rozmiar buforu żądana jest niedostępny.
+
+Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+
+         ]]></format>
+         </remarks>
+         <exception cref="T:System.OutOfMemoryException">Rozmiar buforu żądanego nie jest dostępna.</exception>        
       </Docs>
     </Member>
     <Member MemberName="GetSpan">
@@ -93,10 +104,19 @@
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Rozmiar żądanego zakresu pamięci. Jeśli jest to 0, żąda obecnie dostępnej pamięci.</param>
-        <summary>Żądań na zakres, który jest co najmniej <paramref name="sizeHint" /> rozmiaru, jeśli jest to możliwe.</summary>
-        <returns>Przedział rozmiaru <paramref name="sizeHint" />, jeśli jest dostępna; w przeciwnym razie przedział pamięci z maksymalną ilość dostępnej pamięci. Jeśli <paramref name="sizeHint" /> 0, zwracana jest obecnie dostępna pamięć.</returns>
-        <remarks>To be added.</remarks>
+        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Span`1" />. Jeśli jest to 0, zwracany jest pusty bufor.</param>
+        <summary>Zwraca <see cref="T:System.Span`1" /> do zapisu jest co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />).</summary>
+        <returns>A <see cref="T:System.Span`1" /> co najmniej rozmiar <paramref name="sizeHint" />. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor.</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[
+  
+Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+
+Ta metoda nigdy nie musi zwracać <xref:System.Span%601.Empty?displayProperty=nameWithType>, ale może zgłosić, jeśli rozmiar buforu żądana jest niedostępny.
+
+Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+         ]]></format>
+         </remarks>
       </Docs>
     </Member>
   </Members>
