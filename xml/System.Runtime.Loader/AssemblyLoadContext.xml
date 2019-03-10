@@ -1,5 +1,5 @@
 <Type Name="AssemblyLoadContext" FullName="System.Runtime.Loader.AssemblyLoadContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="8ebdc67076b230b6f3fc37df9fe5903780b82006" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56772327" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6209379b4106b6c91c0c89b2b8a7511fc986490a" /><Meta Name="ms.sourcegitcommit" Value="67e8bb367eab32b26025454e7769040cfb1d71c4" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/09/2019" /><Meta Name="ms.locfileid" Value="57701361" /></Metadata><TypeSignature Language="C#" Value="public abstract class AssemblyLoadContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit AssemblyLoadContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Loader.AssemblyLoadContext" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class AssemblyLoadContext" />
@@ -71,6 +71,8 @@
  ]]></format>
     </remarks>
     <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/assemblyloadcontext.md">AssemblyLoadContext CoreCLR, dokument projektowy</related>
+    <related type="Article" href="/en-us/dotnet/standard/assembly/unloadability-howto">Sposób użycia i debugować unloadability zestawu w programie .NET Core</related>.
+    <related type="Article" href="https://github.com/dotnet/coreclr/blob/master/Documentation/design-docs/unloadability.md">Dokument projektowy unloadability AssemblyLoadContext</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -121,8 +123,8 @@ Ten konstruktor jest chroniony. Może być wywołana tylko z <xref:System.Runtim
         <Parameter Name="isCollectible" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="isCollectible">To be added.</param>
-        <summary>To be added.</summary>
+        <param name="isCollectible"><see langword="true" /> Aby włączyć wyrzucania elementów bezużytecznych; w przeciwnym razie <see langword="false" />.</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> klasie z atrybutem wartość, która wskazuje, czy wyrzucanie elementów bezużytecznych jest włączone.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -237,9 +239,16 @@ Ten konstruktor jest chroniony. Może być wywołana tylko z <xref:System.Runtim
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera wartość wskazującą, czy to <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> jest kolekcjonowane.</summary>
+        <value><see langword="true" /> Jeśli ten <see cref="T:System.Runtime.Loader.AssemblyLoadContext" /> jest kolekcjonowane; w przeciwnym razie <see langword="false" />. Jeśli wartość nie jest określony w konstruktorze, wartość jest <see langword="false" />.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Aby uzyskać więcej informacji, zobacz <see href="/en-us/dotnet/standard/assembly/unloadability-howto">sposób używania i debugowania unloadability zestawu w programie .NET Core</see>.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Load">
@@ -706,8 +715,19 @@ Ten konstruktor jest chroniony. Może być wywołana tylko z <xref:System.Runtim
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Inicjuje zwolnienie to <see cref="T:System.Runtime.Loader.AssemblyLoadContext" />.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
++ Jeśli kolekcjonowane AssemblyLoadContext może być tylko zwolniony.
++ Zwolnienie nastąpi asynchronicznie.
++ Zwalnianie nie wystąpi, gdy istnieją odwołania do AssemblyLoadContext.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">Zwalnianie nie jest dozwolone.</exception>
       </Docs>
     </Member>
     <Member MemberName="Unloading">
