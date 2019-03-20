@@ -1,5 +1,5 @@
 <Type Name="JapaneseCalendar" FullName="System.Globalization.JapaneseCalendar">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="c2e3f9090c35a86cafe9a093654c8e068f9a6613" /><Meta Name="ms.sourcegitcommit" Value="f9e71795ba0f9c2dfaa74bec233343ed0f3ffd99" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/14/2019" /><Meta Name="ms.locfileid" Value="57959459" /></Metadata><TypeSignature Language="C#" Value="public class JapaneseCalendar : System.Globalization.Calendar" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="900207a0787a7b4e8fe5d19ff1f72abe690b936a" /><Meta Name="ms.sourcegitcommit" Value="b99ec7065534584bfab2aebde9f144bedabb075a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/19/2019" /><Meta Name="ms.locfileid" Value="58185288" /></Metadata><TypeSignature Language="C#" Value="public class JapaneseCalendar : System.Globalization.Calendar" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit JapaneseCalendar extends System.Globalization.Calendar" />
   <TypeSignature Language="DocId" Value="T:System.Globalization.JapaneseCalendar" />
   <TypeSignature Language="VB.NET" Value="Public Class JapaneseCalendar&#xA;Inherits Calendar" />
@@ -49,7 +49,7 @@
 > [!NOTE]
 >  Aby uzyskać informacje o używaniu <xref:System.Globalization.JapaneseCalendar> klasy, a druga kalendarza klasy w .NET Framework, zobacz [Praca z kalendarzami](~/docs/standard/datetime/working-with-calendars.md).  
   
- Kalendarz japoński rozpoznaje jedną erę dla każdego emperor reign. Bieżąca era ma era Heisei, poczynając od 1989 roku kalendarz gregoriański. Nazwę ery jest zwykle wyświetlany przed rokiem. Na przykład 2001 roku kalendarza gregoriańskiego jest japoński rok kalendarzowy Heisei 13. Należy zauważyć, że pierwszym roku ery nosi nazwę "Gannen." W związku z tym 1989 roku kalendarza gregoriańskiego był japoński rok kalendarzowy Heisei Gannen.  
+ Kalendarz japoński rozpoznaje jedną erę dla każdego emperor reign. Bieżąca era ma era Heisei, poczynając od 1989 roku kalendarz gregoriański. Nazwę ery jest zwykle wyświetlany przed rokiem. Na przykład 2001 roku kalendarza gregoriańskiego jest japoński rok kalendarzowy Heisei 13. Należy zauważyć, że pierwszym roku ery nosi nazwę "Gannen." W związku z tym 1989 roku kalendarza gregoriańskiego był japoński rok kalendarzowy Heisei Gannen. Domyślnie formatowanie operacji przy użyciu określonej daty i godziny ciągi formatów, takich jak "D", "F" i "Y" danych wyjściowych Gannen zamiast "1" w ciągu wynikowym. 
 
 [!INCLUDE[japanese-era-note](~/includes/calendar-era.md)]
 
@@ -87,9 +87,9 @@
   
  Daty 1 stycznia, 2001 r. N.E. w kalendarzu gregoriańskim odpowiada pierwszego dnia Ichigatsu roku Heisei 13 Kalendarz japoński.  
   
- Jeśli aplikacja używa <xref:System.Globalization.JapaneseCalendar> klasy <xref:System.DateTime.Parse%2A?displayProperty=nameWithType> rozpoznaje skróty ery przed roku. Skrót jest skrótem bez uwzględniania wielkości liter alfabetu łacińskiego pojedynczych znaków lub skrót Kanji pojedynczych znaków.  
+ Jeśli <xref:System.Globalization.JapaneseCalendar> jest bieżącym kalendarzem kulturę japoński <xref:System.DateTime.Parse%2A?displayProperty=nameWithType> rozpoznaje skróty ery przed roku. Skrót jest skrótem bez uwzględniania wielkości liter alfabetu łacińskiego pojedynczych znaków lub skrót Kanji pojedynczych znaków. XRef:system.DateTime.Parse%2a?displayProperty=nameWithType > rozpoznaje również "1" lub Gannen (元年) jako pierwszego roku ery.
   
- Każdy <xref:System.Globalization.CultureInfo> obiekt obsługuje zestaw dostępnych kalendarzy. <xref:System.Globalization.CultureInfo.Calendar%2A> Właściwość zwraca kalendarz domyślny dla kultury i <xref:System.Globalization.CultureInfo.OptionalCalendars%2A> właściwość zwraca tablicę zawierającą wszystkie kalendarze obsługiwane przez kulturę. Aby zmienić kalendarz używany przez <xref:System.Globalization.CultureInfo>, aplikacja powinna być ustawiona <xref:System.Globalization.DateTimeFormatInfo.Calendar%2A> właściwość <xref:System.Globalization.CultureInfo.DateTimeFormat%2A?displayProperty=nameWithType> na nową <xref:System.Globalization.Calendar>.  
+ Każdy <xref:System.Globalization.CultureInfo> obiekt obsługuje zestaw dostępnych kalendarzy. <xref:System.Globalization.CultureInfo.Calendar%2A> Właściwość zwraca kalendarz domyślny dla kultury i <xref:System.Globalization.CultureInfo.OptionalCalendars%2A> właściwość zwraca tablicę zawierającą wszystkie kalendarze obsługiwane przez kulturę. Aby zmienić kalendarz używany przez <xref:System.Globalization.CultureInfo>ustaw <xref:System.Globalization.DateTimeFormatInfo.Calendar%2A?displayProperty=nameWithType> nową właściwość <xref:System.Globalization.Calendar>.
   
  ]]></format>
     </remarks>
@@ -1566,7 +1566,16 @@
   
 ## Remarks  
  <xref:System.Globalization.JapaneseCalendar.ToDateTime%2A> Metoda jest przydatna, ponieważ umożliwia on konwertowanie dowolną datę w bieżącym kalendarzu na datę w kalendarzu gregoriańskim. Data gregoriańska później można, na przykład porównaniu dat w kalendarzach lub utworzyć odpowiada dacie w kalendarzu określonej.  
-  
+
+Ponieważ <xref:System.Globalization.JapaneseCalendar> obsługuje wiele er, oparte na reign z imperatora, należy zawsze wywołać tę metodę i jawne określenie ery, aby uniknąć niezamierzonego daty i celem zwykłego kodu. W przykładzie pokazano sposób tworzenia wystąpienia daty, który jest zawsze w bieżącej ery i taki, który należy do określonej ery.
+
+## Examples
+
+Poniższy przykład tworzy dwie daty. Pierwszy jest zawsze pierwszego dnia drugiego roku w bieżącej ery, podczas gdy drugi identyfikuje określonym dniu w erze Taisho. Dane wyjściowe z przykładu został utworzony za pomocą ery Heisei jako bieżącej ery.
+
+[!code-csharp[Specifying the era](~/samples/snippets/csharp/api/system.globalization/japanesecalendar/todatetime/program.cs)]
+[!code-vb[Specifying the era](~/samples/snippets/visualbasic/api/system.globalization/japanesecalendar/todatetime/Program.vb)]  
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="year" /> znajduje się poza zakresem obsługiwanym przez kalendarz.  
