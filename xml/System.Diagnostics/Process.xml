@@ -1,5 +1,5 @@
 <Type Name="Process" FullName="System.Diagnostics.Process">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="6b1dc611089c85302c9d21de8cb2fc5281ea5b4d" /><Meta Name="ms.sourcegitcommit" Value="f9e71795ba0f9c2dfaa74bec233343ed0f3ffd99" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/14/2019" /><Meta Name="ms.locfileid" Value="57937330" /></Metadata><TypeSignature Language="C#" Value="public class Process : System.ComponentModel.Component" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4b6bf6f299cf0346642cea501b760e0bcc0f3a76" /><Meta Name="ms.sourcegitcommit" Value="c181255cb311fdd498458b3f12418f773c97254a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/21/2019" /><Meta Name="ms.locfileid" Value="58320853" /></Metadata><TypeSignature Language="C#" Value="public class Process : System.ComponentModel.Component" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit Process extends System.ComponentModel.Component" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.Process" />
   <TypeSignature Language="VB.NET" Value="Public Class Process&#xA;Inherits Component" />
@@ -4281,44 +4281,22 @@ Skojarzony proces nie jest na tym komputerze.</exception>
  Z kolei <xref:System.Diagnostics.Process.BeginErrorReadLine%2A> uruchomieniu asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardError%2A> strumienia. Ta metoda umożliwia obsługi zdarzenia wyznaczonego dla strumieni wyjściowych i natychmiast powraca do obiektu wywołującego, można wykonywać inne zadania, gdy strumień wyjściowy jest kierowany do obsługi zdarzeń.  
   
  Synchroniczne odczytu operacji wprowadzają zależność między wywołującego podczas odczytywania z <xref:System.Diagnostics.Process.StandardError%2A> strumienia i podrzędne procesu zapisu do tego strumienia. Te zależności, może spowodować warunki zakleszczenia. Odczytuje obiekt wywołujący z przekierowanego strumienia proces podrzędny, jest zależny od elementu podrzędnego. Obiekt wywołujący będzie czekał na operacje odczytu elementu podrzędnego zapisuje w strumieniu lub zamyka strumienia. Proces podrzędny zapisuje wystarczającej ilości danych do wypełnienia jego przekierowanego strumienia, jest zależne od nadrzędnego. Proces podrzędny czeka na następną operację zapisu, aż do nadrzędnego odczytuje ze strumienia pełnego lub zamyka strumienia. Zakleszczenia powoduje obiektami wywołującym i proces podrzędny czekać na siebie, aby zakończyć operację, gdy nie można kontynuować. Możesz uniknąć zakleszczenia poprzez ocenę zależności między obiektami wywołującym i procesu podrzędnego.  
-  
- Poniższy kod C#, na przykład pokazuje, jak odczytać ze strumienia przekierowanych i poczekaj na zakończenie procesu podrzędnego.  
-  
-```csharp  
-// Start the child process.  
- Process p = new Process();  
- // Redirect the error stream of the child process.  
- p.StartInfo.UseShellExecute = false;  
- p.StartInfo.RedirectStandardError = true;  
- p.StartInfo.FileName = "Write500Lines.exe";  
- p.Start();  
- // Do not wait for the child process to exit before  
- // reading to the end of its redirected error stream.  
- // p.WaitForExit();  
- // Read the error stream first and then wait.  
- string error = p.StandardError.ReadToEnd();  
- p.WaitForExit();  
-```  
-  
- W przykładzie kodu unika zakleszczenie przez wywołanie metody `p.StandardError.ReadToEnd` przed `p.WaitForExit`. Zakleszczenie może spowodować, jeśli element nadrzędny procesu wywołania `p.WaitForExit` przed `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia przekierowanego strumienia. Proces nadrzędny będzie czekać w nieskończoność na zakończenie procesu podrzędnego. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.  
-  
- Istnieje podobny problem podczas odczytywania cały tekst z wyjście standardowe i błąd standardowy strumieni. Poniższy kod C#, na przykład wykonuje operacji odczytu dla obu strumieni.  
-  
-```csharp  
-// Do not perform a synchronous read to the end of both   
-// redirected streams.  
-// string output = p.StandardOutput.ReadToEnd();  
-// string error = p.StandardError.ReadToEnd();  
-// p.WaitForExit();  
-// Use asynchronous read operations on at least one of the streams.  
-p.BeginOutputReadLine();  
-string error = p.StandardError.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- W przykładzie kodu unika zakleszczenia przez wykonywanie asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Zakleszczenie wyniki, jeśli element nadrzędny procesu wywołania `p.StandardOutput.ReadToEnd` następuje `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia jego strumień błędów. Proces nadrzędny będzie czekać w nieskończoność na proces podrzędny zamknąć jego <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.  
-  
- Można użyć asynchronicznych operacji odczytu, aby uniknąć tych zależności i ich potencjalne zakleszczenia. Alternatywnie możesz uniknąć zakleszczenia, tworząc dwoma wątkami i odczytywania danych wyjściowych każdego strumienia w oddzielnym wątku.  
+
+Ostatnie dwa przykłady w tej sekcji użyto <xref:System.Diagnostics.Process.Start%2A> metodę, aby uruchomić plik wykonywalny o nazwie *Write500Lines.exe*. Poniższy przykład zawiera jego kod źródłowy.
+
+[!code-csharp[Executable launched by Process.Start](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/write500lines.cs)]
+[!code-vb[Executable launched by Process.Start](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/write500lines.vb)]
+
+Poniższy przykład przedstawia sposób odczytywania ze strumienia błędu przekierowania i poczekaj na zakończenie procesu podrzędnego. Takie rozwiązanie pomaga uniknąć zakleszczenie przez wywołanie metody `p.StandardError.ReadToEnd` przed `p.WaitForExit`. Zakleszczenie może spowodować, jeśli element nadrzędny procesu wywołania `p.WaitForExit` przed `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia przekierowanego strumienia. Proces nadrzędny będzie czekać w nieskończoność na zakończenie procesu podrzędnego. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.   
+
+[!code-csharp[Reading from the error stream](~/samples/snippets/csharp/api/system.diagnostics/process/standarderror/stderror-sync.cs)]
+[!code-vb[Reading from the error stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standarderror/stderror-sync.vb)]  
+
+Istnieje podobny problem podczas odczytywania cały tekst z wyjście standardowe i błąd standardowy strumieni. Poniższy przykład wykonuje operację odczytu dla obu strumieni. Takie rozwiązanie pomaga uniknąć zakleszczenia przez wykonywanie asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardError%2A> strumienia. Zakleszczenie wyniki, jeśli element nadrzędny procesu wywołania `p.StandardOutput.ReadToEnd` następuje `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia jego strumień błędów. Proces nadrzędny będzie czekać w nieskończoność na proces podrzędny zamknąć jego <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.  
+[!code-csharp[Reading from both streams](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-async.cs)]
+[!code-vb[Reading from both streams](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-async.vb)]  
+
+Można użyć asynchronicznych operacji odczytu, aby uniknąć tych zależności i ich potencjalne zakleszczenia. Alternatywnie możesz uniknąć zakleszczenia, tworząc dwoma wątkami i odczytywania danych wyjściowych każdego strumienia w oddzielnym wątku.  
   
 > [!NOTE]
 >  Nie można mieszać synchronicznego i asynchronicznego operacji odczytu dla przekierowanego strumienia. Raz przekierowanego strumień <xref:System.Diagnostics.Process> jest otwarty w trybie asynchronicznego lub synchronicznego wszystkie dalsze odczytu operacji na strumieniu musi znajdować się w tym samym trybie. Na przykład, nie wykonuj <xref:System.Diagnostics.Process.BeginErrorReadLine%2A> wywołaniem <xref:System.IO.StreamReader.ReadLine%2A> na <xref:System.Diagnostics.Process.StandardError%2A> strumienia, lub na odwrót. Możesz jednak przeczytać dwóch różnych strumieni w różnych trybach. Na przykład, można wywołać <xref:System.Diagnostics.Process.BeginOutputReadLine%2A> , a następnie wywołać <xref:System.IO.StreamReader.ReadLine%2A> dla <xref:System.Diagnostics.Process.StandardError%2A> strumienia.  
@@ -4475,34 +4453,20 @@ p.WaitForExit();
  Z kolei <xref:System.Diagnostics.Process.BeginOutputReadLine%2A> uruchomieniu asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Ta metoda umożliwia obsługi zdarzenia wyznaczonego dla strumieni wyjściowych i natychmiast powraca do obiektu wywołującego, można wykonywać inne zadania, gdy strumień wyjściowy jest kierowany do obsługi zdarzeń.  
   
  Synchroniczne odczytu operacji wprowadzają zależność między wywołującego podczas odczytywania z <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia i podrzędne procesu zapisu do tego strumienia. Te zależności, może spowodować warunki zakleszczenia. Odczytuje obiekt wywołujący z przekierowanego strumienia proces podrzędny, jest zależny od elementu podrzędnego. Obiekt wywołujący będzie czekał na operacje odczytu elementu podrzędnego zapisuje w strumieniu lub zamyka strumienia. Proces podrzędny zapisuje wystarczającej ilości danych do wypełnienia jego przekierowanego strumienia, jest zależne od nadrzędnego. Proces podrzędny czeka na następną operację zapisu, aż do nadrzędnego odczytuje ze strumienia pełnego lub zamyka strumienia. Zakleszczenia powoduje obiektami wywołującym i proces podrzędny czekać na siebie, aby zakończyć operację, gdy nie można kontynuować. Możesz uniknąć zakleszczenia poprzez ocenę zależności między obiektami wywołującym i procesu podrzędnego.  
-  
- Poniższy kod C#, na przykład pokazuje, jak odczytać ze strumienia przekierowanych i poczekaj na zakończenie procesu podrzędnego.  
-  
-```csharp  
-Process p = new Process();  
-p.StartInfo.UseShellExecute = false;  
-p.StartInfo.RedirectStandardOutput = true;  
-p.StartInfo.FileName = "Write500Lines.exe";  
-p.Start();  
-  
-// To avoid deadlocks, always read the output stream first and then wait.  
-string output = p.StandardOutput.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- W przykładzie kodu unika zakleszczenie przez wywołanie metody `p.StandardOutput.ReadToEnd` przed `p.WaitForExit`. Zakleszczenie może spowodować, jeśli element nadrzędny procesu wywołania `p.WaitForExit` przed `p.StandardOutput.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia przekierowanego strumienia. Proces nadrzędny będzie czekać w nieskończoność na zakończenie procesu podrzędnego. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia.  
-  
- Istnieje podobny problem podczas odczytywania cały tekst z wyjście standardowe i błąd standardowy strumieni. Poniższy kod C#, na przykład wykonuje operacji odczytu dla obu strumieni.  
-  
-```csharp  
-// To avoid deadlocks, use asynchronous read operations on at least one of the streams.  
-// Do not perform a synchronous read to the end of both redirected streams.  
-p.BeginOutputReadLine();  
-string error = p.StandardError.ReadToEnd();  
-p.WaitForExit();  
-```  
-  
- W przykładzie kodu unika zakleszczenia przez wykonywanie asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Zakleszczenie wyniki, jeśli element nadrzędny procesu wywołania `p.StandardOutput.ReadToEnd` następuje `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia jego strumień błędów. Proces nadrzędny będzie czekać w nieskończoność na proces podrzędny zamknąć jego <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.  
+
+Ostatnie dwa przykłady w tej sekcji użyto <xref:System.Diagnostics.Process.Start%2A> metodę, aby uruchomić plik wykonywalny o nazwie *Write500Lines.exe*. Poniższy przykład zawiera jego kod źródłowy.
+
+[!code-csharp[Executable launched by Process.Start](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/write500lines.cs)]
+[!code-vb[Executable launched by Process.Start](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/write500lines.vb)]
+
+Poniższy przykład przedstawia sposób odczytywania ze strumienia przekierowanych i poczekaj na zakończenie procesu podrzędnego. Przykład pozwala uniknąć zakleszczenie przez wywołanie metody `p.StandardOutput.ReadToEnd` przed `p.WaitForExit`. Zakleszczenie może spowodować, jeśli element nadrzędny procesu wywołania `p.WaitForExit` przed `p.StandardOutput.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia przekierowanego strumienia. Proces nadrzędny będzie czekać w nieskończoność na zakończenie procesu podrzędnego. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia.  
+
+[!code-csharp[Reading synchronously from a redirected output stream](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-sync.cs)]  
+[!code-vb[Reading synchronously from a redirected output stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-sync.vb)]  
+
+Istnieje podobny problem podczas odczytywania cały tekst z wyjście standardowe i błąd standardowy strumieni. Poniższy przykład wykonuje operację odczytu dla obu strumieni. Takie rozwiązanie pomaga uniknąć zakleszczenia przez wykonywanie asynchronicznych operacji odczytu na <xref:System.Diagnostics.Process.StandardError%2A> strumienia. Zakleszczenie wyniki, jeśli element nadrzędny procesu wywołania `p.StandardOutput.ReadToEnd` następuje `p.StandardError.ReadToEnd` , a proces podrzędny zapisuje wystarczającą ilość tekstu do wypełnienia jego strumień błędów. Proces nadrzędny będzie czekać w nieskończoność na proces podrzędny zamknąć jego <xref:System.Diagnostics.Process.StandardOutput%2A> strumienia. Proces podrzędny będzie czekać w nieskończoność na element nadrzędny można odczytać z pełną <xref:System.Diagnostics.Process.StandardError%2A> strumienia.   
+[!code-csharp[Reading from a redirected output and error stream](~/samples/snippets/csharp/api/system.diagnostics/process/standardoutput/stdoutput-async.cs)]  
+[!code-vb[Reading from a redirected output and error stream](~/samples/snippets/visualbasic/api/system.diagnostics/process/standardoutput/stdoutput-async.vb)]    
   
  Można użyć asynchronicznych operacji odczytu, aby uniknąć tych zależności i ich potencjalne zakleszczenia. Alternatywnie możesz uniknąć zakleszczenia, tworząc dwoma wątkami i odczytywania danych wyjściowych każdego strumienia w oddzielnym wątku.  
   
