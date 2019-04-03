@@ -1,5 +1,5 @@
 <Type Name="OpCodes" FullName="System.Reflection.Emit.OpCodes">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="9bcce798c8cc62c813ad4a1b1fe926a783383e80" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58727892" /></Metadata><TypeSignature Language="C#" Value="public class OpCodes" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d6d2cd6f31cc97089037cf8c47853b3dd6d37d7e" /><Meta Name="ms.sourcegitcommit" Value="3efce15f3841385ee3ba24bd71ff0c0cf9a47815" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/03/2019" /><Meta Name="ms.locfileid" Value="58875583" /></Metadata><TypeSignature Language="C#" Value="public class OpCodes" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit OpCodes extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.Emit.OpCodes" />
   <TypeSignature Language="VB.NET" Value="Public Class OpCodes" />
@@ -769,7 +769,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|34 < `int8` >|bge.UN.s `target`|Gałąź do instrukcji docelowej od określonego przesunięcia, jeśli pierwsza wartość jest większa lub równa wartości (wartości bez znaku), drugi krótka.|  
+|34 < `int8` >|bge.un.s `target`|Gałąź do instrukcji docelowej od określonego przesunięcia, jeśli pierwsza wartość jest większa lub równa wartości (wartości bez znaku), drugi krótka.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -1257,7 +1257,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|36 `<int8>`|BLE.UN.s `target`|Gałąź do instrukcji docelowej od określonego przesunięcia, jeśli pierwsza wartość jest mniejsza lub równa wartości (wartości bez znaku), drugi krótka.|  
+|36 `<int8>`|ble.un.s `target`|Gałąź do instrukcji docelowej od określonego przesunięcia, jeśli pierwsza wartość jest mniejsza lub równa wartości (wartości bez znaku), drugi krótka.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -1623,7 +1623,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|33 < `int8` >|BNE.UN.s `target`|Gałąź z obiektem docelowym instrukcji od określonego przesunięcia, jeśli dwa niepodpisanych liczb całkowitych są nie równa się (wartości bez znaku), krótka.|  
+|33 < `int8` >|bne.un.s `target`|Gałąź z obiektem docelowym instrukcji od określonego przesunięcia, jeśli dwa niepodpisanych liczb całkowitych są nie równa się (wartości bez znaku), krótka.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -1684,7 +1684,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|8C < `T` >|Pole `valTypeToken`|Konwertuj typ wartości (typu określonego w `valTypeToken`) na odwołanie do obiektu wartość true.|  
+|8C < `T` >|box `valTypeToken`|Konwertuj typ wartości (typu określonego w `valTypeToken`) na odwołanie do obiektu wartość true.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -1753,7 +1753,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|38 < `int32` >|br `target`|Gałęzie, które mają instrukcję docelowy od określonego przesunięcia.|  
+|38 < `int32` >|Brazylia `target`|Gałęzie, które mają instrukcję docelowy od określonego przesunięcia.|  
   
  Nie zachowania stosu oceny są wykonywane przez tę operację.  
   
@@ -2168,7 +2168,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|28 < `T` >|Wywołania `methodDesc`|Wywołaj metodę opisanego przez `methodDesc`.|  
+|28 < `T` >| — wywołanie `methodDesc`|Wywołaj metodę opisanego przez `methodDesc`.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -2722,13 +2722,15 @@
 |------------|---------------------|-----------------|  
 |FE 04|ClT|Wypychanie 1, jeśli `value1` jest mniejsza niż `value2`; w przeciwnym razie wypycha 0.|  
   
- Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest: `value1` są wypychane na stosie.  
+ Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest: 
+
+1.  `value1` są wypychane na stosie.  
   
-1.  `value2` są wypychane na stosie.  
+2.  `value2` są wypychane na stosie.  
   
-2.  `value2` i `value1` są zdjęte ze stosu ze stosu; `clt` sprawdza, czy `value1` jest mniejsza niż `value2`.  
+3.  `value2` i `value1` są zdjęte ze stosu ze stosu; `clt` sprawdza, czy `value1` jest mniejsza niż `value2`.  
   
-3.  Jeśli `value1` jest mniejsza niż `value2`, 1 są wypychane na stosie; w przeciwnym razie 0 są wypychane na stosie.  
+4.  Jeśli `value1` jest mniejsza niż `value2`, 1 są wypychane na stosie; w przeciwnym razie 0 są wypychane na stosie.  
   
  `clt` Porównuje instrukcji `value1` i `value2`. Jeśli `value1` jest mniejsza niż `value2`, a następnie `int32` wartość 1 są wypychane na stosie. W przeciwnym razie `int32` wartość 0 są wypychane na stosie.  
   
@@ -5553,7 +5555,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|FE 15 < `T` >|`initobj``typeTok`|Inicjuje typu wartości.|  
+|FE 15 < `T` >|`initobj` `typeTok`|Inicjuje typu wartości.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -8087,7 +8089,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|FE 06 < `T` >|instrukce Ldftn `method`|Umieszcza wskaźnik do metody odwołuje się `method` na stosie.|  
+|FE 06 < `T` >|ldftn `method`|Umieszcza wskaźnik do metody odwołuje się `method` na stosie.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -10026,7 +10028,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|C6 < `T` >|Operacja Mkrefany `class`|Wypycha wpisane odwołanie typu `class` na stosie.|  
+|C6 < `T` >|mkrefany `class`|Wypycha wpisane odwołanie typu `class` na stosie.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -10412,7 +10414,7 @@
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|73 < `T` >|newobj `ctor`|Przydziela niezainicjowanego obiektu lub typu wartości i wywołuje metodę konstruktora `ctor`.|  
+|73 < `T` >|NowyObiekt `ctor`|Przydziela niezainicjowanego obiektu lub typu wartości i wywołuje metodę konstruktora `ctor`.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   
@@ -11641,7 +11643,7 @@ callvirt m
   
 |Format|Format zestawu|Opis|  
 |------------|---------------------|-----------------|  
-|FE 1C < `T` >|Operator sizeof `valType`|Wypychanie rozmiar w bajtach, typ wartości jako `unsigned int32`.|  
+|FE 1C < `T` >|sizeof `valType`|Wypychanie rozmiar w bajtach, typ wartości jako `unsigned int32`.|  
   
  Zachowanie przejściowe stosu, w kolejności sekwencyjnej, jest:  
   

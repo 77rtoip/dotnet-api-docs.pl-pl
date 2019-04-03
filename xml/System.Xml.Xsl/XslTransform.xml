@@ -1,5 +1,5 @@
 <Type Name="XslTransform" FullName="System.Xml.Xsl.XslTransform">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4afbddceffc87860ef4d77470b0756b765447efc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58736740" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="56c2b4ff793499c653610da3b24ae254bfe9e9b3" /><Meta Name="ms.sourcegitcommit" Value="3efce15f3841385ee3ba24bd71ff0c0cf9a47815" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/03/2019" /><Meta Name="ms.locfileid" Value="58875375" /></Metadata><TypeSignature Language="C#" Value="public sealed class XslTransform" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit XslTransform extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Xml.Xsl.XslTransform" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class XslTransform" />
@@ -53,7 +53,7 @@
   
 3.  Użyj <xref:System.Xml.Xsl.XslTransform.Transform%2A> metody do przekształcania danych XML. Ta metoda ma kilka przeciążeń i mogą obsługiwać różne rodzaje danych wejściowych i wyjściowych. Można również określić <xref:System.Xml.Xsl.XsltArgumentList> zawierających dodatkowe argumenty do użycia jako dane wejściowe podczas transformacji.  
   
- **Zagadnienia dotyczące bezpieczeństwa**  
+ **Zagadnienia dotyczące zabezpieczeń**  
   
  Podczas tworzenia aplikacji, która używa <xref:System.Xml.Xsl.XslTransform> klasy, należy pamiętać o następujących elementów i ich skutki:  
   
@@ -85,13 +85,52 @@
   
 -   `msxsl:script` Element musi zawierać `implements-prefix` atrybutu, który zawiera prefiks reprezentujący przestrzeń nazw skojarzonych z bloku skryptu. Ta przestrzeń nazw musi być zdefiniowany w arkuszu stylów. Arkusz stylów może zawierać wiele bloków skryptu, które są pogrupowane według przestrzeni nazw. Nie może mieć Bloki skryptu z wielu języków, w ramach tej samej przestrzeni nazw. Blokach skryptu można wywołać funkcję zdefiniowaną w innego bloku skryptu, pod warunkiem bloki skryptów znajdujących się w tej samej przestrzeni nazw. Zawartość bloku skryptu są analizowane zgodnie z zasadami i składni języka skryptów (dostarczonych przez `language` atrybutu). Na przykład, jeśli był blok skryptu C#, komentarze może być poprzedzony `//` znaków. Komentarze musi być prawidłowa zawartość XML.  
   
- `Note` Zalecane jest, zawiń blokach skryptu w sekcji CDATA.  
+> [!NOTE]
+> Zalecane jest, zawiń blokach skryptu w sekcji CDATA.
   
-```  
-<msxsl:script implements-prefix='xy' language='C#'>  
-  <![CDATA[  
-  // Add code here.  
-  ]]]></format>
+ [!INCLUDE [xsltransform-script](~/includes/xsltransform-script.md)] 
+   
+ Funkcje mogą być zadeklarowane w obrębie `msxsl:script` elementu. W poniższej tabeli przedstawiono przestrzenie nazw, które są obsługiwane przez domyślny.  
+  
+|Obsługiwane przestrzenie nazw|Opis|  
+|--------------------------|-----------------|  
+|`System`|Klas systemowych.|  
+|`System.Collection`|Klasy kolekcji.|  
+|`System.Text`|Klasy obsługi tekstu.|  
+|`System.Xml`|Podstawowe klasy XML.|  
+|`System.Xml.Xsl`|Klasy XSLT.|  
+|`System.Xml.XPath`|Klasy XML Path Language (XPath).|  
+  
+ Podanych argumentów i wartości zwracane definicją funkcji skryptu musi być jednym z typów sieci World Wide Web Consortium (W3C) wymienionych poniżej. W poniższej tabeli przedstawiono mapowanie między typami W3C, XPath lub XSLT i odpowiednich klas .NET Framework.  
+  
+|Typ W3C|Odpowiednik klasy .NET|  
+|--------------|---------------------------|  
+|Ciąg (XPath)|`System.String`|  
+|Atrybut typu wartość logiczna (XPath)|`System.Boolean`|  
+|Liczba (XPath)|`System.Double`|  
+|Wynikowego fragmentu drzewa (XSLT)|`System.Xml.XPath.XPathNavigator`|  
+|Zestaw węzłów (XPath)|`System.Xml.XPath.XPathNodeIterator`|  
+  
+ Jeśli funkcja skryptu korzysta z jednego z następujących typów liczbowych: Int16, UInt16, Int32, UInt32, Int64, UInt64, jednego lub Decimal, te typy są zmuszone do dwukrotnie, która mapuje do typu number W3C XPath.  
+  
+ Wyjątek jest generowany, gdy wywoływana jest funkcja, która nie można skonwertować wyniku argument na jeden z wymaganych typów.  
+  
+> [!NOTE]
+>  `msxsl:script` i `msxsl:node-list` są tylko funkcje z `urn:schemas-microsoft-com:xslt` przestrzeni nazw, które są obsługiwane przez <xref:System.Xml.Xsl.XslTransform> klasy.  
+  
+ <xref:System.Xml.Xsl.XslTransform> może wykorzystywać wspólny kod języka środowiska uruchomieniowego (języka wspólnego CLR), jako mechanizm rozszerzenie. Jest to realizowane przez przekazanie wystąpienia klasy do <xref:System.Xml.Xsl.XslTransform> klasy i wywoływania jego metody publiczne w arkuszu stylów XSLT. Metody, które są zdefiniowane przy użyciu `params` — słowo kluczowe, które dopuszcza nieokreślonej liczby parametrów do przekazania, nie będą działać poprawnie w tym scenariuszu. Zobacz [params](~/docs/csharp/language-reference/keywords/params.md) Aby uzyskać więcej informacji.  
+  
+ Aby uzyskać więcej informacji, zobacz [przekształcenia XSLT przy użyciu klasy XslTransform](~/docs/standard/data/xml/xslt-transformations-with-the-xsltransform-class.md).  
+  
+   
+  
+## Examples  
+ W poniższym przykładzie przekształca określony dokument XML i wyświetla wynik do konsoli.  
+  
+ [!code-csharp[Classic WebData XslTransform Example#1](~/samples/snippets/csharp/VS_Snippets_Data/Classic WebData XslTransform Example/CS/source.cs#1)]
+ [!code-vb[Classic WebData XslTransform Example#1](~/samples/snippets/visualbasic/VS_Snippets_Data/Classic WebData XslTransform Example/VB/source.vb#1)]  
+  
+ ]]></format>
     </remarks>
     <threadsafe><see cref="T:System.Xml.Xsl.XslTransform" /> obiekty są tylko wątkowo operacje transformacji. Inne operacje nie musi być metodą o bezpiecznych wątkach. Należy się upewnić, że żadne inne metody są wywoływane w obiekcie podczas operacje ładowania.</threadsafe>
   </Docs>
@@ -1074,7 +1113,7 @@ Obiekt wywołujący próbuje przedstawić dowód i nie ma <see langword="Control
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -1189,7 +1228,7 @@ Root node is book.
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -1441,7 +1480,7 @@ Root node is book.
   
 Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System.Xml.Xsl.XsltException" /> Jest generowany, jeśli używasz programu Microsoft .NET Framework w wersji 1.1 lub wcześniejszej.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -1560,7 +1599,7 @@ Root node is book.
   
 Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System.Xml.Xsl.XsltException" /> Jest generowany, jeśli używasz programu Microsoft .NET Framework w wersji 1.1 lub wcześniejszej.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -1681,7 +1720,7 @@ Root node is book.
         </remarks>
         <altmember cref="T:System.Xml.XmlSecureResolver" />
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -1798,7 +1837,7 @@ Root node is book.
   
 Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System.Xml.Xsl.XsltException" /> Jest generowany, jeśli używasz programu Microsoft .NET Framework w wersji 1.1 lub wcześniejszej.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -2194,7 +2233,7 @@ Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System
         <altmember cref="T:System.Xml.XmlSecureResolver" />
         <altmember cref="P:System.Xml.XmlResolver.Credentials" />
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -2323,7 +2362,7 @@ Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System
         <altmember cref="T:System.Xml.XmlSecureResolver" />
         <altmember cref="P:System.Xml.XmlResolver.Credentials" />
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
@@ -2457,7 +2496,7 @@ Uwaga: Jest to zmiana w zachowaniu z wcześniejszych wersji. <see cref="T:System
         <altmember cref="T:System.Xml.XmlSecureResolver" />
         <altmember cref="P:System.Xml.XmlResolver.Credentials" />
         <related type="Article" href="https://msdn.microsoft.com/library/d2758ea1-03f6-47bd-88d2-0fb7ccdb2fab">Implementowanie zachowań uznaniowych w klasie XslTransform</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe z klasy XslTransform</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/8e149d32-4b2f-493f-9e4b-d0d93475acde">Dane wyjściowe klasy XslTransform</related>
       </Docs>
     </Member>
     <Member MemberName="Transform">
