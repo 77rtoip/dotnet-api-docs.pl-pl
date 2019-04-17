@@ -1,11 +1,11 @@
 ---
-ms.openlocfilehash: eaebb9dcfdd30ea38ec2a22441e75696d70baa5b
-ms.sourcegitcommit: 6089a30c0522e6f43256523e82e94b2ccedfb55b
+ms.openlocfilehash: a5814e527b78ceaf3380790221e34eb802c4cb50
+ms.sourcegitcommit: 9fde55ecc35aa9df4967f3522d7e9ce113f5147c
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/04/2019
-ms.locfileid: "59013953"
+ms.lasthandoff: 04/16/2019
+ms.locfileid: "59614990"
 ---
 
 > [!IMPORTANT]
->  Ery kalendarza japońskiego są basaed na emperor reign i dlatego są powinna się zmienić. Na przykład 1 maja 2019 oznaczony początku ery Reiwa <xref:System.Globalization.JapaneseCalendar> i <xref:System.Globalization.JapaneseLunisolarCalendar>. Zmiana era ma wpływ na wszystkie aplikacje, które używają tych kalendarzy. Zobacz [obsługi nowej ery usług w kalendarza japońskiego na platformie .NET](https://devblogs.microsoft.com/dotnet/handling-a-new-era-in-the-japanese-calendar-in-net/) uzyskać więcej informacji, jak i do określenia aplikacji, których dotyczy problem. Zobacz [przygotowanie aplikacji w taki sposób, aby ta zmiana era japoński](/windows/uwp/design/globalizing/japanese-era-change) instrukcje dotyczące testowania aplikacji w systemach Windows w celu zapewnienia ich gotowości, aby ta zmiana era. Zobacz [Praca z erami](~/docs/standard/datetime/working-with-calendars.md#working-with-eras) dla funkcji na platformie .NET, które obsługują calendard o wiele ER i najlepsze rozwiązania, gdy praca z kalendarzami, które obsługują wiele er.
+>  Ery kalendarza japońskiego opierają się na reign imperatora i w związku z tym są powinna się zmienić. Na przykład 1 maja 2019 oznaczony początku ery Reiwa <xref:System.Globalization.JapaneseCalendar> i <xref:System.Globalization.JapaneseLunisolarCalendar>. Zmiana era ma wpływ na wszystkie aplikacje, które używają tych kalendarzy. Zobacz [obsługi nowej ery usług w kalendarza japońskiego na platformie .NET](https://devblogs.microsoft.com/dotnet/handling-a-new-era-in-the-japanese-calendar-in-net/) uzyskać więcej informacji, jak i do określenia aplikacji, których dotyczy problem. Zobacz [przygotowanie aplikacji w taki sposób, aby ta zmiana era japoński](/windows/uwp/design/globalizing/japanese-era-change) instrukcje dotyczące testowania aplikacji w systemach Windows w celu zapewnienia ich gotowości, aby ta zmiana era. Zobacz [Praca z erami](~/docs/standard/datetime/working-with-calendars.md#working-with-eras) dla funkcji na platformie .NET, które obsługują kalendarzach z erami wielu i najlepsze rozwiązania, gdy praca z kalendarzami, które obsługują wiele er.
