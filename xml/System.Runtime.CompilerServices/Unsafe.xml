@@ -1,5 +1,5 @@
 <Type Name="Unsafe" FullName="System.Runtime.CompilerServices.Unsafe">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="25f6f9e753a0c47cbfccc2147725a47353028eab" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58703998" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="bfce2be5c17299e8735ea4a200426489fb8d145b" /><Meta Name="ms.sourcegitcommit" Value="76fb6534b56e2b5f6aaaac2150d71a43c9133dbd" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/22/2019" /><Meta Name="ms.locfileid" Value="59893416" /></Metadata><TypeSignature Language="C#" Value="public static class Unsafe" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Unsafe extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.CompilerServices.Unsafe" />
   <TypeSignature Language="VB.NET" Value="Public Class Unsafe" />
@@ -1046,11 +1046,38 @@
         <Parameter Name="box" Type="System.Object" Index="0" FrameworkAlternate="dotnet-plat-ext-3.0" />
       </Parameters>
       <Docs>
-        <typeparam name="T">To be added.</typeparam>
-        <param name="box">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <typeparam name="T">Typ do być rozpakowany.</typeparam>
+        <param name="box">Wartość do rozpakowania.</param>
+        <summary>Zwraca <see langword="mutable ref" /> do wartości spakowanej.</summary>
+        <returns>A <see langword="mutable ref" /> do wartości spakowanej <paramref name="box" />.</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+`Unbox<T>` Metody jest po prostu otoką IL [rozpakowania](xref:System.Reflection.Emit.OpCodes.Unbox) instrukcji. Jest to przydatne jako optymalizacji wydajności. Zawsze, gdy interfejs API, który przyjmuje <xref:System.Object> musi wywoływany wielokrotnie z różnymi wartościami typu wartości, takie same obiektu pola mogą być ponownie używane zamiast nowej jeden tworzone za każdym razem.
+
+`Unbox<T>` Metoda ma ograniczenie użycia ważne nie jest wymuszana przez Kompilatory języka i który odpowiada obiektu wywołującego. IL `unbox` instrukcja zwraca wskaźnik zarządzanego zmienność kontrolowany. Ponieważ .NET i .NET Kompilatory języka nie może reprezentować to ograniczenie `Unbox<T>` metoda zwraca normalnego mutable `ref T`. Jednak deweloperów **nie mogą** mutować zwracane odwołanie, chyba że są one pewność, że `T` jest typem struktury modyfikowalna. Na przykład ponieważ prymitywów liczbowe, takie jak <xref:System.Int32> nie są typami mutable struktury, poniższy kod nie jest suppported:
+
+```csharp
+Unsafe.Box<int>(obj) = 30;
+```
+
+Z drugiej strony, takie jak typ <xref:System.Drawing.Point?<displayProperty=nameWithType> jest modyfikowalną struktury za pomocą metod ustawiających właściwości publicznej, następujący kod jest obsługiwany:
+
+```csharp
+Unsafe.Unbox<System.Drawing.Point>(obj).X = 50;
+```
+
+Aby uzyskać więcej informacji, zobacz sekcje III.1.8.1.2.2 ("wynik muttability kontrolowanych zarządzanych wskaźników") i III.4.32 ("rozpakowania--przekonwertować opakowanym typem wartościowym w postaci pierwotnej") w [ECMA-335: Common Language Infrastructure (CLI) dzieli VI](https://www.ecma-international.org/publications/files/ECMA-ST/ECMA-335.pdf).
+
+         ]]></format>
+         </remarks>       
+        <exception cref="T:System.NullReferenceException"><paramref name="box" /> jest <see langword="null" />, i <typeparamref name="T" /> jest typem wartości niedopuszczającym wartości.</exception>
+         <exception cref="T:System.InvalidCastException"><paramref name="box" /> nie jest typem wartości spakowanej.
+         
+—lub—
+
+<paramref name="box" /> nie jest spakowany <typeparamref name="T" />.</exception>
+        <exception cref="T:System.TypeLoadException"><typeparamref name="T" /> Nie można odnaleźć.</exception>
       </Docs>
     </Member>
     <Member MemberName="Write&lt;T&gt;">
