@@ -1,1 +1,9 @@
-<span data-ttu-id="55b1b-101">Visual Studio 2010</span><span class="sxs-lookup"><span data-stu-id="55b1b-101">Visual Studio 2010</span></span>
+---
+ms.openlocfilehash: 30c3d8194815052f5f9f54a1fac519295b84ad3f
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63876742"
+---
+<span data-ttu-id="30719-101">Visual Studio 2010</span><span class="sxs-lookup"><span data-stu-id="30719-101">Visual Studio 2010</span></span>

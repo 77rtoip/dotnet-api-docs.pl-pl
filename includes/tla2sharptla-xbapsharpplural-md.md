@@ -1,1 +1,9 @@
-<span data-ttu-id="7b4e4-101">XBAP</span><span class="sxs-lookup"><span data-stu-id="7b4e4-101">XBAPs</span></span>
+---
+ms.openlocfilehash: 0fbed333efef21708c5ed57bda9e61cf1efda42f
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63871418"
+---
+<span data-ttu-id="3f4b4-101">XBAP</span><span class="sxs-lookup"><span data-stu-id="3f4b4-101">XBAPs</span></span>

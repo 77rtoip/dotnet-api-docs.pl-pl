@@ -1,1 +1,9 @@
-<span data-ttu-id="9e557-101">3-W</span><span class="sxs-lookup"><span data-stu-id="9e557-101">3-D</span></span>
+---
+ms.openlocfilehash: b1db086fac78b00f4d17a8b49d559233957f9c79
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63870341"
+---
+<span data-ttu-id="97d91-101">3-W</span><span class="sxs-lookup"><span data-stu-id="97d91-101">3-D</span></span>
