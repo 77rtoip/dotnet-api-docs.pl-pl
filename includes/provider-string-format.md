@@ -1,3 +1,11 @@
+---
+ms.openlocfilehash: b8db885234c59f24a88e4117c9c9181004b20bcb
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63870974"
+---
  
 Jednak podczas wywoływania **String.Format** metody, nie jest konieczne skoncentrować się na określonego przeciążenia, które ma zostać wywołana. Zamiast tego należy wywołać metodę z obiektu, który zawiera wrażliwe na ustawienia kulturowe lub niestandardowe formatowanie i [ciąg formatu złożonego](~/docs/standard/base-types/composite-formatting.md) zawierającego jeden lub więcej elementów formatu. Przypisz każdy element formatu indeksu liczbowego; Pierwszy indeks zaczyna się od 0. Oprócz ciąg początkowy wywołania metody powinna mieć dowolną liczbę dodatkowych argumentów, ponieważ zawiera ona wartości indeksu. Na przykład ciąg, którego elementy formatu miały indeksy od 0 do 1 powinny mieć argumentów 2; jeden z indeksami 0 do 5 powinna mieć 6 argumentów. Twój kompilator języka zostanie następnie rozpoznać wywołania metody do określonego przeciążenia **String.Format** metody.   
 

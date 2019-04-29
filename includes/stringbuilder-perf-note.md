@@ -1,3 +1,11 @@
+---
+ms.openlocfilehash: 903ac4ecb57e3a8e02a4f65ecfa6f9e77a552f45
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63872203"
+---
 Za pomocą opartego na znakach indeksowanie z <xref:System.Text.StringBuilder.Chars%2A> właściwość może być bardzo wolne działanie w następujących warunkach:
 
 - <xref:System.Text.StringBuilder> Wystąpienia jest duży (na przykład składa się z dziesiątków tysięcy znaków).
