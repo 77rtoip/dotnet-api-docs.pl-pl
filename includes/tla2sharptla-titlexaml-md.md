@@ -1,1 +1,9 @@
-<span data-ttu-id="9d634-101">XAML</span><span class="sxs-lookup"><span data-stu-id="9d634-101">XAML</span></span>
+---
+ms.openlocfilehash: ff5adbcca612d030180437f495c7c9664a999d24
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63869753"
+---
+<span data-ttu-id="b18bd-101">XAML</span><span class="sxs-lookup"><span data-stu-id="b18bd-101">XAML</span></span>

@@ -1,1 +1,9 @@
-<span data-ttu-id="788a0-101">XML</span><span class="sxs-lookup"><span data-stu-id="788a0-101">XML</span></span>
+---
+ms.openlocfilehash: c0aa9ef764d832b80428d756a731a94251b0e3a1
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63869611"
+---
+<span data-ttu-id="ffb5e-101">XML</span><span class="sxs-lookup"><span data-stu-id="ffb5e-101">XML</span></span>

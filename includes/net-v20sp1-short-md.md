@@ -1,1 +1,9 @@
-<span data-ttu-id="b3b77-101">.NET Framework 2.0 z dodatkiem SP1</span><span class="sxs-lookup"><span data-stu-id="b3b77-101">.NET Framework 2.0 SP1</span></span>
+---
+ms.openlocfilehash: f2be8b69ae38f83623c0d93c908098cf654d2f3c
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63872511"
+---
+<span data-ttu-id="ad46d-101">.NET Framework 2.0 z dodatkiem SP1</span><span class="sxs-lookup"><span data-stu-id="ad46d-101">.NET Framework 2.0 SP1</span></span>

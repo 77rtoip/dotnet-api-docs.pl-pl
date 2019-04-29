@@ -1,1 +1,9 @@
-<span data-ttu-id="99475-101">.NET Framework 4 Client Profile</span><span class="sxs-lookup"><span data-stu-id="99475-101">.NET Framework 4 Client Profile</span></span>
+---
+ms.openlocfilehash: eefe0ba7cb53755354e9a58de8b8c47aa6d9b6c6
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63872533"
+---
+<span data-ttu-id="a5244-101">.NET Framework 4 Client Profile</span><span class="sxs-lookup"><span data-stu-id="a5244-101">.NET Framework 4 Client Profile</span></span>

@@ -1,1 +1,9 @@
-<span data-ttu-id="2b070-101">Uniform Resource Identifier (URI)</span><span class="sxs-lookup"><span data-stu-id="2b070-101">uniform resource identifier (URI)</span></span>
+---
+ms.openlocfilehash: 50699de2c28448770968cd97e3c5b32bfba52bdd
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "63878195"
+---
+<span data-ttu-id="973fc-101">Uniform Resource Identifier (URI)</span><span class="sxs-lookup"><span data-stu-id="973fc-101">uniform resource identifier (URI)</span></span>
