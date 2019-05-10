@@ -1,5 +1,5 @@
 <Type Name="ZipFileExtensions" FullName="System.IO.Compression.ZipFileExtensions">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="772da77372db26d13b4e05553eaf2a15454095bc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58731595" /></Metadata><TypeSignature Language="C#" Value="public static class ZipFileExtensions" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cc9c1088f45649b96e4af085879fde1dc4d8204f" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="64996862" /></Metadata><TypeSignature Language="C#" Value="public static class ZipFileExtensions" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit ZipFileExtensions extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.IO.Compression.ZipFileExtensions" />
   <TypeSignature Language="VB.NET" Value="Public Module ZipFileExtensions" />
@@ -44,14 +44,16 @@
   
  Aby użyć metod rozszerzających, użytkownik musi odwoływać się `System.IO.Compression.FileSystem` zestawu w projekcie. `System.IO.Compression.FileSystem` Zestaw nie jest dostępny w [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] aplikacji. W związku z tym <xref:System.IO.Compression.ZipFileExtensions> i <xref:System.IO.Compression.ZipFile> klasy (które znajdują się w `System.IO.Compression.FileSystem` zestawu) nie są dostępne w [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] aplikacji. W [!INCLUDE[win8_appname_long](~/includes/win8-appname-long-md.md)] aplikacji, pracy ze skompresowanymi plikami za pomocą metod w <xref:System.IO.Compression.ZipArchive>, <xref:System.IO.Compression.ZipArchiveEntry>, <xref:System.IO.Compression.DeflateStream>, i <xref:System.IO.Compression.GZipStream>.  
   
- <xref:System.IO.Compression.ZipFileExtensions> Klasa zawiera trzy metody, które rozszerzają <xref:System.IO.Compression.ZipArchive>:  
+ <xref:System.IO.Compression.ZipFileExtensions> Klasa zawiera cztery metody, które rozszerzają <xref:System.IO.Compression.ZipArchive>:  
   
 -   <xref:System.IO.Compression.ZipFileExtensions.CreateEntryFromFile%28System.IO.Compression.ZipArchive%2CSystem.String%2CSystem.String%29>  
   
 -   <xref:System.IO.Compression.ZipFileExtensions.CreateEntryFromFile%28System.IO.Compression.ZipArchive%2CSystem.String%2CSystem.String%2CSystem.IO.Compression.CompressionLevel%29>  
   
 -   <xref:System.IO.Compression.ZipFileExtensions.ExtractToDirectory%28System.IO.Compression.ZipArchive%2CSystem.String%29>  
-  
+
+-   <xref:System.IO.Compression.ZipFileExtensions.ExtractToDirectory%28System.IO.Compression.ZipArchive%2CSystem.String%2CSystem.Boolean%29>  
+
  <xref:System.IO.Compression.ZipFileExtensions> Klasy zawiera dwie metody, które rozszerzają <xref:System.IO.Compression.ZipArchiveEntry>:  
   
 -   <xref:System.IO.Compression.ZipFileExtensions.ExtractToFile%28System.IO.Compression.ZipArchiveEntry%2CSystem.String%29>  
@@ -339,11 +341,43 @@ Wpis archiwum został poddany za pomocą metody kompresji, który nie jest obsł
         <Parameter Name="overwriteFiles" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="source">To be added.</param>
-        <param name="destinationDirectoryName">To be added.</param>
-        <param name="overwriteFiles">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source"><see cref="T:System.IO.Compression.ZipArchive" /> Do wyodrębnienia.</param>
+        <param name="destinationDirectoryName">Ścieżka do katalogu docelowego w systemie plików. Ścieżka może być względna lub bezwzględna. Ścieżka względna jest interpretowane jako względne w stosunku do bieżącego katalogu roboczego.</param>
+        <param name="overwriteFiles"><see langword="true" /> Aby wskazać, że istniejące pliki zostaną zastąpione; <see langword="false" /> inaczej.</param>
+        <summary>Wyodrębnia wszystkie pliki w archiwum do katalogu w systemie plików.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+## Remarks
+ Określony katalog może już istnieć. Ta metoda spowoduje utworzenie określonego katalogu i wszystkich podkatalogach, jeśli to konieczne.
+
+ Jeśli wystąpi błąd podczas wyodrębniania archiwum, archiwum będą nadal częściowo wyodrębnione.
+ 
+ Każdego wpisu zostaną wyodrębnione w taki sposób, że wyodrębnionych plików ma ten sam ścieżkę względną do `destinationDirectoryName` jako wpis ma się w katalogu głównym archiwum.
+ 
+ Jeśli plik w celu zarchiwizowania ma nieprawidłową Ostatnia godzina modyfikacji, pierwszą datę i godzinę reprezentowanych w format sygnatury czasowej pliku Zip (o północy w dniu 1 stycznia 1980 roku) będzie służyć.
+ 
+          ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="destinationArchiveFileName" /> jest ciągiem o zerowej długości, zawierać wyłącznie białych znaków lub zawiera jeden lub więcej nieprawidłowych znaków, zgodnie z definicją <see cref="F:System.IO.Path.InvalidPathChars" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="destinationArchiveFileName" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.IO.PathTooLongException">Podana ścieżka, nazwa pliku lub obie przekraczają maksymalną długość zdefiniowaną przez system.</exception>
+        <exception cref="T:System.IO.DirectoryNotFoundException">Określona ścieżka jest nieprawidłowa (na przykład znajduje się na niemapowanym dysku).</exception>
+        <exception cref="T:System.IO.IOException">Nazwa <see cref="T:System.IO.Compression.ZipArchiveEntry" /> jest o zerowej długości, zawiera tylko białe znaki lub zawiera jeden lub więcej nieprawidłowych znaków, zgodnie z definicją <see cref="F:System.IO.Path.InvalidPathChars" />.
+
+—lub—
+
+Trwa wyodrębnianie <see cref="T:System.IO.Compression.ZipArchiveEntry" /> dało w pliku docelowym, który znajduje się poza <paramref name="destinationArchiveFileName" /> (na przykład, jeśli nazwa wpis zawiera metod dostępu do katalogu nadrzędnego).
+
+—lub—
+
+Element <see cref="T:System.IO.Compression.ZipArchiveEntry" /> ma taką samą nazwę jak wpis już wyodrębnione z tym samym archiwum.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">Obiekt wywołujący nie posiada wymaganych uprawnień.</exception>
+        <exception cref="T:System.NotSupportedException"><paramref name="destinationArchiveFileName" /> jest w nieprawidłowym formacie.</exception>
+        <exception cref="T:System.IO.InvalidDataException">Element <see cref="T:System.IO.Compression.ZipArchiveEntry" /> nie został znaleziony lub jest uszkodzona.
+
+—lub—
+
+A <see cref="T:System.IO.Compression.ZipArchiveEntry" /> zostały skompresowane przy użyciu metody kompresji, który nie jest obsługiwany.</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="ExtractToFile">
