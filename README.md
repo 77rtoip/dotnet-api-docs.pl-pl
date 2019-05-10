@@ -1,9 +1,16 @@
-# .NET Docs
+---
+ms.openlocfilehash: d05c00f17da101e91e75be0555c488d0208bef33
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "65515478"
+---
+# <a name="net-api-reference-docs"></a><span data-ttu-id="46fff-101">Dokumenty referencyjne interfejsu API platformy .NET</span><span class="sxs-lookup"><span data-stu-id="46fff-101">.NET API Reference Docs</span></span>
 
-This repo contains work-in-progress documentation for .NET. To contribute, see the [Contributing Guide](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md) and the [issues list](https://github.com/dotnet/docs/issues). 
+<span data-ttu-id="46fff-102">To repozytorium zawiera dokumentację dla dokumentacja interfejsu API platformy .NET.</span><span class="sxs-lookup"><span data-stu-id="46fff-102">This repo contains documentation for the .NET API Reference.</span></span>
 
-We welcome contributions to help us improve and complete the .NET docs. We anticipate that [Xamarin](http://developer.xamarin.com/api/root/classlib/), [Mono](http://docs.go-mono.com/?link=root%3a%2fclasslib) and [Unity](http://docs.unity3d.com/Manual/index.html) will also use this documentation.
+<span data-ttu-id="46fff-103">Jest główne repozytorium dokumentacji platformy .NET [repozytorium dokumentacji platformy .NET](https://github.com/dotnet/docs).</span><span class="sxs-lookup"><span data-stu-id="46fff-103">The main repository for .NET documentation is the [.NET Docs repository](https://github.com/dotnet/docs).</span></span> <span data-ttu-id="46fff-104">Zobacz [współtworzenia przewodnik](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md) dokumentację referencyjną — informacje na temat aktualizowania interfejsu API platformy .NET.</span><span class="sxs-lookup"><span data-stu-id="46fff-104">See the [Contributing Guide](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md) for information on updating .NET API reference documentation.</span></span>
+<span data-ttu-id="46fff-105">Śledzimy wszystkie prace dla tego repozytorium za pomocą [problemy usługi GitHub](https://github.com/dotnet/dotnet-api-docs/issues).</span><span class="sxs-lookup"><span data-stu-id="46fff-105">We are tracking all work for this repository using [GitHub issues](https://github.com/dotnet/dotnet-api-docs/issues).</span></span> <span data-ttu-id="46fff-106">W dokumentacji dotyczącej interfejsów API składa się z tekstu, w tym repozytorium i przykłady w [dotnet/samples](https://github.com/dotnet/samples) repozytorium.</span><span class="sxs-lookup"><span data-stu-id="46fff-106">The documentation for APIs is built from the text in this repo, and the samples in the [dotnet/samples](https://github.com/dotnet/samples) repository.</span></span> <span data-ttu-id="46fff-107">Możesz wybrać [repozytorium — przykłady](https://github.com/dotnet/docs/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Afile_folder%3A+Repo+-+samples%22) etykiety, aby wyświetlić problemy, które dotyczą przykładowy kod.</span><span class="sxs-lookup"><span data-stu-id="46fff-107">You can select the [Repo - samples](https://github.com/dotnet/docs/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Afile_folder%3A+Repo+-+samples%22) label to see issues that concern sample code.</span></span>
 
-This project has adopted the code of conduct defined by the Contributor Covenant
-to clarify expected behavior in our community.
-For more information, see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
+<span data-ttu-id="46fff-108">Ten projekt przyjęła Kodeks postępowania definicją Przymierzem współautorem, aby wyjaśnić, oczekiwane zachowanie w naszej społeczności.</span><span class="sxs-lookup"><span data-stu-id="46fff-108">This project has adopted the code of conduct defined by the Contributor Covenant to clarify expected behavior in our community.</span></span> <span data-ttu-id="46fff-109">Aby uzyskać więcej informacji, zobacz [.NET Foundation Kodeks postępowania](https://dotnetfoundation.org/code-of-conduct).</span><span class="sxs-lookup"><span data-stu-id="46fff-109">For more information, see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).</span></span>
