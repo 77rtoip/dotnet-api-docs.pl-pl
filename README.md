@@ -1,9 +1,16 @@
-# .NET Docs
+---
+ms.openlocfilehash: d05c00f17da101e91e75be0555c488d0208bef33
+ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.translationtype: MT
+ms.contentlocale: pl-PL
+ms.lasthandoff: 04/24/2019
+ms.locfileid: "65515478"
+---
+# <a name="net-api-reference-docs"></a>Dokumenty referencyjne interfejsu API platformy .NET
 
-This repo contains work-in-progress documentation for .NET. To contribute, see the [Contributing Guide](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md) and the [issues list](https://github.com/dotnet/docs/issues). 
+To repozytorium zawiera dokumentację dla dokumentacja interfejsu API platformy .NET.
 
-We welcome contributions to help us improve and complete the .NET docs. We anticipate that [Xamarin](http://developer.xamarin.com/api/root/classlib/), [Mono](http://docs.go-mono.com/?link=root%3a%2fclasslib) and [Unity](http://docs.unity3d.com/Manual/index.html) will also use this documentation.
+Jest główne repozytorium dokumentacji platformy .NET [repozytorium dokumentacji platformy .NET](https://github.com/dotnet/docs). Zobacz [współtworzenia przewodnik](https://github.com/dotnet/docs/blob/master/CONTRIBUTING.md) dokumentację referencyjną — informacje na temat aktualizowania interfejsu API platformy .NET.
+Śledzimy wszystkie prace dla tego repozytorium za pomocą [problemy usługi GitHub](https://github.com/dotnet/dotnet-api-docs/issues). W dokumentacji dotyczącej interfejsów API składa się z tekstu, w tym repozytorium i przykłady w [dotnet/samples](https://github.com/dotnet/samples) repozytorium. Możesz wybrać [repozytorium — przykłady](https://github.com/dotnet/docs/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Afile_folder%3A+Repo+-+samples%22) etykiety, aby wyświetlić problemy, które dotyczą przykładowy kod.
 
-This project has adopted the code of conduct defined by the Contributor Covenant
-to clarify expected behavior in our community.
-For more information, see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
+Ten projekt przyjęła Kodeks postępowania definicją Przymierzem współautorem, aby wyjaśnić, oczekiwane zachowanie w naszej społeczności. Aby uzyskać więcej informacji, zobacz [.NET Foundation Kodeks postępowania](https://dotnetfoundation.org/code-of-conduct).
