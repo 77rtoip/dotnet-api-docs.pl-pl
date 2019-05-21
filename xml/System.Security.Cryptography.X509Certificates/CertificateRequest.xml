@@ -1,5 +1,5 @@
 <Type Name="CertificateRequest" FullName="System.Security.Cryptography.X509Certificates.CertificateRequest">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="cb27760d2c0ba488f59f92eba9b332f108de0628" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58686239" /></Metadata><TypeSignature Language="C#" Value="public sealed class CertificateRequest" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="9fcc4eab576a05d15ee6952c8d214c8e92617d7f" /><Meta Name="ms.sourcegitcommit" Value="3575d47a0ba065e8986f03d99279f478811907b8" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/20/2019" /><Meta Name="ms.locfileid" Value="65922637" /></Metadata><TypeSignature Language="C#" Value="public sealed class CertificateRequest" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit CertificateRequest extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.X509Certificates.CertificateRequest" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class CertificateRequest" />
@@ -484,37 +484,34 @@ Typ klucza podpisywania, reprezentowane przez <paramref name="issuerCertificate"
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
-              When submitting a certificate signing request via a web browser, or other graphical or textual
-              interface, the input is frequently expected to be in the Privacy Enhanced Mail (PEM) format,
-              instead of the DER binary format. To convert the return value to PEM format, make a string
-              consisting of `-----BEGIN CERTIFICATE REQUEST-----`, a newline, the Base-64-encoded
-              representation of the request (by convention, linewrapped at 64 characters), a newline,
-              and `-----END CERTIFICATE REQUEST-----`.
+
+Podczas przesyłania żądania za pośrednictwem przeglądarki sieci web lub innych treści graficznych lub tekstowych interfejsu podpisania certyfikatu, dane wejściowe często powinien być w formacie zachowania rozszerzone poczty (PEM), zamiast format binarny DER. Aby przekonwertować wartość zwracaną na PEM format, wprowadź ciąg składający się z `-----BEGIN CERTIFICATE REQUEST-----`, nowego wiersza, algorytmem Base-64 reprezentację żądania (zgodnie z Konwencją linewrapped 64 znaków), a nowy wiersz, i `-----END CERTIFICATE REQUEST-----`.
             
-              ```csharp
-              public static string PemEncodeSigningRequest(CertificateRequest request, PkcsSignatureGenerator generator)
-              {
-                  byte[] pkcs10 = request.CreateSigningRequest(generator);
-                  StringBuilder builder = new StringBuilder();
+```csharp
+public static string PemEncodeSigningRequest(CertificateRequest request, PkcsSignatureGenerator generator)
+{
+    byte[] pkcs10 = request.CreateSigningRequest(generator);
+    StringBuilder builder = new StringBuilder();
+
+    builder.AppendLine("-----BEGIN CERTIFICATE REQUEST-----");
                 
-                  builder.AppendLine("-----BEGIN CERTIFICATE REQUEST-----");
+    string base64 = Convert.ToBase64String(pkcs10);
                 
-                  string base64 = Convert.ToBase64String(pkcs10);
+    int offset = 0;
+    const int LineLength = 64;
                 
-                  int offset = 0;
-                  const int LineLength = 64;
+    while (offset < base64.Length)
+    {
+        int lineEnd = Math.Min(offset + LineLength, base64.Length);
+        builder.AppendLine(base64.Substring(offset, lineEnd - offset));
+        offset = lineEnd;
+     }
                 
-                  while (offset < base64.Length)
-                  {
-                      int lineEnd = Math.Min(offset + LineLength, base64.Length);
-                      builder.AppendLine(base64.Substring(offset, lineEnd - offset));
-                      offset = lineEnd;
-                  }
-                
-                  builder.AppendLine("-----END CERTIFICATE REQUEST-----");
-                  return builder.ToString();
-                }
-                ```
+     builder.AppendLine("-----END CERTIFICATE REQUEST-----");
+     return builder.ToString();
+}
+```
+
  ]]></format>
         </remarks>
         <exception cref="T:System.InvalidOperationException">Bieżący obiekt został utworzony przy użyciu konstruktora, który nie obsługuje klucza podpisywania.</exception>
