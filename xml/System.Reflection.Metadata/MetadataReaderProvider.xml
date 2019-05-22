@@ -1,5 +1,5 @@
 <Type Name="MetadataReaderProvider" FullName="System.Reflection.Metadata.MetadataReaderProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="993e92497e2081aca23625b05089edfa24014724" /><Meta Name="ms.sourcegitcommit" Value="434f60616a9793fa8436744549fc856e94f7a648" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/24/2018" /><Meta Name="ms.locfileid" Value="36640499" /></Metadata><TypeSignature Language="C#" Value="public sealed class MetadataReaderProvider : IDisposable" />
+  <TypeSignature Language="C#" Value="public sealed class MetadataReaderProvider : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit MetadataReaderProvider extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Reflection.Metadata.MetadataReaderProvider" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class MetadataReaderProvider&#xA;Implements IDisposable" />
@@ -11,6 +11,7 @@
     <AssemblyVersion>1.4.1.0</AssemblyVersion>
     <AssemblyVersion>1.4.2.0</AssemblyVersion>
     <AssemblyVersion>1.4.3.0</AssemblyVersion>
+    <AssemblyVersion>1.4.4.0</AssemblyVersion>
   </AssemblyInfo>
   <Base>
     <BaseTypeName>System.Object</BaseTypeName>
@@ -42,13 +43,14 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Usuwa wszystkie pamięci przydzielonej przez czytnik.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -66,6 +68,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -74,10 +77,11 @@
         <Parameter Name="image" Type="System.Collections.Immutable.ImmutableArray&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="image">Obraz metadanych.</param>
+        <summary>Tworzy dostawcę za pośrednictwem tablicy bajtów.</summary>
+        <returns>Nowego dostawcę.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="image" /> jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="FromMetadataImage">
@@ -93,6 +97,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -102,11 +107,13 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">Wskaźnik do początku metadanych obiektu blob.</param>
+        <param name="size">Rozmiar metadanych obiektu blob.</param>
+        <summary>Tworzy dostawcę metadanych za pośrednictwem obraz przechowywany w pamięci.</summary>
+        <returns>Nowy dostawca metadanych.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="start" /> jest <see cref="F:System.IntPtr.Zero" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="size" /> ma wartość ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName="FromMetadataStream">
@@ -121,6 +128,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -131,12 +139,27 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="stream">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream">A <see cref="T:System.IO.Stream" /> wystąpienia.</param>
+        <param name="options">Opcje określania, jak części obrazu są odczytywane ze strumienia.</param>
+        <param name="size">Rozmiar obiektu blob metadane w strumieniu. Jeśli nie zostanie określony, obiektów blob metadane zakłada, że na końcu strumienia.</param>
+        <summary>Tworzy dostawcę dla strumienia na początku określonego rozmiaru w jego bieżącym położeniu.</summary>
+        <returns>Nowego dostawcę.</returns>
+        <remarks>
+          <format type="text/markdown">
+        
+
+Chyba że <xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen> jest określona, własność strumienia jest przenoszona na <xref:T:System.Reflection.Metadata.MetadataReaderProvider> po rozpatrzeniu pomyślne argumentu. Zostaną usunięte przez <xref:T:System.Reflection.Metadata.MetadataReaderProvider> i element wywołujący nie musi manipulowania go.
+            
+Chyba że <xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata> jest określona, nie są odczytywane dane ze strumienia podczas konstruowania <xref:T:System.Reflection.Metadata.MetadataReaderProvider>. Ponadto strumień musi nie mogą być ustawiane przez wywołującego podczas <xref:T:System.Reflection.Metadata.MetadataReaderProvider> jest aktywny i nazwa aktualnie otwartego.
+            
+Jeśli <xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>, <xref:T:System.Reflection.Metadata.MetadataReaderProvider> będzie po ich przeczytaniu wszystkie dane wymagane podczas konstruowania. W takim przypadku <xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen> również jest określona, obiekt wywołujący zachowuje własność pełną strumienia i pewność, że jej będzie nie być manipulowane przez <xref:T:System.Reflection.Metadata.MetadataReaderProvider> po konstrukcji.
+
+               </format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="stream" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="stream" /> nie obsługuje Odczyt i wyszukiwanie operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Rozmiar jest ujemny lub wykracza poza koniec strumienia.</exception>
+        <exception cref="T:System.IO.IOException">Błąd podczas odczytywania ze strumienia (tylko wtedy, gdy <see cref="F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata" /> jest określony).</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbImage">
@@ -153,6 +176,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -161,10 +185,11 @@
         <Parameter Name="image" Type="System.Collections.Immutable.ImmutableArray&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <param name="image">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="image">Przenośny obraz z pliku PDB.</param>
+        <summary>Tworzy dostawcę metadanych przenośnych PDB ciągu na tablicę bajtów.</summary>
+        <returns>Nowe przenośnego pliku PDB dostawcy metadanych.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="image" /> jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbImage">
@@ -180,6 +205,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -189,11 +215,13 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="start">Wskaźnik do początku przenośnego pliku PDB obiektu blob.</param>
+        <param name="size">Rozmiar obiektu blob przenośnego pliku PDB.</param>
+        <summary>Tworzy przenośnego pliku PDB dostawcy metadanych obiektu blob przechowywane w pamięci.</summary>
+        <returns>Nowe przenośnego pliku PDB dostawcy metadanych.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="start" /> jest <see cref="F:System.IntPtr.Zero" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="size" /> ma wartość ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName="FromPortablePdbStream">
@@ -208,6 +236,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReaderProvider</ReturnType>
@@ -218,12 +247,26 @@
         <Parameter Name="size" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="stream">To be added.</param>
-        <param name="options">To be added.</param>
-        <param name="size">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="stream">Strumień.</param>
+        <param name="options">Opcje określania, jak części obrazu są odczytywane ze strumienia.</param>
+        <param name="size">Rozmiar obiektu blob metadane w strumieniu. Jeśli nie zostanie określony, obiektów blob metadane zakłada, że na końcu strumienia.</param>
+        <summary>Tworzy dostawcę dla strumienia na początku określonego rozmiaru w jego bieżącym położeniu.</summary>
+        <returns>A <see cref="T:System.Reflection.Metadata.MetadataReaderProvider" /> wystąpienia.</returns>
+        <remarks>
+          <format type="text/markdown">
+        
+            
+Chyba że <xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen> jest określona, własność strumienia jest przenoszona na <xref:T:System.Reflection.Metadata.MetadataReaderProvider> po rozpatrzeniu pomyślne argumentu. Zostaną usunięte przez <xref:T:System.Reflection.Metadata.MetadataReaderProvider> i element wywołujący nie musi manipulowania go.
+            
+Chyba że <xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata> jest określona, nie są odczytywane dane ze strumienia podczas konstruowania <xref:T:System.Reflection.Metadata.MetadataReaderProvider>. Ponadto strumień musi nie mogą być ustawiane przez wywołującego podczas <xref:T:System.Reflection.Metadata.MetadataReaderProvider> jest aktywny i nazwa aktualnie otwartego.
+            
+Jeśli <xref:F:System.Reflection.Metadata.MetadataStreamOptions.PrefetchMetadata>, <xref:T:System.Reflection.Metadata.MetadataReaderProvider> będzie po ich przeczytaniu wszystkie dane wymagane podczas konstruowania. W takim przypadku <xref:F:System.Reflection.Metadata.MetadataStreamOptions.LeaveOpen> również jest określona, obiekt wywołujący zachowuje własność pełną strumienia i pewność, że jej będzie nie być manipulowane przez <xref:T:System.Reflection.Metadata.MetadataReaderProvider> po konstrukcji.
+
+               </format>
+        </remarks>
+        <exception cref="T:System.ArgumentNullException"><paramref name="stream" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="stream" /> nie obsługuje Odczyt i wyszukiwanie operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Rozmiar jest ujemny lub wykracza poza koniec strumienia.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetMetadataReader">
@@ -239,6 +282,7 @@
         <AssemblyVersion>1.4.1.0</AssemblyVersion>
         <AssemblyVersion>1.4.2.0</AssemblyVersion>
         <AssemblyVersion>1.4.3.0</AssemblyVersion>
+        <AssemblyVersion>1.4.4.0</AssemblyVersion>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Reflection.Metadata.MetadataReader</ReturnType>
@@ -248,11 +292,15 @@
         <Parameter Name="utf8Decoder" Type="System.Reflection.Metadata.MetadataStringDecoder" />
       </Parameters>
       <Docs>
-        <param name="options">To be added.</param>
-        <param name="utf8Decoder">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="options">Bitowa kombinacja wartości wyliczenia, które reprezentują Konfiguracja podczas odczytu metadanych.</param>
+        <param name="utf8Decoder">Szyfrowanie do użycia.</param>
+        <summary>Pobiera <see cref="T:System.Reflection.Metadata.MetadataReader" /> z <see cref="T:System.Reflection.Metadata.MetadataReaderProvider" />.</summary>
+        <returns>A <see cref="T:System.Reflection.Metadata.MetadataReader" /> wystąpienia...</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">Kodowanie <paramref name="utf8Decoder" /> nie <see cref="T:System.Text.UTF8Encoding" />.</exception>
+        <exception cref="T:System.PlatformNotSupportedException">Bieżąca platforma jest big-endian.</exception>
+        <exception cref="T:System.IO.IOException">Błąd We/Wy podczas odczytu strumienia podstawowego.</exception>
+        <exception cref="T:System.ObjectDisposedException">Dostawca został usunięty.</exception>
       </Docs>
     </Member>
   </Members>
