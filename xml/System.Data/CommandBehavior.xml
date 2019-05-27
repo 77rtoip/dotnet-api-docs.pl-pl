@@ -1,5 +1,5 @@
 <Type Name="CommandBehavior" FullName="System.Data.CommandBehavior">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="06bf0e5f9cd0830b6df366d100746730876bffda" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58692854" /></Metadata><TypeSignature Language="C#" Value="public enum CommandBehavior" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="8dc33ced8e52016db3b9d4d5cbce685de60f0ab5" /><Meta Name="ms.sourcegitcommit" Value="9a6da88bd5455e8274257ca7ad259b42f1de114f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/22/2019" /><Meta Name="ms.locfileid" Value="66006809" /></Metadata><TypeSignature Language="C#" Value="public enum CommandBehavior" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed CommandBehavior extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Data.CommandBehavior" />
   <TypeSignature Language="VB.NET" Value="Public Enum CommandBehavior" />
@@ -38,15 +38,21 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.CommandBehavior> Wartości są używane przez <xref:System.Data.IDbCommand.ExecuteReader%2A> metody <xref:System.Data.IDbCommand> i wszystkie klasy pochodne klasy go.  
+ `CommandBehavior` Wartości są używane przez <xref:System.Data.IDbCommand.ExecuteReader%2A> metody <xref:System.Data.IDbCommand> i wszystkie klasy implementującej.  
   
  Bitowa kombinacja wartości te mogą być używane.  
   
- <xref:System.Data.CommandBehavior> jest ignorowana, gdy jest używana do definiowania <xref:System.Data.Sql.SqlNotificationRequest> lub <xref:System.Data.SqlClient.SqlDependency> i dlatego nie powinna być używana. Użyj konstruktora, który nie wymaga `CommandBehavior` parametru w tych dwóch przypadkach.  
-  
+`CommandBehavior` jest ignorowana, gdy jest używana do definiowania <xref:System.Data.Sql.SqlNotificationRequest> lub <xref:System.Data.SqlClient.SqlDependency> i dlatego nie powinna być używana. Użyj konstruktora, który nie wymaga `CommandBehavior` parametru w tych dwóch przypadkach.  
+
+### <a name="notes-on-individual-enumeration-members"></a>Uwagi dotyczące elementów członkowskich wyliczenia indywidualnych
+
+Korzystając z `KeyInfo`, .NET Framework Data Provider for SQL Server poprzedza wykonywana przy użyciu instrukcja `SET FMTONLY OFF` i `SET NO_BROWSETABLE ON`. Użytkownik powinien wiedzieć o potencjalnych efekty uboczne, takie jak zakłócenia przy użyciu `SET FMTONLY ON` instrukcji. Aby uzyskać więcej informacji, zobacz [Ustaw FMTONLY (Transact-SQL)](/sql/t-sql/statements/set-fmtonly-transact-sql).
+
 > [!NOTE]
->  Użyj SequentialAccess pobieranie dużej wartości i danych binarnych. W przeciwnym razie <xref:System.OutOfMemoryException> może wystąpić, a następnie połączenie zostanie zamknięte.  
-  
+>  Użyj `SequentialAccess` pobieranie dużej wartości i danych binarnych. W przeciwnym razie <xref:System.OutOfMemoryException> może wystąpić, a następnie połączenie zostanie zamknięte.  
+
+Po określeniu `SequentialAccess`, konieczne jest do odczytu z kolumny w kolejności, zostaną one zwrócone, mimo że nie musisz przeczytać każdej kolumny. Po zapoznaniu się ostatnie lokalizację, w zwróconym strumieniu danych, danych lub wcześniejsze tej lokalizacji nie może odczytać z `DataReader`. Korzystając z <xref:System.Data.OleDb.OleDbDataReader>, bieżąca wartość kolumny można przeczytać, aż do odczytu po jej. Korzystając z <xref:System.Data.SqlClient.SqlDataReader>, wartość w kolumnie mogą odczytać tylko raz.  
+
  ]]></format>
     </remarks>
   </Docs>
@@ -153,17 +159,8 @@
       </ReturnValue>
       <MemberValue>4</MemberValue>
       <Docs>
-        <summary>Zapytanie zwraca kolumnę i informacje o kluczu podstawowym.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Gdy KeyInfo jest używany do wykonania polecenia, dostawca dołączy dodatkowe kolumny zestawu wyników dla istniejącego klucza podstawowego i kolumn sygnatur czasowych.  
-  
- Korzystając z KeyInfo, .NET Framework Data Provider for SQL Server poprzedza wykonywana przy użyciu SET FMTONLY OFF, a następnie ustaw ON NO_BROWSETABLE instrukcja. Użytkownik powinien należy pamiętać o potencjalnych efekty uboczne, takie jak zakłócenia przy użyciu instrukcji ON FMTONLY zestawu. Aby uzyskać więcej informacji, zobacz [Ustaw FMTONLY (Transact-SQL)](/sql/t-sql/statements/set-fmtonly-transact-sql).
-  
- ]]></format>
-        </remarks>
+        <summary>Zapytanie zwraca kolumnę i informacje o kluczu podstawowym. Dostawca dołącza dodatkowe kolumny zestawu wyników dla istniejącego klucza podstawowego i kolumn sygnatur czasowych.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SchemaOnly">
@@ -234,14 +231,7 @@
       <MemberValue>16</MemberValue>
       <Docs>
         <summary>Zapewnia sposób <see langword="DataReader" /> do obsługi wiersze, które zawierają kolumn o dużej wartości binarnych. Zamiast ładowania cały wiersz <see langword="SequentialAccess" /> umożliwia <see langword="DataReader" /> do ładowania danych jako strumień. Następnie można użyć <see langword="GetBytes" /> lub <see langword="GetChars" /> metodę, aby określić lokalizację bajtów do rozpoczęcia operacji odczytu i rozmiar bufora ograniczone do zwrócenia danych.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Po określeniu `SequentialAccess`, konieczne jest do odczytu z kolumny w kolejności, zostaną one zwrócone, mimo że nie musisz przeczytać każdej kolumny. Po zapoznaniu się ostatnie lokalizację, w zwróconym strumieniu danych, danych lub wcześniejsze tej lokalizacji nie może odczytać z `DataReader`. Korzystając z <xref:System.Data.OleDb.OleDbDataReader>, bieżąca wartość kolumny można przeczytać, aż do odczytu po jej. Korzystając z <xref:System.Data.SqlClient.SqlDataReader>, wartość w kolumnie mogą odczytać tylko raz.  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="SingleResult">

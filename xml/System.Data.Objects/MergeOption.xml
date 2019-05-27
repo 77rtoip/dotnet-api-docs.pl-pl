@@ -1,5 +1,5 @@
 <Type Name="MergeOption" FullName="System.Data.Objects.MergeOption">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1d49e64ceb971f90e931f64f06cf0918327392a3" /><Meta Name="ms.sourcegitcommit" Value="19b66619a469ee45c85c618f8a605859882eb638" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="01/10/2019" /><Meta Name="ms.locfileid" Value="54183827" /></Metadata><TypeSignature Language="C#" Value="public enum MergeOption" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7a293338991ef78298771270dfb73a3f393ab030" /><Meta Name="ms.sourcegitcommit" Value="9a6da88bd5455e8274257ca7ad259b42f1de114f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/22/2019" /><Meta Name="ms.locfileid" Value="66006389" /></Metadata><TypeSignature Language="C#" Value="public enum MergeOption" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed MergeOption extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Data.Objects.MergeOption" />
   <TypeSignature Language="VB.NET" Value="Public Enum MergeOption" />
@@ -19,7 +19,21 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- [!INCLUDE[adonet_ef](~/includes/adonet-ef-md.md)] Utrzymuje tylko jedno wystąpienie obiektu z wykorzystaniem klucza określonej jednostki w pamięci podręcznej. <xref:System.Data.EntityKey> Obiekty są niezmienne obiektów, które reprezentują tożsamość obiektu. Klucze jednostek są używane do rozpoznawania tożsamości w kontekście obiektu. Aby uzyskać więcej informacji, zobacz [Praca z kluczami jednostki](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/dd283139(v=vs.100)). Jeśli jest już śledzony jednostki o tej samej tożsamości, dane pochodzące ze źródła danych i danych już w Menedżer stanów są scalane zgodnie z opisem w <xref:System.Data.Objects.MergeOption> zapytania.  
+ Entity Framework obsługuje tylko jedno wystąpienie obiektu przy użyciu klucza określonej jednostki w pamięci podręcznej. <xref:System.Data.EntityKey> Obiekty są niezmienne obiektów, które reprezentują tożsamość obiektu. Klucze jednostek są używane do rozpoznawania tożsamości w kontekście obiektu. Aby uzyskać więcej informacji, zobacz [Praca z kluczami jednostki](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/dd283139(v=vs.100)). Jeśli jest już śledzony jednostki o tej samej tożsamości, dane pochodzące ze źródła danych i danych już w Menedżer stanów są scalane zgodnie z opisem w <xref:System.Data.Objects.MergeOption> zapytania.  
+
+### <a name="additional-information-on-mergeoptionpreservechanges"></a>Dodatkowe informacje na temat `MergeOption.PreserveChanges`
+
+ Jeśli stan obiektu jest <xref:System.Data.EntityState.Unchanged?displayProperty=nameWithType>, bieżących i oryginalnych wartości we wpisie zostaną zastąpione wartościami źródła danych. Stan pozostaje jednostki <xref:System.Data.EntityState.Unchanged?displayProperty=nameWithType> i właściwości nie jest oznaczona jako zmodyfikowana.  
+  
+ Jeśli stan obiektu jest <xref:System.Data.EntityState.Modified?displayProperty=nameWithType>, bieżące wartości zmodyfikowane właściwości nie są zastępowane wartościami źródła danych. Oryginalne wartości, które zostały zmodyfikowane właściwości zostaną zastąpione wartościami ze źródła danych.  
+  
+ W programie .NET Framework 4 platformy Entity Framework porównuje bieżące wartości właściwości zostały zmodyfikowane za pomocą wartości, które zostały zwrócone ze źródła danych. Jeśli wartości nie są takie same, właściwość jest oznaczona jako zmodyfikowana.  
+  
+ W .NET Framework 3.5 z dodatkiem SP1 platformy Entity Framework nie oznacza właściwość zmodyfikowane, nawet jeśli wartość w źródle danych jest inny.  
+  
+ Tylko zmodyfikowane właściwości zostaną utrwalone w źródle danych, po wywołaniu <xref:System.Data.Objects.ObjectContext.SaveChanges%2A?displayProperty=nameWithType>.  
+  
+ Aby zachować zachowanie programu .NET Framework 3.5 z dodatkiem SP1, należy ustawić <xref:System.Data.Objects.ObjectContextOptions.UseLegacyPreserveChangesBehavior%2A?displayProperty=nameWithType> do `true`. `PreserveChanges` Opcja może służyć do rozpoznania wyjątków optymistycznej współbieżności przy jednoczesnym zachowaniu zmiany w lokalnym kontekście. Aby uzyskać więcej informacji, zobacz [zapisywanie zmian i zarządzanie współbieżnością](https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/bb738618(v=vs.100)).
   
  ]]></format>
     </remarks>
@@ -107,24 +121,7 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Obiekty, które nie istnieją w kontekście obiektu są dołączone do kontekstu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Jeśli stan obiektu jest <xref:System.Data.EntityState.Unchanged>, bieżących i oryginalnych wartości we wpisie zostaną zastąpione wartościami źródła danych. Stan pozostaje jednostki <xref:System.Data.EntityState.Unchanged> i właściwości nie jest oznaczona jako zmodyfikowana.  
-  
- Jeśli stan obiektu jest <xref:System.Data.EntityState.Modified>, bieżące wartości zmodyfikowane właściwości nie są zastępowane wartościami źródła danych. Oryginalne wartości, które zostały zmodyfikowane właściwości zostaną zastąpione wartościami ze źródła danych.  
-  
- W [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] w wersji 4 [!INCLUDE[adonet_ef](~/includes/adonet-ef-md.md)] porównuje bieżące wartości właściwości zostały zmodyfikowane za pomocą wartości, które zostały zwrócone ze źródła danych. Jeśli wartości nie są takie same, właściwość jest oznaczona jako zmodyfikowana.  
-  
- W [!INCLUDE[dnprdnshort](~/includes/dnprdnshort-md.md)] w wersji 3.5 z dodatkiem SP1, [!INCLUDE[adonet_ef](~/includes/adonet-ef-md.md)] nie oznacza właściwość zmodyfikowany, nawet jeśli wartość w źródle danych jest inny.  
-  
- Tylko zmodyfikowane właściwości zostaną utrwalone w źródle danych, po wywołaniu <xref:System.Data.Objects.ObjectContext.SaveChanges%2A>.  
-  
- Aby zachować zachowanie 3.5 z dodatkiem SP1, należy ustawić <xref:System.Data.Objects.ObjectContextOptions.UseLegacyPreserveChangesBehavior%2A> do `true`. Opcja PreserveChanges może służyć do rozpoznania wyjątków optymistycznej współbieżności przy jednoczesnym zachowaniu zmiany w lokalnym kontekście. Aby uzyskać więcej informacji, zobacz [zapisywanie zmian i zarządzanie współbieżnością](https://msdn.microsoft.com/library/b8378601-4f26-4a05-a24a-f50aeb68610e).  
-  
- ]]></format>
-        </remarks>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
   </Members>
