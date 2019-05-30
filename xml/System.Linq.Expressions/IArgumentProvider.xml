@@ -1,5 +1,5 @@
 <Type Name="IArgumentProvider" FullName="System.Linq.Expressions.IArgumentProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="18b622ce78fe8295b4aac908d2b2687c5ed1f01f" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58715514" /></Metadata><TypeSignature Language="C#" Value="public interface IArgumentProvider" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4abd0b0508fdc62e37d2117e5823a54dfc7dfdce" /><Meta Name="ms.sourcegitcommit" Value="d3dcd8c426adcf1bbe5ff78a76dee13bd8ad6efd" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/28/2019" /><Meta Name="ms.locfileid" Value="66251524" /></Metadata><TypeSignature Language="C#" Value="public interface IArgumentProvider" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IArgumentProvider" />
   <TypeSignature Language="DocId" Value="T:System.Linq.Expressions.IArgumentProvider" />
   <TypeSignature Language="VB.NET" Value="Public Interface IArgumentProvider" />
@@ -24,18 +24,28 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Interfejs wewnętrzny do uzyskiwania dostępu do argumentów wiele węzłów drzewa (DynamicExpression ElementInit, MethodCallExpression, InvocationExpression, NewExpression i IndexExpression).  Nie należy używać tego interfejsu API.  Jest tylko publiczny z powodu refaktoryzacji biblioteki DLL i istnieje tylko w przypadku optymalizacji wydajności wewnętrznego.  
+    <summary>Interfejs wewnętrzny do uzyskiwania dostępu do argumentów wiele węzłów drzewa (DynamicExpression ElementInit, MethodCallExpression, InvocationExpression, NewExpression i IndexExpression).  Ten interfejs API jest tylko do użytku wewnętrznego.</summary>
+    <remarks>
+      <format type="text/markdown"><![CDATA[
+      
+## Remarks
+
+Nie należy używać tego interfejsu API.  Nie jest publiczny wyłącznie z powodu zestawu refaktoryzacji, a istnieje tylko w przypadku optymalizacji wydajności wewnętrznego. Umożliwia ona dwóch optymalizacje, które zmniejszają rozmiar drzewa:
   
-Dzięki temu dwie optymalizacje, które zmniejszają rozmiar drzewa wyrażeń.  Pierwszy umożliwia węzły drzewa, które mają być przechowywane IList&lt;T&gt; zamiast ReadOnlyCollection.  IList&lt;T&gt; zapisuje koszt przydzielanie ReadOnlyCollection dla każdego węzła.  Drugi umożliwia tworzenie podklas specjalistyczne, zawierających na określonej liczbie argumentów (na przykład Block2, Block3 Block4).  W związku z tym te węzły unikać ReadOnlyCollection i Tablica do przechowywania swoich elementów, zapisywanie 32 bajtów w każdym węźle.  
+1. Umożliwia ona węzły, które mają być przechowywane <xref:System.Collections.Generic.IList%601> zamiast <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>.  Spowoduje to zapisanie koszt przydzielanie kolekcji tylko do odczytu dla każdego węzła.
   
-Węzły drzewa wyrażeń w dalszym ciągu udostępnianie oryginalne właściwości LINQ ReadOnlyCollections.  Węzły w tym dzięki ponownemu wykorzystaniu pole do przechowywania zarówno tablicy lub element, który normalnie powinny być przechowywane w tablicy.  
-  
-W przypadku tablicy kolekcji jest wpisany IList&lt;T&gt; zamiast ReadOnlyCollection&lt;T&gt;.  Gdy węzeł jest początkowo tworzona jest tablicą.  Gdy kompilator uzyskuje dostęp do elementów członkowskich używa tego interfejsu.  Uzyskiwanie dostępu do elementów tablicy promuje macierzy ReadOnlyCollection.  
-  
-W przypadku obiektu przechowujemy pierwszy argument w polu z kontrolą typów do obiektu.  Gdy węzeł początkowo jest konstruowany, pole zawiera wyrażenie.  Kompilator uzyskuje dostęp do argumentów za pomocą tego interfejsu, a metody dostępu dla pierwszego argumentu użyto Expression.ReturnObject, która zwraca obiekt, który obsługuje przypadek, wyrażenie lub ReadOnlyCollection.  Gdy użytkownik uzyskuje dostęp do ReadOnlyCollection, pole Obiekt jest aktualizowany do przechowywania bezpośrednio na ReadOnlyCollection.  
-  
-Należy pamiętać, że wyrażenia stale zwracają ReadOnlyCollection ten sam.  W przeciwnym razie ponownego zapisywania walker drzewa spowoduje awarię.  Jest istotną zmianę z LINQ w wersji 1 do zwrócenia innego ReadOnlyCollections tworzą tego samego węzła wyrażenia.  Obecnie użytkownicy polegać na tożsamość obiektu, aby sprawdzić, czy węzeł został zmieniony.  Przechowywanie ReadOnlyCollection pola jest przeciążona i zmniejsza użycie pamięci zachowuje zgodność z publicznego interfejsu API.</summary>
-    <remarks>To be added.</remarks>
+2. Umożliwia ona wyspecjalizowane podklasy ma zostać utworzony na blokady do określonej liczby argumentów (na przykład `Block2`, `Block2`, `Block4`).  Dlatego te węzły unikać zarówno <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> i Tablica do przechowywania elementów w związku z tym zapisywanie 32 bajtów w każdym węźle.  Ta technika jest używana przez różnych węzłów, w tym <xref:System.Linq.Expressions.BlockExpression>, <xref:System.Linq.Expressions.InvocationExpression>, i <xref:System.Linq.Expressions.MethodCallExpression>.
+            
+Węzły drzewa wyrażeń w dalszym ciągu udostępnianie oryginalne właściwości LINQ <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> obiektów. Mogą to zrobić dzięki ponownemu wykorzystaniu pole do przechowywania zarówno tablicy lub element, który normalnie powinny być przechowywane w tablicy.
+            
+W przypadku tablicy jest wpisany kolekcji <xref:System.Collections.Generic.IList%601> zamiast <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>. Gdy węzeł początkowo jest konstruowany, jest tablicą.  Kompilator lub narzędzi w tej bibliotece uzyskać dostęp do elementów za pomocą tego interfejsu. Uzyskiwanie dostępu do elementów tablicy promuje macierzy <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>.
+            
+W przypadku obiektu pierwszy argument jest przechowywany w wpisane w polu <xref:System.Object>. Gdy węzeł początkowo jest konstruowany, to pole zawiera <xref:System.Linq.Expressions.Expression> pierwszego argumentu.  Kompilator i narzędzia w tej bibliotece dostęp do argumentów, ponownie użyć tego interfejsu, gdy metody dostępu dla pierwszego argumentu używa wewnętrznego `Expression.ReturnObject<T>(System.Object)` metody pomocnika, aby zwrócić obiekt, który obsługuje <xref:System.Linq.Expressions.Expression> lub <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> przypadek. Gdy użytkownik uzyskuje dostęp do <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>, pole Obiekt jest aktualizowany do przechowywania bezpośrednio na <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>.
+            
+Ważne jest, że <xref:System.Linq.Expressions.Expression> właściwości stale zwracają takie same <xref:System.Collections.ObjectModel.ReadOnlyCollection%601>. W przeciwnym razie walker drzewa dysków, które są używane przez osoby odwiedzające wyrażenia spowoduje awarię. Jest istotną zmianę z LINQ w wersji 1, aby zwracać różne <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> z tej samej <xref:System.Linq.Expressions.Expression> węzła. Obecnie użytkownicy polegać na tożsamość obiektu, aby sprawdzić, czy węzeł został zmieniony.  Przechowywanie <xref:System.Collections.ObjectModel.ReadOnlyCollection%601> pola jest przeciążona zarówno zmniejsza użycie pamięci i zachowuje zgodność z publicznego interfejsu API.
+
+      ]]></format>
+    </remarks>
   </Docs>
   <Members>
     <Member MemberName="ArgumentCount">
@@ -67,9 +77,9 @@ Należy pamiętać, że wyrażenia stale zwracają ReadOnlyCollection ten sam.  
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zwraca liczbę argumentów do węzła drzewa wyrażeń.  Nie należy używać tego typu.  Nie jest tylko publiczny z powodu zestawu refaktoryzacji i jest używana wewnętrznie do optymalizacji wydajności.</summary>
+        <summary>Zwraca liczbę argumentów do węzła drzewa wyrażeń. Ten interfejs API jest tylko do użytku wewnętrznego.</summary>
         <value>Liczba argumentów dla węzła drzewa wyrażeń jako <see cref="T:System.Int32" />.</value>
-        <remarks>To be added.</remarks>
+        <remarks>Nie należy używać tego interfejsu API. Nie jest publiczny wyłącznie z powodu zestawu refaktoryzacji i jest używana wewnętrznie do optymalizacji wydajności.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetArgument">
@@ -105,9 +115,9 @@ Należy pamiętać, że wyrażenia stale zwracają ReadOnlyCollection ten sam.  
       </Parameters>
       <Docs>
         <param name="index">Indeks argumentu.</param>
-        <summary>Zwraca argument w indeksie, zostanie zgłoszony, jeśli indeks jest poza zakresem.  Nie należy używać tego typu.  Nie jest tylko publiczny z powodu zestawu refaktoryzacji i jest używana wewnętrznie do optymalizacji wydajności.</summary>
-        <returns>Argument w indeksie, zostanie zgłoszony, jeśli indeks jest poza granicami jako <see cref="T:System.Linq.Expressions.Expression" />.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Zwraca wartość argumentu w <paramref name="index" />, zgłaszanie przypadku <paramref name="index" /> jest poza zakresem. Ten interfejs API jest tylko do użytku wewnętrznego.</summary>
+        <returns>Argument w indeksie.</returns>
+        <remarks>Nie należy używać tego interfejsu API.  Nie jest tylko publiczny z powodu zestawu refaktoryzacji i jest używana wewnętrznie do optymalizacji wydajności.</remarks>
       </Docs>
     </Member>
   </Members>
