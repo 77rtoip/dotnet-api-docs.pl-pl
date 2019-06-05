@@ -1,5 +1,5 @@
 <Type Name="AppContext" FullName="System.AppContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="49517f88a836082c322517cf3be1d6516656af81" /><Meta Name="ms.sourcegitcommit" Value="7555c040bd7cb677d117ddf03e647aa7bf625bfc" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/08/2019" /><Meta Name="ms.locfileid" Value="65440895" /></Metadata><TypeSignature Language="C#" Value="public static class AppContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="905e0055c1e6a26875980d42e921145f959a9ad3" /><Meta Name="ms.sourcegitcommit" Value="a9b8eb12d69b131f7c0de74d471798e44e863282" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/04/2019" /><Meta Name="ms.locfileid" Value="66502023" /></Metadata><TypeSignature Language="C#" Value="public static class AppContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit AppContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.AppContext" />
   <TypeSignature Language="VB.NET" Value="Public Class AppContext" />
@@ -32,100 +32,100 @@
   <Docs>
     <summary>Oferuje elementy członkowskie do ustawiania i pobierania danych o kontekście aplikacji.</summary>
     <remarks>
-      <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.  
-  
-## <a name="appcontext-for-library-developers"></a>AppContext dla deweloperów bibliotek  
- Użyj biblioteki <xref:System.AppContext> przechodzi klasy do definiowania i udostępnić zgodności, a biblioteka użytkownicy mogą ustawić te przełączniki mają wpływ na zachowanie biblioteki. Domyślnie biblioteki udostępnia nowe funkcje i zmieniają tylko (czyli zapewniają poprzednie funkcjonalności) Jeśli przełącznik jest ustawiony.  Dzięki temu biblioteki, aby udostępnić nowe zachowanie dla istniejących interfejsów API jednocześnie kontynuowanie obsługi obiektów wywołujących, które zależą od poprzedniego zachowania.  
-  
-### <a name="defining-the-switch-name"></a>Definiowanie nazwy przełącznika  
- Najczęstszym sposobem pozwala użytkownikom biblioteki zrezygnować z Zmiana zachowania, jest do definiowania nazwane przełącznika.  Jego `value` element jest pary nazwa/wartość, która składa się z nazwy przełącznika i jego <xref:System.Boolean> wartość.  Domyślnie jest zawsze niejawnie `false`, który udostępnia nowe zachowanie (i sprawia, że nowe zachowanie uczestnictwo domyślnie). Ustawienie przełącznika `true` umożliwia, który zawiera starsze zachowanie. Jawne ustawianie przełącznika `false` udostępnia również nowe zachowanie.  
-  
- Warto użyć formatu spójne nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę. Poniżej przedstawiono dwa formaty oczywiste.  
-  
--   *Przełącznik*. *przestrzeń nazw*. *switchName*  
-  
--   *Przełącznik*. *Biblioteka*. *switchName*  
-  
- Po zdefiniowaniu i udokumentować przełącznika wywołujących może używać go za pomocą rejestru, dodając [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu do jego pliku konfiguracji aplikacji lub przez wywołanie metody <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> Metoda programowo. Zobacz [AppContext dla konsumentów biblioteki](#ForConsumers) sekcji, aby uzyskać więcej informacji o wywołującym użycia i ustaw wartość <xref:System.AppContext> konfiguracji przełączników.  
-  
- Po uruchomieniu aplikacji środowiska uruchomieniowego języka wspólnego automatycznie odczytuje ustawienia zgodności w rejestrze i ładuje plik konfiguracji aplikacji w celu wypełnienia aplikacji <xref:System.AppContext> wystąpienia. Ponieważ <xref:System.AppContext> wystąpień jest wypełniana programowo przez obiekt wywołujący lub w czasie wykonywania, nie trzeba podejmować żadnych działań, takich jak wywoływanie <xref:System.AppContext.SetSwitch%2A> metody, aby skonfigurować <xref:System.AppContext> wystąpienia.  
-  
-### <a name="checking-the-setting"></a>Sprawdzanie ustawienie  
- Następnie można sprawdzić, jeśli użytkownik został zadeklarowany wartość przełącznika i odpowiednio przez wywołanie act <xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType> metody. Metoda ta zwraca `true` Jeśli `switchName` argument zostanie znaleziony, a kiedy metoda zwraca wartość, jej `isEnabled` argument wskazuje wartość przełącznika.  W przeciwnym razie metoda zwraca `false`.  
-  
-### <a name="an-example"></a>Przykład  
- Poniższy przykład ilustruje użycie <xref:System.AppContext> klasy w celu umożliwienia klientowi wybierz zachować oryginalne zachowanie metody biblioteki.   Poniżej przedstawiono wersja 1.0 biblioteki o nazwie `StringLibrary`. Definiuje `SubstringStartsAt` metodę, która wykonuje porównanie porządkowe, aby określić indeks początkowy podciągu w dłuższym ciągu.  
-  
- [!code-csharp[System.AppContext.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
- [!code-vb[System.AppContext.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]  
-  
- W poniższym przykładzie użyto następnie biblioteki, aby znaleźć wartość początkowa indeksu podciągu "archæ" w "archaeologist". Ponieważ metoda wykonuje porównanie porządkowe, nie można odnaleźć podciąg.  
-  
- [!code-csharp[System.AppContext.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
- [!code-vb[System.AppContext.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]  
-  
- Jednak zmiany w wersji 2 biblioteki, `SubstringStartsAt` metodę porównanie zależne od kultury.  
-  
- [!code-csharp[System.AppContext.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
- [!code-vb[System.AppContext.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]  
-  
- Gdy aplikacja jest ponownie kompilowany, w celu uruchomienia nowej wersji biblioteki, teraz raportów to, czy podciąg "archæ" znajduje się pod indeksem 4 "archaeologist".  
-  
- [!code-csharp[System.AppContext.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
- [!code-vb[System.AppContext.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]  
-  
- Ta zmiana można zapobiec przed przerwaniem działania aplikacji, które są zależne od zachować oryginalne zachowanie, definiując [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) przełącznika. W tym przypadku nosi nazwę przełącznika `StringLibrary.DoNotUseCultureSensitiveComparison`. Wartość domyślna `false`, wskazuje, że biblioteki należy wykonywać jego porównanie zależne od kultury w wersji 2.0. `true` Wskazuje, że biblioteki należy wykonać porównanie porządkowe jego wersji 1.0.  Niewielkie modyfikacje w porównaniu z poprzednim kodzie umożliwia odbiorcy biblioteki można ustawić przełącznika tak, aby określić rodzaj porównanie, który wykonuje metodę.  
-  
- [!code-csharp[System.AppContext.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
- [!code-vb[System.AppContext.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]  
-  
- Jeśli następnie aplikacja może użyć następującego pliku konfiguracji, aby przywrócić zachowanie w wersji 1.0.  
-  
-```xml  
-  
-<configuration>  
-   <runtime>  
-      <AppContextSwitchOverrides value="StringLibrary.DoNotUseCultureSensitiveComparison=true" />   
-   </runtime>  
-</configuration>  
-  
-```  
-  
- Po uruchomieniu aplikacji przy użyciu pliku konfiguracji obecne generuje następujące wyniki:  
-  
-```  
-'archæ' not found in 'The archaeologist'  
-```  
-  
-<a name="ForConsumers"></a>   
-## <a name="appcontext-for-library-consumers"></a>AppContext dla konsumentów biblioteki  
- Jeśli jesteś konsumenta bibliotekę, <xref:System.AppContext> klasa umożliwia korzystanie z zalet biblioteki lub biblioteki metoda rezygnacji mechanizm dla nowych funkcji.   Poszczególne metody biblioteki klas, z którym nawiązywane jest definiowanie określonego przełączników, które włączać lub wyłączać nowe zachowanie. Wartość parametru jest wartością logiczną. Jeśli jest `false`, który zazwyczaj jest to wartość domyślna, nowe zachowanie jest włączone; jeśli jest `true`nowego zachowania jest wyłączone i członka zachowuje się tak jak wcześniej.  
-  
- Można ustawić wartość przełącznika w jeden z czterech sposobów:  
-  
--   Przez wywołanie metody <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> metody w kodzie.  `switchName` Argument określa nazwę przełącznika i `isEnabled` właściwość definiuje wartość przełącznika. Ponieważ <xref:System.AppContext> jest klasą statyczną, jest ona dostępna na podstawie domeny aplikacji.  
-  
-     Wywoływanie <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> ma zakres aplikacji; oznacza to, że dotyczy tylko aplikacji.  
-  
--   Dodając `<AppContextSwitchOverrides>` elementu [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcji w pliku app.config. Przełącznik ma jeden atrybut `value`, którego wartość jest ciągiem, który reprezentuje parę klucza i wartości, zawierająca zarówno nazwę przełącznika, jak i jego wartość.  
-  
-     Aby zdefiniować wiele przełączników, oddziel każdy przełącznik pary klucz/wartość w [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu `value` atrybut średnikiem. W takim przypadku `<AppContextSwitchOverrides>` element ma następujący format:  
-  
-    ```xml  
-    <AppContextSwitchOverrides value="switchName1=value1;switchName2=value2" />  
-    ```  
-  
-     Za pomocą `<AppContextSwitchOverrides>` elementu, aby zdefiniować ustawienia konfiguracji, ma zakres aplikacji; oznacza to, że dotyczy tylko aplikacji.  
+      <format type="text/markdown"><![CDATA[
 
-    > [!NOTE]    
+## Remarks
+ <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.
+
+## <a name="appcontext-for-library-developers"></a>AppContext dla deweloperów bibliotek
+ Użyj biblioteki <xref:System.AppContext> przechodzi klasy do definiowania i udostępnić zgodności, a biblioteka użytkownicy mogą ustawić te przełączniki mają wpływ na zachowanie biblioteki. Domyślnie biblioteki udostępnia nowe funkcje i zmieniają tylko (czyli zapewniają poprzednie funkcjonalności) Jeśli przełącznik jest ustawiony.  Dzięki temu biblioteki, aby udostępnić nowe zachowanie dla istniejących interfejsów API jednocześnie kontynuowanie obsługi obiektów wywołujących, które zależą od poprzedniego zachowania.
+
+### <a name="defining-the-switch-name"></a>Definiowanie nazwy przełącznika
+ Najczęstszym sposobem pozwala użytkownikom biblioteki zrezygnować z Zmiana zachowania, jest do definiowania nazwane przełącznika.  Jego `value` element jest pary nazwa/wartość, która składa się z nazwy przełącznika i jego <xref:System.Boolean> wartość.  Domyślnie jest zawsze niejawnie `false`, który udostępnia nowe zachowanie (i sprawia, że nowe zachowanie uczestnictwo domyślnie). Ustawienie przełącznika `true` umożliwia, który zawiera starsze zachowanie. Jawne ustawianie przełącznika `false` udostępnia również nowe zachowanie.
+
+ Warto użyć formatu spójne nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę. Poniżej przedstawiono dwa formaty oczywiste.
+
+-   *Przełącznik*. *przestrzeń nazw*. *switchName*
+
+-   *Przełącznik*. *Biblioteka*. *switchName*
+
+ Po zdefiniowaniu i udokumentować przełącznika wywołujących może używać go za pomocą rejestru, dodając [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu do jego pliku konfiguracji aplikacji lub przez wywołanie metody <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> Metoda programowo. Zobacz [AppContext dla konsumentów biblioteki](#ForConsumers) sekcji, aby uzyskać więcej informacji o wywołującym użycia i ustaw wartość <xref:System.AppContext> konfiguracji przełączników.
+
+ Po uruchomieniu aplikacji środowiska uruchomieniowego języka wspólnego automatycznie odczytuje ustawienia zgodności w rejestrze i ładuje plik konfiguracji aplikacji w celu wypełnienia aplikacji <xref:System.AppContext> wystąpienia. Ponieważ <xref:System.AppContext> wystąpień jest wypełniana programowo przez obiekt wywołujący lub w czasie wykonywania, nie trzeba podejmować żadnych działań, takich jak wywoływanie <xref:System.AppContext.SetSwitch%2A> metody, aby skonfigurować <xref:System.AppContext> wystąpienia.
+
+### <a name="checking-the-setting"></a>Sprawdzanie ustawienie
+ Następnie można sprawdzić, jeśli użytkownik został zadeklarowany wartość przełącznika i odpowiednio przez wywołanie act <xref:System.AppContext.TryGetSwitch%2A?displayProperty=nameWithType> metody. Metoda ta zwraca `true` Jeśli `switchName` argument zostanie znaleziony, a kiedy metoda zwraca wartość, jej `isEnabled` argument wskazuje wartość przełącznika.  W przeciwnym razie metoda zwraca `false`.
+
+### <a name="an-example"></a>Przykład
+ Poniższy przykład ilustruje użycie <xref:System.AppContext> klasy w celu umożliwienia klientowi wybierz zachować oryginalne zachowanie metody biblioteki.   Poniżej przedstawiono wersja 1.0 biblioteki o nazwie `StringLibrary`. Definiuje `SubstringStartsAt` metodę, która wykonuje porównanie porządkowe, aby określić indeks początkowy podciągu w dłuższym ciągu.
+
+ [!code-csharp[System.AppContext.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#4)]
+ [!code-vb[System.AppContext.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#4)]
+
+ W poniższym przykładzie użyto następnie biblioteki, aby znaleźć wartość początkowa indeksu podciągu "archæ" w "archaeologist". Ponieważ metoda wykonuje porównanie porządkowe, nie można odnaleźć podciąg.
+
+ [!code-csharp[System.AppContext.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example4.cs#5)]
+ [!code-vb[System.AppContext.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example4.vb#5)]
+
+ Jednak zmiany w wersji 2 biblioteki, `SubstringStartsAt` metodę porównanie zależne od kultury.
+
+ [!code-csharp[System.AppContext.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#6)]
+ [!code-vb[System.AppContext.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#6)]
+
+ Gdy aplikacja jest ponownie kompilowany, w celu uruchomienia nowej wersji biblioteki, teraz raportów to, czy podciąg "archæ" znajduje się pod indeksem 4 "archaeologist".
+
+ [!code-csharp[System.AppContext.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example6.cs#7)]
+ [!code-vb[System.AppContext.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example6.vb#7)]
+
+ Ta zmiana można zapobiec przed przerwaniem działania aplikacji, które są zależne od zachować oryginalne zachowanie, definiując [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) przełącznika. W tym przypadku nosi nazwę przełącznika `StringLibrary.DoNotUseCultureSensitiveComparison`. Wartość domyślna `false`, wskazuje, że biblioteki należy wykonywać jego porównanie zależne od kultury w wersji 2.0. `true` Wskazuje, że biblioteki należy wykonać porównanie porządkowe jego wersji 1.0.  Niewielkie modyfikacje w porównaniu z poprzednim kodzie umożliwia odbiorcy biblioteki można ustawić przełącznika tak, aby określić rodzaj porównanie, który wykonuje metodę.
+
+ [!code-csharp[System.AppContext.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/Example8.cs#8)]
+ [!code-vb[System.AppContext.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/Example8.vb#8)]
+
+ Jeśli następnie aplikacja może użyć następującego pliku konfiguracji, aby przywrócić zachowanie w wersji 1.0.
+
+```xml
+
+<configuration>
+   <runtime>
+      <AppContextSwitchOverrides value="StringLibrary.DoNotUseCultureSensitiveComparison=true" />
+   </runtime>
+</configuration>
+
+```
+
+ Po uruchomieniu aplikacji przy użyciu pliku konfiguracji obecne generuje następujące wyniki:
+
+```
+'archæ' not found in 'The archaeologist'
+```
+
+<a name="ForConsumers"></a>
+## <a name="appcontext-for-library-consumers"></a>AppContext dla konsumentów biblioteki
+ Jeśli jesteś konsumenta bibliotekę, <xref:System.AppContext> klasa umożliwia korzystanie z zalet biblioteki lub biblioteki metoda rezygnacji mechanizm dla nowych funkcji.   Poszczególne metody biblioteki klas, z którym nawiązywane jest definiowanie określonego przełączników, które włączać lub wyłączać nowe zachowanie. Wartość parametru jest wartością logiczną. Jeśli jest `false`, który zazwyczaj jest to wartość domyślna, nowe zachowanie jest włączone; jeśli jest `true`nowego zachowania jest wyłączone i członka zachowuje się tak jak wcześniej.
+
+ Można ustawić wartość przełącznika w jeden z czterech sposobów:
+
+-   Przez wywołanie metody <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> metody w kodzie.  `switchName` Argument określa nazwę przełącznika i `isEnabled` właściwość definiuje wartość przełącznika. Ponieważ <xref:System.AppContext> jest klasą statyczną, jest ona dostępna na podstawie domeny aplikacji.
+
+     Wywoływanie <xref:System.AppContext.SetSwitch%28System.String%2CSystem.Boolean%29?displayProperty=nameWithType> ma zakres aplikacji; oznacza to, że dotyczy tylko aplikacji.
+
+-   Dodając `<AppContextSwitchOverrides>` elementu [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcji w pliku app.config. Przełącznik ma jeden atrybut `value`, którego wartość jest ciągiem, który reprezentuje parę klucza i wartości, zawierająca zarówno nazwę przełącznika, jak i jego wartość.
+
+     Aby zdefiniować wiele przełączników, oddziel każdy przełącznik pary klucz/wartość w [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu `value` atrybut średnikiem. W takim przypadku `<AppContextSwitchOverrides>` element ma następujący format:
+
+    ```xml
+    <AppContextSwitchOverrides value="switchName1=value1;switchName2=value2" />
+    ```
+
+     Za pomocą `<AppContextSwitchOverrides>` elementu, aby zdefiniować ustawienia konfiguracji, ma zakres aplikacji; oznacza to, że dotyczy tylko aplikacji.
+
+    > [!NOTE]
     > Aby uzyskać informacje na temat parametrów zdefiniowanych w programie .NET Framework, zobacz [ \<AppContextSwitchOverrides > element](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md).
 
--   Dodając wartość ciągu, którego nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze. Jego wartość musi być ciągiem reprezentującym <xref:System.Boolean> , mogą być analizowane przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody, czyli jego musi mieć wartość "Prawda", "true", "False" lub "false". Jeśli środowisko wykonawcze napotka jakakolwiek inna wartość, ignoruje przełącznika.  
-  
-     Za pomocą rejestru w celu zdefiniowania <xref:System.AppContext> przełącznika ma zakres maszyny; oznacza to, że ma to wpływ na każdej aplikacji na maszynie.  
+-   Dodając wartość ciągu, którego nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze. Jego wartość musi być ciągiem reprezentującym <xref:System.Boolean> , mogą być analizowane przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody, czyli jego musi mieć wartość "Prawda", "true", "False" lub "false". Jeśli środowisko wykonawcze napotka jakakolwiek inna wartość, ignoruje przełącznika.
+
+     Za pomocą rejestru w celu zdefiniowania <xref:System.AppContext> przełącznika ma zakres maszyny; oznacza to, że ma to wpływ na każdej aplikacji na maszynie.
 
 - Dla aplikacji ASP.NET, możesz dodać [ \<Dodaj >](~/docs/framework/configure-apps/file-schema/appsettings/add-element-for-appsettings.md) elementu [ \<appSettings >](~/docs/framework/configure-apps/file-schema/appsettings/index.md) sekcja pliku web.config. Na przykład:
 
@@ -135,29 +135,29 @@
       <add key="AppContext.SetSwitch:switchName2" value="switchValue2" />
    </appSettings>
    ```
-   
- Jeśli ustawisz ten sam przełącznik w więcej niż jednym ze sposobów jest kolejność pierwszeństwa, określania, która zastępuje inne:  
-  
-1.  Ustawienie programistyczny.  
-  
-2.  Ustawienia w pliku konfiguracji aplikacji lub w pliku web.config.  
-  
-3.  Ustawienie rejestru.  
-  
- Poniżej przedstawiono prostą aplikację, która przekazuje plik identyfikatora URI do <xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType> metody.  Gdy są uruchomione w ramach programu .NET Framework 4.6, zgłasza <xref:System.ArgumentException> ponieważ `file://` nie jest już prawidłowe części ścieżki pliku.  
-  
+
+ Jeśli ustawisz ten sam przełącznik w więcej niż jednym ze sposobów jest kolejność pierwszeństwa, określania, która zastępuje inne:
+
+1.  Ustawienie programistyczny.
+
+2.  Ustawienia w pliku konfiguracji aplikacji lub w pliku web.config.
+
+3.  Ustawienie rejestru.
+
+ Poniżej przedstawiono prostą aplikację, która przekazuje plik identyfikatora URI do <xref:System.IO.Path.GetDirectoryName%2A?displayProperty=nameWithType> metody.  Gdy są uruchomione w ramach programu .NET Framework 4.6, zgłasza <xref:System.ArgumentException> ponieważ `file://` nie jest już prawidłowe części ścieżki pliku.
+
  [!code-csharp[System.AppContext.Class#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/ForConsumers1.cs#10)]
- [!code-vb[System.AppContext.Class#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]  
-  
- Aby przywrócić poprzednie zachowanie metody i zapobiec wyjątku, można dodać `Switch.System.IO.UseLegacyPathHandling` przejdź do pliku konfiguracji aplikacji, na przykład:  
-  
-```xml  
-<configuration>  
-    <runtime>  
-        <AppContextSwitchOverrides value="Switch.System.IO.UseLegacyPathHandling=true" />    
-    </runtime>  
-</configuration>  
-```  
+ [!code-vb[System.AppContext.Class#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/ForConsumers1.vb#10)]
+
+ Aby przywrócić poprzednie zachowanie metody i zapobiec wyjątku, można dodać `Switch.System.IO.UseLegacyPathHandling` przejdź do pliku konfiguracji aplikacji, na przykład:
+
+```xml
+<configuration>
+    <runtime>
+        <AppContextSwitchOverrides value="Switch.System.IO.UseLegacyPathHandling=true" />
+    </runtime>
+</configuration>
+```
 ## <a name="see-also"></a>Zobacz także
 [Przełącznik AppContext](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md)
 
@@ -202,11 +202,11 @@
         <summary>Pobiera nazwę ścieżki katalogu podstawowego, używany przez mechanizm rozpoznawania zestawów do sondowania dla zestawów.</summary>
         <value>Nazwa ścieżki podstawowego katalogu, który używa programu rozpoznawania nazw zestawów w celu sondowania dla zestawów.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Jest to dla właściwości domeny aplikacji. Jego wartość odpowiada <xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType> właściwości bieżącej domeny aplikacji.  
-  
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Jest to dla właściwości domeny aplikacji. Jego wartość odpowiada <xref:System.AppDomain.BaseDirectory%2A?displayProperty=nameWithType> właściwości bieżącej domeny aplikacji.
+
  ]]></format>
         </remarks>
       </Docs>
@@ -296,37 +296,37 @@
         <param name="isEnabled">Wartość przełącznika.</param>
         <summary>Ustawia wartość przełącznika.</summary>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.  
-  
- <xref:System.AppContext.SetSwitch%2A> Metoda jest wywoływana przez aplikację (lub biblioteki), aby zadeklarować wartość przełącznika (który jest zawsze <xref:System.Boolean> wartość) definiujący zależne biblioteki. Przełącznik jest zawsze niejawnie `false`, która zapewnia nowe zachowanie. Ustawienie przełącznika `true` umożliwia, który zawiera starsze zachowanie. Jawne ustawianie przełącznika `false` udostępnia również nowe zachowanie. Zależne biblioteki mogą następnie sprawdź wartość przełącznika przez wywołanie metody <xref:System.AppContext.TryGetSwitch%2A> metody.  
-  
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.
+
+ <xref:System.AppContext.SetSwitch%2A> Metoda jest wywoływana przez aplikację (lub biblioteki), aby zadeklarować wartość przełącznika (który jest zawsze <xref:System.Boolean> wartość) definiujący zależne biblioteki. Przełącznik jest zawsze niejawnie `false`, która zapewnia nowe zachowanie. Ustawienie przełącznika `true` umożliwia, który zawiera starsze zachowanie. Jawne ustawianie przełącznika `false` udostępnia również nowe zachowanie. Zależne biblioteki mogą następnie sprawdź wartość przełącznika przez wywołanie metody <xref:System.AppContext.TryGetSwitch%2A> metody.
+
 > [!NOTE]
-> Warto użyć formatu spójne nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę. Poniżej przedstawiono dwa formaty oczywiste.  
->   
-> -   *Przełącznik*. *przestrzeń nazw*. *switchName*  
-> -   *Przełącznik*. *Biblioteka*. *switchName*  
-  
- Dla aplikacji uruchamianych na .NET Framework, oprócz programowo, ustawiając wartość przełącznika może także być ustawiona:  
-  
--   Przez dodanie nazwy przełącznika i wartość do [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu w [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcję pliku konfiguracji aplikacji. Na przykład, następujące definiuje przełącznikiem o nazwie `Libraries.FPLibrary.UseExactFloatingPointComparison` o wartości `False`.  
-  
-    ```xml  
-  
-    <configuration>  
-       <runtime>  
-          <AppContextSwitchOverrides value="Libraries.FPLibrary.UseExactFloatingPointComparison=false" />   
-       </runtime>  
-    </configuration>  
-  
-    ```  
-  
--   Dodając wartość ciągu, którego nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze. Jego wartość musi być ciągiem reprezentującym <xref:System.Boolean> , mogą być analizowane przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody, czyli jego musi mieć wartość "Prawda", "true", "False" lub "false".  
-  
- Jeśli `switchName` już istnieje, jego wartość zostanie zastąpiona `isEnabled` argumentu.  Oznacza to, najbardziej aktualną wywołanie <xref:System.AppContext.SetSwitch%2A> metoda zastępuje wartość zdefiniowana w rejestrze w pliku konfiguracji aplikacji lub przez poprzednie wywołania <xref:System.AppContext.SetSwitch%2A> metody.  
- 
+> Warto użyć formatu spójne nazwy przełącznika, ponieważ są one formalnego kontraktu udostępnianych przez bibliotekę. Poniżej przedstawiono dwa formaty oczywiste.
+>
+> -   *Przełącznik*. *przestrzeń nazw*. *switchName*
+> -   *Przełącznik*. *Biblioteka*. *switchName*
+
+ Dla aplikacji uruchamianych na .NET Framework, oprócz programowo, ustawiając wartość przełącznika może także być ustawiona:
+
+-   Przez dodanie nazwy przełącznika i wartość do [ \<AppContextSwitchOverrides >](~/docs/framework/configure-apps/file-schema/runtime/appcontextswitchoverrides-element.md) elementu w [ \<runtime >](~/docs/framework/configure-apps/file-schema/runtime/runtime-element.md) sekcję pliku konfiguracji aplikacji. Na przykład, następujące definiuje przełącznikiem o nazwie `Libraries.FPLibrary.UseExactFloatingPointComparison` o wartości `False`.
+
+    ```xml
+
+    <configuration>
+       <runtime>
+          <AppContextSwitchOverrides value="Libraries.FPLibrary.UseExactFloatingPointComparison=false" />
+       </runtime>
+    </configuration>
+
+    ```
+
+-   Dodając wartość ciągu, którego nazwa jest nazwą przełącznika do `HKLM\SOFTWARE\Microsoft\.NETFramework\AppContext` klucza w rejestrze. Jego wartość musi być ciągiem reprezentującym <xref:System.Boolean> , mogą być analizowane przez <xref:System.Boolean.Parse%2A?displayProperty=nameWithType> metody, czyli jego musi mieć wartość "Prawda", "true", "False" lub "false".
+
+ Jeśli `switchName` już istnieje, jego wartość zostanie zastąpiona `isEnabled` argumentu.  Oznacza to, najbardziej aktualną wywołanie <xref:System.AppContext.SetSwitch%2A> metoda zastępuje wartość zdefiniowana w rejestrze w pliku konfiguracji aplikacji lub przez poprzednie wywołania <xref:System.AppContext.SetSwitch%2A> metody.
+
  ### <a name="appcontextsetswitch-and-net-core"></a>AppContext.SetSwitch i .NET Core
 
 Program .NET core obsługuje wywołania programowe z <xref:System.AppContext.SetSwitch%2A> tylko metody. Obsługiwane są następujące parametry:
@@ -334,14 +334,14 @@ Program .NET core obsługuje wywołania programowe z <xref:System.AppContext.Set
 |Przełącznik|Wartości|Opis|
 |--|--|--|
 |`System.Net.Http.SocketsHttpHandler.Http2Support`|`true` lub `false`|Wskazuje, czy obsługa protokołu HTTP/2 jest włączona (`true`) lub wyłączony (`false`). Domyślnie jest wyłączona. Przełącznik musi być ustawiona przed pierwszym użyciu <xref:System.Net.Http.HttpClient>. Dostępnych w programie .NET Core 3.0 w wersji zapoznawczej 4.|
-|`System.Net.Http.useSocketsHttpHandler` |`true` lub `false`|Określa, czy wysokiego poziomu sieć interfejsów API, takich jak <xref:System.Net.Http.HttpClient> użyj <xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType> (`true`) lub <xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType> (`false`).|   
-  
-## Examples  
- Następujący wiersz kodu ustawia przełącznikiem o nazwie `Switch.AmazingLib.ThrowOnException` do `true`, co pozwala starsze zachowanie. Biblioteki można sprawdzić czy konsumenta biblioteka ma wartość przełącznika, wywołując <xref:System.AppContext.TryGetSwitch%2A> metody.  
-  
+|`System.Net.Http.UseSocketsHttpHandler` |`true` lub `false`|Określa, czy wysokiego poziomu sieć interfejsów API, takich jak <xref:System.Net.Http.HttpClient> użyj <xref:System.Net.Http.SocketsHttpHandler?displayProperty=nameWithType> (`true`) lub <xref:System.Net.Http.HttpClientHandler?displayProperty=nameWithType> (`false`).|
+
+## Examples
+ Następujący wiersz kodu ustawia przełącznikiem o nazwie `Switch.AmazingLib.ThrowOnException` do `true`, co pozwala starsze zachowanie. Biblioteki można sprawdzić czy konsumenta biblioteka ma wartość przełącznika, wywołując <xref:System.AppContext.TryGetSwitch%2A> metody.
+
  [!code-csharp[System.AppContext.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#1)]
- [!code-vb[System.AppContext.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]  
-  
+ [!code-vb[System.AppContext.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#1)]
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="switchName" /> jest <see langword="null" />.</exception>
@@ -388,11 +388,11 @@ Program .NET core obsługuje wywołania programowe z <xref:System.AppContext.Set
         <summary>Pobiera nazwę framework w wersji docelowej bieżącej aplikacji.</summary>
         <value>Nazwa framework w wersji docelowej bieżącej aplikacji.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Nazwa docelowej wersji struktury odnosi się do wartości <xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType> właściwości. Aby uzyskać listę nazw framework docelowych programu .NET Framework, zobacz [ &lt;supportedRuntime&gt; Element](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md) elementu.  
-  
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ Nazwa docelowej wersji struktury odnosi się do wartości <xref:System.Runtime.Versioning.TargetFrameworkAttribute.FrameworkName%2A?displayProperty=nameWithType> właściwości. Aby uzyskać listę nazw framework docelowych programu .NET Framework, zobacz [ &lt;supportedRuntime&gt; Element](~/docs/framework/configure-apps/file-schema/startup/supportedruntime-element.md) elementu.
+
  ]]></format>
         </remarks>
         <altmember cref="T:System.Runtime.Versioning.TargetFrameworkAttribute" />
@@ -440,23 +440,23 @@ Program .NET core obsługuje wywołania programowe z <xref:System.AppContext.Set
         <summary>Próbuje pobrać wartość przełącznika.</summary>
         <returns><see langword="true" /> Jeśli <paramref name="switchName" /> została ustawiona i <paramref name="isEnabled" /> argument zawiera wartość parametru; w przeciwnym razie <see langword="false" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.  
-  
- Środowisko uruchomieniowe języka wspólnego automatycznie wypełni przełączników przypisane do <xref:System.AppContext> wystąpienia, czytając rejestr i pliku konfiguracji aplikacji. Wartości tych parametrów można zmienić, i nowych przełączników, dodawany przez wywołanie <xref:System.AppContext.SetSwitch%2A> metody.  
-  
- Wywołuje bibliotekę <xref:System.AppContext.TryGetSwitch%2A> metodę sprawdzania, czy jego konsumentów zadeklarowaniu wartość przełącznika i odpowiednio działać, na nim.  Jeśli przełącznik nie jest zdefiniowany, nowa funkcja jest domyślnie włączona... Jeśli przełącznik jest zdefiniowana, a jego wartość wynosi `false`, nowa funkcja jest włączona. Jeśli wartość to `true`, starsze zachowanie jest włączone.  
-  
-   
-  
-## Examples  
- Poniższy przykład określa, czy klient biblioteki ustawił przełącznikiem o nazwie `Switch.AmazingLib.ThrowOnException`.  
-  
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+ <xref:System.AppContext> Klasa umożliwia autorów biblioteki, aby zapewnić jednolity mechanizm rezygnacji nowe funkcje dla swoich użytkowników. Definiuje on kontrakt luźno powiązane między składnikami w celu komunikowania się z rezygnacji z żądaniem. Ta możliwość jest zwykle ważne w przypadku zmian istniejących funkcji. Z drugiej strony już istnieje niejawna uczestnictwa w nowych funkcji.
+
+ Środowisko uruchomieniowe języka wspólnego automatycznie wypełni przełączników przypisane do <xref:System.AppContext> wystąpienia, czytając rejestr i pliku konfiguracji aplikacji. Wartości tych parametrów można zmienić, i nowych przełączników, dodawany przez wywołanie <xref:System.AppContext.SetSwitch%2A> metody.
+
+ Wywołuje bibliotekę <xref:System.AppContext.TryGetSwitch%2A> metodę sprawdzania, czy jego konsumentów zadeklarowaniu wartość przełącznika i odpowiednio działać, na nim.  Jeśli przełącznik nie jest zdefiniowany, nowa funkcja jest domyślnie włączona... Jeśli przełącznik jest zdefiniowana, a jego wartość wynosi `false`, nowa funkcja jest włączona. Jeśli wartość to `true`, starsze zachowanie jest włączone.
+
+
+
+## Examples
+ Poniższy przykład określa, czy klient biblioteki ustawił przełącznikiem o nazwie `Switch.AmazingLib.ThrowOnException`.
+
  [!code-csharp[System.AppContext.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.AppContext.Class/cs/TestValue1.cs#2)]
- [!code-vb[System.AppContext.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]  
-  
+ [!code-vb[System.AppContext.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.AppContext.Class/vb/TestValue1.vb#2)]
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="switchName" /> jest <see langword="null" />.</exception>
