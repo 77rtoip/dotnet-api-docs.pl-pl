@@ -1,5 +1,5 @@
 <Type Name="ValueTask&lt;TResult&gt;" FullName="System.Threading.Tasks.ValueTask&lt;TResult&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="b8dcd3b18fa5f95c701d0a7288bc673f2bffac5f" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="58874283" /></Metadata><TypeSignature Language="C#" Value="public struct ValueTask&lt;TResult&gt; : IEquatable&lt;System.Threading.Tasks.ValueTask&lt;TResult&gt;&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b7517ccc8093036f6b431d4f4fd4360879b7f348" /><Meta Name="ms.sourcegitcommit" Value="ddce15914650a504a7399d539ac1f7cfed3c2caa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/07/2019" /><Meta Name="ms.locfileid" Value="66759863" /></Metadata><TypeSignature Language="C#" Value="public struct ValueTask&lt;TResult&gt; : IEquatable&lt;System.Threading.Tasks.ValueTask&lt;TResult&gt;&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit ValueTask`1&lt;TResult&gt; extends System.ValueType implements class System.IEquatable`1&lt;valuetype System.Threading.Tasks.ValueTask`1&lt;!TResult&gt;&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Tasks.ValueTask`1" />
   <TypeSignature Language="VB.NET" Value="Public Structure ValueTask(Of TResult)&#xA;Implements IEquatable(Of ValueTask(Of TResult))" />
@@ -45,6 +45,17 @@
       <format type="text/markdown"><![CDATA[ 
 
 ## Remarks  
+A <xref:System.Threading.Tasks.ValueTask%601> wystąpienia może być oczekiwany lub przekonwertowane na <xref:System.Threading.Tasks.Task%601> przy użyciu <xref:System.Threading.Tasks.ValueTask%601.AsTask%2A>. A <xref:System.Threading.Tasks.ValueTask%601> wystąpienia może być tylko jeden raz oczekiwane i konsumenci nie może wywołać <xref:System.Threading.Tasks.ValueTask%601.GetAwaiter> przed ukończeniem wystąpienia. Jeśli te ograniczenia są nie do przyjęcia, przekonwertuj <xref:System.Threading.Tasks.ValueTask%601> do <xref:System.Threading.Tasks.Task%601> przez wywołanie metody <xref:System.Threading.Tasks.ValueTask%601.AsTask%2A>.
+
+Następujące operacje nigdy nie powinna być wykonywana na <xref:System.Threading.Tasks.ValueTask%601> wystąpienie:
+
+  - Oczekiwanie na wystąpienie wiele razy.
+  - Wywoływanie <xref:System.Threading.Tasks.ValueTask%601.AsTask%2A> wiele razy.
+  - Za pomocą `.Result` lub `.GetAwaiter().GetResult()` podczas operacji nie zostało jeszcze zakończone lub korzystanie z nich wiele razy.
+  - Przy użyciu więcej niż jednej z następujących technik do korzystania z wystąpienia.
+
+Po wykonaniu dowolnej z powyższych, wyniki są niezdefiniowane.
+
 Metoda może zwrócić wystąpienia tego typu wartości, gdy istnieje prawdopodobieństwo, że wynik jej działania będą dostępne synchronicznie, a kiedy oczekiwać, że można wywołać tak często, koszt alokowanie nowej <xref:System.Threading.Tasks.Task%601> dla każdego wywołania będą wysokie.   
 
 Dostępne są wady i zalety przy użyciu <xref:System.Threading.Tasks.ValueTask%601> zamiast <xref:System.Threading.Tasks.Task%601>. Na przykład <xref:System.Threading.Tasks.ValueTask%601> może pomóc uniknąć alokacji w przypadku, gdy pomyślnego wyniku jest dostępna synchronicznie, także program zawiera dwa pola, natomiast <xref:System.Threading.Tasks.Task%601> jako odwołanie typu jest jedno pole. Oznacza to, że wywołanie metody zwraca dwa pola wartości danych zamiast jednego, czyli większej ilości danych do skopiowania. Oznacza to również, że jeśli metoda, która zwraca <xref:System.Threading.Tasks.ValueTask%601> jest oczekiwane w metodzie asynchronicznej automatu stanów dla tej metody asynchronicznej jest większy, ponieważ muszą być przechowywane struktury zawierający dwa pola, a nie jedno odwołanie.   
@@ -652,11 +663,10 @@ Jako takie, wybór domyślny dla dowolnej metody asynchronicznej należy zwróci
         <remarks>
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
- Jeśli ten <xref:System.Threading.Tasks.ValueTask%601> zawija pomyślnego wyniku ta właściwość zwraca go bezpośrednio.
+Ta właściwość może zostać oceniony jedynie raz i tylko po to <xref:System.Threading.Tasks.ValueTask%601> zostało zakończone.
 
- Jeśli opakowuje <xref:System.Threading.Tasks.Task%601>, zachowanie <xref:System.Threading.Tasks.ValueTask%601.Result%2A> jest podobny do uzyskiwania dostępu do zachowania <xref:System.Threading.Tasks.Task%601.Result%2A> nad zadaniem opakowana: Jeśli zadanie nie zostało ukończone, uzyskiwanie dostępu do właściwości blokuje wątek wywołujący, dopóki nie ukończy; Jeśli zadanie zostało ukończone pomyślnie właściwość ta zwraca wynik; Jeśli zadanie zakończyło się lub została anulowana, uzyskiwanie dostępu do właściwości zgłasza wyjątek. Zgłoszony wyjątek nie jest ujęty w <xref:System.AggregateException>, która różni się od zachowania <xref:System.Threading.Tasks.Task%601.Result%2A> w tej samej sytuacji.
-  
- ]]></format>
+Jeśli ten <xref:System.Threading.Tasks.ValueTask%601> zakończyła się pomyślnie, ta właściwość zwraca wartość wynikową. Jeśli ten <xref:System.Threading.Tasks.ValueTask%601> została przerwana, ta właściwość zgłasza wyjątek. Zgłoszony wyjątek nie jest ujęty w <xref:System.AggregateException>.
+]]></format>
         </remarks>
       </Docs>
     </Member>

@@ -1,5 +1,5 @@
 <Type Name="String" FullName="System.String">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="6676ee0a2b52df9c1f9272c0a4aa8ee2724fd431" /><Meta Name="ms.sourcegitcommit" Value="9a6da88bd5455e8274257ca7ad259b42f1de114f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/22/2019" /><Meta Name="ms.locfileid" Value="66008763" /></Metadata><TypeSignature Language="C#" Value="public sealed class String : ICloneable, IComparable, IComparable&lt;string&gt;, IConvertible, IEquatable&lt;string&gt;, System.Collections.Generic.IEnumerable&lt;char&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="02e6d98c0bb344edfc6bf57c9a34a9a26d7ab8bc" /><Meta Name="ms.sourcegitcommit" Value="ddce15914650a504a7399d539ac1f7cfed3c2caa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/07/2019" /><Meta Name="ms.locfileid" Value="66759220" /></Metadata><TypeSignature Language="C#" Value="public sealed class String : ICloneable, IComparable, IComparable&lt;string&gt;, IConvertible, IEquatable&lt;string&gt;, System.Collections.Generic.IEnumerable&lt;char&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit string extends System.Object implements class System.Collections.Generic.IEnumerable`1&lt;char&gt;, class System.Collections.IEnumerable, class System.ICloneable, class System.IComparable, class System.IComparable`1&lt;string&gt;, class System.IConvertible, class System.IEquatable`1&lt;string&gt;" />
   <TypeSignature Language="DocId" Value="T:System.String" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class String&#xA;Implements ICloneable, IComparable, IComparable(Of String), IConvertible, IEnumerable(Of Char), IEquatable(Of String)" />
@@ -4099,17 +4099,31 @@ Aby rozpoznać znaki do pominięcia w porównania ciągów, należy wywołać <s
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- <xref:System.String.Copy%2A> Metoda zwraca <xref:System.String> obiekt, który ma taką samą wartość jak oryginalny ciąg znaków, ale reprezentuje odwołanie do innego obiektu. Różni się od operatora przypisania, który przypisuje istniejącej relacji ciąg do zmiennej obiektu dodatkowe. W przykładzie pokazano różnicę.  
+## Remarks
+
+`Copy` Metoda zwraca <xref:System.String> obiekt, który ma taką samą wartość jak oryginalny ciąg znaków, ale reprezentuje odwołanie do innego obiektu. Różni się od operatora przypisania, który przypisuje istniejącej relacji ciąg do zmiennej obiektu dodatkowe.
+
+> [!IMPORTANT]
+>  Począwszy od programu .NET Core 3.0, ta metoda jest przestarzała. Jednak firma Microsoft nie zaleca się jej użycie w implementacji .NET. W szczególności z powodu zmian w wewnętrzne przygotowanie ciągu w .NET Core 3.0 to w niektórych przypadkach `Copy` metoda nie utworzy nowy ciąg, ale po prostu zwraca odwołanie do istniejącego interned ciągu.   
+
+W zależności od tego, dlaczego chcesz wywołać `Copy` metody kilka alternatyw:
+
+- Jeśli chcesz, aby wystąpienie inny ciąg w operacji, która modyfikuje ciąg, należy użyć oryginalnego wystąpienia ciągu. Ponieważ ciągów są niezmienne, operacja ciągu tworzy nowe wystąpienie ciągu, a oryginalny ciąg pozostaje bez zmian. W tym przypadku nie należy przypisywać nowe odwołanie ciągu, oryginalnym zmiennej ciągu. Poniższy przykład stanowi ilustrację.
+
+  [!code-csharp[Performing a string operation](~/samples/snippets/csharp/api/system/string/copy/program.cs#1)]
+  [!code-vb[Performing a string operation](~/samples/snippets/visualbasic/api/system/string/copy/program.vb#1)]  
   
-   
-  
-## Examples  
- Poniższy przykład tworzy dwa obiekty ciągu z różnymi wartościami. Kiedy wywołuje <xref:System.String.Copy%2A> metodę, aby przypisać pierwsza wartość do drugiego ciągu dane wyjściowe wskazują, ciągi reprezentują odwołania do innego obiektu, mimo że ich wartości, teraz są równe. Z drugiej strony Jeśli pierwszy ciąg jest przypisana do drugiego ciągu, dwa ciągi ma takie same wartości reprezentują one odwołanie do tego samego obiektu.  
-  
- [!code-csharp[System.String.Copy#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.string.copy/cs/copy1.cs#1)]
- [!code-vb[System.String.Copy#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.string.copy/vb/copy1.vb#1)]  
-  
+   W takim przypadku wywołanie `Copy` metodę w celu utworzenia nowego ciągu przed wywołaniem <xref:System.String.Substring%2A> metoda niepotrzebnie tworzy nowe wystąpienie ciągu. 
+
+- Jeśli chcesz utworzyć mutable buforu z samą zawartością, co oryginalny ciąg wywołać <xref:System.String.ToCharArray%2A?displayProperty=nameWithType> lub <xref:System.Text.StringBuilder.%23ctor(System.String)?displayProperty=nameWithType> konstruktora. Na przykład:
+
+  [!code-csharp[Performing a string operation](~/samples/snippets/csharp/api/system/string/copy/program.cs#2)]
+  [!code-vb[Performing a string operation](~/samples/snippets/visualbasic/api/system/string/copy/program.vb#2)]  
+
+- Jeśli chcesz utworzyć mutable kopia ciągu niebezpieczny kod umożliwia modyfikowanie zawartości ciągu, użyj <xref:System.Runtime.InteropServices.Marshal.StringToHGlobalUni%2A?displayProperty=nameWithType> metody. W poniższym przykładzie użyto <xref:System.Runtime.InteropServices.Marshal.StringToHGlobalUni%2A?displayProperty=nameWithType> metodę, aby uzyskać wskaźnik do lokalizacji to ciąg skopiowany w pamięci niezarządzanej zwiększa punkt kodu Unicode każdego znaku w ciągu za pomocą jednej i kopiuje ciąg wynikowy ciąg zarządzanych.
+
+  [!code-csharp[Performing a string operation](~/samples/snippets/csharp/api/system/string/copy/program.cs#3)]
+
  ]]></format>
         </remarks>
         <exception cref="T:System.ArgumentNullException"><paramref name="str" /> jest <see langword="null" />.</exception>
@@ -4951,7 +4965,7 @@ Zobacz [uwagi](#remarks-top) sekcji ogólna dokumentacja dotycząca `String.Form
  I można także kontrolować sposób formatowania tę wartość:  
   
  [!code-cpp[System.String.Format#36](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/starting2.cpp#36)]
- [!code-csharp-interactive[System.String.Format#36](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/starting2.cs#36)]
+ [!code-csharp[System.String.Format#36](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/starting2.cs#36)]
  [!code-vb[System.String.Format#36](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/starting2.vb#36)]  
   
  Oprócz formatowania, możesz również kontrolować wyrównanie i odstępy.  
@@ -4989,7 +5003,7 @@ Zobacz [uwagi](#remarks-top) sekcji ogólna dokumentacja dotycząca `String.Form
  W poniższym przykładzie zdefiniowano pola 6 znaków, aby pomieścić ciąg "Year" i niektóre ciągi roku, a także pole 15-znakową zawierającą ciąg "Populacji" i niektóre dane dotyczące populacji. Należy pamiętać, że znaki są wyrównane do prawej w polu.  
   
  [!code-cpp[System.String.Format#33](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/starting1.cpp#33)]
- [!code-csharp-interactive[System.String.Format#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/starting3.cs)]
+ [!code-csharp-interactive[System.String.Format#33](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/starting3.cs#33)]
  [!code-vb[System.String.Format#33](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/starting1.vb#33)]  
   
  ### <a name="controlling-alignment"></a>Kontrolowanie wyrównania  
@@ -5034,7 +5048,7 @@ Zobacz [uwagi](#remarks-top) sekcji ogólna dokumentacja dotycząca `String.Form
  Na przykład element formatu, aby sformatować wartość waluty może pojawić się następująco:  
   
  [!code-cpp[System.String.Format#12](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/formatsyntax1.cpp#12)]
- [!code-csharp-interactive[System.String.Format#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/formatsyntax1.cs#12)]  
+ [!code-csharp[System.String.Format#12](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/formatsyntax1.cs#12)]  
  [!code-vb[System.String.Format#12](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/formatsyntax1.vb#12)]  
 
  Element formatu ma następujące elementy:  
@@ -5114,7 +5128,7 @@ Zobacz [uwagi](#remarks-top) sekcji ogólna dokumentacja dotycząca `String.Form
  W tym przykładzie definiuje dostawcę formatu, które formatuje wartość całkowitą jako liczba konta klienta w postaci x-xxxxx-xx.  
   
  [!code-cpp[System.String.Format#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/formatexample2.cpp#2)]
- [!code-csharp-interactive[System.String.Format#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/FormatExample2.cs#2)]
+ [!code-csharp[System.String.Format#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/FormatExample2.cs#2)]
  [!code-vb[System.String.Format#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/FormatExample2.vb#2)]  
   
 <a name="Format7_Example"></a>   
@@ -5126,7 +5140,7 @@ Zobacz [uwagi](#remarks-top) sekcji ogólna dokumentacja dotycząca `String.Form
 -   Jeśli obiekt do sformatowania wartości bajtów bez znaku, który jest formatowana przy użyciu ciągu formatu standardowego "R", niestandardowy program formatujący formatuje wartość numeryczną jako cyfry rzymskie.  
   
  [!code-cpp[System.String.Format#11](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/interceptor2.cpp#11)]
- [!code-csharp-interactive[System.String.Format#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/interceptor2.cs#11)]
+ [!code-csharp[System.String.Format#11](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/interceptor2.cs#11)]
  [!code-vb[System.String.Format#11](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/interceptor2.vb#11)]  
   
 <a name="QA"></a>   
@@ -5142,12 +5156,12 @@ Interpolacja ciągów jest:
 
 Porównanie poniższe dwa przykłady kodu ilustruje wysokiej jakości ciągów interpolowanych przez łączenie ciągów i wywołania metody formatowania złożonego. Korzystanie z wielu operacji łączenia ciągów w poniższym przykładzie generuje kod, pełne i twardych do odczytu.
 
-[!code-csharp-interactive[non-interpolated string operations](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/qa-interpolated1.cs)]
+[!code-csharp-interactive[non-interpolated string operations](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/qa-interpolated1.cs#QAInterpolated)]
 [!code-vb[non-interpolated string operations](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/qa-interpolated1.vb)]  
 
 Z kolei użycia ciągów interpolowanych w poniższym przykładzie generuje znacznie bardziej zrozumiały, bardziej zwięzły widok kodu niż instrukcji konkatenacji ciągów i wywołania <xref:System.String.Format%2A> metody w poprzednim przykładzie.
 
-[!code-csharp-interactive[interpolated string operations](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/qa-interpolated2.cs)]
+[!code-csharp-interactive[interpolated string operations](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/qa-interpolated2.cs#QAInterpolated2)]
 [!code-vb[interpolated string operations](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/qa-interpolated2.vb)]  
 
 ### <a name="where-can-i-find-a-list-of-the-predefined-format-strings-that-can-be-used-with-format-items"></a>Gdzie mogę znaleźć listę ciągów wstępnie zdefiniowany format, które mogą być używane z elementami formatu  
@@ -5421,7 +5435,7 @@ Ta metoda używa [funkcję formatowania złożonego](~/docs/standard/base-types/
  Można również przekazać obiektów do sformatowania jako tablicę, a nie jako listy argumentów.  
   
  [!code-cpp[System.String.Format#10](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.String.Format/cpp/format_paramarray1.cpp#10)]
- [!code-csharp-interactive[System.String.Format#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/format_paramarray1.cs#10)]
+ [!code-csharp[System.String.Format#10](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.String.Format/cs/format_paramarray1.cs#10)]
  [!code-vb[System.String.Format#10](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.String.Format/vb/format_paramarray1.vb#10)]  
 
  ]]></format>
@@ -11496,7 +11510,7 @@ Bieżące wystąpienie nie jest równa <see cref="F:System.String.Empty" />, i <
       <Docs>
         <summary>Pobiera podciąg z tego wystąpienia.  
   
-Ten element członkowski jest przeciążony. Aby uzyskać pełne informacje dotyczące tego elementu członkowskiego, w tym informacje o jego składni i zastosowaniu oraz odpowiednie przykłady, kliknij nazwę na liście przeciążeń.</summary>
+ Ten element członkowski jest przeciążony. Aby uzyskać pełne informacje dotyczące tego elementu członkowskiego, w tym informacje o jego składni i zastosowaniu oraz odpowiednie przykłady, kliknij nazwę na liście przeciążeń.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Substring">
