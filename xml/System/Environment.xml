@@ -1,5 +1,5 @@
 <Type Name="Environment" FullName="System.Environment">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d38348c989ef499a53e5ed5e296d99c5bcf72043" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="64996513" /></Metadata><TypeSignature Language="C#" Value="public static class Environment" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="67122888e2d5a12a6b03eff1a12290883e98622f" /><Meta Name="ms.sourcegitcommit" Value="f55040f35c19a83c85beb55243330558f6e369be" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/10/2019" /><Meta Name="ms.locfileid" Value="66818660" /></Metadata><TypeSignature Language="C#" Value="public static class Environment" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Environment extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Environment" />
   <TypeSignature Language="VB.NET" Value="Public Class Environment" />
@@ -760,8 +760,8 @@ W systemach macOS i Linux blok środowiska bieżącego procesu obejmuje następu
   
  Poniższy przykład podejmie próbę pobrania wartości zmiennej środowiskowej o nazwie `Test1` z procesu blok środowiska. Jeśli zmienna nie istnieje, w przykładzie jest tworzony jego i pobiera jego wartość. W przykładzie pokazano wartość zmiennej. Jeśli przykładzie utworzono zmienną, wzywa także <xref:System.Environment.GetEnvironmentVariables%28System.EnvironmentVariableTarget%29> metody z każdego elementu członkowskiego <xref:System.EnvironmentVariableTarget> wyliczenie ustalenie, czy zmienna można pobrać tylko z bieżącego procesu blok środowiska. Ponadto jeśli przykładzie utworzono zmienną, usuwa go.  
   
- [!code-csharp[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/cs/getenvironmentvariableex1.cs#2)]
- [!code-vb[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/vb/getenvironmentvariableex1.vb#2)]  
+ [!code-csharp[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/cs/getenvironmentvariableex1.cs)]
+ [!code-vb[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/vb/getenvironmentvariableex1.vb)]  
   
  ]]></format>
         </remarks>
@@ -811,7 +811,7 @@ W systemach macOS i Linux blok środowiska bieżącego procesu obejmuje następu
       </Parameters>
       <Docs>
         <param name="variable">Nazwa zmiennej środowiskowej.</param>
-        <param name="target">Jedną z <see cref="T:System.EnvironmentVariableTarget" /> wartości.</param>
+        <param name="target">Jedną z <see cref="T:System.EnvironmentVariableTarget" /> wartości. Tylko <see cref="F:System.EnvironmentVariableTarget.Process" /> jest obsługiwana na platformie .NET Core, działających w systemach Unix podstaw.</param>
         <summary>Pobiera wartość zmiennej środowiskowej, z bieżącego procesu lub klucza rejestru systemu Windows dla bieżącego użytkownika lub komputera lokalnego.</summary>
         <returns>Wartość zmiennej środowiskowej określony przez <paramref name="variable" /> i <paramref name="target" /> parametrów lub <see langword="null" /> Jeśli zmienna środowiskowa nie zostanie znaleziony.</returns>
         <remarks>
@@ -837,12 +837,12 @@ Dostępne są następujące zmienne środowiskowe na proces:
 
 - Identyczne ze zdefiniowanymi przez wywołanie metody albo <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%29> metody lub <xref:System.Environment.SetEnvironmentVariable%28System.String%2CSystem.String%2CSystem.EnvironmentVariableTarget%29> metody z `target` wartość <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>. Utrzymują się tylko do tych zmiennych środowiskowych `dotnet` kończy proces lub aplikacja platformy .NET.   
   
-## Examples  
- Poniższy przykład tworzy zmienne środowiskowe dla celów Proces, Użytkownik i Komputer, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe Użytkownik i Komputer, a następnie usuwa zmienne środowiskowe.  
-  
- [!code-cpp[environment.getsetenvar#1](~/samples/snippets/cpp/VS_Snippets_CLR/environment.getsetenvar/CPP/source.cpp#1)]
- [!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs#1)]
- [!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb#1)]  
+## Examples
+
+Poniższy przykład tworzy zmienne środowiskowe dla optymalizacji <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>, <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, i <xref:System.EnvironmentVariableTarget.Machine> jest przeznaczony dla, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe i użytkownika, a następnie usuwa środowisko zmienne. Ponieważ .NET w systemach opartych na systemie Unix nie nie pomocy technicznej na użytkownika i komputera zmienne środowiskowe tylko <xref:System.Environment.SetEnvironmentVariable(System.String,System.String)> i <xref:System.Environment.SetEnvironmentVariable(System.String,System.String,System.EnvironmentVariableTarget)> o wartości <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType> pomyślnie przechowywać w zmiennej środowiskowej, aby blok środowiska procesu.
+
+[!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs)]
+[!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb)]  
   
  ]]></format>
         </remarks>
@@ -915,7 +915,7 @@ Aby uzyskać pełny dostęp do zmiennych środowiskowych Jeśli <paramref name="
   
 ### <a name="on-windows-systems"></a>W systemach Windows
 
-W systemach Windows `GetEnvironmentVariables` metoda zwraca następujące variabless środowiska:
+W systemach Windows `GetEnvironmentVariables` metoda zwraca następujące zmienne środowiskowe:
   
 - Wszystkie maszyny zmienne środowiskowe, które są zdefiniowane w czasie, proces zostanie utworzony, wraz z wartościami.  
   
@@ -927,7 +927,7 @@ W systemach Windows `GetEnvironmentVariables` metoda zwraca następujące variab
 
 W systemach MacOS i Linux `GetEnvironmentVariables` metoda pobiera nazwy i wartości wszystkich zmiennych środowiskowych, które są dziedziczone z procesu nadrzędnego, który uruchomił `dotnet` proces lub które są zdefiniowane w zakresie `dotnet` sam przetwarzania. Raz `dotnet` zakończenia procesu, te zmienne środowiskowe ostatnie przestaje istnieć. 
 
-.NET core nie obsługuje zmiennych środowiskowych dla poszczególnych komputerów lub użytkowników.   
+.NET core uruchomionych na komputerach z systemem Unix nie obsługuje zmiennych środowiskowych dla poszczególnych komputerów lub użytkowników.   
   
 ## Examples  
  W poniższym przykładzie pokazano <xref:System.Environment.GetEnvironmentVariables%2A> metody.  
@@ -980,7 +980,7 @@ W systemach MacOS i Linux `GetEnvironmentVariables` metoda pobiera nazwy i warto
         <Parameter Name="target" Type="System.EnvironmentVariableTarget" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="target">Jedną z <see cref="T:System.EnvironmentVariableTarget" /> wartości.</param>
+        <param name="target">Jedną z <see cref="T:System.EnvironmentVariableTarget" /> wartości. Tylko <see cxref="F:System.EnvironmentVariableTarget.Process" /> jest obsługiwana na platformie .NET Core uruchomionych na komputerach z systemem Unix.</param>
         <summary>Pobiera wszystkie nazwy zmiennych środowiskowych i ich wartości z bieżącego procesu, lub z klucza rejestru systemu Windows dla bieżącego użytkownika lub komputera lokalnego.</summary>
         <returns>Słownik zawierający wszystkie nazwy zmiennych środowiskowych i ich wartości z określoną przez źródło <paramref name="target" /> parametru; w przeciwnym razie pusty słownik, jeśli żadne zmienne środowiskowe nie zostaną znalezione.</returns>
         <remarks>
@@ -1000,12 +1000,12 @@ W systemach macOS i Linux, tylko `target` wartość <xref:System.EnvironmentVari
 
 Zmienne środowiskowe dla poszczególnych komputerów i użytkowników nie są obsługiwane. A `target` wartość <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType> lub <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> zwraca pustą tablicę.
   
-## Examples  
- Poniższy przykład tworzy zmienne środowiskowe dla celów Proces, Użytkownik i Komputer, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe Użytkownik i Komputer, a następnie usuwa zmienne środowiskowe.  
-  
- [!code-cpp[environment.getsetenvar#1](~/samples/snippets/cpp/VS_Snippets_CLR/environment.getsetenvar/CPP/source.cpp#1)]
- [!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs#1)]
- [!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb#1)]  
+## Examples
+
+Poniższy przykład tworzy zmienne środowiskowe dla optymalizacji <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>, <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, i <xref:System.EnvironmentVariableTarget.Machine> jest przeznaczony dla, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe i użytkownika, a następnie usuwa środowisko zmienne. Ponieważ .NET w systemach opartych na systemie Unix nie nie pomocy technicznej na użytkownika i komputera zmienne środowiskowe tylko <xref:System.Environment.SetEnvironmentVariable(System.String,System.String)> i <xref:System.Environment.SetEnvironmentVariable(System.String,System.String,System.EnvironmentVariableTarget)> o wartości <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType> pomyślnie przechowywać w zmiennej środowiskowej, aby blok środowiska procesu.
+
+[!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs)]
+[!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb)]  
   
  ]]></format>
         </remarks>
@@ -1069,7 +1069,7 @@ Aby uzyskać pełny dostęp do zmiennych środowiskowych Jeśli <paramref name="
         <summary>Pobiera ścieżkę do folderu specjalne systemu, który jest identyfikowany przez wyliczenie określony.</summary>
         <returns>Ścieżka do określonego systemu specjalnego folderu, jeśli ten folder fizycznie znajduje się na komputerze. w przeciwnym razie pusty ciąg ("").  
   
-Folder fizycznie nie istnieje, jeśli system operacyjny nie utworzył, istniejący folder został usunięty lub folder jest katalogiem wirtualnym, takich jak Mój komputer, który nie odpowiada na ścieżkę fizyczną.</returns>
+ Folder fizycznie nie istnieje, jeśli system operacyjny nie utworzył, istniejący folder został usunięty lub folder jest katalogiem wirtualnym, takich jak Mój komputer, który nie odpowiada na ścieżkę fizyczną.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1137,7 +1137,7 @@ Folder fizycznie nie istnieje, jeśli system operacyjny nie utworzył, istnieją
         <summary>Pobiera ścieżkę do folderu specjalnych systemu, jest identyfikowany przez określony wyliczenie, która używa określoną opcję do uzyskiwania dostępu do folderów specjalnych.</summary>
         <returns>Ścieżka do określonego systemu specjalnego folderu, jeśli ten folder fizycznie znajduje się na komputerze. w przeciwnym razie pusty ciąg ("").  
   
-Folder fizycznie nie istnieje, jeśli system operacyjny nie utworzył, istniejący folder został usunięty lub folder jest katalogiem wirtualnym, takich jak Mój komputer, który nie odpowiada na ścieżkę fizyczną.</returns>
+ Folder fizycznie nie istnieje, jeśli system operacyjny nie utworzył, istniejący folder został usunięty lub folder jest katalogiem wirtualnym, takich jak Mój komputer, który nie odpowiada na ścieżkę fizyczną.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -1637,24 +1637,12 @@ Identyfikator platformy uzyskanej nie jest członkiem <see cref="T:System.Platfo
   
 -   Składa się z pojedynczego znaku, którego wartością jest U + 0000.  
   
-   
+## Examples
+
+Poniższy przykład podejmie próbę pobrania wartości zmiennej środowiskowej o nazwie `Test1` z procesu blok środowiska. Jeśli zmienna nie istnieje, w przykładzie utworzono zmienną i pobiera jego wartość. W przykładzie pokazano wartość zmiennej. W implementacji .NET działających w systemach Windows, wzywa także <xref:System.Environment.GetEnvironmentVariables%28System.EnvironmentVariableTarget%29> metody z każdego elementu członkowskiego <xref:System.EnvironmentVariableTarget> wyliczenie ustalenie, czy zmienna można pobrać tylko z bieżącego procesu blok środowiska. (Implementacje platformy .NET w systemach opartych na systemie Unix obsługują tylko zmienne w bloku środowiska procesu.) Ponadto jeśli przykładzie utworzono zmienną, usuwa go.  
   
-## Examples  
- Następujący przykład sprawdza, czy zmienna środowiskowa o nazwie `APPDOMAIN` istnieje w bieżącym procesie. Jeśli nie, tworzy go i ustawia jej wartość na "True". Jeśli wartość `APPDOMAIN` zmienna środowiskowa jest "True", wywoływanych przez nią `Message.Display` metody w nowej domenie aplikacji. W przeciwnym razie wykonuje `Message.Display` metody w bieżącej domenie aplikacji.  
-  
- [!code-csharp[System.Environment.SetEnvironmentVariable#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.environment.setenvironmentvariable/cs/setenvironmentvariable1.cs#1)]
- [!code-vb[System.Environment.SetEnvironmentVariable#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.environment.setenvironmentvariable/vb/setenvironmentvariable1.vb#1)]  
-  
- Po uruchomieniu przykładu po raz pierwszy komunikat "Executing w domenie domeny 2" wyświetlany w konsoli. Jeśli ustawisz zmiennej środowiskowej w wierszu polecenia za pomocą polecenia:  
-  
- `Set AppDomain=False`  
-  
- przykład wyświetla komunikat "wykonywania w domenie *Nazwa_pliku_exe*.exe", gdzie *Nazwa_pliku_exe* jest nazwą pliku wykonywalnego.  
-  
- Poniższy przykład podejmie próbę pobrania wartości zmiennej środowiskowej o nazwie `Test1` z procesu blok środowiska. Jeśli zmienna nie istnieje, w przykładzie utworzono zmienną i pobiera jego wartość. W przykładzie pokazano wartość zmiennej. Jeśli przykładzie utworzono zmienną, wzywa także <xref:System.Environment.GetEnvironmentVariables%28System.EnvironmentVariableTarget%29> metody z każdego elementu członkowskiego <xref:System.EnvironmentVariableTarget> wyliczenie ustalenie, czy zmienna można pobrać tylko z bieżącego procesu blok środowiska. Ponadto jeśli przykładzie utworzono zmienną, usuwa go.  
-  
- [!code-csharp[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/cs/getenvironmentvariableex1.cs#2)]
- [!code-vb[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/vb/getenvironmentvariableex1.vb#2)]  
+ [!code-csharp[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/cs/getenvironmentvariableex1.cs)]
+ [!code-vb[System.Environment.GetEnvironmentVariable#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.environment.getenvironmentvariable/vb/getenvironmentvariableex1.vb)]  
   
  ]]></format>
         </remarks>
@@ -1751,12 +1739,12 @@ Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User?displayProperty
   
  Jeśli `target` jest <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType> lub <xref:System.EnvironmentVariableTarget.Machine?displayProperty=nameWithType>, zaleca się długość `value` mieć mniej niż 2048 znaków.  
   
-## Examples  
- Poniższy przykład tworzy zmienne środowiskowe dla optymalizacji <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>, <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, i <xref:System.EnvironmentVariableTarget.Machine> jest przeznaczony dla, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe i użytkownika, a następnie usuwa środowisko zmienne.  
+## Examples
+
+Poniższy przykład tworzy zmienne środowiskowe dla optymalizacji <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType>, <xref:System.EnvironmentVariableTarget.User?displayProperty=nameWithType>, i <xref:System.EnvironmentVariableTarget.Machine> jest przeznaczony dla, sprawdza, czy rejestr systemu operacyjnego zawiera zmienne środowiskowe i użytkownika, a następnie usuwa środowisko zmienne. Ponieważ .NET w systemach opartych na systemie Unix nie nie pomocy technicznej na użytkownika i komputera zmienne środowiskowe tylko <xref:System.Environment.SetEnvironmentVariable(System.String,System.String)> i <xref:System.Environment.SetEnvironmentVariable(System.String,System.String,System.EnvironmentVariableTarget)> o wartości <xref:System.EnvironmentVariableTarget.Process?displayProperty=nameWithType> pomyślnie przechowywać w zmiennej środowiskowej, aby blok środowiska procesu.
   
- [!code-cpp[environment.getsetenvar#1](~/samples/snippets/cpp/VS_Snippets_CLR/environment.getsetenvar/CPP/source.cpp#1)]
- [!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs#1)]
- [!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb#1)]  
+[!code-csharp[environment.getsetenvar#1](~/samples/snippets/csharp/VS_Snippets_CLR/environment.getsetenvar/CS/gsev.cs)]
+[!code-vb[environment.getsetenvar#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/environment.getsetenvar/VB/gsev.vb)]  
   
  ]]></format>
         </remarks>
