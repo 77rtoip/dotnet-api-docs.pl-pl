@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 76f20bccfe3512339ad2cea01fc1c7809e7d3d15
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63867797"
 ---
-<span data-ttu-id="03ccc-101">Windows XP</span><span class="sxs-lookup"><span data-stu-id="03ccc-101">Windows XP</span></span>
+<span data-ttu-id="ebfa5-101">Windows XP</span><span class="sxs-lookup"><span data-stu-id="ebfa5-101">Windows XP</span></span>

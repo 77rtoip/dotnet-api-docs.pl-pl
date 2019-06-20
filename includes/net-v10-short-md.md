@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 90bbefa65dc31b88dbf0abf8bbbb07de1674d582
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63872649"
 ---
-<span data-ttu-id="08456-101">.NET Framework 1.0</span><span class="sxs-lookup"><span data-stu-id="08456-101">.NET Framework 1.0</span></span>
+<span data-ttu-id="9912c-101">.NET Framework 1.0</span><span class="sxs-lookup"><span data-stu-id="9912c-101">.NET Framework 1.0</span></span>
