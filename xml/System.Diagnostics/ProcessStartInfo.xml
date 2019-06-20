@@ -1,5 +1,5 @@
 <Type Name="ProcessStartInfo" FullName="System.Diagnostics.ProcessStartInfo">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ceb087ee2a19df0fbce2c0e86e86ebada4b3dbd6" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63887562" /></Metadata><TypeSignature Language="C#" Value="public sealed class ProcessStartInfo" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6aae3e941442390152c0bfe1dc86dcbf1bc45ead" /><Meta Name="ms.sourcegitcommit" Value="bc24a3ba616ee1df8b858f9400cae4f058ea3a7e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/19/2019" /><Meta Name="ms.locfileid" Value="67239389" /></Metadata><TypeSignature Language="C#" Value="public sealed class ProcessStartInfo" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit ProcessStartInfo extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.ProcessStartInfo" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ProcessStartInfo" />
@@ -237,7 +237,24 @@
         <summary>Pobiera kolekcję argumentów wiersza polecenia do użycia podczas uruchamiania aplikacji.</summary>
         <value>Kolekcja argumenty wiersza polecenia.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[Jeśli używasz tej właściwości można ustawić argumenty wiersza polecenia <xref:System.Diagnostics.ProcessStartInfo.Arguments> musi być ustawione na pusty ciąg.
+          <format type="text/markdown"><![CDATA[
+          
+`ArgumentList`, które są obsługiwane, począwszy od platformy .NET Core 2.1 i platformy .NET Standard 2.1 i <xref:System.Diagnostics.ProcessStartInfo.Arguments> właściwości są niezależne od siebie nawzajem. Oznacza to, że to ciągi, które są przypisane do `ArgumentList` kolekcji nie są używane do wypełniania <xref:System.Diagnostics.ProcessStartInfo.Arguments> właściwości i parametrów przypisane do <xref:System.Diagnostics.ProcessStartInfo.Arguments> właściwość nie jest przekształcany do poszczególnych ciągów, które są przypisane do `ArgumentList` kolekcji. 
+
+`ArgumentList` jest łatwiejszy w obsłudze niż <xref:System.Diagnostics.ProcessStartInfo.Arguments> właściwości. Ponieważ każdy ciąg jest przypisany do elementu członkowskiego kolekcji, możesz to zrobić jedno-, zamiast ciągów triple ucieczki, które są rozdzielane znakami cudzysłowu. Na przykład, poniższy przykład zawiera `-full "Mary Smith"` jako członek `ArgumentList` kolekcji:
+
+```csharp
+info.ArgumentList.Add("-full \"Mary Smith\"";
+```
+
+Przypisanie odpowiednie do <xref:System.Diagnostics.ProcessStartInfo.Arguments> właściwości:
+
+```csharp
+info.Arguments = "-full \"\"\"Mary Smith\"\"\""
+```
+
+Jeśli używasz tej właściwości można ustawić argumenty wiersza polecenia <xref:System.Diagnostics.ProcessStartInfo.Arguments> musi być ustawione na pusty ciąg.
+
 ## Examples
 
 Ten przykład dodaje dwa argumenty do informacji o rozpoczęcie procesu.
@@ -322,14 +339,19 @@ info.ArgumentList.Add("-last Smith")
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia zestaw argumentów wiersza polecenia do użycia podczas uruchamiania aplikacji.</summary>
-        <value>Jeden ciąg zawierający argumenty do przekazania do aplikacji docelowej, określone w <see cref="P:System.Diagnostics.ProcessStartInfo.FileName" /> właściwości. Wartością domyślną jest ciąg pusty (""). W systemach Windows Vista i wcześniejszych wersji systemu operacyjnego Windows długość argumentów dodane do długość pełnej ścieżki do procesu musi być mniejsza niż 2080. Windows 7 i nowsze wersje długość musi być mniejsza niż 32699.  
-  
-Argumenty są analizowane i interpretowane przez aplikacji docelowej, więc muszą być dopasowane oczekiwania przez tę aplikację. For.NET aplikacje, jak pokazano w poniższych przykładach miejsca do magazynowania są interpretowane jako separator między wiele argumentów. Jeden argument, który zawiera spacje muszą być ujęte w znaki cudzysłowu, ale te znaki cudzysłowu nie są przekazywane do aplikacji docelowej. W zawierają znaki cudzysłowu w końcowym przeanalizować argument ucieczki triple każdego znaku.</value>
+        <value>Jeden ciąg zawierający argumenty do przekazania do aplikacji docelowej, określone w <see cref="P:System.Diagnostics.ProcessStartInfo.FileName" /> właściwości. Wartością domyślną jest ciąg pusty ("").</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[Jeśli używasz tej właściwości można ustawić argumenty wiersza polecenia <xref:System.Diagnostics.ProcessStartInfo.ArgumentList*> nie może zawierać żadnych elementów.
+          <format type="text/markdown"><![CDATA[
+
+Długość ciągu, przypisany do `Arguments` właściwość musi być mniejsza niż 32,699.
   
+Argumenty są analizowane i interpretowane przez aplikacji docelowej, więc muszą być dopasowane oczekiwania przez tę aplikację. W przypadku aplikacji .NET jak pokazano w poniższych przykładach miejsca do magazynowania są interpretowane jako separator między wiele argumentów. Jeden argument, który zawiera spacje muszą być ujęte w znaki cudzysłowu, ale te znaki cudzysłowu nie są przekazywane do aplikacji docelowej. Aby uwzględnić znaki cudzysłowu w końcowym argumentem przeanalizowany, oznacz triple ucieczki każdego.
+Jeśli używasz tej właściwości można ustawić argumenty wiersza polecenia <xref:System.Diagnostics.ProcessStartInfo.ArgumentList> nie może zawierać żadnych elementów.
+  
+`Arguments` i <xref:System.Diagnostics.ProcessStartInfo.ArgumentList>, co jest obsługiwane począwszy od platformy .NET Core 2.1 i platformy .NET Standard 2.1 są niezależne od siebie nawzajem. Oznacza to, że ciąg znaków, przypisany do `Arguments` nie wypełnia właściwości <xref:System.Diagnostics.ProcessStartInfo.ArgumentList> kolekcji i elementów członkowskich <xref:System.Diagnostics.ProcessStartInfo.ArgumentList> kolekcji nie są przypisane do `Arguments` właściwości.
+
 ## Examples  
- Pierwszy poniższy przykład tworzy mała aplikacja (argsecho.exe) tego przekazuje jej argumenty do konsoli. Drugi przykład tworzy aplikację, która wywołuje argsecho.exe Aby przedstawić różne odmiany właściwości argumentów.  
+ Pierwszy przykład tworzy mała aplikacja (argsecho.exe) tego przekazuje jej argumenty do konsoli. Drugi przykład tworzy aplikację, która wywołuje argsecho.exe Aby przedstawić różne odmiany `Arguments` właściwości.  
   
  [!code-cpp[Process.Start_static#3](~/samples/snippets/cpp/VS_Snippets_CLR/Process.Start_static/CPP/processstartstatic.cpp#3)]
  [!code-csharp[Process.Start_static#3](~/samples/snippets/csharp/VS_Snippets_CLR/Process.Start_static/CS/processstartstatic.cs#3)]
