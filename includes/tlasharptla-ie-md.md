@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 39f39a7cd1dfe37c54dc93e66a2f4b009de437ec
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63878920"
 ---
 Microsoft Internet Explorer

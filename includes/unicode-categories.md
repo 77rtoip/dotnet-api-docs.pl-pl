@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 5feab3f469ed6d7017ee0fdc20e78822b5ed4834
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63867685"
 ---
  .NET obsługuje własnej tabeli znaków i ich odpowiedniej kategorii, który zapewnia, że określoną wersję implementacji programu .NET uruchomionych na różnych platformach zwraca informacje o kategorii identyczne znak. Na platformie .NET Core w systemie Linux i macOS, informacje kategorii znaków są udostępniane przez [składniki międzynarodowego standardu Unicode](http://site.icu-project.org/) bibliotek.
