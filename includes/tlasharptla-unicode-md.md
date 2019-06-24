@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 9ab0bd9a6126ee4b9d7538d5c6cba7aa587f31ed
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63878023"
 ---
-<span data-ttu-id="a95b5-101">Unicode</span><span class="sxs-lookup"><span data-stu-id="a95b5-101">Unicode</span></span>
+<span data-ttu-id="b103f-101">Unicode</span><span class="sxs-lookup"><span data-stu-id="b103f-101">Unicode</span></span>

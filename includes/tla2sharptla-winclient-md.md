@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: 07439a554abfd0a5b6ae407d2d029d2e4a0970cc
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63869639"
 ---
-<span data-ttu-id="04a7a-101">WPF</span><span class="sxs-lookup"><span data-stu-id="04a7a-101">WPF</span></span>
+<span data-ttu-id="b97f0-101">WPF</span><span class="sxs-lookup"><span data-stu-id="b97f0-101">WPF</span></span>

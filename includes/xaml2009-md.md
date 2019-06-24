@@ -1,9 +1,9 @@
 ---
 ms.openlocfilehash: d1d606f60f5c9c621a499e24a732e8274e30c522
-ms.sourcegitcommit: f1d16425528e237257ca3b58eb49217a514849ea
+ms.sourcegitcommit: 1bb00d2f4343e73ae8d58668f02297a3cf10a4c1
 ms.translationtype: MT
 ms.contentlocale: pl-PL
-ms.lasthandoff: 04/24/2019
+ms.lasthandoff: 06/15/2019
 ms.locfileid: "63867544"
 ---
-<span data-ttu-id="c8a07-101">XAML2009</span><span class="sxs-lookup"><span data-stu-id="c8a07-101">XAML2009</span></span>
+<span data-ttu-id="731e5-101">XAML2009</span><span class="sxs-lookup"><span data-stu-id="731e5-101">XAML2009</span></span>
