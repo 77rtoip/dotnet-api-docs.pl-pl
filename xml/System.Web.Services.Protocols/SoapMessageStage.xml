@@ -1,5 +1,5 @@
 <Type Name="SoapMessageStage" FullName="System.Web.Services.Protocols.SoapMessageStage">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="bf6e6947fc25503ae970399c90befacd586e1f10" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64023412" /></Metadata><TypeSignature Language="C#" Value="public enum SoapMessageStage" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="007edd2a7a94426b901a0ebd1e104f1685ac347d" /><Meta Name="ms.sourcegitcommit" Value="9170ef1c277dbe29b425d453dc133624b156d393" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/01/2019" /><Meta Name="ms.locfileid" Value="67488021" /></Metadata><TypeSignature Language="C#" Value="public enum SoapMessageStage" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed SoapMessageStage extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Web.Services.Protocols.SoapMessageStage" />
   <TypeSignature Language="VB.NET" Value="Public Enum SoapMessageStage" />
@@ -20,13 +20,22 @@
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
-## Remarks  
- Program ASP.NET zapewnia mechanizm rozszerzalności dla wywołania usługi sieci Web przy użyciu protokołu SOAP. Mechanizm rozszerzalności opiera się funkcjonowanie wokół <xref:System.Web.Services.Protocols.SoapExtension> , można inspekcja lub modyfikowanie wiadomości w określonych etapów w ramach przetwarzania po stronie klienta lub serwera wiadomości. To wyliczenie Określa stan przetwarzania <xref:System.Web.Services.Protocols.SoapMessage>.  
-  
-   
-  
+## Remarks
+
+Program ASP.NET zapewnia mechanizm rozszerzalności dla wywołania usługi sieci Web przy użyciu protokołu SOAP. Mechanizm rozszerzalności opiera się funkcjonowanie wokół <xref:System.Web.Services.Protocols.SoapExtension> , można inspekcja lub modyfikowanie wiadomości w określonych etapów w ramach przetwarzania po stronie klienta lub serwera wiadomości. To wyliczenie Określa stan przetwarzania <xref:System.Web.Services.Protocols.SoapMessage>.
+
+Poniższa tabela przedstawia sytuacji każdy z etapów podczas klient protokołu SOAP i przetwarzanie na serwerze.
+
+|`SoapMessageStage`|Podczas <xref:System.Web.Services.Protocols.SoapClientMessage> przetwarzania|Podczas <xref:System.Web.Services.Protocols.SoapServerMessage> przetwarzania|
+|---|---|---|
+|`AfterDeserialize`|Występuje po komunikatu protokołu SOAP, zawierająca odpowiedź z wywołania metody usługi sieci Web XML ma deserializacji do obiektu, ale przed klienta otrzymaniu wyników po deserializacji.|Występuje po żądanie sieciowe zawierające komunikat protokołu SOAP reprezentujący wywołania metody usługi sieci Web XML jest przeprowadzona deserializacja obiektu, ale przed metody, na który nazywa obiekt reprezentujący metody usługi sieci Web XML.|
+|`AfterSerialize`|Występuje po klient wywołuje metody usługi sieci Web XML i parametry są serializowane w formacie XML, ale przed SOAP komunikat zawierający ten XML są wysyłane za pośrednictwem sieci.|Występuje po zwraca metoda usługi sieci Web XML, a wszelkie wartości zwracane są serializowane w formacie XML, ale przed komunikatu protokołu SOAP, zawierający ten XML są przesyłane za pośrednictwem sieci.|
+|`BeforeDeserialize`|Występuje po Odebrano odpowiedź z sieci z wywołania metody usługi sieci Web XML, ale tuż przed odpowiedź zawierającą SOAP wiadomości jest przeprowadzona deserializacja obiektu.|Występuje po otrzymaniu żądanie sieciowe zawierające komunikatu protokołu SOAP w celu wywołania metody usługi sieci Web XML przez serwer sieci Web, ale przed komunikatu protokołu SOAP jest przeprowadzona deserializacja obiektu.| 
+|`BeforeSerialize`|Występuje po klient wywołuje metody usługi sieci Web XML, ale przed wywołaniem serializowanego.|Występuje po wywołania zwraca metoda usługi sieci Web XML, ale przed wartości zwracane są serializowane i przesyłane przez sieć z powrotem do klienta.|
+
 ## Examples  
- Poniższy przykład kodu jest fragment rozszerzenie SOAP, która implementuje <xref:System.Web.Services.Protocols.SoapExtension.ProcessMessage%2A> metody. W ramach <xref:System.Web.Services.Protocols.SoapExtension.ProcessMessage%2A> metody, przetwarzanie <xref:System.Web.Services.Protocols.SoapMessage> odbywa się w określonym celu <xref:System.Web.Services.Protocols.SoapMessageStage>.  
+
+Poniższy przykład to fragment rozszerzenie SOAP, która implementuje <xref:System.Web.Services.Protocols.SoapExtension.ProcessMessage%2A> metody. W ramach <xref:System.Web.Services.Protocols.SoapExtension.ProcessMessage%2A> metody, przetwarzanie <xref:System.Web.Services.Protocols.SoapMessage> odbywa się w określonym celu <xref:System.Web.Services.Protocols.SoapMessageStage>.  
   
  [!code-cpp[SoapMessageState#1](~/samples/snippets/cpp/VS_Snippets_Remoting/SoapMessageState/CPP/SoapMessageState.cpp#1)]
  [!code-csharp[SoapMessageState#1](~/samples/snippets/csharp/VS_Snippets_Remoting/SoapMessageState/CS/soapmessagestate.cs#1)]
@@ -59,16 +68,6 @@
       <MemberValue>8</MemberValue>
       <Docs>
         <summary>Etap tuż za <see cref="T:System.Web.Services.Protocols.SoapMessage" /> wykonać deserializacji z komunikatu protokołu SOAP do obiektu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Podczas <xref:System.Web.Services.Protocols.SoapClientMessage> przetwarzania, etap AfterDeserialize występuje po komunikatu protokołu SOAP, zawierająca odpowiedź z wywołania metody usługi sieci Web XML ma deserializacji do obiektu, ale przed klienta otrzymaniu wyników po deserializacji.  
-  
- Podczas <xref:System.Web.Services.Protocols.SoapServerMessage> przetwarzania, etap AfterDeserialize występuje po żądanie sieciowe zawierające komunikat protokołu SOAP reprezentujący wywołania metody usługi sieci Web XML jest przeprowadzona na obiekt, ale przed metody dla tego obiektu reprezentujących sieci Web XML wywoływana jest metoda usługi.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="AfterSerialize">
@@ -92,16 +91,6 @@
       <MemberValue>2</MemberValue>
       <Docs>
         <summary>Etap tuż za <see cref="T:System.Web.Services.Protocols.SoapMessage" /> jest serializowana, ale przed SOAP komunikatów są wysyłane przez sieć.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Podczas <xref:System.Web.Services.Protocols.SoapClientMessage> przetwarzania, etap AfterSerialize występuje po klient wywołuje metody usługi sieci Web XML i parametry są serializowane w formacie XML, ale przed SOAP komunikat zawierający ten XML są wysyłane za pośrednictwem sieci.  
-  
- Podczas <xref:System.Web.Services.Protocols.SoapServerMessage> przetwarzania, etap AfterSerialize występuje po metody usługi sieci Web XML zwraca wszystkie wartości zwracane są serializowane w formacie XML, ale przed SOAP komunikat zawierający ten XML są wysyłane za pośrednictwem sieci.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeforeDeserialize">
@@ -125,16 +114,6 @@
       <MemberValue>4</MemberValue>
       <Docs>
         <summary>Etap tuż przed <see cref="T:System.Web.Services.Protocols.SoapMessage" /> jest przeprowadzona z komunikatu protokołu SOAP, wysyłane przez sieć do obiektu.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Podczas <xref:System.Web.Services.Protocols.SoapClientMessage> przetwarzania, etap BeforeDeserialize występuje po Odebrano odpowiedź z sieci z wywołania metody usługi sieci Web XML, ale tuż przed odpowiedź zawierającą SOAP wiadomości jest przeprowadzona deserializacja obiektu.  
-  
- Podczas <xref:System.Web.Services.Protocols.SoapServerMessage> przetwarzania, etap BeforeDeserialize występuje po otrzymaniu żądanie sieciowe zawierające komunikatu protokołu SOAP w celu wywołania metody usługi sieci Web XML przez serwer sieci Web, ale przed komunikatu protokołu SOAP jest przeprowadzona deserializacja obiektu.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
     <Member MemberName="BeforeSerialize">
@@ -158,16 +137,6 @@
       <MemberValue>1</MemberValue>
       <Docs>
         <summary>Etap po prostu przed programem <see cref="T:System.Web.Services.Protocols.SoapMessage" /> deserializowana.</summary>
-        <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Podczas <xref:System.Web.Services.Protocols.SoapClientMessage> przetwarzania, etap BeforeSerialize występuje po klient wywołuje metody usługi sieci Web XML, ale przed wywołaniem serializowanego.  
-  
- Podczas <xref:System.Web.Services.Protocols.SoapServerMessage> przetwarzania, etap BeforeSerialize występuje po wywołania sieci Web XML usługi zwraca metoda, ale przed wartości zwracane są serializowane i przesyłane przez sieć z powrotem do klienta.  
-  
- ]]></format>
-        </remarks>
       </Docs>
     </Member>
   </Members>
