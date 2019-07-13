@@ -1,5 +1,5 @@
 <Type Name="DiagnosticListener" FullName="System.Diagnostics.DiagnosticListener">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ee69c9bbc69b712102cee4af1a8fd044575a3161" /><Meta Name="ms.sourcegitcommit" Value="bc24a3ba616ee1df8b858f9400cae4f058ea3a7e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/19/2019" /><Meta Name="ms.locfileid" Value="67239469" /></Metadata><TypeSignature Language="C#" Value="public class DiagnosticListener : System.Diagnostics.DiagnosticSource, IDisposable, IObservable&lt;System.Collections.Generic.KeyValuePair&lt;string,object&gt;&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f0ca1d8fc3384f636938fa376747be0e95d7412c" /><Meta Name="ms.sourcegitcommit" Value="cfc0e4215fd0d259582ada2141878befd7c3c8c6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/12/2019" /><Meta Name="ms.locfileid" Value="67855028" /></Metadata><TypeSignature Language="C#" Value="public class DiagnosticListener : System.Diagnostics.DiagnosticSource, IDisposable, IObservable&lt;System.Collections.Generic.KeyValuePair&lt;string,object&gt;&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DiagnosticListener extends System.Diagnostics.DiagnosticSource implements class System.IDisposable, class System.IObservable`1&lt;valuetype System.Collections.Generic.KeyValuePair`2&lt;string, object&gt;&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.DiagnosticListener" />
   <TypeSignature Language="VB.NET" Value="Public Class DiagnosticListener&#xA;Inherits DiagnosticSource&#xA;Implements IDisposable, IObservable(Of KeyValuePair(Of String, Object))" />
@@ -151,7 +151,13 @@ Zasubskrybuj to, wywołania zwrotne możesz uzyskać wszystkie NotificationListe
       <Docs>
         <summary>Określa, czy istnieją żadnych zarejestrowanych subskrybentów.</summary>
         <returns><see langword="true" /> w przypadku wszelkich zarejestrowanych subskrybentów <see langword="false" /> inaczej.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+Jeśli Instalator powiadomienia jest kosztowne, można wywołać `IsEnabled` przed wykonaniem tej konfiguracji. Producenci opcjonalnie może wywołać `IsEnabled` przed wywołaniem <xref:System.Diagnostics.DiagnosticListener.IsEnabled(System.String) in performance-critical parts of the application to determine whether there are any listeners to the <xref:System.Diagnostics.DiagnosticListener>.
+
+          ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="IsEnabled">
@@ -318,9 +324,9 @@ Zasubskrybuj to, wywołania zwrotne możesz uzyskać wszystkie NotificationListe
         <Parameter Name="observer" Type="System.IObserver&lt;System.Collections.Generic.KeyValuePair&lt;System.String,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <param name="observer">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="observer">Subskrybent.</param>
+        <summary>Dodaje subskrybenta.</summary>
+        <returns>Odwołanie do interfejsu, który umożliwia odbiornik zrezygnować z otrzymywania powiadomień przed <see cref="T:System.Diagnostics.DiagnosticSource" /> zostało zakończone, wysyłając.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -348,11 +354,13 @@ Zasubskrybuj to, wywołania zwrotne możesz uzyskać wszystkie NotificationListe
       </Parameters>
       <Docs>
         <param name="observer">Subskrybent.</param>
-        <param name="isEnabled">Delegat, który filtruje zdarzenia na podstawie ich nazw i maksymalnie dwa kontekst obiektu (które mogą być <see langword="null" />).</param>
-        <summary>Dodaje subskrybenta. Jeśli <paramref name="isEnabled" /> parametr nie jest <see langword="null" />, oznacza to, że niektóre zdarzenia są postrzegać można było pominąć, w celu zwiększenia wydajności.</summary>
-        <returns>To be added.</returns>
+        <param name="isEnabled">Delegat, który filtruje zdarzenia na podstawie ich nazw i maksymalnie dwóch obiektów kontekstu (które mogą być <see langword="null" />), lub <see langword="null" /> , jeśli filtr zdarzeń nie jest pożądane.</param>
+        <summary>Dodaje subskrybenta, a opcjonalnie filtruje zdarzenia na podstawie ich nazw i maksymalnie dwóch obiektów kontekstu.</summary>
+        <returns>Odwołanie do interfejsu, który umożliwia odbiornik zrezygnować z otrzymywania powiadomień przed <see cref="T:System.Diagnostics.DiagnosticSource" /> zostało zakończone, wysyłając.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
+
+Jeśli `isEnabled` nie jest `null`, oznacza to, że niektóre zdarzenia są postrzegać można było pominąć, w celu zwiększenia wydajności.
 
 Lokacja określonego Instrumentacji ma możliwość wywoływania co najmniej jeden <xref:System.Diagnostics.DiagnosticListener.IsEnabled%2A> przeciążenia, w których przekazuje nazwę zdarzenia i maksymalnie dwa obiekty (Instrumentacji specyficzne dla lokacji) jako argumenty. Jeśli którakolwiek z tych <xref:System.Diagnostics.DiagnosticListener.IsEnabled%2A> wywołań następnie to `isEnabled` predykat jest wywoływany przy użyciu wartości przekazanych (Jeśli używane są krótsze przeciążenia, `null` jest przekazywany w celu znalezienia brakujących obiektów kontekstu).
 
@@ -395,14 +403,14 @@ Jeśli ten parametr jest `null`, odbywa się bez filtrowania (wszystkich przeci�
       <Docs>
         <param name="observer">Subskrybent.</param>
         <param name="isEnabled">Delegat, który filtruje zdarzenia na podstawie ich nazwy (<see cref="T:System.String" />). Delegat powinna zwrócić <see langword="true" /> Jeśli zdarzenie jest włączone.</param>
-        <summary>Dodaj subskrybentów (obserwatora). Jeśli <paramref name="isEnabled" /> parametr nie jest <see langword="null" />, oznacza to, że niektóre zdarzenia są postrzegać i można było pominąć, w celu zwiększenia wydajności.</summary>
-        <returns>To be added.</returns>
+        <summary>Dodaje subskrybenta, a opcjonalnie filtruje zdarzenia na podstawie ich nazwy.</summary>
+        <returns>Odwołanie do interfejsu, który umożliwia odbiornik zrezygnować z otrzymywania powiadomień przed <see cref="T:System.Diagnostics.DiagnosticSource" /> zostało zakończone, wysyłając.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
-            
-Należy pamiętać, że `isEnabled` predykat jest opcjonalne optymalizacji w celu umożliwienia lokacji Instrumentacji uniknąć Konfigurowanie ładunku i wywoływać metodę <xref:System.Diagnostics.DiagnosticListener.Write(System.String,System.Object)> po subskrybenta nie dba o nim. W szczególności lokacji Instrumentacji włączono opcję ignorowania <xref:System.Diagnostics.DiagnosticListener.IsEnabled> predykat (nie wywołuje metody ją) i po prostu wywoływanie <xref:System.Diagnostics.DiagnosticListener.Write(System.String,System.Object)>. Dlatego jeśli subskrybent wymaga, filtrowanie, musi zrobić to sam.
 
-Jeśli ten parametr jest `null`, odbywa się bez filtrowania (wszystkich przeciążeń z <xref:System.Diagnostics.DiagnosticSource.IsEnabled%2A> zwracają `true`).
+Jeśli `isEnabled` nie `null`, niektóre zdarzenia są postrzegać i można było pominąć, w celu zwiększenia wydajności. `isEnabled` Predykat jest opcjonalne optymalizacji w celu umożliwienia lokacji Instrumentacji uniknąć Konfigurowanie ładunku i wywoływać metodę <xref:System.Diagnostics.DiagnosticListener.Write(System.String,System.Object)> po subskrybenta nie dba o nim. W szczególności lokacji Instrumentacji włączono opcję ignorowania <xref:System.Diagnostics.DiagnosticListener.IsEnabled> predykat (nie wywołuje metody ją) i po prostu wywoływanie <xref:System.Diagnostics.DiagnosticListener.Write(System.String,System.Object)>. Dlatego jeśli subskrybent wymaga, filtrowanie, musi zrobić to sam.
+
+Jeśli `isEnabled` jest `null`, odbywa się bez filtrowania (wszystkich przeciążeń z <xref:System.Diagnostics.DiagnosticSource.IsEnabled%2A> zwracają `true`).
 
           ]]></format>
         </remarks>
@@ -433,9 +441,17 @@ Jeśli ten parametr jest `null`, odbywa się bez filtrowania (wszystkich przeci�
         <param name="isEnabled">To be added.</param>
         <param name="onActivityImport">To be added.</param>
         <param name="onActivityExport">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Dodaje subskrybenta, opcjonalnie filtruje zdarzenia na podstawie ich nazw i maksymalnie dwóch obiektów kontekstu i określa metody do wywołania po dostawców importowania lub eksportowania działania związane z poza procesem.</summary>
+        <returns>Odwołanie do interfejsu, który umożliwia odbiornik zrezygnować z otrzymywania powiadomień przed <see cref="T:System.Diagnostics.DiagnosticSource" /> zostało zakończone, wysyłając.</returns>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+Jeśli `isEnabled` jest różna od null, niektóre zdarzenia są postrzegać można było pominąć, w celu zwiększenia wydajności.  
+
+Możesz również dostarczyć "onActivityImport" i "onActivityExport" metod, które są wywoływane podczas dostawców importowanie lub eksportowanie działań z poza procesem (na przykład z żądania HTTP). Te metody są wywoływane po importowania lub eksportowania działania i może służyć do modyfikowania działania lub wychodzące żądanie, aby dodać zasady.
+
+         ]]></format>
+         </remarks>
       </Docs>
     </Member>
     <Member MemberName="ToString">
@@ -493,11 +509,18 @@ Jeśli ten parametr jest `null`, odbywa się bez filtrowania (wszystkich przeci�
         <Parameter Name="parameters" Type="System.Object" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2" />
       </Parameters>
       <Docs>
-        <param name="name">To be added.</param>
-        <param name="value">To be added.</param>
-        <param name="parameters">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="name">Nazwa zdarzenia do dziennika.</param>
+        <param name="value">Obiekt, który reprezentuje ładunek zdarzenia.</param>
+        <param name="parameters">Obiekt, który reprezentuje ładunek zdarzenia.</param>
+        <summary>Rejestruje powiadomienia.</summary>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+Aby uzyskać więcej informacji, zobacz <xref:System.Diagnostics.DiagnosticSource.Write%2A?displayProperty=nameWithType> metody.
+
+         ]]></format>
+         </remarks>
+
       </Docs>
     </Member>
   </Members>
