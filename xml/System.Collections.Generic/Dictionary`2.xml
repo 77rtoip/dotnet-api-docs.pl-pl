@@ -1,5 +1,5 @@
 <Type Name="Dictionary&lt;TKey,TValue&gt;" FullName="System.Collections.Generic.Dictionary&lt;TKey,TValue&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="cdbf5d3685931545386e2b579f1591f436126dbb" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="65003491" /></Metadata><TypeSignature Language="C#" Value="public class Dictionary&lt;TKey,TValue&gt; : System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IDictionary&lt;TKey,TValue&gt;, System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IReadOnlyCollection&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IReadOnlyDictionary&lt;TKey,TValue&gt;, System.Collections.IDictionary, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="873c59094f0490f99158ca72b106fb86c771fe46" /><Meta Name="ms.sourcegitcommit" Value="727af77f0b7ae2636efa3bc47000697540084461" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/15/2019" /><Meta Name="ms.locfileid" Value="67877077" /></Metadata><TypeSignature Language="C#" Value="public class Dictionary&lt;TKey,TValue&gt; : System.Collections.Generic.ICollection&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IDictionary&lt;TKey,TValue&gt;, System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IReadOnlyCollection&lt;System.Collections.Generic.KeyValuePair&lt;TKey,TValue&gt;&gt;, System.Collections.Generic.IReadOnlyDictionary&lt;TKey,TValue&gt;, System.Collections.IDictionary, System.Runtime.Serialization.IDeserializationCallback, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit Dictionary`2&lt;TKey, TValue&gt; extends System.Object implements class System.Collections.Generic.ICollection`1&lt;valuetype System.Collections.Generic.KeyValuePair`2&lt;!TKey, !TValue&gt;&gt;, class System.Collections.Generic.IDictionary`2&lt;!TKey, !TValue&gt;, class System.Collections.Generic.IEnumerable`1&lt;valuetype System.Collections.Generic.KeyValuePair`2&lt;!TKey, !TValue&gt;&gt;, class System.Collections.Generic.IReadOnlyCollection`1&lt;valuetype System.Collections.Generic.KeyValuePair`2&lt;!TKey, !TValue&gt;&gt;, class System.Collections.Generic.IReadOnlyDictionary`2&lt;!TKey, !TValue&gt;, class System.Collections.ICollection, class System.Collections.IDictionary, class System.Collections.IEnumerable, class System.Runtime.Serialization.IDeserializationCallback, class System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="DocId" Value="T:System.Collections.Generic.Dictionary`2" />
   <TypeSignature Language="VB.NET" Value="Public Class Dictionary(Of TKey, TValue)&#xA;Implements ICollection(Of KeyValuePair(Of TKey, TValue)), IDeserializationCallback, IDictionary, IDictionary(Of TKey, TValue), IEnumerable(Of KeyValuePair(Of TKey, TValue)), IReadOnlyCollection(Of KeyValuePair(Of TKey, TValue)), IReadOnlyDictionary(Of TKey, TValue), ISerializable" />
@@ -1000,10 +1000,11 @@ Publiczne statyczne (<see langword="Shared" /> w języku Visual Basic) elementy 
         <Parameter Name="capacity" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="capacity">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="capacity">Liczba wpisów.</param>
+        <summary>Zapewnia, że słownik mogące wstrzymać określonej liczby wpisów bez wszelkie dalsze rozwijanie jego magazynu zapasowego.</summary>
+        <returns>Bieżące możliwości oferowane przez <see cref="T:System.Collections.Generic.Dictionary`2" />.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="capacity" /> jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetEnumerator">
@@ -2678,8 +2679,19 @@ Wartość jest przypisany, i <paramref name="value" /> typu, który nie jest mo�
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Ustawia pojemność tego słownika, co byłoby jeśli ma ona pierwotnie inicjowany z nim wpisów.</summary>
+        <remarks>  
+          <format type="text/markdown"><![CDATA[  
+
+Tej metody, można zminimalizować obciążenie pamięci, gdy wiadomo, że żadne nowe elementy zostaną dodane do słownika. Aby przydzielić minimalny rozmiar macierzy magazynowej, należy wykonać następujące instrukcje:
+
+```csharp
+dictionary.Clear();
+dictionary.TrimExcess();
+```
+
+         ]]></format>
+         </remarks>
       </Docs>
     </Member>
     <Member MemberName="TrimExcess">
@@ -2708,9 +2720,10 @@ Wartość jest przypisany, i <paramref name="value" /> typu, który nie jest mo�
         <Parameter Name="capacity" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="capacity">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="capacity">Nową pojemność.</param>
+        <summary>Ustawia pojemność tego słownika do przechowywania określoną liczbę wpisów bez wszelkie dalsze rozwijanie jego magazynu zapasowego.</summary>
+        <remarks>Tej metody, można zminimalizować obciążenie pamięci, gdy wiadomo, że zostaną dodane żadne nowe elementy.</remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="capacity" /> jest mniejsza niż <see cref="T:System.Collections.Generic.Dictionary`2" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryAdd">
