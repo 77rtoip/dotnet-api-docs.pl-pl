@@ -1,5 +1,5 @@
 <Type Name="GC" FullName="System.GC">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="b44a711ee888d1ea3c30d724e1959d5c05b1be32" /><Meta Name="ms.sourcegitcommit" Value="93667418e6e77da6ba7109a407c61b8969cec4ec" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/05/2019" /><Meta Name="ms.locfileid" Value="67571237" /></Metadata><TypeSignature Language="C#" Value="public static class GC" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e1c18f82901a882b133deb9d96caaf88746649d3" /><Meta Name="ms.sourcegitcommit" Value="87817aa377ffe999787a084c8e8ca669080f1e6b" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/19/2019" /><Meta Name="ms.locfileid" Value="68337244" /></Metadata><TypeSignature Language="C#" Value="public static class GC" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit GC extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.GC" />
   <TypeSignature Language="VB.NET" Value="Public Class GC" />
@@ -31,59 +31,59 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Określa moduł zbierający elementy bezużyteczne systemu to usługa, która automatycznie odzyskuje nieużywanej pamięci.</summary>
+    <summary>Kontroluje systemową Moduł wyrzucania elementów bezużytecznych, usługi, która automatycznie odzyskuje nieużywaną pamięć.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Moduł odśmiecania pamięci jest wspólnego składnika środowiska uruchomieniowego języka, który kontroluje przydzielaniem i zwalnianiem pamięci zarządzanej. Metody tej klasy wpływ podczas wyrzucania elementów bezużytecznych jest wykonywane na obiekcie i są wydawane zasoby przydzielone przez obiekt. Właściwości tej klasy zawierają informacje o całkowitej ilości dostępnej pamięci w systemie i wiek, kategorii lub generowania ilość pamięci przydzielona do obiektu.  
+ Moduł wyrzucania elementów bezużytecznych jest składnikiem środowiska uruchomieniowego języka wspólnego, który kontroluje alokację i wydawanie pamięci zarządzanej. Metody w tej klasie mają wpływ na to, gdy wyrzucanie elementów bezużytecznych jest wykonywane na obiekcie i gdy są wydawane zasoby przydzielone przez obiekt. Właściwości w tej klasie zawierają informacje o łącznej ilości pamięci dostępnej w systemie oraz o kategorii wieku lub generacji pamięci przydzieloną do obiektu.  
   
- Wyrzucanie elementów bezużytecznych śledzi i ponownie wzywa obiekty przydzielone w pamięci zarządzanej. Okresowo moduł zbierający elementy bezużyteczne wykonuje wyrzucanie elementów bezużytecznych w celu odzyskania pamięci przydzielonej do obiektów, dla których nie istnieją żadne prawidłowe odwołania. Wyrzucanie elementów bezużytecznych odbywa się automatycznie, gdy żądanie pamięci nie mogą być spełnione przy użyciu dostępnej wolnej pamięci. Alternatywnie, aplikację można wymusić przy użyciu kolekcji wyrzucania elementów <xref:System.GC.Collect%2A> metody.  
+ Moduł wyrzucania elementów bezużytecznych śledzi i ponownie zgłasza obiekty przydzieloną w pamięci zarządzanej. Okresowo moduł zbierający elementy bezużyteczne wykonuje wyrzucanie elementów bezużytecznych, aby odzyskiwać pamięć przydzieloną do obiektów, dla których nie ma prawidłowych odwołań. Wyrzucanie elementów bezużytecznych odbywa się automatycznie, gdy żądanie dotyczące pamięci nie może zostać spełnione przy użyciu dostępnej wolnej pamięci. Alternatywnie aplikacja może wymusić wyrzucanie elementów <xref:System.GC.Collect%2A> bezużytecznych przy użyciu metody.  
   
- Wyrzucanie elementów bezużytecznych składa się z następujących czynności:  
+ Wyrzucanie elementów bezużytecznych składa się z następujących kroków:  
   
-1.  Moduł zbierający elementy bezużyteczne wyszukuje zarządzanych obiektów, do których istnieją odwołania w kodzie zarządzanym.  
+1.  Moduł zbierający elementy bezużyteczne wyszukuje obiekty zarządzane, do których istnieją odwołania w kodzie zarządzanym.  
   
-2.  Moduł zbierający elementy bezużyteczne próbuje zakończyć obiektów, które nie są wywoływane.  
+2.  Moduł wyrzucania elementów bezużytecznych próbuje sfinalizować obiekty, do których nie istnieją odwołania.  
   
-3.  Moduł zbierający elementy bezużyteczne zwalnia obiektów, które nie są wywoływane i odzyskuje ich pamięci.  
+3.  Moduł wyrzucania elementów bezużytecznych zwalnia obiekty, do których nie odwołuje się i przejmuje ich pamięć.  
   
  Ten temat zawiera następujące sekcje:  
   
- [Moduł odśmiecania pamięci i zasobów niezarządzanych](#unmanaged)   
- [Obiekt przedawnienia i generacji](#generations)   
- [Nie można przydzielać wyrzucania elementów bezużytecznych](#NoGCRegion)  
+ [Moduł wyrzucania elementów bezużytecznych i niezarządzanych zasobów](#unmanaged)   
+ [Przedawnianie i generacja obiektów](#generations)   
+ [Niezezwalanie na wyrzucanie elementów bezużytecznych](#NoGCRegion)  
   
 <a name="unmanaged"></a>   
-## <a name="the-garbage-collector-and-unmanaged-resources"></a>Moduł odśmiecania pamięci i zasobów niezarządzanych  
- Podczas wyrzucania moduł odśmiecania pamięci nie zwolni obiektu, jeśli znajdzie jedno lub więcej odwołań do obiektu w kodzie zarządzanym. Jednak moduł odśmiecania pamięci nie może rozpoznać odwołania do obiektu z niezarządzanego kodu i mogą zwalniać obiekty, które są używane wyłącznie w przypadku kodu niezarządzanego, chyba że jawnie zabronione w myśl. <xref:System.GC.KeepAlive%2A> Metoda zapewnia mechanizm, który uniemożliwia zbieranie obiektów, które są nadal używane w niezarządzanym kodzie moduł odśmiecania pamięci.  
+## <a name="the-garbage-collector-and-unmanaged-resources"></a>Moduł wyrzucania elementów bezużytecznych i niezarządzanych zasobów  
+ Podczas zbierania Moduł wyrzucania elementów bezużytecznych nie zwolni obiektu, jeśli znajdzie co najmniej jedno odwołanie do obiektu w kodzie zarządzanym. Jednak Moduł wyrzucania elementów bezużytecznych nie rozpoznaje odwołań do obiektu z kodu niezarządzanego i może zwolnić obiekty, które są używane wyłącznie w kodzie niezarządzanym, chyba że jawnie nie zostanie to zrobione. <xref:System.GC.KeepAlive%2A> Metoda zapewnia mechanizm, który uniemożliwia modułowi zbierającemu elementy bezużyteczne zbieranie obiektów, które są nadal używane w kodzie niezarządzanym.  
   
- Oprócz alokacje pamięci zarządzanej implementacji modułu odśmiecania pamięci nie zachowują informacje o zasobach w posiadaniu obiektu, takie jak dojścia do plików lub połączenia z bazą danych. Gdy typ używa niezarządzane zasoby, które muszą zostać zwolnione wystąpienia tego typu są odzyskiwane, typ może implementować finalizatora.  
+ Poza alokacją pamięci zarządzanej, implementacje modułu wyrzucania elementów bezużytecznych nie utrzymują informacji o zasobach przechowywanych przez obiekt, takich jak dojścia do plików lub połączenia z bazami danych. Gdy typ używa niezarządzanych zasobów, które muszą zostać wydane przed odprowadzeniem wystąpień typu, typ może zaimplementować finalizator.  
   
- W większości przypadków finalizatory są implementowane przez zastąpienie <xref:System.Object.Finalize%2A?displayProperty=nameWithType> metody; jednak typów napisane w języku C# lub C++ implementuje destruktory, w których kompilatory przekształcić w zastąpieniu obiektu <xref:System.Object.Finalize%2A?displayProperty=nameWithType>. W większości przypadków Jeśli obiekt ma finalizatora, moduł odśmiecania pamięci wywołuje on przed zwalnianie obiektu. Jednak moduł odśmiecania pamięci nie jest wymagane do wywołania finalizatory we wszystkich sytuacjach; na przykład <xref:System.GC.SuppressFinalize%2A> metoda jawnie zapobiega finalizatora obiektu wywoływana. Ponadto moduł odśmiecania pamięci nie jest wymagany na potrzeby określonego wątku finalize obiektów lub gwarantuje kolejności, w którym finalizatory są nazywane dla obiektów, które zależą od siebie, ale w przeciwnym razie są dostępne do wyrzucania elementów bezużytecznych.  
+ W większości przypadków <xref:System.Object.Finalize%2A?displayProperty=nameWithType> finalizatory są implementowane przez zastąpienie metody; jednak typy wpisywane C# lub C++ implementujące destruktory, które kompilatory przesłonić <xref:System.Object.Finalize%2A?displayProperty=nameWithType>. W większości przypadków, jeśli obiekt ma finalizator, moduł zbierający elementy bezużyteczne wywołuje go przed zwolnieniem obiektu. Jednak Moduł wyrzucania elementów bezużytecznych nie jest wymagany do wywoływania finalizatorów we wszystkich sytuacjach; na przykład <xref:System.GC.SuppressFinalize%2A> Metoda jawnie uniemożliwia wywoływanie finalizatora obiektu. Ponadto Moduł wyrzucania elementów bezużytecznych nie musi używać określonego wątku do sfinalizowania obiektów lub zagwarantowania kolejności, w której finalizatory są wywoływane dla obiektów, które odwołują się do siebie nawzajem, ale są dostępne do wyrzucania elementów bezużytecznych.  
   
- W scenariuszach, w którym zasoby muszą zostać zwolnione w taki sposób, w określonym czasie, można zaimplementować klasy <xref:System.IDisposable> interfejs, który zawiera <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> metodę, która wykonuje zadania zarządzania i czyszczenie zasobów. Klasy, które implementują <xref:System.IDisposable.Dispose%2A> należy określić, w ramach umowy klasy, jeśli klasa konsumentów wywołania metody w celu oczyszczenia obiektu. Moduł zbierający elementy bezużyteczne, domyślnie niewywołujący <xref:System.IDisposable.Dispose%2A> metoda; jednak implementacje <xref:System.IDisposable.Dispose%2A> metodę można wywołać metody w <xref:System.GC> klasy, aby dostosować zachowanie finalizacji modułu odśmiecania pamięci.  
+ W scenariuszach, w których zasoby muszą być wydane w określonym czasie, klasy mogą implementować <xref:System.IDisposable> interfejs, który <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> zawiera metodę, która wykonuje zadania zarządzania zasobami i oczyszczania. Klasy implementujące <xref:System.IDisposable.Dispose%2A> muszą określać, jako część ich kontraktu klasy, jeśli i gdy klasy odbiorcy wywołują metodę w celu oczyszczenia obiektu. Moduł wyrzucania elementów bezużytecznych nie jest domyślnie <xref:System.IDisposable.Dispose%2A> wywoływany przez metodę, ale implementacje <xref:System.IDisposable.Dispose%2A> metody mogą wywoływać metody <xref:System.GC> w klasie, aby dostosować sposób finalizowania modułu wyrzucania elementów bezużytecznych.  
   
- Aby uzyskać więcej informacji na wzorzec dispose i finalizacja obiektu, zobacz [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md).  
+ Aby uzyskać więcej informacji o finalizowaniu obiektów i wzorcu usuwania, zobacz [Oczyszczanie zasobów niezarządzanych](~/docs/standard/garbage-collection/unmanaged.md).  
   
 <a name="generations"></a>   
-## <a name="object-aging-and-generations"></a>Obiekt przedawnienia i generacji  
- Moduł zbierający elementy bezużyteczne w środowisko uruchomieniowe języka wspólnego obsługuje przestarzałej obiektu przy użyciu generacji. Generowanie jest jednostką miary względnej wiek obiektów w pamięci. Generowanie liczby lub wieku obiektu wskazuje generacji, do której należy dany obiekt. Obiekty utworzone więcej ostatnio są częścią nowszej generacji i mieć niższych numerach generowania niż cykl obiekty utworzone wcześniej w cyklu życia aplikacji. Obiekty w najnowszej generacji znajdują się w generacji 0. Ta implementacja modułu odśmiecania pamięci obsługuje trzy generacje obiektów, generacji 0, 1 i 2. Można pobrać wartość <xref:System.GC.MaxGeneration%2A> właściwości w celu określenia liczby generacji maksymalny obsługiwany przez system.  
+## <a name="object-aging-and-generations"></a>Przedawnianie i generacja obiektów  
+ Moduł wyrzucania elementów bezużytecznych w środowisku uruchomieniowym języka wspólnego obsługuje przedawnianie obiektów przy użyciu generacji. Generacja jest jednostką miary względnego wieku obiektów w pamięci. Numer generacji lub wiek obiektu wskazuje generację, do której należy obiekt. Obiekty utworzone niedawno są częścią nowszych generacji i mają niższe numery generacji niż obiekty utworzone wcześniej w cyklu życia aplikacji. Obiekty w najnowszej generacji są w generacji 0. Ta implementacja modułu wyrzucania elementów bezużytecznych obsługuje trzy generacje obiektów, generacji 0, 1 i 2. Możesz pobrać wartość <xref:System.GC.MaxGeneration%2A> właściwości, aby określić maksymalny numer generacji obsługiwany przez system.  
   
- Przedawnianie obiekt umożliwia aplikacjom docelowej wyrzucania elementów bezużytecznych na określony zbiór generacje zamiast konieczności moduł odśmiecania pamięci ocenić wszystkie generacje. Przeciążenia <xref:System.GC.Collect%2A> metody, które obejmują `generation` parametru pozwalają na określenie najstarsze generowania się bezużyteczne.  
+ Przedawnianie obiektów umożliwia aplikacjom docelowe wyrzucanie elementów bezużytecznych w określonym zestawie generacji, a nie wymaganie wyrzucania elementów bezużytecznych w celu oszacowania wszystkich generacji. Przeciążenia metody zawierającej `generation` parametr umożliwiają określenie najstarszej generacji do wyrzucania elementów bezużytecznych. <xref:System.GC.Collect%2A>  
   
 <a name="NoGCRegion"></a>   
-## <a name="disallowing-garbage-collection"></a>Nie można przydzielać wyrzucania elementów bezużytecznych  
- Począwszy od [!INCLUDE[net_v46](~/includes/net-v46-md.md)], moduł odśmiecania pamięci obsługuje nie GC region opóźnienie trybie który może być używana podczas wykonywania ścieżek krytycznych, w których wyrzucania elementów kolekcji może niekorzystnie wpłynąć na wydajność aplikacji. Nie GC region opóźnienie tryb wymaga, określ ilość pamięci, która może być przydzielona bez zakłóceń z modułu odśmiecania pamięci. Jeśli środowisko uruchomieniowe można przydzielić pamięci, środowisko wykonawcze nie wykonuje wyrzucania elementów bezużytecznych, podczas wykonywania kodu w ścieżce krytycznej.  
+## <a name="disallowing-garbage-collection"></a>Niezezwalanie na wyrzucanie elementów bezużytecznych  
+ Począwszy od, Moduł wyrzucania elementów bezużytecznych obsługuje tryb opóźnienia w regionie GC, który może być używany podczas wykonywania ścieżek krytycznych, w których wyrzucanie elementów bezużytecznych może mieć negatywny wpływ na wydajność aplikacji. [!INCLUDE[net_v46](~/includes/net-v46-md.md)] Tryb opóźnienia regionu nie wymaga określenia ilości pamięci, którą można przydzielić bez ingerencji z modułu wyrzucania elementów bezużytecznych. Jeśli środowisko uruchomieniowe może przydzielić pamięć, środowisko uruchomieniowe nie wykonuje wyrzucania elementów bezużytecznych podczas wykonywania kodu w ścieżce krytycznej.  
   
- Zdefiniuj początku ścieżki krytycznej, nie regionu GC, wywołując jedną z przeciążeń <xref:System.GC.TryStartNoGCRegion%2A>. Określ koniec jego ścieżki krytycznej, wywołując <xref:System.GC.EndNoGCRegion%2A> metody.  
+ Należy zdefiniować początek ścieżki krytycznej w regionie No GC przez wywołanie jednego z przeciążeń <xref:System.GC.TryStartNoGCRegion%2A>. Należy określić koniec swojej ścieżki krytycznej, wywołując <xref:System.GC.EndNoGCRegion%2A> metodę.  
   
- Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+ Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto kilka metod odzyskiwania pamięci generacji i informacje o pamięci o bloku nieużywanych obiektów i drukować do konsoli. Następnie zbieranymi nieużywanych obiektów, a uzyskane sumy pamięci są wyświetlane.  
+ W poniższym przykładzie zastosowano kilka metod GC, aby uzyskać informacje o generowaniu i pamięci dla bloku nieużywanych obiektów i wydrukować je w konsoli programu. Wszystkie nieużywane obiekty są gromadzone i wyświetlane są sumy uzyskanej pamięci.  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -136,28 +136,28 @@
         <Parameter Name="bytesAllocated" Type="System.Int64" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="bytesAllocated">Przyrostowe ilość niezarządzanej pamięci, która została przydzielona.</param>
-        <summary>Informuje środowisko uruchomieniowe dużych alokacji niezarządzanej pamięci, która powinna być brana pod uwagę podczas planowania wyrzucania elementów bezużytecznych.</summary>
+        <param name="bytesAllocated">Przyrostowa ilość niezarządzanej pamięci, która została przypisana.</param>
+        <summary>Informuje środowisko uruchomieniowe dużej alokacji niezarządzanej pamięci, które należy wziąć pod uwagę podczas planowania wyrzucania elementów bezużytecznych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Określenie, kiedy należy zaplanować wyrzucania elementów bezużytecznych, środowisko uruchomieniowe bierze pod uwagę ilość pamięci zarządzanej jest przydzielony. Dużą ilość niezarządzanej pamięci są przydzielane w małych obiektów zarządzanych, środowisko uruchomieniowe uwzględnia pamięci zarządzanej, a zatem szacuje zbyt nisko pilność planowania wyrzucania elementów bezużytecznych. <xref:System.GC.AddMemoryPressure%2A> Metoda informuje środowisko uruchomieniowe to dodatkowe wykorzystanie pamięci systemu.  
+ W celu określenia czasu, w którym należy zaplanować wyrzucanie elementów bezużytecznych, środowisko uruchomieniowe uwzględnia ilość przydzielonej pamięci zarządzanej. Jeśli mały zarządzany obiekt przydzieli dużą ilość pamięci niezarządzanej, środowisko uruchomieniowe bierze pod uwagę tylko zarządzaną pamięć i w ten sposób szacuje pilność planowania wyrzucania elementów bezużytecznych. <xref:System.GC.AddMemoryPressure%2A> Metoda informuje środowisko uruchomieniowe tego dodatkowego nacisku w pamięci systemowej.  
   
- We wzorcu najprostszy sposób użycia obiektu zarządzanego niezarządzanej pamięci w Konstruktorze przydziela i zwalnia go w `Dispose` lub `Finalize` metody. Wywołaj <xref:System.GC.AddMemoryPressure%2A> metoda po przydzieleniu niezarządzanej pamięci i wywoływać <xref:System.GC.RemoveMemoryPressure%2A> metody po jego.  
+ W najprostszym wzorcu użycia obiekt zarządzany przydziela niezarządzaną pamięć w konstruktorze i zwalnia go w `Dispose` metodzie lub. `Finalize` Wywołaj <xref:System.GC.RemoveMemoryPressure%2A> metodę po przydzieleniu pamięci niezarządzanej i Wywołaj metodę po jej zwolnieniu. <xref:System.GC.AddMemoryPressure%2A>  
   
- W bardziej skomplikowane sytuacje, w którym niezarządzane przydzielanie pamięci znacznie zmienia się w okresie istnienia obiektu zarządzanego, można wywołać <xref:System.GC.AddMemoryPressure%2A> i <xref:System.GC.RemoveMemoryPressure%2A> metody do komunikowania się przyrostowe zmiany środowiska uruchomieniowego.  
+ W bardziej skomplikowanych scenariuszach, w których niezarządzana alokacja pamięci ulega znacznemu zmianie w okresie istnienia zarządzanego obiektu, <xref:System.GC.AddMemoryPressure%2A> można <xref:System.GC.RemoveMemoryPressure%2A> wywołać metody i, aby przekazać te przyrostowe zmiany do środowiska uruchomieniowego.  
   
 > [!CAUTION]
->  Należy zadbać o usunięcie dokładnie ilość wykorzystanie, które można dodać. Niepowodzenie w tym może niekorzystnie wpłynąć na wydajność systemu w aplikacjach wykonywanych przez długi czas.  
+>  Należy upewnić się, że należy usunąć dokładnie ilość dodawanego nacisku. Niewykonanie tej czynności może niekorzystnie wpłynąć na wydajność systemu w aplikacjach uruchamianych przez długi czas.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="bytesAllocated" /> jest mniejsza niż lub równa 0.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="bytesAllocated" />jest mniejsze lub równe 0.  
   
 —lub— 
-Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać możliwość wywoływać kod niezarządzany, podczas manipulacji priorytet wyrzucania elementów bezużytecznych. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+Na komputerze <paramref name="bytesAllocated" /> 32-bitowym jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">umożliwia wywoływanie kodu niezarządzanego podczas manipulowania priorytetem kolekcji elementów bezużytecznych. Skojarzone Wyliczenie:<see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
       </Docs>
     </Member>
@@ -195,17 +195,17 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Anulowanie rejestracji powiadomienia wyrzucania elementów kolekcji.</summary>
+        <summary>Anuluje rejestrację powiadomienia o wyrzucaniu elementów bezużytecznych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda anuluje powiadomienie kolekcji wyrzucania elementów, które zostało zarejestrowane przy użyciu <xref:System.GC.RegisterForFullGCNotification%2A> metody. Nie trzeba wywołać tę metodę przed dostosowaniem progu wartości parametrów w kolejnych wywołaniach <xref:System.GC.RegisterForFullGCNotification%2A> metody.  
+ Ta metoda anuluje powiadomienie wyrzucania elementów bezużytecznych, które <xref:System.GC.RegisterForFullGCNotification%2A> zostało zarejestrowane za pomocą metody. Nie jest konieczne wywoływanie tej metody przed dopasowaniem wartości parametrów progu w kolejnych wywołaniach <xref:System.GC.RegisterForFullGCNotification%2A> metody.  
   
    
   
 ## Examples  
- Poniższy przykład anuluje rejestracji kolekcji wyrzucania elementów. W tym przykładzie jest częścią większego przykładu przewidzianego dla [powiadomienia dotyczące odzyskiwania pamięci](~/docs/standard/garbage-collection/notifications.md) tematu.  
+ Poniższy przykład anuluje rejestrację wyrzucania elementów bezużytecznych. Ten przykład jest częścią większego przykładu podanego w temacie powiadomienia o wyrzucaniu [elementów](~/docs/standard/garbage-collection/notifications.md) bezużytecznych.  
   
  [!code-cpp[GCNotification#7](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#7)]
  [!code-csharp[GCNotification#7](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#7)]
@@ -213,7 +213,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Ten element członkowski nie jest dostępna, gdy jest włączona współbieżne wyrzucanie elementów bezużytecznych. Zobacz [ &lt;gcconcurrent —&gt; ](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) ustawienia środowiska wykonawczego, aby uzyskać informacje o tym, jak wyłączyć współbieżne wyrzucanie elementów bezużytecznych.</exception>
+        <exception cref="T:System.InvalidOperationException">Ten element członkowski nie jest dostępny, gdy włączone jest współbieżne wyrzucanie elementów bezużytecznych. Zobacz ustawienie środowiska uruchomieniowego [ &lt;gcConcurrent&gt; ](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) , aby uzyskać informacje o tym, jak wyłączyć współbieżne odzyskiwanie pamięci.</exception>
         <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">aby uzyskać pełne zaufanie dla bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez kod częściowo zaufany.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
         <related type="Article" href="https://msdn.microsoft.com/library/e12d8e74-31e3-4035-a87d-f3e66f0a9b89">Powiadomienia dotyczące odzyskiwania pamięci</related>
@@ -271,16 +271,16 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wymusza natychmiastowe wyrzucanie elementów bezużytecznych dla wszystkich generacji.</summary>
+        <summary>Wymusza natychmiastowe wyczyszczenie elementów bezużytecznych wszystkich generacji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda próbuje odzyskać wszystkie pamięci, który jest niedostępny. Wykonuje blokowania wyrzucania elementów bezużytecznych dla wszystkich generacji.  
+ Użyj tej metody, aby spróbować ponownie przejąć całą pamięć, która jest niedostępna. Wykonuje blokowe blokowanie wyrzucania elementów bezużytecznych wszystkich generacji.  
   
- Wszystkie obiekty, niezależnie od tego, ile znajdowały się w pamięci, są traktowane jako kolekcji; obiekty, do których istnieją odwołania w kodzie zarządzanym nie są zbierane. Ta metoda umożliwia wymuszanie próby odzyskania maksymalną ilość dostępnej pamięci w systemie.  
+ Wszystkie obiekty, niezależnie od tego, jak długo znajdowały się w pamięci, są brane pod uwagę w przypadku zbierania danych. Jednak obiekty, do których odwołuje się kod zarządzany, nie są zbierane. Użyj tej metody, aby wymusić, aby system ponownie odzyskał maksymalną ilość dostępnej pamięci.  
   
- Począwszy od [!INCLUDE[net_v451](~/includes/net-v451-md.md)], można kompaktowania sterty dużych obiektów (LOH), ustawiając <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> właściwości <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> przed wywołaniem <xref:System.GC.Collect%2A> metody, w poniższym przykładzie pokazano.  
+ Począwszy od <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> <xref:System.GC.Collect%2A> , można skompaktować stertę dużego obiektu (LOH), ustawiając właściwość na przed wywołaniem metody, jak pokazano w poniższym przykładzie. [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
   
  [!code-csharp[System.Runtime.GCSettings#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.runtime.gcsettings/cs/lohcompactionmode1.cs#1)]
  [!code-vb[System.Runtime.GCSettings#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.runtime.gcsettings/vb/lohcompactionmode1.vb#1)]  
@@ -288,7 +288,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.Collect%2A> metodę, aby przeprowadzić wyrzucanie bezużytecznych na wszystkie generacje pamięci. Kod, który generuje liczby nieużywanych obiektów, a następnie wywołuje <xref:System.GC.Collect%2A> metodę, aby oczyścić je z pamięci.  
+ Poniższy przykład ilustruje sposób użycia <xref:System.GC.Collect%2A> metody do wykonania kolekcji na wszystkich generacjach pamięci. Kod generuje kilka nieużywanych obiektów, a następnie wywołuje <xref:System.GC.Collect%2A> metodę, aby oczyścić ją z pamięci.  
   
  [!code-cpp[System.GC.Collect Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.Collect Example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.Collect Example/CS/class1.cs#1)]
@@ -335,24 +335,24 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="generation" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="generation">Liczba najstarsze generowania się bezużyteczne.</param>
-        <summary>Wymusza natychmiastowe wyrzucanie elementów bezużytecznych z generacji 0 za pomocą określonej generacji.</summary>
+        <param name="generation">Liczba najstarszych generacji do wyrzucania elementów bezużytecznych.</param>
+        <summary>Wymusza natychmiastowe wyrzucanie elementów bezużytecznych z generacji 0 za pośrednictwem określonej generacji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Metoda ta jest przydatna w celu odzyskania pamięci, który jest niedostępny. Jednak przy użyciu tej metody nie gwarantuje, że wszystkie pamięci niedostępne w określonej generacji jest odzyskiwane.  
+ Użyj tej metody, aby spróbować ponownie przejąć niedostępną pamięć. Jednak użycie tej metody nie gwarantuje, że cała niedostępna pamięć w określonej generacji zostanie ododzyskiwana.  
   
- Jeśli zaimplementowano przestarzałej obiektu, moduł odśmiecania pamięci nie są zbierane obiektów z liczbą generacji jest wyższa niż określonej generacji. Jeśli przestarzałej obiektu nie jest zaimplementowana, moduł odśmiecania pamięci uznaje wszystkich obiektów podczas wyrzucania elementów bezużytecznych.  
+ Jeśli zaimplementowano przedawnianie obiektów, Moduł wyrzucania elementów bezużytecznych nie zbiera obiektów z numerem generacji wyższym niż określona generacja. Jeśli przedawnianie obiektów nie jest zaimplementowane, Moduł wyrzucania elementów bezużytecznych traktuje wszystkie obiekty podczas wyrzucania elementów bezużytecznych.  
   
- Użyj <xref:System.GC.MaxGeneration%2A> własność, aby określić prawidłową wartość maksymalna `generation` parametru.  
+ Użyj właściwości, aby określić maksymalną prawidłową wartość `generation` parametru. <xref:System.GC.MaxGeneration%2A>  
   
- Aby uzyskać moduł odśmiecania pamięci, należy wziąć pod uwagę wszystkie obiekty, niezależnie od ich generowania, należy użyć wersji tej metody, która nie przyjmuje żadnych parametrów. Aby moduł zbierający elementy bezużyteczne odzyskać obiektów na podstawie <xref:System.GCCollectionMode> ustawienia, użyj <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%29?displayProperty=nameWithType> przeciążenie metody.  
+ Aby moduł zbierający elementy bezużyteczne uważał wszystkie obiekty niezależnie od ich generacji, użyj wersji tej metody, która nie przyjmuje żadnych parametrów. Aby moduł zbierający elementy bezużyteczne odzyskał obiekty na <xref:System.GCCollectionMode> podstawie ustawienia, <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%29?displayProperty=nameWithType> należy użyć przeciążenia metody.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.Collect%2A> metodę, aby przeprowadzić wyrzucanie bezużytecznych na poszczególnych warstw pamięci. Kod, który generuje liczby nieużywanych obiektów, a następnie wywołuje <xref:System.GC.Collect%2A> metodę, aby oczyścić je z pamięci.  
+ Poniższy przykład ilustruje sposób użycia <xref:System.GC.Collect%2A> metody do wykonywania kolekcji na poszczególnych warstwach pamięci. Kod generuje kilka nieużywanych obiektów, a następnie wywołuje <xref:System.GC.Collect%2A> metodę, aby oczyścić ją z pamięci.  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -360,7 +360,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" /> nie jest prawidłowy.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" />jest nieprawidłowy.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/019008fe-4708-4e65-bebf-04fd9941e149">Wywołane kolekcje</related>
       </Docs>
     </Member>
@@ -405,37 +405,37 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="mode" Type="System.GCCollectionMode" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="generation">Liczba najstarsze generowania się bezużyteczne.</param>
-        <param name="mode">Wartość wyliczenia, który określa, czy wyrzucanie elementów bezużytecznych jest wymuszone (<see cref="F:System.GCCollectionMode.Default" /> lub <see cref="F:System.GCCollectionMode.Forced" />) lub zoptymalizowane pod kątem (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
-        <summary>Wymusza wyrzucania elementów bezużytecznych z generacji 0 za pomocą określonej generacji w czasie określonym przez <see cref="T:System.GCCollectionMode" /> wartość.</summary>
+        <param name="generation">Liczba najstarszych generacji do wyrzucania elementów bezużytecznych.</param>
+        <param name="mode">Wartość wyliczenia określająca, czy wyrzucanie elementów bezużytecznych <see cref="F:System.GCCollectionMode.Forced" />jest wymuszane (<see cref="F:System.GCCollectionMode.Optimized" /><see cref="F:System.GCCollectionMode.Default" /> lub) czy zoptymalizowane ().</param>
+        <summary>Wymusza wyrzucanie elementów bezużytecznych z generacji od 0 do określonej generacji w czasie określonym <see cref="T:System.GCCollectionMode" /> przez wartość.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj `mode` parametru do określenia, czy wyrzucanie elementów bezużytecznych powinna występować bezpośrednio lub tylko jeśli godzina jest optymalna do odzyskania obiektów. Przy użyciu tej metody nie gwarantuje, że wszystkie pamięci niedostępne w określonej generacji jest odzyskiwane.  
+ Użyj parametru `mode` , aby określić, czy odzyskiwanie pamięci powinno odbywać się natychmiast, czy tylko wtedy, gdy czas jest optymalny do odzyskiwania obiektów. Użycie tej metody nie gwarantuje, że cała niedostępna pamięć w określonej generacji jest odzyskiwana.  
   
- Aby dostosować ingerencję operacji wyrzucania elementów bezużytecznych w krytycznych okresach w aplikacji, należy ustawić <xref:System.Runtime.GCSettings.LatencyMode%2A> właściwości.  
+ Aby dostosować nieodpowiednie wyrzucanie elementów bezużytecznych podczas krytycznych okresów w aplikacji <xref:System.Runtime.GCSettings.LatencyMode%2A> , należy ustawić właściwość.  
   
- Moduł odśmiecania pamięci nie są zbierane w obiekty z liczbą generowania nowszej niż określona w `generation` parametru. Użyj <xref:System.GC.MaxGeneration%2A> własność, aby określić prawidłową wartość maksymalna `generation`.  
+ Moduł wyrzucania elementów bezużytecznych nie zbiera obiektów z numerem generacji wyższym `generation` niż określony przez parametr. Użyj właściwości, aby określić maksymalną prawidłową `generation`wartość. <xref:System.GC.MaxGeneration%2A>  
   
- Aby uzyskać moduł odśmiecania pamięci, należy wziąć pod uwagę wszystkie obiekty, niezależnie od ich generowania, należy użyć wersji tej metody, która nie przyjmuje żadnych parametrów.  
+ Aby moduł zbierający elementy bezużyteczne uważał wszystkie obiekty niezależnie od ich generacji, użyj wersji tej metody, która nie przyjmuje żadnych parametrów.  
   
- Aby moduł zbierający elementy bezużyteczne odzyskać obiekty do określonej generacji obiektów, należy użyć <xref:System.GC.Collect%28System.Int32%29?displayProperty=nameWithType> przeciążenie metody. Po określeniu generacji maksymalny, wszystkie obiekty są zbierane.  
+ Aby moduł zbierający elementy bezużyteczne odzyskał obiekty do określonej generacji obiektów, użyj <xref:System.GC.Collect%28System.Int32%29?displayProperty=nameWithType> przeciążenia metody. Po określeniu wartości maksymalnej generacji zbierane są wszystkie obiekty.  
   
    
   
 ## Examples  
- Poniższy przykład wymusza wyrzucania elementów bezużytecznych generacji 2 obiektów za pomocą <xref:System.GCCollectionMode.Optimized> ustawienie.  
+ Poniższy przykład wymusza wyrzucanie elementów bezużytecznych dla obiektów generacji <xref:System.GCCollectionMode.Optimized> 2 z ustawieniem.  
   
  [!code-csharp[System.GC.GCCollectionMode#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.GCCollectionMode/cs/Program.cs#1)]
  [!code-vb[System.GC.GCCollectionMode#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.GC.GCCollectionMode/vb/program.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" /> nie jest prawidłowy.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" />jest nieprawidłowy.  
   
 —lub— 
- <paramref name="mode" /> nie jest jednym z <see cref="T:System.GCCollectionMode" /> wartości.</exception>
+ <paramref name="mode" />nie jest jedną z <see cref="T:System.GCCollectionMode" /> wartości.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/019008fe-4708-4e65-bebf-04fd9941e149">Wywołane kolekcje</related>
       </Docs>
     </Member>
@@ -480,29 +480,29 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="blocking" Type="System.Boolean" Index="2" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="generation">Liczba najstarsze generowania się bezużyteczne.</param>
-        <param name="mode">Wartość wyliczenia, który określa, czy wyrzucanie elementów bezużytecznych jest wymuszone (<see cref="F:System.GCCollectionMode.Default" /> lub <see cref="F:System.GCCollectionMode.Forced" />) lub zoptymalizowane pod kątem (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
-        <param name="blocking"><see langword="true" /> do blokowania wyrzucania elementów bezużytecznych; <see langword="false" /> przeprowadzić tle wyrzucania elementów bezużytecznych, jeśli jest to możliwe.</param>
-        <summary>Wymusza wyrzucania elementów bezużytecznych z generacji 0 za pomocą określonej generacji w czasie określonym przez <see cref="T:System.GCCollectionMode" /> wartością wartość określającą, czy kolekcja powinny blokować.</summary>
+        <param name="generation">Liczba najstarszych generacji do wyrzucania elementów bezużytecznych.</param>
+        <param name="mode">Wartość wyliczenia określająca, czy wyrzucanie elementów bezużytecznych <see cref="F:System.GCCollectionMode.Forced" />jest wymuszane (<see cref="F:System.GCCollectionMode.Optimized" /><see cref="F:System.GCCollectionMode.Default" /> lub) czy zoptymalizowane ().</param>
+        <param name="blocking"><see langword="true" />Aby wykonać blokowanie wyrzucania elementów bezużytecznych; <see langword="false" /> aby wykonać odzyskiwanie pamięci w tle, tam gdzie jest to możliwe.</param>
+        <summary>Wymusza wyrzucanie elementów bezużytecznych z generacji 0 przez określoną generację, w czasie określonym <see cref="T:System.GCCollectionMode" /> przez wartość, o wartości określającej, czy kolekcja powinna blokować.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Poniższa tabela podsumowuje interakcje `mode` i `blocking` parametry:  
+ Poniższa tabela zawiera podsumowanie interakcji `mode` z parametrami i: `blocking`  
   
-|`mode`|`blocking` jest `true`|`blocking` jest `false`|  
+|`mode`|`blocking`była`true`|`blocking`była`false`|  
 |-|-|-|  
-|<xref:System.GCCollectionMode.Forced> lub <xref:System.GCCollectionMode.Default>|Blokowanie kolekcji jest wykonywane tak szybko, jak to możliwe. Jeśli zbieranie w tle jest w toku i `generation` jest równa 0 lub 1, <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> metoda natychmiast wyzwala zbieranie blokujące i zwraca po zakończeniu zbierania. Jeśli zbieranie w tle jest w toku i `generation` 2, metoda czeka, dopóki nie zakończy bezużytecznych w tle, wyzwala zbieranie blokujące 2. generacji, a następnie zwraca.|Kolekcja jest wykonywana tak szybko, jak to możliwe. <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> Metoda żąda kolekcja tła, ale nie jest to gwarantowane; w zależności od okoliczności nadal może być wykonywana kolekcja blokowania. Jeśli zbieranie w tle jest już w toku, metoda zwraca natychmiast.|  
-|<xref:System.GCCollectionMode.Optimized>|Blokowanie kolekcji mogą być wykonywane w zależności od stanu modułu odśmiecania pamięci i `generation` parametru. Wyrzucanie elementów bezużytecznych stara się zapewnić optymalną wydajność.|Kolekcja może być wykonywana w zależności od stanu modułu odśmiecania pamięci. <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> Metoda żąda kolekcja tła, ale nie jest to gwarantowane; w zależności od okoliczności nadal może być wykonywana kolekcja blokowania. Wyrzucanie elementów bezużytecznych stara się zapewnić optymalną wydajność. Jeśli zbieranie w tle jest już w toku, metoda zwraca natychmiast.|  
+|<xref:System.GCCollectionMode.Forced> lub <xref:System.GCCollectionMode.Default>|Kolekcja blokująca jest wykonywana najszybciej, jak to możliwe. Jeśli zbieranie w tle jest w toku i `generation` ma wartość 0 lub 1 <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> , Metoda natychmiast wyzwala kolekcję blokującą i zwraca, gdy kolekcja zostanie zakończona. Jeśli zbieranie w tle jest w toku i `generation` ma wartość 2, metoda czeka, aż kolekcja w tle zostanie zakończona, wyzwala kolekcję blokującą 2, a następnie zwraca wartość.|Kolekcja jest wykonywana najszybciej, jak to możliwe. <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> Metoda żąda kolekcji w tle, ale nie jest to gwarantowane; w zależności od okoliczności nadal może być wykonywana kolekcja blokująca. Jeśli kolekcja w tle jest już w toku, Metoda wraca natychmiast.|  
+|<xref:System.GCCollectionMode.Optimized>|Może być wykonywana kolekcja blokująca, w zależności od stanu modułu wyrzucania elementów bezużytecznych i `generation` parametru. Moduł wyrzucania elementów bezużytecznych próbuje zapewnić optymalną wydajność.|Kolekcję można wykonać w zależności od stanu modułu wyrzucania elementów bezużytecznych. <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> Metoda żąda kolekcji w tle, ale nie jest to gwarantowane; w zależności od okoliczności nadal może być wykonywana kolekcja blokująca. Moduł wyrzucania elementów bezużytecznych próbuje zapewnić optymalną wydajność. Jeśli kolekcja w tle jest już w toku, Metoda wraca natychmiast.|  
   
- Jeśli wywołanie <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> metoda wykonuje pełne blokowanie wyrzucania elementów bezużytecznych, możesz również skompaktować stertę dużego obiektu przez ustawienie <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> właściwości <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> przed wywołaniem <xref:System.GC.Collect%2A> metody.  
+ Jeśli wywołanie <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%29> metody wykonuje pełne blokowanie wyrzucania elementów bezużytecznych, można również skompaktować stertę dużego obiektu przez <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> ustawienie <xref:System.GC.Collect%2A> właściwości na <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> przed wywołaniem metody.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" /> nie jest prawidłowy.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" />jest nieprawidłowy.  
   
 —lub— 
- <paramref name="mode" /> nie jest jednym z <see cref="T:System.GCCollectionMode" /> wartości.</exception>
+ <paramref name="mode" />nie jest jedną z <see cref="T:System.GCCollectionMode" /> wartości.</exception>
       </Docs>
     </Member>
     <Member MemberName="Collect">
@@ -543,25 +543,25 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="compacting" Type="System.Boolean" Index="3" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="generation">Liczba najstarsze generowania się bezużyteczne.</param>
-        <param name="mode">Wartość wyliczenia, który określa, czy wyrzucanie elementów bezużytecznych jest wymuszone (<see cref="F:System.GCCollectionMode.Default" /> lub <see cref="F:System.GCCollectionMode.Forced" />) lub zoptymalizowane pod kątem (<see cref="F:System.GCCollectionMode.Optimized" />).</param>
-        <param name="blocking"><see langword="true" /> do blokowania wyrzucania elementów bezużytecznych; <see langword="false" /> przeprowadzić tle wyrzucania elementów bezużytecznych, jeśli jest to możliwe.</param>
-        <param name="compacting"><see langword="true" /> kompaktowanie stosu małych obiektów; <see langword="false" /> do tylko odchylenia.</param>
-        <summary>Wymusza wyrzucania elementów bezużytecznych z generacji 0 za pomocą określonej generacji w czasie określonym przez <see cref="T:System.GCCollectionMode" /> wartość z wartościami, które określają, czy blokowanie i kompaktowanie kolekcji.</summary>
+        <param name="generation">Liczba najstarszych generacji do wyrzucania elementów bezużytecznych.</param>
+        <param name="mode">Wartość wyliczenia określająca, czy wyrzucanie elementów bezużytecznych <see cref="F:System.GCCollectionMode.Forced" />jest wymuszane (<see cref="F:System.GCCollectionMode.Optimized" /><see cref="F:System.GCCollectionMode.Default" /> lub) czy zoptymalizowane ().</param>
+        <param name="blocking"><see langword="true" />Aby wykonać blokowanie wyrzucania elementów bezużytecznych; <see langword="false" /> aby wykonać odzyskiwanie pamięci w tle, tam gdzie jest to możliwe.</param>
+        <param name="compacting"><see langword="true" />Aby skompaktować stertę małego obiektu; <see langword="false" /> tylko do wyczyszczenia.</param>
+        <summary>Wymusza wyrzucanie elementów bezużytecznych z generacji 0 przez określoną generację, w czasie określonym <see cref="T:System.GCCollectionMode" /> przez wartość, z wartościami, które określają, czy kolekcja powinna blokować i kompaktować.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `blocking` jest `false`, GC decyduje, czy ma być przeprowadzane w tle lub blokowanie wyrzucania elementów bezużytecznych. Jeśli `compacting` jest `true`, wykonuje blokowania wyrzucania elementów bezużytecznych.  
+ Jeśli `blocking` ma`false`wartość, w wykazie globalnym decyduje się, czy ma być wykonywane tło, czy blokujące odzyskiwanie pamięci. Jeśli `compacting` jest`true`, wykonuje blokowanie wyrzucania elementów bezużytecznych.  
   
- Jeśli `compacting` jest `true`, środowisko uruchomieniowe kompaktuje stos małych obiektów (raportu o kondycji). Stos dużych obiektów (LOH) nie jest kompaktowana, chyba że <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> właściwość jest ustawiona na <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>. Należy pamiętać, że w tym wszystkie blokowania wyrzucania elementów bezużytecznych, nie tylko pełne blokowanie wyrzucania elementów bezużytecznych.  
+ Jeśli `compacting` tak`true`, środowisko uruchomieniowe kompaktuje stertę małego obiektu (raport o kondycji). Sterta dużego obiektu (LOH) nie jest kompaktowana, chyba <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> że właściwość jest ustawiona <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType>na. Należy zauważyć, że obejmuje to wszystkie blokowanie wyrzucania elementów bezużytecznych, a nie tylko pełne blokowanie odzyskiwania pamięci.  
   
- Możesz wywołać <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> metodę, aby zmniejszyć sterty zarządzanej na najmniejszą możliwą rozmiar, tak jak pokazano w poniższy fragment kodu.  
+ Można wywołać metodę, <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> aby zredukować zarządzane sterty do możliwie najmniejszego rozmiaru, co ilustruje poniższy fragment kodu.  
   
  [!code-csharp[System.GC.Collect#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect/cs/collect4.cs#1)]
  [!code-vb[System.GC.Collect#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.collect/vb/collect4.vb#1)]  
   
- Określanie `true` dla `compacting` argument gwarantuje kompaktowania, pełny blokowania wyrzucania elementów bezużytecznych. Ustawienie <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType> właściwość <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> zapewnia skompaktować LOH i raportu o kondycji.  
+ Określenie `true`argumentugwarantujekompaktowanie ,pełneblokowaniewyrzucaniaelementówbezużytecznych.`compacting` Ustawienie właściwości, aby <xref:System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce?displayProperty=nameWithType> zapewnić kompaktowanie zarówno LOH, jak i raportu o kondycji. <xref:System.Runtime.GCSettings.LargeObjectHeapCompactionMode%2A?displayProperty=nameWithType>  
   
  ]]></format>
         </remarks>
@@ -610,18 +610,18 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="generation" Type="System.Int32" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="generation">Generowanie obiektów, dla których ma być oznaczona liczba kolekcji wyrzucania elementów.</param>
-        <summary>Zwraca liczbę przypadków, gdy wystąpiło wyrzucania elementów bezużytecznych dla określonej generacji obiektów.</summary>
-        <returns>Liczba przypadków, gdy wystąpił wyrzucania elementów bezużytecznych dla określonej generacji, ponieważ proces został uruchomiony.</returns>
+        <param name="generation">Generowanie obiektów, dla których ma zostać ustalona liczba wyrzucania elementów bezużytecznych.</param>
+        <summary>Zwraca liczbę przypadków wyrzucania elementów bezużytecznych dla określonej generacji obiektów.</summary>
+        <returns>Liczba przypadków wyrzucania elementów bezużytecznych dla określonej generacji od momentu uruchomienia procesu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W przypadku zastosowania zarządzania zasobów, konieczne może być okresowo wymuszenia wyrzucania elementów bezużytecznych przez wywołanie metody <xref:System.GC.Collect%2A> metody. Ponieważ jest kosztowną operacją, może poprawić wydajność, pomijając wywołania, jeśli ostatnio nastąpiła wyrzucania elementów bezużytecznych. Zapisz wartość zwrócona przez obiekt <xref:System.GC.CollectionCount%2A> natychmiast po wywołaniu <xref:System.GC.Collect%2A>. Następnym razem, należy wywołać <xref:System.GC.Collect%2A>, porównanie bieżącej wartości zwracanej przez <xref:System.GC.CollectionCount%2A> zapisane wartości. Jeśli dwie wartości są równe, w międzyczasie wystąpił nie kolekcji i można wywołać <xref:System.GC.Collect%2A> ponownie.  
+ W przypadku zaimplementowania własnego zarządzania zasobami może zajść potrzeba wymuszenia okresowego wyrzucania <xref:System.GC.Collect%2A> elementów bezużytecznych przez wywołanie metody. Ponieważ jest to kosztowna operacja, można poprawić wydajność, pomijając wywołanie, gdy niedawno wystąpiło wyrzucanie elementów bezużytecznych. Zapisz wartość zwróconą przez <xref:System.GC.CollectionCount%2A> zaraz po wywołaniu <xref:System.GC.Collect%2A>. Przy następnym wywołaniu <xref:System.GC.Collect%2A>należy porównać bieżącą wartość zwracaną przez <xref:System.GC.CollectionCount%2A> wartość zapisanej wartości. Jeśli dwie wartości są równe, żadna kolekcja nie wystąpiła w sposób tymczasowy i jest uzasadnione, aby <xref:System.GC.Collect%2A> ponownie wywołać.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" /> jest mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="generation" />jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="EndNoGCRegion">
@@ -657,33 +657,33 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Kończy się nie GC region opóźnienia w trybie.</summary>
+        <summary>Zamyka tryb opóźnień regionu No.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.EndNoGCRegion%2A> Metoda zgłasza wyjątek <xref:System.InvalidOperationException> Jeśli moduł odśmiecania pamięci nie jest w trybie opóźnienia w regionie nie GC. Dzieje się w żadnej z następujących warunków:  
+ <xref:System.GC.EndNoGCRegion%2A> Metoda zgłasza,jeślimodułwyrzucaniaelementówbezużytecznychniejestwtrybie<xref:System.InvalidOperationException> opóźnienia w regionie GC. Dzieje się tak w następujących warunkach:  
   
--   <xref:System.GC.TryStartNoGCRegion%2A> Nie wywołano metody wcześniej.  
+-   <xref:System.GC.TryStartNoGCRegion%2A> Metoda nie została wcześniej wywołana.  
   
--   Wywołanie <xref:System.GC.TryStartNoGCRegion%2A> zwróconej metody `false`.  
+-   Wywołanie <xref:System.GC.TryStartNoGCRegion%2A> metody zostało zwrócone `false`.  
   
--   Wywołanie <xref:System.GC.TryStartNoGCRegion%2A> metoda wywołała wyjątek.  
+-   Wywołanie <xref:System.GC.TryStartNoGCRegion%2A> metody spowodowało wyjątek.  
   
- Aby zapobiec wyjątkowi dla każdego z tych powodów, przy użyciu kodu, takie jak następujące:  
+ Wyjątek z jednego z tych powodów można zapobiec za pomocą kodu, takiego jak następujące:  
   
  [!code-csharp[System.GC.EndNoGCRegion#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.endnogcregion/cs/endnogcregion1.cs#1)]
  [!code-vb[System.GC.EndNoGCRegion#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.endnogcregion/vb/endnogcregion1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Moduł odśmiecania pamięci nie jest w trybie opóźnienia w regionie nie GC.  
+        <exception cref="T:System.InvalidOperationException">Moduł wyrzucania elementów bezużytecznych nie jest w trybie opóźnienia w regionie GC.  
   
 —lub— 
-Nie GC region opóźnienia w trybie zostało wcześniej zakończone, ponieważ wyrzucania elementów bezużytecznych zostało wywołane.  
+Tryb opóźnień regionu nie został zakończony wcześniej, ponieważ wywołano wyrzucanie elementów bezużytecznych.  
   
 —lub— 
-Alokacja pamięci przekracza wartość określoną w wywołaniu <see cref="M:System.GC.TryStartNoGCRegion(System.Int64)" /> metody.</exception>
+Alokacja pamięci przekroczyła ilość określoną w wywołaniu <see cref="M:System.GC.TryStartNoGCRegion(System.Int64)" /> metody.</exception>
         <altmember cref="M:System.GC.TryStartNoGCRegion(System.Int64)" />
         <altmember cref="P:System.Runtime.GCSettings.LatencyMode" />
         <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">Tryby opóźnienia</related>
@@ -720,16 +720,16 @@ Alokacja pamięci przekracza wartość określoną w wywołaniu <see cref="M:Sys
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera liczba bajtów przydzielonych w bieżącym wątku od początku jego okres istnienia.</summary>
-        <returns>Całkowita liczba bajtów przydzielonych w bieżącym wątku od początku jego okres istnienia.</returns>
+        <summary>Pobiera łączną liczbę bajtów przydzieloną do bieżącego wątku od momentu rozpoczęcia jego okresu istnienia.</summary>
+        <returns>Całkowita liczba bajtów przydzielono do bieżącego wątku od początku jego okresu istnienia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
 
-`GetAllocatedBytesForCurrentThread` Metoda zwróci wartość całkowita liczba bajtów przydzielonych w zarządzanym stosie, w okresie istnienia wątku, a nie całkowita liczba bajtów, które przetrwały wyrzucanie elementów bezużytecznych. Zwracana wartość nie zawiera również natywnych alokacje.
+`GetAllocatedBytesForCurrentThread` Metoda zwraca łączną liczbę bajtów przydzieloną na stercie zarządzanym w okresie istnienia wątku, a nie całkowitą liczbę bajtów, które mają przeżyły odzyskiwanie pamięci. Zwracana wartość nie obejmuje również żadnych natywnych przydziałów.
 
-Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierzenia różnicy w alokacji pamięci odstępach czasu lub zdarzeń.
+Ta metoda jest najbardziej przydatna w scenariuszach monitorowania w celu mierzenia różnic w alokacji pamięci między przedziałami czasowymi i zdarzeniami.
 
        ]]></format>
         </remarks>
@@ -771,7 +771,7 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <AssemblyVersion>4.2.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Zwraca numer bieżącej generacji obiektu.</summary>
+        <summary>Zwraca bieżący numer generacji obiektu.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="GetGeneration">
@@ -813,19 +813,19 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <Parameter Name="obj" Type="System.Object" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, który generowania informacje są pobierane dla.</param>
-        <summary>Zwraca numer bieżącej generacji określonego obiektu.</summary>
-        <returns>Numer bieżącej generacji <paramref name="obj" />.</returns>
+        <param name="obj">Obiekt, który generuje informacje, jest pobierany dla.</param>
+        <summary>Zwraca bieżący numer generacji określonego obiektu.</summary>
+        <returns>Bieżąca liczba <paramref name="obj" />generacji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda służy do określenia wieku obiektu, a następnie użyć tych informacji z <xref:System.GC.Collect%2A> metodę wymuszania moduł odśmiecania pamięci, aby zebrać obiektów w tej samej generacji. Na przykład użyć tej metody, gdy masz zestaw obiektów, które są tworzone jako grupą i które stały się niedostępne w tym samym czasie.  
+ Użyj tej metody, aby określić wiek obiektu, a następnie użyj tych informacji przy użyciu <xref:System.GC.Collect%2A> metody, aby wymusić zbieranie obiektów przez moduł wyrzucania elementów bezużytecznych w ramach tej samej generacji. Na przykład użyj tej metody, jeśli masz zestaw obiektów, które są tworzone jako Grupa i stają się niedostępne w tym samym czasie.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.GetGeneration%2A> metodę pozwala ustalić okres ważności obiektu. Przykład następnie wykonuje wyrzucania elementów bezużytecznych do wyczyszczenia pamięci sortujące i porównujące wstępnie — Opublikuj kolekcję sum pamięci w konsoli.  
+ Poniższy przykład ilustruje sposób użycia <xref:System.GC.GetGeneration%2A> metody w celu określenia wieku obiektu. Przykład następnie wykonuje odzyskiwanie pamięci, aby oczyścić pamięć i porównać całkowite i końcowe ilości pamięci kolekcji w konsoli programu.  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -873,14 +873,14 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <Parameter Name="wo" Type="System.WeakReference" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="wo">A <see cref="T:System.WeakReference" /> odwołujący się do obiektu docelowego, którego numer generacja zostanie określony.</param>
-        <summary>Zwraca numer bieżącej generacji celem określone odwołanie słabe.</summary>
-        <returns>Numer bieżącej generacji celem <paramref name="wo" />.</returns>
+        <param name="wo">Obiekt <see cref="T:System.WeakReference" /> , który odwołuje się do obiektu docelowego, którego numer generacji ma zostać określony.</param>
+        <summary>Zwraca bieżący numer generacji elementu docelowego określonego słabego odwołania.</summary>
+        <returns>Bieżąca liczba generacji dla elementu docelowego <paramref name="wo" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- W poniższym przykładzie pokazano użycie <xref:System.GC.GetGeneration%2A> metodę pozwala ustalić okres ważności obiektu słabe odwołanie.  
+ Poniższy przykład ilustruje użycie <xref:System.GC.GetGeneration%2A> metody do określenia wieku słabego obiektu referencyjnego.  
   
  [!code-cpp[System.GC.GetGenerationWeak Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.GetGenerationWeak Example/CPP/systemgcgetgenerationweak.cpp#1)]
  [!code-csharp[System.GC.GetGenerationWeak Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.GetGenerationWeak Example/CS/systemgcgetgenerationweak.cs#1)]
@@ -888,7 +888,7 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wyrzucanie elementów bezużytecznych została już wykonana na <paramref name="wo" />.</exception>
+        <exception cref="T:System.ArgumentException">Wyrzucanie elementów bezużytecznych <paramref name="wo" />zostało już wykonane.</exception>
         <altmember cref="P:System.GC.MaxGeneration" />
       </Docs>
     </Member>
@@ -916,9 +916,9 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <Parameter Name="precise" Type="System.Boolean" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="precise">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="precise">W <see langword="true" />przypadku zbierania dokładnej liczby; w przeciwnym razie Zbierz przybliżoną liczbę. Gromadzenie dokładnej wartości powoduje znaczącą spadek wydajności.</param>
+        <summary>Pobiera liczbę bajtów przydzieloną w okresie istnienia procesu.</summary>
+        <returns>Całkowita liczba bajtów przydzielono w okresie istnienia procesu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -963,19 +963,19 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <Parameter Name="forceFullCollection" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="forceFullCollection"><see langword="true" /> Aby wskazać, że ta metoda może oczekiwać wyrzucanie elementów bezużytecznych przed zwróceniem; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Pobiera liczbę bajtów, które obecnie traktować do przydzielenia. Parametr wskazuje, czy ta metoda może czekać przez krótki czas przed zwróceniem, aby zezwolić na zbieranie pamięci i zakończyć obiektów systemu.</summary>
-        <returns>Liczba, która jest dostępna najlepiej zbliżenia liczbę aktualnie przydzielonych bajtów w pamięci zarządzanej.</returns>
+        <param name="forceFullCollection"><see langword="true" />Aby wskazać, że ta metoda może oczekiwać na wystąpienie wyrzucania elementów bezużytecznych przed zwróceniem; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Pobiera liczbę bajtów, które są aktualnie uważane za przydzieloną. Parametr wskazuje, czy ta metoda może oczekiwać krótkiego interwału przed zwróceniem, aby umożliwić systemowi zbieranie elementów bezużytecznych i finalizowanie obiektów.</summary>
+        <returns>Liczba, która jest najlepszym dostępnym przybliżeniem liczby bajtów aktualnie przydzieloną w pamięci zarządzanej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `forceFullCollection` parametr jest `true`, ta metoda czeka przez krótki czas przed zwróceniem systemu umożliwia zbieranie informacji o pamięci i kończenie znajdujących się w obiektach. Długość interwału jest wewnętrznie określony limit określana przez liczbę cykli kolekcji wyrzucania elementów ukończone i zmiana ilości pamięci odzyskana między cykle. Moduł odśmiecania pamięci nie gwarantuje zbierane wszystkie pamięci niedostępne.  
+ Jeśli parametr ma `true`wartość, ta metoda czeka krótki interwał przed zwróceniem, podczas gdy system zbiera elementy bezużyteczne i finalizowanie obiektów. `forceFullCollection` Czas trwania interwału to wewnętrznie określony limit określony przez liczbę cykli wyrzucania elementów bezużytecznych i zmiany ilości pamięci, która jest odzyskiwana między cyklami. Moduł wyrzucania elementów bezużytecznych nie gwarantuje, że jest zbierana cała niedostępna pamięć.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.GetTotalMemory%2A> metodę, aby pobrać i wyświetlić liczbę aktualnie przydzielonych bajtów w pamięci zarządzanej.  
+ W poniższym przykładzie pokazano, jak za pomocą <xref:System.GC.GetTotalMemory%2A> metody pobrać i wyświetlić liczbę bajtów aktualnie przydzieloną w pamięci zarządzanej.  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -1030,21 +1030,21 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
       </Parameters>
       <Docs>
         <param name="obj">Obiekt do odwołania.</param>
-        <summary>Odwołuje się do określonego obiektu, dzięki czemu nie kwalifikuje się do wyrzucania elementów bezużytecznych od początku bieżącego procedury do punktu, w którym ta metoda jest wywoływana.</summary>
+        <summary>Odwołuje się do określonego obiektu, co sprawia, że nie kwalifikuje się do wyrzucania elementów bezużytecznych od początku bieżącej procedury do punktu, w którym ta metoda jest wywoływana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Celem <xref:System.GC.KeepAlive%2A> metodą jest zapewnić istnienie odwołania do obiektu, który jest zagrożona przez przedwcześnie są odzyskiwane przez moduł odśmiecania pamięci. Jest to typowy scenariusz, w którym może się to zdarzyć, istnieją żadnych odwołań do obiektu w kodzie zarządzanym lub danych, kiedy obiekt jest nadal używany w niezarządzanym kodzie, takich jak interfejsy API Windows, niezarządzanych bibliotek DLL, lub metody za pomocą modelu COM.  
+ Celem <xref:System.GC.KeepAlive%2A> metody jest upewnienie się, że istnieje odwołanie do obiektu, który jest zagrożony przez moduł wyrzucania elementów bezużytecznych. Typowy scenariusz, w którym może się zdarzyć, ma miejsce, gdy nie ma odwołań do obiektu w kodzie zarządzanym lub danych, ale obiekt jest nadal używany w kodzie niezarządzanym, takim jak interfejsy API systemu Windows, niezarządzane biblioteki DLL lub metody przy użyciu modelu COM.  
   
- Odwołuje się ta metoda `obj` parametru, dzięki czemu ten obiekt nie kwalifikuje się do wyrzucania elementów bezużytecznych od samego początku procedury do punktu, w kolejności wykonywania której ta metoda jest wywoływana. Kod tej metody, na końcu, a nie początku zakresu instrukcje gdzie `obj` muszą być dostępne.  
+ Ta metoda odwołuje `obj` się do parametru, dzięki czemu ten obiekt nie kwalifikuje się do wyrzucania elementów bezużytecznych od początku procedury do punktu w kolejności wykonywania, gdzie ta metoda jest wywoływana. Zakodować tę metodę na końcu, a nie na początku, zakresu instrukcji, gdzie `obj` muszą być dostępne.  
   
- <xref:System.GC.KeepAlive%2A> Metoda nie wykonuje żadnej operacji i tworzy żadnych efektów ubocznych niż rozszerzanie okresu istnienia obiektu przekazany jako parametr.  
+ <xref:System.GC.KeepAlive%2A> Metoda nie wykonuje operacji i nie generuje żadnych efektów ubocznych innych niż przedłużenie okresu istnienia obiektu przenoszonego jako parametr.  
   
    
   
 ## Examples  
- Poniższy przykład kodu tworzy obiekt na początku jego `Main` metody i nie odwołuje się do obiektu ponownie do czasu zakończenia, gdy <xref:System.GC.KeepAlive%2A> metoda jest wywoływana. Obiekt będzie nadal występować po 30 sekund czasu trwania `Main` metody, niezależnie od wywołania <xref:System.GC.Collect%2A> i <xref:System.GC.WaitForPendingFinalizers%2A> metody.  
+ Poniższy przykład kodu tworzy obiekt na początku jego `Main` metody i nie odwołuje się ponownie do obiektu do momentu zakończenia, <xref:System.GC.KeepAlive%2A> gdy wywoływana jest metoda. Obiekt utrzymuje się na 30-sekundowym czasie trwania `Main` metody, pomimo wywołań <xref:System.GC.Collect%2A> metod i <xref:System.GC.WaitForPendingFinalizers%2A> .  
   
  [!code-cpp[System.GC.KeepAlive Example2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.KeepAlive Example2/CPP/gckeepalive.cpp#1)]
  [!code-csharp[System.GC.KeepAlive Example2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.KeepAlive Example2/CS/gckeepalive.cs#1)]
@@ -1092,22 +1092,22 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera maksymalną liczbę generacje, które obsługuje obecnie system.</summary>
-        <value>Wartość z zakresu od 0 do maksymalną liczbę obsługiwanych generacji.</value>
+        <summary>Pobiera maksymalną liczbę generacji, które obecnie obsługuje system.</summary>
+        <value>Wartość z zakresu od zera do maksymalnej liczby obsługiwanych generacji.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Generowanie liczby lub wieku obiektu jest zdefiniowane w implementacji Względna miara obiektu życia. Ostatnio utworzone obiekty są w generacji 0 i najstarsze obiekty w generacji mniejsze niż lub równe Generowanie zwróconych przez <xref:System.GC.MaxGeneration%2A> właściwości.  
+ Numer generacji lub wiek obiektu jest zdefiniowaną w implementacji miarą względną dla cykl życia obiektu. Ostatnio utworzone obiekty są w generacji 0, a najstarsze obiekty znajdują się w generacji mniejszej lub równej generacji zwróconej przez <xref:System.GC.MaxGeneration%2A> właściwość.  
   
- Moduł zbierający elementy bezużyteczne przyjęto założenie, czy nowszej pamięci jest bardziej prawdopodobne zakwalifikować się do wyrzucania elementów bezużytecznych niż starsze pamięci. W związku z tym, moduł odśmiecania pamięci zwiększa jego wydajność, dostosowując generowania liczb każdorazowo odzyskuje pamięć, a <xref:System.GC.MaxGeneration%2A> wartość właściwości może rosnąć wraz z upływem czasu.  
+ Moduł wyrzucania elementów bezużytecznych zakłada, że nowsza ilość pamięci jest prawdopodobnie uprawniona do wyrzucania elementów bezużytecznych. W związku z tym moduł wyrzucania elementów bezużytecznych zwiększa wydajność, dopasowując numery generacji przy każdym <xref:System.GC.MaxGeneration%2A> odzyskiwaniu pamięci, a wartość właściwości może się zwiększać wraz z upływem czasu.  
   
- Jeśli obiekt przestarzałej jest zaimplementowana, <xref:System.GC.MaxGeneration%2A> właściwość zwraca liczbę maksymalną generowania używaną przez system; w przeciwnym razie ta właściwość zwraca wartość zero.  
+ Jeśli zaimplementowano przedawnianie obiektów, <xref:System.GC.MaxGeneration%2A> Właściwość zwraca maksymalny numer generacji używany przez system; w przeciwnym razie ta właściwość zwraca zero.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak użyć właściwości MaxGeneration, aby wyświetlić największa liczba generacji obecnie w użyciu.  
+ W poniższym przykładzie pokazano, jak użyć właściwości MaxGeneration, aby wyświetlić największy numer generacji, który jest aktualnie używany.  
   
  [!code-cpp[System.GC.Collect Int Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.gc.collect int example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.Collect Int Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.collect int example/CS/class1.cs#1)]
@@ -1115,9 +1115,9 @@ Ta metoda jest najbardziej przydatne podczas monitorowania scenariuszy do mierze
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Dla tej implementacji wartość zwracana przez <see cref="P:System.GC.MaxGeneration" /> właściwość jest gwarantowane, pozostaje niezmienna przez okres istnienia realizowanej aplikacji.  
+        <block subset="none" type="overrides"><para>W przypadku tej implementacji wartość zwrócona przez <see cref="P:System.GC.MaxGeneration" /> właściwość jest gwarantowana na stałą dla okresu istnienia aplikacji, która wykonuje.  
   
-Użyj <see cref="P:System.GC.MaxGeneration" /> właściwość, aby określić maksymalną wartość można określić podczas wywoływania <see cref="M:System.GC.Collect(System.Int32)" /> metody, która przyjmuje parametr generacji.</para></block>
+Użyj właściwości, aby określić maksymalną wartość, którą można określić podczas <see cref="M:System.GC.Collect(System.Int32)" /> wywoływania metody, która przyjmuje parametr generacji. <see cref="P:System.GC.MaxGeneration" /></para></block>
         <altmember cref="M:System.GC.GetGeneration(System.Object)" />
       </Docs>
     </Member>
@@ -1158,41 +1158,41 @@ Użyj <see cref="P:System.GC.MaxGeneration" /> właściwość, aby określić ma
         <Parameter Name="largeObjectHeapThreshold" Type="System.Int32" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="maxGenerationThreshold">Liczbą z zakresu od 1 do 99 określający, kiedy powinien być wywoływany powiadomienia na podstawie obiekty przydzielone w generacji 2.</param>
-        <param name="largeObjectHeapThreshold">Liczbą z zakresu od 1 do 99 określający, kiedy powinien być wywoływany powiadomienia na podstawie obiekty przydzielone w stosie dużego obiektu.</param>
-        <summary>Określa, że powiadomienie kolekcji wyrzucania elementów powinien być wywoływany w przypadku, gdy warunki Preferuj pełne wyrzucanie elementów bezużytecznych i kiedy kolekcji zostały ukończone.</summary>
+        <param name="maxGenerationThreshold">Liczba z zakresu od 1 do 99 określająca, kiedy powiadomienie powinno być zgłaszane na podstawie obiektów przyznanych w generacji 2.</param>
+        <param name="largeObjectHeapThreshold">Liczba z zakresu od 1 do 99 określająca, kiedy powiadomienie powinno być zgłaszane na podstawie obiektów przyznanych w stercie dużego obiektu.</param>
+        <summary>Określa, że należy podwyższyć powiadomienie o wyrzucaniu elementów bezużytecznych, gdy warunki preferują pełne odzyskiwanie pamięci i gdy kolekcja została ukończona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dla każdej generacji moduł zbierający elementy bezużyteczne ustawia próg alokacji w tej generacji. Gdy rozmiar alokacji przekracza wartość progowa, wyrzucanie elementów bezużytecznych jest wyzwalana dla tej generacji. Aby uzyskać przykład, jeśli próg generacji 2 jest o rozmiarze 20MB (co oznacza, że o rozmiarze 20MB przeżyje kolekcji generacji 1 i są promowane do generacji 2) i więcej niż 20MB ma przetrwały generacji 1 i zostanie poproszony w generacji 2, zostanie podjęta próba następnego wyrzucania elementów bezużytecznych jako kolekcji generacji 2. Podobnie jeśli sterty dużych obiektów (LOH) próg wynosi 20MB i aplikację przydzieliła więcej niż 20MB pamięci dużych obiektów, następnego wyrzucania elementów bezużytecznych zostanie również podjęta jako kolekcji generacji 2 (ponieważ LOH są zbierane w gen2 wyrzucania elementów bezużytecznych).  
+ Dla każdej generacji moduł zbierający elementy bezużyteczne ustawia próg alokacji dla tej generacji. Gdy rozmiar alokacji przekracza ten próg, wyrzucanie elementów bezużytecznych jest wyzwalane na tej generacji. Na przykład jeśli wartość progowa generacji 2 to baza (co oznacza, że baza przeżyje 1 kolekcje i zostanie podwyższony do generacji 2), a więcej niż baza przestała 1 i zostanie wyświetlony monit do generacji 2, zostanie podjęta kolejna próba wyrzucania elementów bezużytecznych jako kolekcja generacji 2. Podobnie, jeśli wartość progowa sterty dużego obiektu (LOH) to baza, a aplikacja przydzieliła więcej niż baza dużych obiektów, kolejne odzyskiwanie pamięci zostanie również ponowione jako kolekcja generacji 2 (ponieważ LOH jest zbierana tylko w Gen2 rekolekcji elementów bezużytecznych).  
   
- `maxGenerationThreshold` i `largeObjectHeapThreshold` progi kontrolować, ile wcześniej otrzymasz powiadomienie, zanim wystąpi pełne wyrzucanie elementów bezużytecznych. Wyższa wartość progową, więcej przydziały, które mogą wystąpić między powiadomienia i dalej pełne wyrzucanie elementów bezużytecznych.  
+ `maxGenerationThreshold` Progi `largeObjectHeapThreshold` i decydują o tym, jak dużo z wyprzedzeniem otrzymujesz powiadomienie przed wystąpieniem pełnego wyrzucania elementów bezużytecznych. Im większy próg, tym więcej alokacji, które mogą wystąpić między powiadomieniem i następnym pełnym wyrzucaniem elementów bezużytecznych.  
   
- W przypadku sytuacji, w których pełne wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego może niekorzystnie wpłynąć na wydajność aplikacji, możesz poprosić otrzymywać powiadomienia, gdy środowisko uruchomieniowe ma pełną wyrzucania elementów bezużytecznych i obejście tej kolekcji przez wykonuje kolekcję, samodzielnie (przy użyciu <xref:System.GC.Collect%2A> metoda) Jeśli warunki są nadal pozytywnych. Validated harmonogramy zbierania śmieci samodzielnie, pełne powiadomienie GC przydaje się w poniższych scenariuszach:  
+ Jeśli masz sytuacje, w których pełne wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego nie wpłynie negatywnie na wydajność aplikacji, możesz polecić otrzymywanie powiadomień, gdy środowisko uruchomieniowe ma wykonać pełne odzyskiwanie pamięci i obejść tę kolekcję przez Wywoływanie kolekcji (przy użyciu <xref:System.GC.Collect%2A> metody), gdy warunki są nadal preferowane. Oprócz zmieniania harmonogramu wyrzucania elementów bezużytecznych, pełne powiadomienie w ramach programu GC jest przydatne w następujących scenariuszach:  
   
--   Możesz monitorować podejście pełne odśmiecanie, i po wyświetleniu powiadomienia, że zbliża się jeden, zmniejszyć rozmiar danych na żywo (na przykład dzięki niektóre wpisy w pamięci podręcznej). W rezultacie po wystąpieniu wyrzucania elementów bezużytecznych jest w stanie odzyskać większej ilości pamięci.  
+-   Możesz monitorować podejście do pełnego wyrzucania elementów bezużytecznych i, gdy otrzymasz powiadomienie, że jedna z nich zbliża się, zmniejszy się rozmiar danych na żywo (na przykład przez wydanie niektórych wpisów pamięci podręcznej). W związku z tym, gdy następuje wyrzucanie elementów bezużytecznych, jest możliwe odjęcie większej ilości pamięci.  
   
--   Możesz monitorować zakończenia pełne odśmiecanie, tak, aby zbierać statystykami.  Na przykład można mierzyć rozmiar sterty po ukończeniu odzyskiwania pamięci, dzięki czemu będzie wiadomo, rozmiar danych na żywo. (Po pełną operacją GC sterty jest na najmniejszy).  
+-   Możesz monitorować ukończenie pełnego wyrzucania elementów bezużytecznych, dzięki czemu można zbierać pewne dane statystyczne.  Na przykład może zajść potrzeba mierzenia rozmiaru sterty na zakończenie GC, aby znać rozmiar danych na żywo. (Po pełnym wykazie globalnym sterta ma najmniejszy rozmiar).  
   
- Aby uzyskać więcej informacji na temat co reprezentuje pełne odśmiecanie, zobacz [powiadomienia dotyczące odzyskiwania pamięci](~/docs/standard/garbage-collection/notifications.md).  
+ Aby uzyskać więcej informacji o tym, co reprezentuje pełne odzyskiwanie pamięci, zobacz powiadomienia dotyczące wyrzucania [elementów](~/docs/standard/garbage-collection/notifications.md)bezużytecznych.  
   
- Po zarejestrowaniu powiadomienia kolekcji wyrzucania elementów, możesz otrzymać, gdy zbliża się pełne wyrzucanie elementów bezużytecznych, a po jego zakończeniu. Ten wzorzec jest podobny, jak system operacyjny monitoruje dla powiadomień o małej ilości pamięci.  
+ Po zarejestrowaniu do powiadomienia o wyrzucaniu elementów bezużytecznych można otrzymywać powiadomienia, gdy zostanie zbliżane pełne odzyskiwanie pamięci. Ten wzorzec przypomina, jak system operacyjny monitoruje w przypadku powiadomień o niskiej ilości pamięci.  
   
- Skorzystaj z poniższych wskazówek w celu określania `maxGenerationThreshold` i `largeObjectHeapThreshold` parametry:  
+ Aby określić `maxGenerationThreshold` parametry i `largeObjectHeapThreshold` należy użyć następujących wytycznych:  
   
--   Im większa wartość progowa, wystąpi więcej alokacje między powiadomienia i pełne wyrzucanie elementów bezużytecznych.  
+-   Im większa wartość progowa, tym większa alokacja będzie odbywać się między powiadomieniem i pełnym wyrzucaniem elementów bezużytecznych.  
   
-     Wyższa wartość progowa zapewnia dodatkowe możliwości dla środowiska uruchomieniowego pod kątem bliskim kolekcji. Zwiększa prawdopodobieństwo, że użytkownik będzie powiadamiany. Nie należy jednak ustawić zbyt wysoki próg, ponieważ wyniki w alokacjach więcej przed środowisko uruchomieniowe wywołuje kolejnego zbierania.  
+     Większa wartość progowa daje więcej możliwości dla środowiska uruchomieniowego, aby sprawdzić, czy zbliża się kolekcja. Zwiększa to prawdopodobieństwo, że użytkownik zostanie powiadomiony. Nie należy jednak ustawiać progu zbyt wysoki, ponieważ powoduje to większe alokacje zanim środowisko uruchomieniowe wymusi następną kolekcję.  
   
-     Gdy możesz wywołać kolekcję samodzielnie na powiadomienia za pomocą wartość progowa, mniejszą liczbę obiektów są odzyskiwane nie będzie można odzyskać przy następnej kolekcji w środowisku uruchomieniowym.  
+     Gdy samodzielnie wywołujesz kolekcję po powiadomieniu przy użyciu dużej wartości progowej, mniej obiektów są odzyskiwane, niż byłyby odzyskiwane przez następną kolekcję środowiska uruchomieniowego.  
   
--   Niższa wartość progowa, mniej alokacje między powiadomienia i pełne wyrzucanie elementów bezużytecznych.  
+-   Im mniejsza wartość progowa, tym mniejsza ilość alokacji między powiadomieniem a pełnym odzyskiwaniem pamięci.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak do rejestracji powiadomień kolekcji wyrzucania elementów i uruchomić wątku do monitorowania stanu powiadomień kolekcji wyrzucania elementów. Ten przykład kodu jest częścią większego przykładu przewidzianego dla [powiadomienia dotyczące odzyskiwania pamięci](~/docs/standard/garbage-collection/notifications.md) tematu.  
+ Poniższy przykład przedstawia sposób rejestrowania powiadomienia o wyrzucaniu elementów bezużytecznych i uruchamiania wątku do monitorowania stanu powiadomienia o wyrzucaniu elementów bezużytecznych. Ten przykład kodu jest częścią większego przykładu dostarczonego w temacie powiadomienia o wyrzucaniu [elementów](~/docs/standard/garbage-collection/notifications.md) bezużytecznych.  
   
  [!code-cpp[GCNotification#2](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#2)]
  [!code-csharp[GCNotification#2](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#2)]
@@ -1200,11 +1200,11 @@ Użyj <see cref="P:System.GC.MaxGeneration" /> właściwość, aby określić ma
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxGenerationThreshold" /> lub <paramref name="largeObjectHeapThreshold" /> nie jest w zakresie od 1 do 99.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxGenerationThreshold" />lub <paramref name="largeObjectHeapThreshold" /> nie należy do zakresu od 1 do 99.</exception>
         <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">aby uzyskać pełne zaufanie dla bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez kod częściowo zaufany.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
         <related type="Article" href="https://msdn.microsoft.com/library/e12d8e74-31e3-4035-a87d-f3e66f0a9b89">Powiadomienia dotyczące odzyskiwania pamięci</related>
-        <exception cref="T:System.InvalidOperationException">Ten element członkowski nie jest dostępna, gdy jest włączona współbieżne wyrzucanie elementów bezużytecznych. Zobacz &lt;gcconcurrent —&gt; ustawienia środowiska wykonawczego, aby uzyskać informacje o tym, jak wyłączyć współbieżne wyrzucanie elementów bezużytecznych.</exception>
+        <exception cref="T:System.InvalidOperationException">Ten element członkowski nie jest dostępny, gdy włączone jest współbieżne wyrzucanie elementów bezużytecznych. Zobacz ustawienie &lt;środowiska&gt; uruchomieniowego gcConcurrent, aby uzyskać informacje o tym, jak wyłączyć współbieżne odzyskiwanie pamięci.</exception>
       </Docs>
     </Member>
     <Member MemberName="RemoveMemoryPressure">
@@ -1247,28 +1247,28 @@ Użyj <see cref="P:System.GC.MaxGeneration" /> właściwość, aby określić ma
         <Parameter Name="bytesAllocated" Type="System.Int64" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.5;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="bytesAllocated">Ilość niezarządzanej pamięci, która została zwolniona.</param>
-        <summary>Informuje środowisko uruchomieniowe wydano niezarządzanej pamięci, a nie musi już być brana pod uwagę podczas planowania wyrzucania elementów bezużytecznych.</summary>
+        <param name="bytesAllocated">Ilość pamięci niezarządzanej, która została wydana.</param>
+        <summary>Informuje środowisko uruchomieniowe, że niezarządzana pamięć została wydana i nie trzeba już brać pod uwagę podczas planowania wyrzucania elementów bezużytecznych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Określenie, kiedy należy zaplanować wyrzucania elementów bezużytecznych, środowisko uruchomieniowe bierze pod uwagę ilość pamięci zarządzanej jest przydzielony. Dużą ilość niezarządzanej pamięci są przydzielane w małych obiektów zarządzanych, środowisko uruchomieniowe uwzględnia pamięci zarządzanej, a zatem szacuje zbyt nisko pilność planowania wyrzucania elementów bezużytecznych. <xref:System.GC.AddMemoryPressure%2A> Metoda informuje środowiska wykonawczego o ten dodatkowy nacisk na pamięci systemowej i <xref:System.GC.RemoveMemoryPressure%2A> metoda informuje środowisko uruchomieniowe po udostępnieniu dodatkowych ciśnienia.  
+ W celu określenia czasu, w którym należy zaplanować wyrzucanie elementów bezużytecznych, środowisko uruchomieniowe uwzględnia ilość przydzielonej pamięci zarządzanej. Jeśli mały zarządzany obiekt przydzieli dużą ilość pamięci niezarządzanej, środowisko uruchomieniowe bierze pod uwagę tylko zarządzaną pamięć i w ten sposób szacuje pilność planowania wyrzucania elementów bezużytecznych. Metoda informuje środowisko uruchomieniowe tego dodatkowego nacisku w pamięci systemowej, <xref:System.GC.RemoveMemoryPressure%2A> a metoda informuje środowisko uruchomieniowe o zwolnieniu dodatkowego nacisku. <xref:System.GC.AddMemoryPressure%2A>  
   
- We wzorcu najprostszy sposób użycia obiektu zarządzanego niezarządzanej pamięci w Konstruktorze przydziela i zwalnia go w `Dispose` lub `Finalize` metody. Wywołaj <xref:System.GC.AddMemoryPressure%2A> metoda po przydzieleniu niezarządzanej pamięci i wywoływać <xref:System.GC.RemoveMemoryPressure%2A> metody po jego.  
+ W najprostszym wzorcu użycia obiekt zarządzany przydziela niezarządzaną pamięć w konstruktorze i zwalnia go w `Dispose` metodzie lub. `Finalize` Wywołaj <xref:System.GC.RemoveMemoryPressure%2A> metodę po przydzieleniu pamięci niezarządzanej i Wywołaj metodę po jej zwolnieniu. <xref:System.GC.AddMemoryPressure%2A>  
   
- W bardziej skomplikowane sytuacje, w którym niezarządzane przydzielanie pamięci znacznie zmienia się w okresie istnienia obiektu zarządzanego, można wywołać <xref:System.GC.AddMemoryPressure%2A> i <xref:System.GC.RemoveMemoryPressure%2A> metody do komunikowania się przyrostowe zmiany środowiska uruchomieniowego.  
+ W bardziej skomplikowanych scenariuszach, w których niezarządzana alokacja pamięci ulega znacznemu zmianie w okresie istnienia zarządzanego obiektu, <xref:System.GC.AddMemoryPressure%2A> można <xref:System.GC.RemoveMemoryPressure%2A> wywołać metody i, aby przekazać te przyrostowe zmiany do środowiska uruchomieniowego.  
   
 > [!CAUTION]
->  Należy zadbać o usunięcie dokładnie ilość wykorzystanie, które można dodać. Niepowodzenie w tym może niekorzystnie wpłynąć na wydajność systemu w aplikacjach wykonywanych przez długi czas.  
+>  Należy upewnić się, że należy usunąć dokładnie ilość dodawanego nacisku. Niewykonanie tej czynności może niekorzystnie wpłynąć na wydajność systemu w aplikacjach uruchamianych przez długi czas.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="bytesAllocated" /> jest mniejsza niż lub równa 0.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="bytesAllocated" />jest mniejsze lub równe 0.  
   
 —lub— 
-Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">Aby uzyskać możliwość wywoływać kod niezarządzany, podczas manipulacji priorytet wyrzucania elementów bezużytecznych. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
+Na komputerze <paramref name="bytesAllocated" /> 32-bitowym jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">umożliwia wywoływanie kodu niezarządzanego podczas manipulowania priorytetem kolekcji elementów bezużytecznych. Skojarzone Wyliczenie:<see cref="F:System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode" /></permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
       </Docs>
     </Member>
@@ -1313,24 +1313,24 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, który należy wywołać finalizatora dla.</param>
-        <summary>Żąda system wywołać finalizatora dla określonego obiektu, dla którego <see cref="M:System.GC.SuppressFinalize(System.Object)" /> wcześniej została wywołana.</summary>
+        <param name="obj">Obiekt, dla którego należy wywołać finalizator.</param>
+        <summary>Żąda, aby system wywoływał finalizator dla określonego obiektu, dla którego <see cref="M:System.GC.SuppressFinalize(System.Object)" /> poprzednio został wywołany.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.ReRegisterForFinalize%2A> Metoda dodaje `obj` parametru do listy obiektów żądających finalizacji, zanim moduł odśmiecania pamięci zwalnia obiektu. `obj` Parametr musi być wywołujący tę metodę.  
+ <xref:System.GC.ReRegisterForFinalize%2A> Metoda`obj` dodaje parametr do listy obiektów, które żądają finalizowania, zanim moduł wyrzucania elementów bezużytecznych zwolni obiekt. `obj` Parametr musi być obiektem wywołującym tej metody.  
   
- Wywoływanie <xref:System.GC.ReRegisterForFinalize%2A> metody nie gwarantuje, że moduł odśmiecania pamięci będzie wywołać finalizatora obiektu.  
+ <xref:System.GC.ReRegisterForFinalize%2A> Wywołanie metody nie gwarantuje, że moduł wyrzucania elementów bezużytecznych wywoła finalizator obiektu.  
   
- Domyślnie wszystkie obiekty, które implementują finalizatory są dodawane do listy obiektów, które wymagają finalizacji; jednak może mieć już sfinalizowany lub może być wyłączone finalizacja przez wywołanie obiektu <xref:System.GC.SuppressFinalize%2A> metody.  
+ Domyślnie wszystkie obiekty implementujące finalizatory są dodawane do listy obiektów, które wymagają finalizacji; Jednak obiekt mógł zostać już sfinalizowany lub mógł wyłączyć finalizowanie, wywołując <xref:System.GC.SuppressFinalize%2A> metodę.  
   
- Finalizator umożliwia operacji przywracania aktywności siebie lub obiekt, który odwołuje się do tej metody.  
+ Finalizator może użyć tej metody do przywracania aktywności samego siebie lub obiektu, do którego się odwołuje.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak zakończyć obiektu na sekundę przy użyciu metody ReRegisterForFinalize czas po wyrzucania elementów bezużytecznych.  
+ Poniższy przykład ilustruje sposób użycia metody ReRegisterForFinalize w celu sfinalizowania obiektu po raz drugi po wyrzucaniu elementów bezużytecznych.  
   
  [!code-cpp[System.GC.ReregisterForFinalize Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.ReRegisterForFinalize Example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.ReregisterForFinalize Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.ReRegisterForFinalize Example/CS/class1.cs#1)]
@@ -1338,7 +1338,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="obj" />jest <see langword="null" />.</exception>
         <altmember cref="M:System.GC.SuppressFinalize(System.Object)" />
       </Docs>
     </Member>
@@ -1389,30 +1389,30 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, którego finalizatora nie musi zostać wykonana.</param>
-        <summary>Żądania, że środowisko uruchomieniowe języka wspólnego nie wywołać finalizatora dla określonego obiektu.</summary>
+        <param name="obj">Obiekt, którego finalizator nie może zostać wykonany.</param>
+        <summary>Żąda, aby środowisko uruchomieniowe języka wspólnego nie wywołało finalizatora dla określonego obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda ustawia bit w nagłówku obiektu `obj`, której środowisko uruchomieniowe sprawdza podczas wywoływania finalizatorów. Finalizator, który jest reprezentowany przez <xref:System.Object.Finalize%2A?displayProperty=nameWithType> służy metody, aby zwolnić niezarządzane zasoby, zanim obiekt będzie jesdnostką zbierającą śmieci. Jeśli `obj` nie ma finalizatora, wywołanie <xref:System.GC.SuppressFinalize%2A> metoda nie ma wpływu.  
+ Ta metoda ustawia bit w nagłówku `obj`obiektu, którego środowisko uruchomieniowe sprawdza podczas wywoływania finalizatorów. Finalizator, który jest reprezentowany przez <xref:System.Object.Finalize%2A?displayProperty=nameWithType> metodę, jest używany do zwalniania niezarządzanych zasobów, zanim obiekt zostanie pobrany jako bezużyteczny. Jeśli `obj` nie ma finalizatora, wywołanie <xref:System.GC.SuppressFinalize%2A> metody nie ma wpływu.  
   
- Obiekty, które implementują <xref:System.IDisposable> interfejsu można wywołać tej metody z obiektu <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> implementacji, aby uniemożliwić moduł zbierający elementy bezużyteczne wywoływania <xref:System.Object.Finalize%2A?displayProperty=nameWithType> na obiekt, który nie jest wymagane. Zazwyczaj w ten sposób zapobiec finalizator zwalniania niezarządzanych zasobów, które już mają zostać zwolniony przez <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> implementacji.  
+ Obiekty implementujące <xref:System.IDisposable> interfejs mogą wywołać tę metodę z <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> implementacji obiektu, aby zapobiec wywoływaniu <xref:System.Object.Finalize%2A?displayProperty=nameWithType> przez moduł wyrzucania elementów bezużytecznych na obiekcie, który go nie wymaga. Zwykle jest to spowodowane tym, że nie można zwolnić niezarządzanych zasobów, które zostały już zwolnione przez <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> implementację.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.SuppressFinalize%2A> metody w klasie zasobów, aby zapobiec nadmiarowe wyrzucanie elementów bezużytecznych z wywołanego. W przykładzie użyto [wzorca usuwania](~/docs/standard/garbage-collection/implementing-dispose.md) zwolnienie zarówno zasoby zarządzane (czyli obiekty, które implementują <xref:System.IDisposable>) i niezarządzanych zasobów.  
+ Poniższy przykład ilustruje sposób użycia <xref:System.GC.SuppressFinalize%2A> metody w klasie zasobów, aby zapobiec wywoływaniu nadmiarowego wyrzucania elementów bezużytecznych. W przykładzie pokazano użycie [wzorca Dispose](~/docs/standard/garbage-collection/implementing-dispose.md) do zwolnienia zasobów zarządzanych (czyli obiektów, które implementują <xref:System.IDisposable>) i niezarządzanych zasobów.  
   
  [!code-csharp[System.GC.SuppressFinalize#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.gc.suppressfinalize/cs/suppressfinalize1.cs#1)]
  [!code-vb[System.GC.SuppressFinalize#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.gc.suppressfinalize/vb/suppressfinalize1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="obj" />jest <see langword="null" />.</exception>
         <altmember cref="M:System.GC.ReRegisterForFinalize(System.Object)" />
         <altmember cref="M:System.Object.Finalize" />
-        <related type="Article" href="https://msdn.microsoft.com/library/31a6c13b-d6a2-492b-9a9f-e5238c983bcb">Wzorzec Dispose</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/31a6c13b-d6a2-492b-9a9f-e5238c983bcb">Usuń wzorzec</related>
       </Docs>
     </Member>
     <MemberGroup MemberName="TryStartNoGCRegion">
@@ -1422,14 +1422,14 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Próbuje nie zezwalaj na odzyskiwanie pamięci podczas wykonywania ścieżkę krytyczną.</summary>
+        <summary>Próbuje uniemożliwić wyrzucanie elementów bezużytecznych podczas wykonywania ścieżki krytycznej.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 > [!IMPORTANT]
->  Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+>  Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
  ]]></format>
         </remarks>
@@ -1471,26 +1471,26 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="totalSize" Type="System.Int64" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="totalSize">Ilość pamięci w bajtach, można przydzielić bez powodowania wyrzucania elementów bezużytecznych. Może być mniejsza niż lub równy rozmiarowi segment efemeryczny. Aby uzyskać informacje dotyczące rozmiaru segment efemeryczny, zobacz sekcję "generacje i segmenty Efemeryczne" w [podstawowe informacje dotyczące wyrzucania elementów bezużytecznych](~/docs/standard/garbage-collection/fundamentals.md) artykułu.</param>
-        <summary>Próby nie zezwalaj na odzyskiwanie pamięci podczas wykonywania ścieżki krytycznej, jeśli określona ilość pamięci jest dostępny.</summary>
-        <returns><see langword="true" /> Jeśli środowisko uruchomieniowe można było zatwierdzić wymagana ilość pamięci i odśmiecania pamięci jest w stanie nie tryb opóźnienie region GC; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="totalSize">Ilość pamięci w bajtach do przydzielenia bez wyzwalania wyrzucania elementów bezużytecznych. Musi być mniejszy niż lub równy rozmiarowi segmentu tymczasowych. Informacje o rozmiarze segmentu tymczasowych można znaleźć w sekcji "tymczasowe generacje i segmenty" w artykule [podstawowe informacje o odzyskiwaniu elementów](~/docs/standard/garbage-collection/fundamentals.md) bezużytecznych.</param>
+        <summary>Próbuje uniemożliwić wyrzucanie elementów bezużytecznych podczas wykonywania ścieżki krytycznej, jeśli jest dostępna określona ilość pamięci.</summary>
+        <returns><see langword="true" />Jeśli środowisko uruchomieniowe mogło zatwierdzić wymaganą ilość pamięci, a Moduł wyrzucania elementów bezużytecznych może wejść w tryb opóźnienia w regionie GC; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%29> Metoda próbuje umieścić moduł zbierający elementy bezużyteczne w nie GC region opóźnienie trybie, który nie zezwala wyrzucania elementów bezużytecznych, gdy aplikacja wykonuje krytyczne obszar kodu.  Jeśli środowisko wykonawcze nie może przydzielić pierwotnie żądanej ilości pamięci, moduł zbierający elementy bezużyteczne wykonuje pełne blokowanie wyrzucania elementów bezużytecznych zwolnić więcej pamięci. Moduł zbierający elementy bezużyteczne przechodzi tryb bez GC region opóźnienia, jeśli jest w stanie przydzielić wymagana ilość pamięci, w tym przypadku jest faktycznie 2 * `totalSize` bajtów (próbuje przydzielić `totalSize` bajtów dla sterty małego obiektu i `totalSize` bajtów sterty dużego obiektu).  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%29> Metoda próbuje umieścić Moduł wyrzucania elementów bezużytecznych w trybie opóźnienia w regionie GC, który uniemożliwia wyrzucanie elementów bezużytecznych, gdy aplikacja wykonuje krytyczny region kodu.  Jeśli środowisko uruchomieniowe nie może początkowo przydzielić żądanej ilości pamięci, Moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych podczas próby zwolnienia dodatkowej pamięci. Moduł wyrzucania elementów bezużytecznych nie przechodzi w tryb opóźnienia regionu GC, jeśli może przydzielić wymaganą ilość pamięci, która w tym przypadku `totalSize` jest w rzeczywistości 2 * bajtów `totalSize` (próbuje przydzielić bajty `totalSize` dla sterty małego obiektu i bajtów dla Sterta dużego obiektu.  
   
- `totalSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej. Obejmuje to alokacje przez aplikację, a także alokacji, który sprawia, że środowisko wykonawcze w imieniu aplikacji.  
+ `totalSize`musi być wystarczająco duży, aby obsługiwał wszystkie alokacje pamięci, które występują w ścieżce krytycznej. Obejmuje to alokacje przez aplikację, a także alokacje, które środowisko uruchomieniowe wykonuje w imieniu aplikacji.  
   
 > [!IMPORTANT]
->  Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+>  Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
- Możesz wyjść z nie GC region opóźnienie trybu przez wywołanie metody <xref:System.GC.EndNoGCRegion%2A> metody.  
+ Aby wyjść z trybu opóźnień z regionem GC, <xref:System.GC.EndNoGCRegion%2A> należy wywołać metodę.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> przekracza rozmiar segment efemeryczny.</exception>
-        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnienia w regionie nie GC.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" />przekracza rozmiar segmentu tymczasowych.</exception>
+        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnień w regionie GC.</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
         <related type="Article" href="https://msdn.microsoft.com/library/67c5a20d-1be1-4ea7-8a9a-92b0b08658d2">Podstawy dotyczące wyrzucania elementów bezużytecznych</related>
         <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">Tryby opóźnienia</related>
@@ -1532,29 +1532,29 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="disallowFullBlockingGC" Type="System.Boolean" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="totalSize">Ilość pamięci w bajtach, można przydzielić bez powodowania wyrzucania elementów bezużytecznych. Może być mniejsza niż lub równy rozmiarowi segment efemeryczny. Aby uzyskać informacje dotyczące rozmiaru segment efemeryczny, zobacz sekcję "generacje i segmenty Efemeryczne" w [podstawowe informacje dotyczące wyrzucania elementów bezużytecznych](~/docs/standard/garbage-collection/fundamentals.md) artykułu.</param>
-        <param name="disallowFullBlockingGC"><see langword="true" /> Aby pominąć pełną blokowania wyrzucania elementów bezużytecznych, jeśli moduł odśmiecania pamięci jest początkowo nie można przydzielić <paramref name="totalSize" /> bajtów; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Próbuje nie zezwalaj na odzyskiwanie pamięci podczas wykonywania ścieżki krytycznej, jeśli określona ilość pamięci jest dostępny i formantów, czy moduł odśmiecania pamięci jest pełna blokowania wyrzucania elementów bezużytecznych, jeśli nie wystarczającej ilości pamięci jest początkowo dostępna.</summary>
-        <returns><see langword="true" /> Jeśli środowisko uruchomieniowe można było zatwierdzić wymagana ilość pamięci i odśmiecania pamięci jest w stanie nie tryb opóźnienie region GC; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="totalSize">Ilość pamięci w bajtach do przydzielenia bez wyzwalania wyrzucania elementów bezużytecznych. Musi być mniejszy niż lub równy rozmiarowi segmentu tymczasowych. Informacje o rozmiarze segmentu tymczasowych można znaleźć w sekcji "tymczasowe generacje i segmenty" w artykule [podstawowe informacje o odzyskiwaniu elementów](~/docs/standard/garbage-collection/fundamentals.md) bezużytecznych.</param>
+        <param name="disallowFullBlockingGC"><see langword="true" />Aby pominąć pełne blokowanie wyrzucania elementów bezużytecznych, <paramref name="totalSize" /> <see langword="false" />Jeśli moduł wyrzucania elementów bezużytecznych nie może początkowo przydzielić bajtów; w przeciwnym razie.</param>
+        <summary>Próbuje uniemożliwić wyrzucanie elementów bezużytecznych podczas wykonywania ścieżki krytycznej, jeśli jest dostępna określona ilość pamięci i kontroluje, czy moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych, jeśli nie jest dostępna wystarczająca ilość pamięci.</summary>
+        <returns><see langword="true" />Jeśli środowisko uruchomieniowe mogło zatwierdzić wymaganą ilość pamięci, a Moduł wyrzucania elementów bezużytecznych może wejść w tryb opóźnienia w regionie GC; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Boolean%29> Metoda próbuje umieścić moduł zbierający elementy bezużyteczne w nie GC region opóźnienie trybie, który nie zezwala wyrzucania elementów bezużytecznych, gdy aplikacja wykonuje krytyczne obszar kodu.  Jeśli środowisko uruchomieniowe jest nie można wstępnie przydzielić żądanej ilości pamięci i `disallowFullBlockingGC` argument jest `false`, moduł zbierający elementy bezużyteczne wykonuje pełne blokowanie wyrzucania elementów bezużytecznych zwolnić więcej pamięci; w przeciwnym razie alokacji kończy się niepowodzeniem i metoda zwraca `false`. Moduł zbierający elementy bezużyteczne przechodzi tryb bez GC region opóźnienia, jeśli jest w stanie przydzielić wymagana ilość pamięci, w tym przypadku jest faktycznie 2 * `totalSize` (próbuje przydzielić `totalSize` dla sterty małego obiektu i `totalSize` dla dużego obiektu Sterta).  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Boolean%29> Metoda próbuje umieścić Moduł wyrzucania elementów bezużytecznych w trybie opóźnienia w regionie GC, który uniemożliwia wyrzucanie elementów bezużytecznych, gdy aplikacja wykonuje krytyczny region kodu.  Jeśli środowisko uruchomieniowe nie może początkowo przydzielić żądanej ilości pamięci, a `disallowFullBlockingGC` argument to `false`, Moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych w próbie zwolnienia dodatkowej pamięci; w przeciwnym razie alokacja kończy się niepowodzeniem, a `false`Metoda zwraca. Moduł wyrzucania elementów bezużytecznych nie przechodzi w tryb opóźnienia regionu GC, jeśli może przydzielić wymaganą ilość pamięci, która w tym przypadku `totalSize` jest w rzeczywistości 2 * `totalSize` (próbuje przydzielić sterty małego obiektu i `totalSize` dla dużego obiektu Sterta).  
   
- `totalSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej. Obejmuje to alokacje przez aplikację, a także alokacji, który sprawia, że środowisko wykonawcze w imieniu aplikacji.  
+ `totalSize`musi być wystarczająco duży, aby obsługiwał wszystkie alokacje pamięci, które występują w ścieżce krytycznej. Obejmuje to alokacje przez aplikację, a także alokacje, które środowisko uruchomieniowe wykonuje w imieniu aplikacji.  
   
- Ustawienie `disallowFullBlockingGC` do `true` zapobiegające pełnego blokowania wyrzucania elementów kolekcji, jeśli nie ma wystarczającej ilości pamięci jest początkowo dostępna jest najbardziej przydatna w scenariusze równoważenia obciążenia: jeden system może wywołać tę metodę i przedstawia się jako gotowy do akceptowania żądań, jeśli zostanie zwrócona `true`, i modułu równoważenia obciążenia, Przekieruj żądania do innych systemów, jeśli zwróci ona `false`. Go następnie wykonaj pełną blokowania wyrzucania elementów bezużytecznych, gdy go nie obsługuje żądania przez wywołanie metody <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> metody.  
+ Ustawienie `disallowFullBlockingGC`zapobiegające pełnemu blokowaniu wyrzucania elementów bezużytecznych, jeśli nie jest dostępna wystarczająca ilość pamięci jest najbardziej przydatna w scenariuszach równoważenia obciążenia: jeden system może wywołać tę metodę i zgłosić się jako gotowy do akceptowania żądań, jeśli zwróci wartość `true` i moduł równoważenia obciążenia przekierowuje żądania do innych systemów, jeśli zwróci wartość `false`. `true` Następnie może wykonać pełne blokowanie wyrzucania elementów bezużytecznych, gdy nie obsługuje żądań przez <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> wywołanie metody.  
   
 > [!IMPORTANT]
->  Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+>  Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
- Możesz wyjść z nie GC region opóźnienie trybu przez wywołanie metody <xref:System.GC.EndNoGCRegion%2A> metody.  
+ Aby wyjść z trybu opóźnień z regionem GC, <xref:System.GC.EndNoGCRegion%2A> należy wywołać metodę.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> przekracza rozmiar segment efemeryczny.</exception>
-        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnienia w regionie nie GC.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" />przekracza rozmiar segmentu tymczasowych.</exception>
+        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnień w regionie GC.</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
         <related type="Article" href="https://msdn.microsoft.com/library/67c5a20d-1be1-4ea7-8a9a-92b0b08658d2">Podstawy dotyczące wyrzucania elementów bezużytecznych</related>
         <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">Tryby opóźnienia</related>
@@ -1596,27 +1596,27 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="lohSize" Type="System.Int64" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="totalSize">Ilość pamięci w bajtach, można przydzielić bez powodowania wyrzucania elementów bezużytecznych. <paramref name="totalSize" /> -<paramref name="lohSize" /> musi być mniejsza niż lub równy rozmiarowi segment efemeryczny. Aby uzyskać informacje dotyczące rozmiaru segment efemeryczny, zobacz sekcję "generacje i segmenty Efemeryczne" w [podstawowe informacje dotyczące wyrzucania elementów bezużytecznych](~/docs/standard/garbage-collection/fundamentals.md) artykułu.</param>
-        <param name="lohSize">Liczba bajtów w <paramref name="totalSize" /> na potrzeby alokacji sterty (LOH) dużego obiektu.</param>
-        <summary>Próby nie zezwalaj na odzyskiwanie pamięci podczas wykonywania ścieżki krytycznej, jeśli określona ilość pamięci jest dostępna dla stosu dużych obiektów i stosu małych obiektów.</summary>
-        <returns><see langword="true" /> Jeśli środowisko uruchomieniowe można było zatwierdzić wymagana ilość pamięci i odśmiecania pamięci jest w stanie nie tryb opóźnienie region GC; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="totalSize">Ilość pamięci w bajtach do przydzielenia bez wyzwalania wyrzucania elementów bezużytecznych. <paramref name="totalSize" /> -<paramref name="lohSize" />musi być mniejszy niż lub równy rozmiarowi segmentu tymczasowych. Informacje o rozmiarze segmentu tymczasowych można znaleźć w sekcji "tymczasowe generacje i segmenty" w artykule [podstawowe informacje o odzyskiwaniu elementów](~/docs/standard/garbage-collection/fundamentals.md) bezużytecznych.</param>
+        <param name="lohSize">Liczba bajtów <paramref name="totalSize" /> , które mają być używane dla przydziałów sterty dużych obiektów (LOH).</param>
+        <summary>Próbuje uniemożliwić wyrzucanie elementów bezużytecznych podczas wykonywania ścieżki krytycznej, jeśli określona ilość pamięci jest dostępna dla sterty dużych obiektów i sterty małego obiektu.</summary>
+        <returns><see langword="true" />Jeśli środowisko uruchomieniowe mogło zatwierdzić wymaganą ilość pamięci, a Moduł wyrzucania elementów bezużytecznych może wejść w tryb opóźnienia w regionie GC; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%29> Metoda próbuje umieścić moduł zbierający elementy bezużyteczne w nie GC region opóźnienie trybie, który nie zezwala wyrzucania elementów bezużytecznych, gdy aplikacja wykonuje krytyczne obszar kodu.  Jeśli środowisko wykonawcze nie może przydzielić pierwotnie żądanej ilości pamięci, moduł zbierający elementy bezużyteczne wykonuje pełne blokowanie wyrzucania elementów bezużytecznych zwolnić więcej pamięci. Moduł zbierający elementy bezużyteczne przechodzi nie w trybie opóźnienia region GC, jeśli jest w stanie przydzielić `lohSize` dla LOH i `totalSize`  -  `lohSize` dla sterty małego obiektu (raportu o kondycji).  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%29> Metoda próbuje umieścić Moduł wyrzucania elementów bezużytecznych w trybie opóźnienia w regionie GC, który uniemożliwia wyrzucanie elementów bezużytecznych, gdy aplikacja wykonuje krytyczny region kodu.  Jeśli środowisko uruchomieniowe nie może początkowo przydzielić żądanej ilości pamięci, Moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych podczas próby zwolnienia dodatkowej pamięci. Moduł wyrzucania elementów bezużytecznych nie przechodzi w tryb opóźnienia regionu GC `lohSize` , jeśli jest w `totalSize` stanie przydzielić LOH oraz  -  `lohSize` dla sterty małego obiektu (raport o kondycji).  
   
- `lohSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla LOH, i `totalSize`  -  `lohSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla raportu o kondycji. Obejmuje to alokacje przez aplikację, a także alokacji, który sprawia, że środowisko wykonawcze w imieniu aplikacji.  
+ `lohSize`musi być wystarczająco duży, aby obsługiwał wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla LOH, `totalSize` i  -  `lohSize` muszą być wystarczająco duże, aby obsługiwać wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla raportu o kondycji. Obejmuje to alokacje przez aplikację, a także alokacje, które środowisko uruchomieniowe wykonuje w imieniu aplikacji.  
   
 > [!IMPORTANT]
->  Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+>  Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
- Możesz wyjść z nie GC region opóźnienie trybu przez wywołanie metody <xref:System.GC.EndNoGCRegion%2A> metody.  
+ Aby wyjść z trybu opóźnień z regionem GC, <xref:System.GC.EndNoGCRegion%2A> należy wywołać metodę.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> - <paramref name="lohSize" /> przekracza rozmiar segment efemeryczny.</exception>
-        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnienia w regionie nie GC.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> - <paramref name="lohSize" />przekracza rozmiar segmentu tymczasowych.</exception>
+        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnień w regionie GC.</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
         <related type="Article" href="https://msdn.microsoft.com/library/67c5a20d-1be1-4ea7-8a9a-92b0b08658d2">Podstawy dotyczące wyrzucania elementów bezużytecznych</related>
         <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">Tryby opóźnienia</related>
@@ -1659,30 +1659,30 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="disallowFullBlockingGC" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="totalSize">Ilość pamięci w bajtach, można przydzielić bez powodowania wyrzucania elementów bezużytecznych. <paramref name="totalSize" /> -<paramref name="lohSize" /> musi być mniejsza niż lub równy rozmiarowi segment efemeryczny. Aby uzyskać informacje dotyczące rozmiaru segment efemeryczny, zobacz sekcję "generacje i segmenty Efemeryczne" w [podstawowe informacje dotyczące wyrzucania elementów bezużytecznych](~/docs/standard/garbage-collection/fundamentals.md) artykułu.</param>
-        <param name="lohSize">Liczba bajtów w <paramref name="totalSize" /> na potrzeby alokacji sterty (LOH) dużego obiektu.</param>
-        <param name="disallowFullBlockingGC"><see langword="true" /> Aby pominąć pełną blokowania wyrzucania elementów bezużytecznych, jeśli moduł odśmiecania pamięci jest początkowo nie można przydzielić określonym pamięci sterty małego obiektu (raportu o kondycji) i LOH; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Nie zezwalaj na odzyskiwanie pamięci podczas wykonywania ścieżki krytycznej, jeśli określonej ilości pamięci jest dostępny dla sterty dużych obiektów i stos małych obiektów i kontrolek, czy moduł odśmiecania pamięci jest pełna blokowania wyrzucania elementów bezużytecznych, jeśli nie prób początkowo dostępna jest wystarczająca ilość pamięci.</summary>
-        <returns><see langword="true" /> Jeśli środowisko uruchomieniowe można było zatwierdzić wymagana ilość pamięci i odśmiecania pamięci jest w stanie nie tryb opóźnienie region GC; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="totalSize">Ilość pamięci w bajtach do przydzielenia bez wyzwalania wyrzucania elementów bezużytecznych. <paramref name="totalSize" /> -<paramref name="lohSize" />musi być mniejszy niż lub równy rozmiarowi segmentu tymczasowych. Informacje o rozmiarze segmentu tymczasowych można znaleźć w sekcji "tymczasowe generacje i segmenty" w artykule [podstawowe informacje o odzyskiwaniu elementów](~/docs/standard/garbage-collection/fundamentals.md) bezużytecznych.</param>
+        <param name="lohSize">Liczba bajtów <paramref name="totalSize" /> , które mają być używane dla przydziałów sterty dużych obiektów (LOH).</param>
+        <param name="disallowFullBlockingGC"><see langword="true" />Aby pominąć pełne blokowanie wyrzucania elementów bezużytecznych, jeśli moduł wyrzucania elementów bezużytecznych nie może początkowo przydzielić określonej pamięci na stosie małego obiektu (raport o kondycji) i LOH; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Próbuje uniemożliwić wyrzucanie elementów bezużytecznych podczas wykonywania ścieżki krytycznej, jeśli określona ilość pamięci jest dostępna dla sterty dużych obiektów i sterty małego obiektu i kontroluje, czy moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych, jeśli nie Początkowo dostępna jest wystarczająca ilość pamięci.</summary>
+        <returns><see langword="true" />Jeśli środowisko uruchomieniowe mogło zatwierdzić wymaganą ilość pamięci, a Moduł wyrzucania elementów bezużytecznych może wejść w tryb opóźnienia w regionie GC; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%2CSystem.Boolean%29> Metoda próbuje umieścić moduł zbierający elementy bezużyteczne w nie GC region opóźnienie trybie, który nie zezwala wyrzucania elementów bezużytecznych, gdy aplikacja wykonuje krytyczne obszar kodu.  Jeśli środowisko uruchomieniowe jest nie można wstępnie przydzielić żądanej ilości pamięci i `disallowFullBlockingGC` argument jest `false`, moduł zbierający elementy bezużyteczne wykonuje pełne blokowanie wyrzucania elementów bezużytecznych zwolnić więcej pamięci; w przeciwnym razie alokacji kończy się niepowodzeniem i metoda zwraca `false`. Moduł zbierający elementy bezużyteczne przechodzi nie w trybie opóźnienia region GC, jeśli jest w stanie przydzielić `lohSize` dla LOH i `totalSize`  -  `lohSize` dla sterty małego obiektu (raportu o kondycji).  
+ <xref:System.GC.TryStartNoGCRegion%28System.Int64%2CSystem.Int64%2CSystem.Boolean%29> Metoda próbuje umieścić Moduł wyrzucania elementów bezużytecznych w trybie opóźnienia w regionie GC, który uniemożliwia wyrzucanie elementów bezużytecznych, gdy aplikacja wykonuje krytyczny region kodu.  Jeśli środowisko uruchomieniowe nie może początkowo przydzielić żądanej ilości pamięci, a `disallowFullBlockingGC` argument to `false`, Moduł wyrzucania elementów bezużytecznych wykonuje pełne blokowanie wyrzucania elementów bezużytecznych w próbie zwolnienia dodatkowej pamięci; w przeciwnym razie alokacja kończy się niepowodzeniem, a `false`Metoda zwraca. Moduł wyrzucania elementów bezużytecznych nie przechodzi w tryb opóźnienia regionu GC `lohSize` , jeśli jest w `totalSize` stanie przydzielić LOH oraz  -  `lohSize` dla sterty małego obiektu (raport o kondycji).  
   
- `lohSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla LOH, i `totalSize`  -  `lohSize` musi być wystarczająco duży, aby obsłużyć wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla raportu o kondycji. Obejmuje to alokacje przez aplikację, a także alokacji, który sprawia, że środowisko wykonawcze w imieniu aplikacji.  
+ `lohSize`musi być wystarczająco duży, aby obsługiwał wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla LOH, `totalSize` i  -  `lohSize` muszą być wystarczająco duże, aby obsługiwać wszystkie alokacje pamięci, które występują w ścieżce krytycznej dla raportu o kondycji. Obejmuje to alokacje przez aplikację, a także alokacje, które środowisko uruchomieniowe wykonuje w imieniu aplikacji.  
   
- Ustawienie `disallowFullBlockingGC` do `true` zapobiegające pełnego blokowania wyrzucania elementów kolekcji, jeśli nie ma wystarczającej ilości pamięci jest początkowo dostępna jest najbardziej przydatna w scenariusze równoważenia obciążenia: jeden system może wywołać tę metodę i przedstawia się jako gotowy do akceptowania żądań, jeśli zostanie zwrócona `true`, i modułu równoważenia obciążenia, Przekieruj żądania do innych systemów, jeśli zwróci ona `false`. Go następnie wykonaj pełną blokowania wyrzucania elementów bezużytecznych, gdy go nie obsługuje żądania przez wywołanie metody <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> metody.  
+ Ustawienie `disallowFullBlockingGC`zapobiegające pełnemu blokowaniu wyrzucania elementów bezużytecznych, jeśli nie jest dostępna wystarczająca ilość pamięci jest najbardziej przydatna w scenariuszach równoważenia obciążenia: jeden system może wywołać tę metodę i zgłosić się jako gotowy do akceptowania żądań, jeśli zwróci wartość `true` i moduł równoważenia obciążenia przekierowuje żądania do innych systemów, jeśli zwróci wartość `false`. `true` Następnie może wykonać pełne blokowanie wyrzucania elementów bezużytecznych, gdy nie obsługuje żądań przez <xref:System.GC.Collect%28System.Int32%2CSystem.GCCollectionMode%2CSystem.Boolean%2CSystem.Boolean%29> wywołanie metody.  
   
 > [!IMPORTANT]
->  Nie można zagnieździć wywołań <xref:System.GC.TryStartNoGCRegion%2A> metody, na które powinny wywoływać tylko <xref:System.GC.EndNoGCRegion%2A> metodę, jeśli środowisko wykonawcze jest w trybie opóźnienia w regionie nie GC. Innymi słowy, nie należy wywołać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania nie powiedzie się), a nie powinni oczekiwać od wywołania <xref:System.GC.EndNoGCRegion%2A> zakończyło się sukcesem, po prostu, ponieważ jest to pierwsze wywołanie do <xref:System.GC.TryStartNoGCRegion%2A> zakończyło się pomyślnie.  
+>  Nie można zagnieżdżać wywołań do <xref:System.GC.TryStartNoGCRegion%2A> metody i należy <xref:System.GC.EndNoGCRegion%2A> wywołać metodę tylko wtedy, gdy środowisko uruchomieniowe jest obecnie w trybie opóźnień w regionie GC. Innymi słowy, nie należy wywoływać <xref:System.GC.TryStartNoGCRegion%2A> wiele razy (po pierwszym wywołaniu metody, kolejne wywołania zakończą się niepowodzeniem) i nie należy oczekiwać, aby <xref:System.GC.EndNoGCRegion%2A> wywołania kończyły się pomyślnie, <xref:System.GC.TryStartNoGCRegion%2A> ponieważ pierwsze wywołanie zakończyło się pomyślnie.  
   
- Możesz wyjść z nie GC region opóźnienie trybu przez wywołanie metody <xref:System.GC.EndNoGCRegion%2A> metody.  
+ Aby wyjść z trybu opóźnień z regionem GC, <xref:System.GC.EndNoGCRegion%2A> należy wywołać metodę.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> - <paramref name="lohSize" /> przekracza rozmiar segment efemeryczny.</exception>
-        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnienia w regionie nie GC.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="totalSize" /> - <paramref name="lohSize" />przekracza rozmiar segmentu tymczasowych.</exception>
+        <exception cref="T:System.InvalidOperationException">Proces jest już w trybie opóźnień w regionie GC.</exception>
         <altmember cref="M:System.GC.EndNoGCRegion" />
         <related type="Article" href="https://msdn.microsoft.com/library/67c5a20d-1be1-4ea7-8a9a-92b0b08658d2">Podstawy dotyczące wyrzucania elementów bezużytecznych</related>
         <related type="Article" href="https://msdn.microsoft.com/library/96278bb7-6eab-4612-8594-ceebfc887d81">Tryby opóźnienia</related>
@@ -1695,7 +1695,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Zwraca stan zarejestrowanego powiadomienia do określenia, czy pełny blokowanie wyrzucania elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
+        <summary>Zwraca stan zarejestrowanego powiadomienia w celu określenia, czy pełna, blokująca wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WaitForFullGCApproach">
@@ -1732,24 +1732,24 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca stan zarejestrowanego powiadomienia do określenia, czy pełny blokowanie wyrzucania elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
+        <summary>Zwraca stan zarejestrowanego powiadomienia w celu określenia, czy pełna, blokująca wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
         <returns>Stan zarejestrowanego powiadomienia o wyrzucaniu elementów bezużytecznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.GCNotificationStatus> zwracane przez tę metodę pozwala ustalić stan bieżącego powiadomienia kolekcji wyrzucania elementów, który został zarejestrowany przy użyciu wyliczenia <xref:System.GC.RegisterForFullGCNotification%2A> metody. Można również użyć <xref:System.GC.WaitForFullGCComplete%2A> metodę pozwala ustalić, czy pełne wyrzucanie elementów bezużytecznych zostało zakończone.  
+ Użyj wyliczenia zwróconego przez tę metodę, aby określić stan bieżącego powiadomienia o wyrzucaniu elementów bezużytecznych, które <xref:System.GC.RegisterForFullGCNotification%2A> zostało zarejestrowane za pomocą metody. <xref:System.GCNotificationStatus> Można również użyć <xref:System.GC.WaitForFullGCComplete%2A> metody, aby określić, czy pełne odzyskiwanie pamięci zostało zakończone.  
   
- Gdy zwraca wyliczenie <xref:System.GCNotificationStatus.Succeeded>, mogą wykonywać zadania, takie jak uniemożliwia dodatkowe obiekty są przydzielane i wykonuje kolekcję, samodzielnie za pomocą <xref:System.GC.Collect%2A> metody. Należy pamiętać, że powiadomienia nie gwarantuje, że pełne wyrzucanie elementów bezużytecznych nastąpi, tylko, że warunki Osiągnięto próg jest preferowana dla pełne wyrzucanie elementów bezużytecznych.  
+ Gdy Wyliczenie zwraca <xref:System.GCNotificationStatus.Succeeded>, można wykonywać zadania, takie jak uniemożliwienie przydzielenia dodatkowych obiektów i wywoływanie kolekcji <xref:System.GC.Collect%2A> przy użyciu metody. Należy pamiętać, że powiadomienie nie gwarantuje, że zostanie wykonane pełne odzyskiwanie pamięci, tylko te warunki osiągnęły próg, który jest preferowany do wykonania pełnego odzyskiwania pamięci.  
   
- Ta metoda przez czas nieokreślony oczekuje można uzyskać powiadomienia wyrzucania elementów kolekcji. Aby określić limit czasu dla metody do zwrócenia, jeśli nie można uzyskać powiadomienia, należy użyć <xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType> przeciążenie metody. Jeśli ta metoda jest wywoływana bez określania upływu limitu czasu, można wywołać <xref:System.GC.CancelFullGCNotification%2A> metodę, jeśli oczekujesz dłużej niż preferowany.  
+ Ta metoda czeka na nieokreślony czas na uzyskanie powiadomienia o wyrzucaniu elementów bezużytecznych. Jeśli chcesz określić limit czasu dla metody, która ma zostać zwrócona, jeśli nie można uzyskać powiadomienia, użyj <xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType> przeciążenia metody. W <xref:System.GC.CancelFullGCNotification%2A> przypadku wywołania tej metody bez określenia limitu czasu można wywołać metodę, jeśli czekasz dłużej niż preferowane.  
   
- Należy przestrzegać tej metody za pomocą wywołania <xref:System.GC.WaitForFullGCComplete%2A> metody, aby upewnić się, mieli pełne wyrzucanie elementów bezużytecznych. Wywołanie tej metody tylko powoduje, że wyniki nieokreślony.  
+ Należy wykonać tę metodę z wywołaniem <xref:System.GC.WaitForFullGCComplete%2A> metody, aby upewnić się, że masz pełne odzyskiwanie pamięci. Wywołanie tej metody powoduje jedynie nieokreślony wynik.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak ta metoda służy do określenia, czy zbliża się pełne, blokowanie wyrzucania elementów bezużytecznych. Zawsze, gdy jest w stanie powiadomienia <xref:System.GCNotificationStatus.Succeeded>, metoda użytkownika `OnFullGCApproachNotify` jest wywoływana w celu wykonania akcji w odpowiedzi na Bliskim kolekcji. Ten przykład kodu jest częścią większego przykładu przewidzianego dla [powiadomienia dotyczące odzyskiwania pamięci](~/docs/standard/garbage-collection/notifications.md) tematu.  
+ Poniższy przykład pokazuje, jak używać tej metody w celu ustalenia, czy jest zbliżana pełna, blokująca wyrzucanie elementów bezużytecznych. Zawsze, gdy jest <xref:System.GCNotificationStatus.Succeeded>wskazywany stan powiadomienia, Metoda `OnFullGCApproachNotify` użytkownika jest wywoływana w celu wykonywania akcji w odpowiedzi na zbliżające się kolekcje. Ten przykład kodu jest częścią większego przykładu dostarczonego w temacie powiadomienia o wyrzucaniu [elementów](~/docs/standard/garbage-collection/notifications.md) bezużytecznych.  
   
  [!code-cpp[GCNotification#3](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#3)]
  [!code-csharp[GCNotification#3](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#3)]
@@ -1798,26 +1798,26 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="millisecondsTimeout" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Długość czasu oczekiwania, można uzyskać stanu powiadomień. Określ wartość -1, aby czekać w nieskończoność.</param>
-        <summary>Zwraca określony przekroczył limit czasu, stan zarejestrowanego powiadomienia do określenia, czy pełny blokowanie wyrzucania elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
+        <param name="millisecondsTimeout">Czas oczekiwania na uzyskanie stanu powiadomienia. Określ-1, aby czekać w nieskończoność.</param>
+        <summary>Zwraca w określonym przedziale czasu stan zarejestrowanego powiadomienia w celu określenia, czy pełna, blokująca wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego jest bliska.</summary>
         <returns>Stan zarejestrowanego powiadomienia o wyrzucaniu elementów bezużytecznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.GCNotificationStatus> zwracane przez tę metodę pozwala ustalić stan bieżącego powiadomienia kolekcji wyrzucania elementów, który został zarejestrowany przy użyciu wyliczenia <xref:System.GC.RegisterForFullGCNotification%2A> metody. Można również użyć <xref:System.GC.WaitForFullGCComplete%2A> metodę pozwala ustalić, czy pełne wyrzucanie elementów bezużytecznych zostało zakończone.  
+ Użyj wyliczenia zwróconego przez tę metodę, aby określić stan bieżącego powiadomienia o wyrzucaniu elementów bezużytecznych, które <xref:System.GC.RegisterForFullGCNotification%2A> zostało zarejestrowane za pomocą metody. <xref:System.GCNotificationStatus> Można również użyć <xref:System.GC.WaitForFullGCComplete%2A> metody, aby określić, czy pełne odzyskiwanie pamięci zostało zakończone.  
   
- Należy zauważyć, że ta metoda zwraca natychmiast zawsze, gdy uzyskany stanu powiadomień kolekcji wyrzucania elementów, bez względu na wartość określoną przez `millisecondsTimeout`. Jeśli stan powiadomień kolekcji wyrzucania elementów nie zostanie osiągnięta przed `millisecondsTimeout` razy, Metoda ta zwraca <xref:System.GCNotificationStatus.NotApplicable>.  
+ Należy zauważyć, że ta metoda zwraca natychmiast za każdym razem, gdy zostanie uzyskany stan powiadomienia o wyrzucaniu `millisecondsTimeout`elementów bezużytecznych, niezależnie od wartości określonej przez. Jeśli stan powiadomienia o wyrzucaniu elementów bezużytecznych nie zostanie uzyskany przed <xref:System.GCNotificationStatus.NotApplicable>upływem `millisecondsTimeout` limitu czasu, ta metoda zwróci wartość.  
   
- Gdy zwraca wyliczenie <xref:System.GCNotificationStatus.Succeeded>, mogą wykonywać zadania, takie jak uniemożliwia dodatkowe obiekty są przydzielane i wykonuje kolekcję, samodzielnie za pomocą <xref:System.GC.Collect%2A> metody. Należy pamiętać, że powiadomienia nie gwarantuje, że pełne wyrzucanie elementów bezużytecznych nastąpi, tylko, że warunki Osiągnięto próg jest preferowana dla pełne wyrzucanie elementów bezużytecznych.  
+ Gdy Wyliczenie zwraca <xref:System.GCNotificationStatus.Succeeded>, można wykonywać zadania, takie jak uniemożliwienie przydzielenia dodatkowych obiektów i wywoływanie kolekcji <xref:System.GC.Collect%2A> przy użyciu metody. Należy pamiętać, że powiadomienie nie gwarantuje, że zostanie wykonane pełne odzyskiwanie pamięci, tylko te warunki osiągnęły próg, który jest preferowany do wykonania pełnego odzyskiwania pamięci.  
   
- Możesz wywołać <xref:System.GC.CancelFullGCNotification%2A> metody, gdy nie można czekać przed upłynięciem limitu czasu minie.  
+ Metodę można wywołać, <xref:System.GC.CancelFullGCNotification%2A> gdy nie można czekać, aż upłynie limit czasu.  
   
- Należy przestrzegać tej metody za pomocą wywołania <xref:System.GC.WaitForFullGCComplete%2A> metody, aby upewnić się, mieli pełne wyrzucanie elementów bezużytecznych. Wywołanie tej metody tylko powoduje, że wyniki nieokreślony.  
+ Należy wykonać tę metodę z wywołaniem <xref:System.GC.WaitForFullGCComplete%2A> metody, aby upewnić się, że masz pełne odzyskiwanie pamięci. Wywołanie tej metody powoduje jedynie nieokreślony wynik.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> musi być nieujemną lub mniejsze niż lub równe <see cref="F:System.Int32.MaxValue" /> lub wartość -1.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />musi być wartością nieujemną lub mniejszą lub równą <see cref="F:System.Int32.MaxValue" /> lub-1.</exception>
         <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">aby uzyskać pełne zaufanie dla bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez kod częściowo zaufany.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
         <related type="Article" href="https://msdn.microsoft.com/library/e12d8e74-31e3-4035-a87d-f3e66f0a9b89">Powiadomienia dotyczące odzyskiwania pamięci</related>
@@ -1830,7 +1830,7 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Zwraca stan zarejestrowanego powiadomienia do określenia, czy pełny blokowanie wyrzucania elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego została ukończona.</summary>
+        <summary>Zwraca stan zarejestrowanego powiadomienia w celu określenia, czy pełne, blokujące wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego zostało zakończone.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WaitForFullGCComplete">
@@ -1867,24 +1867,24 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca stan zarejestrowanego powiadomienia do określenia, czy pełny blokowanie wyrzucania elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego została ukończona.</summary>
+        <summary>Zwraca stan zarejestrowanego powiadomienia w celu określenia, czy pełne, blokujące wyrzucanie elementów bezużytecznych przez środowisko uruchomieniowe języka wspólnego zostało zakończone.</summary>
         <returns>Stan zarejestrowanego powiadomienia o wyrzucaniu elementów bezużytecznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.GCNotificationStatus> zwracane przez tę metodę pozwala ustalić stan bieżącego powiadomienia kolekcji wyrzucania elementów, który został zarejestrowany przy użyciu wyliczenia <xref:System.GC.RegisterForFullGCNotification%2A> metody. Można również użyć <xref:System.GC.WaitForFullGCApproach%2A> metodę, aby określić, czy pełne wyrzucanie elementów bezużytecznych jest bezpośrednie.  
+ Użyj wyliczenia zwróconego przez tę metodę, aby określić stan bieżącego powiadomienia o wyrzucaniu elementów bezużytecznych, które <xref:System.GC.RegisterForFullGCNotification%2A> zostało zarejestrowane za pomocą metody. <xref:System.GCNotificationStatus> Można również użyć metody, <xref:System.GC.WaitForFullGCApproach%2A> aby określić, czy pełne wyrzucanie elementów bezużytecznych jest nieuchronne.  
   
- Gdy zwraca wyliczenie <xref:System.GCNotificationStatus.Succeeded>, mogą wykonywać zadania, takie jak wznawiania pracy i uzyskiwanie liczby kolekcji, za pomocą <xref:System.GC.CollectionCount%2A> właściwości.  
+ Gdy Wyliczenie zwraca <xref:System.GCNotificationStatus.Succeeded>, można wykonywać zadania, takie jak wznawianie pracy i uzyskiwanie liczby kolekcji <xref:System.GC.CollectionCount%2A> z właściwością.  
   
- Ta metoda przez czas nieokreślony oczekuje można uzyskać powiadomienia wyrzucania elementów kolekcji. Aby określić limit czasu dla metody do zwrócenia, jeśli nie można uzyskać powiadomienia, należy użyć <xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType> przeciążenie metody. Jeśli ta metoda jest wywoływana bez określania upływu limitu czasu, można wywołać <xref:System.GC.CancelFullGCNotification%2A> metodę, jeśli oczekujesz dłużej niż preferowany.  
+ Ta metoda czeka na nieokreślony czas na uzyskanie powiadomienia o wyrzucaniu elementów bezużytecznych. Jeśli chcesz określić limit czasu dla metody, która ma zostać zwrócona, jeśli nie można uzyskać powiadomienia, użyj <xref:System.GC.WaitForFullGCApproach%28System.Int32%29?displayProperty=nameWithType> przeciążenia metody. W <xref:System.GC.CancelFullGCNotification%2A> przypadku wywołania tej metody bez określenia limitu czasu można wywołać metodę, jeśli czekasz dłużej niż preferowane.  
   
- Wywołanie tej metody, powinien zostać poprzedzony wywołaniem <xref:System.GC.WaitForFullGCApproach%2A> metody, aby upewnić się, mieli pełne wyrzucanie elementów bezużytecznych. Wywołanie tej metody tylko może wygenerować wyniki nieokreślony.  
+ To wywołanie metody powinno być poprzedzone wywołaniem <xref:System.GC.WaitForFullGCApproach%2A> metody, aby upewnić się, że masz pełne odzyskiwanie pamięci. Wywołanie tej metody może spowodować wygenerowanie nieokreślonych wyników.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak ta metoda służy do określenia, czy pełne wyrzucanie elementów bezużytecznych zostało zakończone. Zawsze, gdy jest w stanie powiadomienia <xref:System.GCNotificationStatus.Succeeded>, metoda użytkownika `OnFullGCCompletedNotify` jest wywoływana w celu wykonania akcji w odpowiedzi na ukończone kolekcji. Ten przykład kodu jest częścią większego przykładu przewidzianego dla [powiadomienia dotyczące odzyskiwania pamięci](~/docs/standard/garbage-collection/notifications.md) tematu.  
+ Poniższy przykład przedstawia sposób użycia tej metody w celu ustalenia, czy ukończono pełne odzyskiwanie pamięci. Zawsze, gdy jest <xref:System.GCNotificationStatus.Succeeded>wskazywany stan powiadomienia, Metoda `OnFullGCCompletedNotify` użytkownika jest wywoływana w celu wykonania akcji w odpowiedzi na ukończoną kolekcję. Ten przykład kodu jest częścią większego przykładu dostarczonego w temacie powiadomienia o wyrzucaniu [elementów](~/docs/standard/garbage-collection/notifications.md) bezużytecznych.  
   
  [!code-cpp[GCNotification#4](~/samples/snippets/cpp/VS_Snippets_CLR/GCNotification/cpp/program.cpp#4)]
  [!code-csharp[GCNotification#4](~/samples/snippets/csharp/VS_Snippets_CLR/GCNotification/cs/Program.cs#4)]
@@ -1933,26 +1933,26 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
         <Parameter Name="millisecondsTimeout" Type="System.Int32" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Długość czasu oczekiwania, można uzyskać stanu powiadomień. Określ wartość -1, aby czekać w nieskończoność.</param>
-        <summary>Zwraca określony przekroczył limit czasu, stan zarejestrowanego powiadomienia do określenia, czy pełny, blokowanie wyrzucania elementów bezużytecznych za pomocą wspólnego języka środowiska uruchomieniowego została ukończona.</summary>
+        <param name="millisecondsTimeout">Czas oczekiwania na uzyskanie stanu powiadomienia. Określ-1, aby czekać w nieskończoność.</param>
+        <summary>Zwraca w określonym przedziale czasu stan zarejestrowanego powiadomienia w celu określenia, czy pełne, blokujące wyrzucanie elementów bezużytecznych w ramach wspólnego języka zostało zakończone.</summary>
         <returns>Stan zarejestrowanego powiadomienia o wyrzucaniu elementów bezużytecznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.GCNotificationStatus> zwracane przez tę metodę pozwala ustalić stan bieżącego powiadomienia kolekcji wyrzucania elementów, który został zarejestrowany przy użyciu wyliczenia <xref:System.GC.RegisterForFullGCNotification%2A> metody. Można również użyć <xref:System.GC.WaitForFullGCApproach%2A> metodę, aby określić, czy pełne wyrzucanie elementów bezużytecznych jest bezpośrednie.  
+ Użyj wyliczenia zwróconego przez tę metodę, aby określić stan bieżącego powiadomienia o wyrzucaniu elementów bezużytecznych, które <xref:System.GC.RegisterForFullGCNotification%2A> zostało zarejestrowane za pomocą metody. <xref:System.GCNotificationStatus> Można również użyć metody, <xref:System.GC.WaitForFullGCApproach%2A> aby określić, czy pełne wyrzucanie elementów bezużytecznych jest nieuchronne.  
   
- Należy zauważyć, że ta metoda zwraca natychmiast zawsze, gdy uzyskany stanu powiadomień kolekcji wyrzucania elementów, bez względu na wartość określoną przez `millisecondsTimeout`. Jeśli stan powiadomień kolekcji wyrzucania elementów nie zostanie osiągnięta przed `millisecondsTimeout` razy, Metoda ta zwraca <xref:System.GCNotificationStatus.NotApplicable>.  
+ Należy zauważyć, że ta metoda zwraca natychmiast za każdym razem, gdy zostanie uzyskany stan powiadomienia o wyrzucaniu `millisecondsTimeout`elementów bezużytecznych, niezależnie od wartości określonej przez. Jeśli stan powiadomienia o wyrzucaniu elementów bezużytecznych nie zostanie uzyskany przed <xref:System.GCNotificationStatus.NotApplicable>upływem `millisecondsTimeout` limitu czasu, ta metoda zwróci wartość.  
   
- Gdy zwraca wyliczenie <xref:System.GCNotificationStatus.Succeeded>, mogą wykonywać zadania, takie jak wznawiania pracy i uzyskiwanie liczby kolekcji, za pomocą <xref:System.GC.CollectionCount%2A> właściwości.  
+ Gdy Wyliczenie zwraca <xref:System.GCNotificationStatus.Succeeded>, można wykonywać zadania, takie jak wznawianie pracy i uzyskiwanie liczby kolekcji <xref:System.GC.CollectionCount%2A> z właściwością.  
   
- Możesz wywołać <xref:System.GC.CancelFullGCNotification%2A> metody, gdy nie można czekać przed upłynięciem limitu czasu minie.  
+ Metodę można wywołać, <xref:System.GC.CancelFullGCNotification%2A> gdy nie można czekać, aż upłynie limit czasu.  
   
- Wywołanie tej metody, powinien zostać poprzedzony wywołaniem <xref:System.GC.WaitForFullGCApproach%2A> metody, aby upewnić się, mieli pełne wyrzucanie elementów bezużytecznych. Wywołanie tej metody tylko może wygenerować wyniki nieokreślony.  
+ To wywołanie metody powinno być poprzedzone wywołaniem <xref:System.GC.WaitForFullGCApproach%2A> metody, aby upewnić się, że masz pełne odzyskiwanie pamięci. Wywołanie tej metody może spowodować wygenerowanie nieokreślonych wyników.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException"><paramref name="millisecondsTimeout" /> musi być nieujemną lub mniejsze niż lub równe <see cref="F:System.Int32.MaxValue" /> lub wartość -1.</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="millisecondsTimeout" />musi być wartością nieujemną lub mniejszą lub równą <see cref="F:System.Int32.MaxValue" /> lub-1.</exception>
         <permission cref="F:System.Security.Permissions.SecurityAction.LinkDemand">aby uzyskać pełne zaufanie dla bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez kod częściowo zaufany.</permission>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
         <related type="Article" href="https://msdn.microsoft.com/library/e12d8e74-31e3-4035-a87d-f3e66f0a9b89">Powiadomienia dotyczące odzyskiwania pamięci</related>
@@ -1997,19 +1997,19 @@ Na komputerze 32-bitowych <paramref name="bytesAllocated" /> jest większy niż 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wstrzymuje działanie bieżącego wątku, aż wątek, który przetwarza kolejki finalizatory został opróżniony tej kolejki.</summary>
+        <summary>Wstrzymuje bieżący wątek, dopóki wątek, który przetwarza kolejki finalizatorów, opróżnił tę kolejkę.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy moduł zbierający elementy bezużyteczne wykryje obiektów, które można odzyskać, sprawdza każdy obiekt, aby ustalić wymagania finalizacji obiektu. Jeśli obiekt implementuje finalizator, a nie wyłączył finalizację przez wywołanie metody <xref:System.GC.SuppressFinalize%2A>, obiekt jest umieszczany na liście obiektów oznaczonych jako gotowe do finalizacji. Moduł odśmiecania pamięci wywołuje <xref:System.Object.Finalize%2A> metod dla obiektów w tej liście, a Usuwa wpisy z listy. To bloki metody do wszystkich finalizatory mają zostało ukończone.  
+ Gdy moduł wyrzucania elementów bezużytecznych odnajdzie obiekty, które mogą być odzyskiwane, sprawdza każdy obiekt, aby określić wymagania finalizacji obiektu. Jeśli obiekt implementuje finalizator i nie wyłączył finalizowania przez wywołanie <xref:System.GC.SuppressFinalize%2A>, obiekt zostanie umieszczony na liście obiektów, które są oznaczone jako gotowe do finalizacji. Moduł zbierający elementy bezużyteczne wywołuje <xref:System.Object.Finalize%2A> metody dla obiektów na tej liście i usuwa wpisy z listy. Ta metoda jest blokowana do momentu zakończenia wszystkich finalizatorów.  
   
- Wątek, na którym są uruchamiane finalizatory jest nieokreślony, więc nie ma żadnej gwarancji, że ta metoda zostanie zakończona. Jednak ten wątek może zostać przerwane przez inny wątek podczas <xref:System.GC.WaitForPendingFinalizers%2A> metoda jest w toku. Na przykład można uruchomić inny wątek, który czeka przez pewien czas, a następnie przerywa działanie tego wątku, jeśli ten wątek jest nadal zawieszone.  
+ Wątek, w którym są uruchamiane finalizatory, jest nieokreślony, dlatego nie ma gwarancji, że ta metoda zostanie przerwana. Jednak ten wątek może zostać przerwany przez inny wątek, gdy <xref:System.GC.WaitForPendingFinalizers%2A> Metoda jest w toku. Można na przykład uruchomić inny wątek, który czeka przez pewien czas, a następnie przerwać ten wątek, jeśli ten wątek nadal jest wstrzymany.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia <xref:System.GC.WaitForPendingFinalizers%2A> metodę, aby zawiesić bieżącego wątku, aż do finalizacji zebranych obiektów.  
+ Poniższy przykład ilustruje sposób użycia <xref:System.GC.WaitForPendingFinalizers%2A> metody do zawieszenia bieżącego wątku do momentu zakończenia wszystkich zebranych obiektów.  
   
  [!code-cpp[System.GC.WaitForPendingFinalizers Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.GC.WaitForPendingFinalizers Example/CPP/class1.cpp#1)]
  [!code-csharp[System.GC.WaitForPendingFinalizers Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.GC.WaitForPendingFinalizers Example/CS/class1.cs#1)]
