@@ -1,5 +1,5 @@
 <Type Name="Exception" FullName="System.Exception">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="941ce6ec902db92558c052227196f17b68b2f254" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58725203" /></Metadata><TypeSignature Language="C#" Value="public class Exception : System.Runtime.InteropServices._Exception, System.Runtime.Serialization.ISerializable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7f9ed0e4415bd82414aa633c9ee9d1f915b55ac8" /><Meta Name="ms.sourcegitcommit" Value="e7974886b08aa83a8fb461e8550f31a7d4331ee3" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/23/2019" /><Meta Name="ms.locfileid" Value="68400138" /></Metadata><TypeSignature Language="C#" Value="public class Exception : System.Runtime.InteropServices._Exception, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi serializable beforefieldinit Exception extends System.Object implements class System.Runtime.InteropServices._Exception, class System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="DocId" Value="T:System.Exception" />
   <TypeSignature Language="VB.NET" Value="Public Class Exception&#xA;Implements _Exception, ISerializable" />
@@ -60,7 +60,7 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta klasa jest klasą bazową dla wszystkich wyjątków. Gdy wystąpi błąd, system lub aktualnie realizowanej aplikacji zgłasza go, zostanie zgłoszony wyjątek, który zawiera informacje o tym błędzie. Po jest zgłaszany wyjątek, jest to obsługiwane przez aplikację lub przez domyślny program obsługi wyjątku.  
+ Ta klasa jest klasą bazową dla wszystkich wyjątków. Gdy wystąpi błąd, system lub aktualnie wykonywana aplikacja zgłosi go, zgłaszając wyjątek zawierający informacje o błędzie. Gdy wyjątek jest zgłaszany, jest obsługiwany przez aplikację lub przez domyślną procedurę obsługi wyjątków.  
   
  W tej sekcji:  
   
@@ -69,91 +69,91 @@
  [Funkcje typu wyjątku](#Features)   
  [Właściwości klasy wyjątku](#Properties)   
  [Zagadnienia dotyczące wydajności](#Performance)   
- [Ponownie zostanie zgłoszony wyjątek](#Rethrow)   
+ [Ponowne zgłaszanie wyjątku](#Rethrow)   
  [Wybieranie standardowych wyjątków](#Standard)   
  [Implementowanie wyjątków niestandardowych](#Custom)  
   
 <a name="Errors"></a>   
 ## <a name="errors-and-exceptions"></a>Błędy i wyjątki  
- Błędy czasu wykonywania może wystąpić z różnych powodów. Jednak nie wszystkie błędy powinny być traktowane jako wyjątki w kodzie. Poniżej przedstawiono niektóre kategorie błędy, które mogą wystąpić w czasie wykonywania i odpowiednie sposoby Reaguj na nie.  
+ Błędy w czasie wykonywania mogą wystąpić z różnych powodów. Nie wszystkie błędy powinny jednak być obsługiwane jako wyjątki w kodzie. Poniżej wymieniono niektóre kategorie błędów, które mogą wystąpić w czasie wykonywania, oraz odpowiednie sposoby reagowania na nie.  
   
--   **Błędy użycia.** Błąd użycia reprezentuje błąd w logice programu, który może spowodować wyjątek. Jednak błąd powinny być kierowane nie przy użyciu obsługi wyjątków, ale modyfikując nieprawidłowy kod. Na przykład zastępowania metody <xref:System.Object.Equals%28System.Object%29?displayProperty=nameWithType> metody w poniższym przykładzie założono, że `obj` argument zawsze musi być inna niż null.  
+-   **Błędy użycia.** Błąd użycia reprezentuje błąd w logice programu, który może spowodować wyjątek. Jednak błąd powinien zostać rozkierowany do obsługi wyjątków, ale przez modyfikację błędnego kodu. Na przykład przesłonięcie <xref:System.Object.Equals%28System.Object%29?displayProperty=nameWithType> metody w poniższym przykładzie zakłada `obj` , że argument musi być zawsze inny niż null.  
   
      [!code-csharp[System.Exception.Class#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors1.cs#4)]
      [!code-vb[System.Exception.Class#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors1.vb#4)]  
   
-     <xref:System.NullReferenceException> Wyjątek, który powoduje podczas `obj` jest `null` można wyeliminować, modyfikując kod źródłowy do testowania jawne wartości null, przed wywołaniem <xref:System.Object.Equals%2A?displayProperty=nameWithType> przesłonięć i ponowną kompilację. Poniższy przykład zawiera kod źródłowy poprawiony, która obsługuje `null` argumentu.  
+     Wyjątek, który `obj` powoduje <xref:System.Object.Equals%2A?displayProperty=nameWithType> , że można wyeliminować, modyfikując kod źródłowy do jawnego testowania dla wartości null przed wywołaniem zastąpienia, a następnie ponownie skompilować. `null` <xref:System.NullReferenceException> Poniższy przykład zawiera poprawiony kod źródłowy, który obsługuje `null` argument.  
   
      [!code-csharp[System.Exception.Class#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/usageerrors2.cs#5)]
      [!code-vb[System.Exception.Class#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/usageerrors2.vb#5)]  
   
-     Zamiast korzystać z obsługi błędów użycia wyjątków, można użyć <xref:System.Diagnostics.Debug.Assert%2A?displayProperty=nameWithType> metodę, aby zidentyfikować błędy użycia w kompilacjach do debugowania i <xref:System.Diagnostics.Trace.Assert%2A?displayProperty=nameWithType> tworzy metodę, aby zidentyfikować błędy użycia zarówno w przypadku debugowania, jak i wydania. Aby uzyskać więcej informacji, zobacz [potwierdzenia w kodzie zarządzany](/visualstudio/debugger/assertions-in-managed-code).  
+     Zamiast korzystać z obsługi wyjątków w przypadku błędów użycia, można użyć <xref:System.Diagnostics.Debug.Assert%2A?displayProperty=nameWithType> metody do identyfikowania błędów użycia w kompilacjach debugowania, a także <xref:System.Diagnostics.Trace.Assert%2A?displayProperty=nameWithType> metody identyfikowania błędów użycia w kompilacjach i wersjach. Aby uzyskać więcej informacji, zobacz [potwierdzenia w kodzie zarządzanym](/visualstudio/debugger/assertions-in-managed-code).  
   
--   **Błędy programu.** Błąd programu jest błąd w czasie wykonywania, które nie zawsze można uniknąć przez napisanie kodu wolny od błędów.  
+-   **Błędy programu.** Błąd programu to błąd czasu wykonywania, którego nie można koniecznie uniknąć, pisząc kod bez błędów.  
   
-     W niektórych przypadkach błąd programu mogą uwzględniać warunek błędu oczekiwanych lub procedury. W takim przypadku można Unikaj używania wyjątków do czynienia z powodu błędu programu i zamiast tego spróbuj ponownie wykonać operację. Na przykład, jeśli użytkownik jest szacowany jako danych wejściowych na datę w określonym formacie, można przeanalizować ciąg daty, wywołując <xref:System.DateTime.TryParseExact%2A?displayProperty=nameWithType> metody, która zwraca <xref:System.Boolean> wartość, która wskazuje, czy operacja analizy zakończyło się pomyślnie, zamiast <xref:System.DateTime.ParseExact%2A?displayProperty=nameWithType>metody, która zgłasza <xref:System.FormatException> wyjątek, jeśli nie można przekonwertować ciągu daty <xref:System.DateTime> wartość. Podobnie, jeśli użytkownik próbuje otworzyć plik, który nie istnieje, można wywołać <xref:System.IO.File.Exists%2A?displayProperty=nameWithType> metodę sprawdzania, czy plik istnieje, a jeśli nie, Monituj użytkownika, czy użytkownik chce, aby go utworzyć.  
+     W niektórych przypadkach błąd programu może odzwierciedlać oczekiwany lub rutynowy warunek błędu. W takim przypadku można uniknąć korzystania z obsługi wyjątków w celu postępowania z błędem programu, a zamiast tego ponownie wykonać operację. Na przykład, jeśli użytkownik chce wprowadzić datę w określonym formacie, można przeanalizować ciąg daty przez wywołanie <xref:System.DateTime.TryParseExact%2A?displayProperty=nameWithType> metody, która <xref:System.Boolean> zwraca wartość wskazującą, czy operacja analizy zakończyła się powodzeniem, zamiast używać <xref:System.DateTime.ParseExact%2A?displayProperty=nameWithType>Metoda, która zgłasza <xref:System.FormatException> wyjątek, jeśli nie można <xref:System.DateTime> przekonwertować ciągu daty na wartość. Podobnie, jeśli użytkownik próbuje otworzyć plik, który nie istnieje, można najpierw wywołać <xref:System.IO.File.Exists%2A?displayProperty=nameWithType> metodę, aby sprawdzić, czy plik istnieje i, jeśli nie, monitować użytkownika, czy chce go utworzyć.  
   
-     W innych przypadkach błąd programu odzwierciedla nieoczekiwany błąd, który mogą być obsługiwane w kodzie. Na przykład nawet jeśli została sprawdzona, aby upewnić się, że plik istnieje, jego mogą zostać usunięte przed możesz go otworzyć, lub może on być uszkodzony. W takim przypadku próby otwarcia pliku przez utworzenie wystąpienia <xref:System.IO.StreamReader> obiektu lub wywoływania <xref:System.IO.File.Open%2A> metoda może zgłaszać <xref:System.IO.FileNotFoundException> wyjątku. W takich przypadkach należy użyć obsługi wyjątków, aby odzyskać sprawność po błędzie.  
+     W innych przypadkach błąd programu odzwierciedla Nieoczekiwany warunek błędu, który można obsłużyć w kodzie. Na przykład, nawet jeśli sprawdzono, że plik istnieje, można go usunąć, aby można było go otworzyć, lub może być uszkodzony. W takim przypadku próba otwarcia pliku przez utworzenie wystąpienia <xref:System.IO.StreamReader> obiektu lub <xref:System.IO.File.Open%2A> wywołanie metody może zgłosić <xref:System.IO.FileNotFoundException> wyjątek. W takich przypadkach należy użyć obsługi wyjątków, aby odzyskać sprawność po błędzie.  
   
--   **Awarie systemu.** Awaria systemu jest błąd w czasie wykonywania, które nie mogą być obsługiwane programowo w znaczący sposób. Na przykład, każda metoda może zgłosić <xref:System.OutOfMemoryException> wyjątek, jeśli środowisko uruchomieniowe języka wspólnego nie może przydzielić więcej pamięci. Zazwyczaj awarie systemu nie są obsługiwane przy użyciu obsługi wyjątków. Zamiast tego można użyć zdarzenia, takie jak <xref:System.AppDomain.UnhandledException?displayProperty=nameWithType> i wywołać <xref:System.Environment.FailFast%2A?displayProperty=nameWithType> metodę, aby rejestrować informacje o wyjątku i powiadamia użytkownika o awarii, zanim aplikacja zakończy.  
+-   **Awarie systemu.** Awaria systemu to błąd czasu wykonywania, którego nie można programowo obsługiwać w zrozumiały sposób. Na przykład każda metoda może zgłosić <xref:System.OutOfMemoryException> wyjątek, jeśli środowisko uruchomieniowe języka wspólnego nie może przydzielić dodatkowej pamięci. Zwykle błędy systemu nie są obsługiwane przy użyciu obsługi wyjątków. Zamiast tego można użyć zdarzenia, takiego jak <xref:System.AppDomain.UnhandledException?displayProperty=nameWithType> i <xref:System.Environment.FailFast%2A?displayProperty=nameWithType> wywołać metodę, aby zarejestrować informacje o wyjątku i powiadomić użytkownika o awarii przed zakończeniem działania aplikacji.  
   
 <a name="TryCatch"></a>   
 ## <a name="trycatch-blocks"></a>Bloki try/catch  
- Środowisko uruchomieniowe języka wspólnego udostępnia model obsługi wyjątków, który jest oparty na reprezentację wyjątki jako obiekty i oddzielenie kodu programu i kodu do obsługi wyjątków `try` bloków i `catch` bloków. Może istnieć jeden lub więcej `catch` blokuje każde jest zaprojektowane do obsługi określonego typu wyjątku lub jeden blok umożliwiający bardziej konkretny wyjątek niż innego bloku catch.  
+ Środowisko uruchomieniowe języka wspólnego udostępnia model obsługi wyjątków, który jest oparty na reprezentacji wyjątków jako obiektów i oddziela kod programu i kod obsługi wyjątków do `try` bloków i `catch` bloków. Może istnieć jeden lub więcej `catch` bloków, z których każdy jest przeznaczony do obsługi określonego typu wyjątku lub jeden blok zaprojektowany w celu przechwycenia bardziej szczegółowego wyjątku niż inny blok.  
   
- Jeśli aplikacja obsługuje wyjątki, które występują podczas wykonywania bloku kodu aplikacji, kod musi być umieszczony w `try` instrukcji i jest wywoływana `try` bloku. Kod aplikacji, który obsługuje wyjątki wyrzucane przez `try` bloku znajduje się w obrębie `catch` instrukcji i jest wywoływana `catch` bloku. Zero lub więcej `catch` bloki są skojarzone z `try` bloku oraz każdy `catch` blokowe operacje dołączania filtr typu, który określa typ obsługi wyjątków.  
+ Jeśli aplikacja obsługuje wyjątki, które występują podczas wykonywania bloku kodu aplikacji, kod musi być umieszczony wewnątrz `try` instrukcji i nosi `try` nazwę bloku. Kod aplikacji obsługujący wyjątki zgłoszone przez `try` blok jest umieszczany `catch` w `catch` instrukcji i jest nazywany blokiem. Co najmniej `catch` zero bloków jest skojarzonych `try` z blokiem, a każdy `catch` blok zawiera filtr typu, który określa typy wyjątków, które obsługuje.  
   
- Gdy wystąpi wyjątek w `try` bloku, system przeszukuje skojarzonego `catch` bloków w kolejności, są wyświetlane w kodzie aplikacji, lokalizując `catch` blok, który obsługuje wyjątek. A `catch` blok obsługuje wyjątek typu `T` Jeśli filtr typu bloku catch Określa `T` lub dowolny typ, który `T` pochodzi od klasy. Wyszukiwanie po znajdzie pierwszy zatrzymania systemu `catch` blok, który obsługuje wyjątek. Z tego powodu w kodzie aplikacji `catch` blok, który obsługuje typ muszą zostać określone przed `catch` blok, który obsługuje jej typów podstawowych, jak pokazano w przykładzie poniżej w tej sekcji. W bloku catch, który obsługuje `System.Exception` jest określony jako ostatni.  
+ Gdy w `try` bloku występuje wyjątek, system przeszukuje skojarzone `catch` bloki w kolejności, w jakiej występują w kodzie aplikacji, `catch` dopóki nie zostanie znaleziony blok obsługujący wyjątek. Blok obsługuje wyjątek typu `T` , jeśli filtr typu bloku catch `T` określa `T` lub dowolny typ pochodzący z. `catch` System przestaje wyszukiwać po znalezieniu pierwszego `catch` bloku, który obsługuje wyjątek. Z tego powodu w kodzie `catch` aplikacji blok obsługujący typ musi być określony `catch` przed blokiem, który obsługuje jego typy podstawowe, jak pokazano w przykładzie opisanym w tej sekcji. Blok catch, który obsługuje `System.Exception` , jest określany jako ostatni.  
   
- Jeśli żadna z `catch` bloki skojarzone z bieżącym `try` bloku obsługi wyjątków i bieżący `try` bloku jest zagnieżdżony w innych `try` bloków w bieżącym wywołaniu `catch` bloki skojarzone z następnego otaczający `try` bloku są przeszukiwane. Jeśli nie `catch` bloku, dla wyjątku zostanie znaleziony, system wyszukuje poprzednie poziomów zagnieżdżenia w bieżącym wywołaniu. Jeśli nie `catch` blokowania, dla wyjątku znajduje się w bieżącym wywołaniu, wyjątek jest przekazywany w górę stosu wywołań i poprzedniej ramki stosu są wyszukiwane `catch` blok, który obsługuje wyjątek. Wyszukiwanie stos wywołań jest kontynuowane aż do obsługi wyjątku lub ma więcej ramek istnieje w stosie wywołań. W przypadku osiągnięcia góra stosu wywołań bez znajdowanie `catch` blok, który obsługuje wyjątek, domyślny program obsługi wyjątku obsługuje je i kończy działanie aplikacji.  
+ Jeśli `catch` żaden z bloków skojarzonych z bieżącym `try` `try` blokiem nie obsługuje wyjątku, a bieżący blok jest zagnieżdżony w `catch` innych `try` blokach w bieżącym wywołaniu, bloki skojarzone z następnym przeszukiwany jest otaczający blok. `try` Jeśli nie `catch` zostanie znaleziony żaden blok dla wyjątku, system przeszuka poprzednie poziomy zagnieżdżenia w bieżącym wywołaniu. Jeśli żaden `catch` blok dla wyjątku nie zostanie znaleziony w bieżącym wywołaniu, zostanie przeszukany stos wywołań, a w poprzedniej klatce stosu jest wyszukiwany `catch` blok obsługujący wyjątek. Wyszukiwanie stosu wywołań jest kontynuowane do momentu obsługi wyjątku lub do momentu, gdy w stosie wywołań nie ma więcej ramek. Jeśli Góra stosu wywołań zostanie osiągnięta bez znajdowania `catch` bloku, który obsługuje wyjątek, zostanie ona prześwietlona przez domyślny program obsługi wyjątków, a aplikacja zostanie przerwana.  
   
 <a name="Features"></a>   
 ## <a name="exception-type-features"></a>Funkcje typu wyjątku  
- Typy wyjątków obsługuje następujące funkcje:  
+ Typy wyjątków obsługują następujące funkcje:  
   
--   Czytelny dla człowieka tekst, który opisuje błąd. Gdy wystąpi wyjątek, środowisko wykonawcze zapewnia dostępne, aby poinformować użytkownika charakter błędu i sugerująca akcji wiadomość SMS w celu rozwiązania problemu. Ta wiadomość SMS jest przechowywany w <xref:System.Exception.Message%2A> własności obiektu wyjątku. Podczas tworzenia obiektu wyjątku do konstruktora, aby opisywać szczegóły tego określonego wyjątku można przekazać ciągu tekstowego. Jeśli nie dostarczono żadnego argumentu komunikat o błędzie do konstruktora, jest używany domyślny komunikat o błędzie. Aby uzyskać więcej informacji, zobacz <xref:System.Exception.Message%2A> właściwości.  
+-   Czytelny dla człowieka tekst opisujący błąd. Gdy wystąpi wyjątek, środowisko uruchomieniowe udostępnia wiadomość tekstową, aby poinformować użytkownika o charakterze błędu i zasugerować akcję w celu rozwiązania problemu. Ten komunikat tekstowy jest przechowywany we <xref:System.Exception.Message%2A> właściwości obiektu wyjątku. Podczas tworzenia obiektu wyjątku można przekazać ciąg tekstowy do konstruktora, aby opisać szczegóły tego wyjątku. Jeśli do konstruktora nie zostanie dostarczony argument komunikatu o błędzie, zostanie użyty domyślny komunikat o błędzie. Aby uzyskać więcej informacji, zobacz <xref:System.Exception.Message%2A> właściwość.  
   
--   Stan w stosie wywołań gdy wyjątek został zgłoszony. <xref:System.Exception.StackTrace%2A> Właściwość niesie ze sobą ślad stosu, który może służyć do określenia, gdzie występuje błąd w kodzie. Ślad stosu Wyświetla listę wszystkich wywoływanych metod i numery wierszy w pliku źródłowym, gdzie wywołań.  
+-   Stan stosu wywołań, gdy wystąpił wyjątek. <xref:System.Exception.StackTrace%2A> Właściwość przenosi ślad stosu, którego można użyć do określenia miejsca wystąpienia błędu w kodzie. Ślad stosu wyświetla wszystkie wywoływane metody i numery wierszy w pliku źródłowym, w którym są wykonywane wywołania.  
   
 <a name="Properties"></a>   
 ## <a name="exception-class-properties"></a>Właściwości klasy wyjątku  
- <xref:System.Exception> Klasa zawiera wiele właściwości, które pomagają identyfikować lokalizacji kodu, typ, plik pomocy i przyczyny, dla wyjątku: <xref:System.Exception.StackTrace%2A>, <xref:System.Exception.InnerException%2A>, <xref:System.Exception.Message%2A>, <xref:System.Exception.HelpLink%2A>, <xref:System.Exception.HResult%2A>, <xref:System.Exception.Source%2A>, <xref:System.Exception.TargetSite%2A>, i <xref:System.Exception.Data%2A>.  
+ <xref:System.Exception.Message%2A> <xref:System.Exception.Source%2A> <xref:System.Exception.HResult%2A> <xref:System.Exception.StackTrace%2A> <xref:System.Exception.HelpLink%2A> <xref:System.Exception.InnerException%2A>Klasa zawiera wiele właściwości, które ułatwiają identyfikację lokalizacji kodu, typu, pliku pomocy i przyczyny wyjątku:,,,,,, <xref:System.Exception> <xref:System.Exception.TargetSite%2A>i .<xref:System.Exception.Data%2A>  
   
- Gdy przyczynowego istnieje między co najmniej dwa wyjątki, <xref:System.Exception.InnerException%2A> właściwość przechowuje te informacje. Wyjątek zewnętrzny jest zgłaszany w odpowiedzi na ten wyjątek wewnętrzny. Kod, który obsługuje wyjątek zewnętrzny umożliwia obsłużenie błędu więcej informacji z wcześniej wyjątek wewnętrzny. Dodatkowe informacje o wyjątku, mogą być przechowywane jako kolekcja par klucz/wartość w <xref:System.Exception.Data%2A> właściwości.  
+ Gdy istnieje związek przyczynowy między dwoma lub więcej wyjątkami, <xref:System.Exception.InnerException%2A> Właściwość utrzymuje te informacje. Wyjątek zewnętrzny jest zgłaszany w odpowiedzi na ten wyjątek wewnętrzny. Kod, który obsługuje wyjątek zewnętrzny, może użyć informacji z wcześniejszego wyjątku wewnętrznego, aby bardziej odpowiednio obsłużyć błąd. Dodatkowe informacje o wyjątku mogą być przechowywane jako kolekcja par klucz/wartość we <xref:System.Exception.Data%2A> właściwości.  
   
- Ciąg komunikatu o błędzie, który jest przekazywany do konstruktora podczas tworzenia obiektu wyjątku powinien być zlokalizowany i mogą być dostarczane z pliku zasobów za pomocą <xref:System.Resources.ResourceManager> klasy. Aby uzyskać więcej informacji na temat zlokalizowane zasoby, zobacz [tworzenie zestawów satelickich](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md) i [Packaging and Deploying Resources](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) tematów.  
+ Ciąg komunikatu o błędzie, który jest przekazywany do konstruktora podczas tworzenia obiektu wyjątku powinien być zlokalizowany i może być dostarczony z pliku zasobów przy użyciu <xref:System.Resources.ResourceManager> klasy. Aby uzyskać więcej informacji o zlokalizowanych zasobach, zobacz temat [Tworzenie zestawów satelickich](~/docs/framework/resources/creating-satellite-assemblies-for-desktop-apps.md) i [pakowanie i wdrażanie zasobów](~/docs/framework/resources/packaging-and-deploying-resources-in-desktop-apps.md) .  
   
- Aby przyznać użytkownikowi rozbudowane informacje na temat przyczyny wystąpienia wyjątku <xref:System.Exception.HelpLink%2A> właściwość może zawierać adres URL (lub URN) do pliku pomocy.  
+ Aby zapewnić użytkownikowi wyczerpujące informacje na temat przyczyny wystąpienia wyjątku, <xref:System.Exception.HelpLink%2A> właściwość może zawierać adres URL (lub nazwę URN) do pliku pomocy.  
   
- <xref:System.Exception> COR_E_EXCEPTION HRESULT, która ma wartość 0x80131500 korzysta z klasy.  
+ <xref:System.Exception> Klasa używa HRESULT COR_E_EXCEPTION, która ma wartość 0x80131500.  
   
- Aby uzyskać listę początkowe wartości właściwości wystąpienia <xref:System.Exception> klasy, zobacz <xref:System.Exception.%23ctor%2A> konstruktorów.  
+ Aby uzyskać listę początkowych wartości właściwości dla wystąpienia <xref:System.Exception> klasy, <xref:System.Exception.%23ctor%2A> Zobacz konstruktory.  
   
 <a name="Performance"></a>   
 ## <a name="performance-considerations"></a>Zagadnienia dotyczące wydajności  
- Zgłaszanie lub Obsługa wyjątku zajmuje znaczną ilość zasobów systemowych i czasu wykonywania. Zgłaszają wyjątki, tylko do obsługi naprawdę nadzwyczajne warunków, aby nie obsługiwać zdarzenia przewidywalne lub Sterowanie przepływem. Na przykład w niektórych przypadkach, takich jak kiedy tworzysz bibliotekę klas jest uzasadnione zgłosić wyjątek, jeśli argument metody jest nieprawidłowy, ponieważ oczekujesz, że metoda wywoływana przy użyciu prawidłowych parametrów. Argument nieprawidłowa metoda, jeśli nie jest wynikiem błędu użycia, oznacza, że coś nadzwyczajne wystąpiło. Z drugiej strony nie zgłosić wyjątek, jeśli dane wejściowe użytkownika jest nieprawidłowy, ponieważ można oczekiwać, że użytkowników od czasu do czasu podania nieprawidłowych danych. Zamiast tego zapewniają mechanizm ponawiania prób, dzięki czemu użytkownicy mogą wprowadzać prawidłowych danych wejściowych. Nie należy używać wyjątków do obsługi błędów użycia. Zamiast tego należy użyć [potwierdzenia](/visualstudio/debugger/assertions-in-managed-code) Aby zidentyfikować i rozwiązać błędy użycia.  
+ Wyrzucanie lub obsługa wyjątku zużywa znaczną ilość zasobów systemowych i czasu wykonywania. Zgłaszaj wyjątki tylko w celu obsługi prawdziwie nieprawidłowych warunków, nie obsługują przewidywalnych zdarzeń lub sterowanie przepływem. Na przykład w niektórych przypadkach, na przykład podczas tworzenia biblioteki klas, należy zgłosić wyjątek, jeśli argument metody jest nieprawidłowy, ponieważ oczekuje się, że metoda zostanie wywołana z prawidłowymi parametrami. Nieprawidłowy argument metody, jeśli nie jest wynikiem błędu użycia, oznacza to, że wystąpił coś nadzwyczajowego. Z drugiej strony nie należy zgłaszać wyjątku, jeśli dane wejściowe użytkownika są nieprawidłowe, ponieważ można oczekiwać, że użytkownicy sporadycznie wprowadzają nieprawidłowe dane. Zamiast tego należy zapewnić mechanizm ponawiania prób, aby umożliwić użytkownikom wprowadzanie prawidłowych danych wejściowych. Nie należy używać wyjątków do obsługi błędów użycia. Zamiast tego należy [](/visualstudio/debugger/assertions-in-managed-code) użyć potwierdzeń, aby identyfikować i poprawiać błędy użycia.  
   
- Ponadto zgłasza wyjątku, gdy kod powrotny jest wystarczające; Nie można konwertować kod powrotny wyjątek; i czy nie rutynowo catch wyjątku, go zignorować, a następnie kontynuować przetwarzanie.  
+ Ponadto nie należy zgłaszać wyjątku, gdy kod powrotny jest wystarczający; nie Konwertuj kodu powrotu na wyjątek; i nie przeprowadzaj rutynowo przechwytywania wyjątku, zignoruj go, a następnie kontynuuj przetwarzanie.  
   
 <a name="Rethrow"></a>   
-## <a name="re-throwing-an-exception"></a>Ponownie zostanie zgłoszony wyjątek  
- W wielu przypadkach program obsługi wyjątku chce po prostu przekazać wyjątek do obiektu wywołującego. Najczęstszą przyczyną tego błędu w:  
+## <a name="re-throwing-an-exception"></a>Ponowne zgłaszanie wyjątku  
+ W wielu przypadkach procedura obsługi wyjątków po prostu chce przekazać wyjątek do obiektu wywołującego. Najczęściej występuje w programie:  
   
--   Biblioteka klas, które z kolei opakowuje wywołania metody w bibliotece klas programu .NET Framework lub inne biblioteki klas.  
+-   Biblioteka klas, która z kolei zawija wywołania metod w bibliotece klas .NET Framework lub innych bibliotekach klas.  
   
--   Aplikacja lub bibliotekę, która napotkał wyjątek krytyczny. Program obsługi wyjątków można zarejestruje wyjątek i ponownie zgłosić wyjątek.  
+-   Aplikacja lub biblioteka, która napotyka wyjątek krytyczny. Procedura obsługi wyjątków może rejestrować wyjątek, a następnie ponownie zgłosić wyjątek.  
   
- Zalecanym sposobem ponownie zgłosić wyjątek jest po prostu użyć [throw](~/docs/csharp/language-reference/keywords/throw.md) instrukcji w języku C# i [Throw](~/docs/visual-basic/language-reference/statements/throw-statement.md) instrukcji w języku Visual Basic, bez uwzględniania wyrażenia. Daje to gwarancję, że wszystkie informacje stosu wywołań jest zachowywana, gdy wyjątek jest propagowany do obiektu wywołującego. Ilustruje to poniższy przykład. Parametry metody rozszerzenia, `FindOccurrences`, opakowuje wywołania co najmniej jeden <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=nameWithType> bez uprzedniego sprawdzania poprawności argumentów.  
+ Zalecanym sposobem ponownego wygenerowania wyjątku jest po prostu użycie instrukcji [throw](~/docs/csharp/language-reference/keywords/throw.md) w C# i instrukcji [throw](~/docs/visual-basic/language-reference/statements/throw-statement.md) w Visual Basic bez uwzględnienia wyrażenia. Dzięki temu wszystkie informacje stosu wywołań są zachowywane, gdy wyjątek jest propagowany do obiektu wywołującego. Ilustruje to poniższy przykład. Metoda `FindOccurrences`rozszerzenia ciągu, zawija jedno lub więcej wywołań do <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=nameWithType> bez weryfikowania wcześniej argumentów.  
   
  [!code-csharp[System.Exception.Class#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#6)]
  [!code-vb[System.Exception.Class#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#6)]  
   
- Następnie wywołuje obiekt wywołujący `FindOccurrences` dwa razy. W drugim wywołaniu `FindOccurrences`, obiekt wywołujący przekazuje `null` jako ciąg wyszukiwania, które przypadki <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=nameWithType> metodę, aby zgłosić <xref:System.ArgumentNullException> wyjątku. Ten wyjątek jest obsługiwany przez `FindOccurrences` metody i ponownie przekazana do obiektu wywołującego. Ponieważ instrukcji "throw" jest używana z Brak wyrażenia, wynika z przykładu pokazuje, że stos wywołań jest zachowywany.  
+ Wywołujący następnie wywołuje `FindOccurrences` dwa razy. W drugim wywołaniu `FindOccurrences`, obiekt wywołujący `null` przekazuje jako <xref:System.String.IndexOf%28System.String%2CSystem.Int32%29?displayProperty=nameWithType> ciąg wyszukiwania, w którym występują metody <xref:System.ArgumentNullException> zgłaszania wyjątku. Ten wyjątek jest obsługiwany przez `FindOccurrences` metodę i przeszedł z powrotem do obiektu wywołującego. Ponieważ Instrukcja throw jest używana bez wyrażenia, dane wyjściowe z przykładu pokazują, że stos wywołań jest zachowywany.  
   
  [!code-csharp[System.Exception.Class#7](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow1.cs#7)]
  [!code-vb[System.Exception.Class#7](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow1.vb#7)]  
   
- Natomiast jeśli wyjątek jest ponownie zgłaszany przy użyciu  
+ Z drugiej strony, jeśli wyjątek jest ponownie zgłaszany przy użyciu  
   
 ```csharp  
 throw e  
@@ -163,7 +163,7 @@ throw e
 Throw e  
 ```  
   
- Instrukcja pełny stos wywołań nie są zachowywane, a przykład wygeneruje następujące wyniki:  
+ instrukcji, pełny stos wywołań nie jest zachowywany, a przykład generuje następujące dane wyjściowe:  
   
 ```Output  
   
@@ -180,99 +180,99 @@ Stack Trace:
   
 ```  
   
- Alternatywa nieco bardziej skomplikowane jest nowy wyjątku i zachować informacje stosu wywołań oryginalnego wyjątku w wyjątek wewnętrzny. Obiekt wywołujący można następnie użyć nowy wyjątek <xref:System.Exception.InnerException%2A> właściwość służąca do pobierania ramki stosu i inne informacje o oryginalnego wyjątku. W tym przypadku jest instrukcji "throw":  
+ Nieco bardziej nieskomplikowaną alternatywą jest wygenerowanie nowego wyjątku i zachowanie informacji o stosie wywołań oryginalnego wyjątku w wyjątku wewnętrznym. Obiekt wywołujący może następnie użyć <xref:System.Exception.InnerException%2A> właściwości nowego wyjątku, aby pobrać ramkę stosu i inne informacje na temat oryginalnego wyjątku. W tym przypadku Instrukcja throw jest:  
   
  [!code-csharp[System.Exception.Class#8](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#8)]
  [!code-vb[System.Exception.Class#8](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#8)]  
   
- Kod użytkownika, który obsługuje wyjątek ma poinformować, że <xref:System.Exception.InnerException%2A> właściwość zawiera informacje o oryginalnego wyjątku, tak jak pokazano w poniższym obsługi wyjątków.  
+ Kod użytkownika, który obsługuje wyjątek, musi wiedzieć, że <xref:System.Exception.InnerException%2A> Właściwość zawiera informacje o oryginalnym wyjątku, ponieważ ilustruje poniższy program obsługi wyjątków.  
   
  [!code-csharp[System.Exception.Class#9](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/rethrow3.cs#9)]
  [!code-vb[System.Exception.Class#9](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/rethrow3.vb#9)]  
   
 <a name="Standard"></a>   
 ## <a name="choosing-standard-exceptions"></a>Wybieranie standardowych wyjątków  
- Jeśli masz zgłosić wyjątek, często służy istniejącego typu wyjątku w .NET Framework, a nie Implementowanie niestandardowego wyjątku. Należy korzystać z typu Standardowy wyjątek w ramach tych dwóch warunków:  
+ Jeśli trzeba zgłosić wyjątek, często można użyć istniejącego typu wyjątku w .NET Framework zamiast implementowania niestandardowego wyjątku. Należy używać standardowego typu wyjątku w następujących dwóch warunkach:  
   
--   Czy zostanie zgłoszony wyjątek, który jest spowodowany przez błąd użycia (oznacza to błąd w logice programu przez dewelopera, który wywołuje metodę). Zazwyczaj spowoduje zgłoszenie wyjątku takich jak <xref:System.ArgumentException>, <xref:System.ArgumentNullException>, <xref:System.InvalidOperationException>, lub <xref:System.NotSupportedException>. Ciąg, który podasz konstruktora obiektu wyjątku, podczas tworzenia wystąpienia obiektu wyjątku powinna opisywać błąd, dzięki czemu deweloper może go naprawić. Aby uzyskać więcej informacji, zobacz <xref:System.Exception.Message%2A> właściwości.  
+-   Zgłaszasz wyjątek, który jest spowodowany przez błąd użycia (to oznacza, że wystąpił błąd w logice programu wykonany przez dewelopera, który wywołuje metodę). <xref:System.ArgumentException>Zazwyczaj należy zgłosić wyjątek <xref:System.ArgumentNullException> <xref:System.NotSupportedException>, taki jak,, ,lub.<xref:System.InvalidOperationException> Ciąg, który jest dostarczany do konstruktora obiektu wyjątku podczas tworzenia wystąpienia obiektu wyjątku powinien opisać błąd, aby umożliwić deweloperowi rozwiązanie tego problemu. Aby uzyskać więcej informacji, zobacz <xref:System.Exception.Message%2A> właściwość.  
   
--   Czy obsługa błąd, który może być przekazywane do obiektu wywołującego, z wyjątkiem istniejących .NET Framework. Należy zgłosić wyjątek najbardziej pochodnej, która jest możliwe. Na przykład, jeśli metoda wymaga argumentu jest prawidłowym elementem członkowskim typu wyliczeniowego, powinien zgłaszać <xref:System.ComponentModel.InvalidEnumArgumentException> (najbardziej pochodnej klasy), a nie <xref:System.ArgumentException>.  
+-   Obsłużysz błąd, który może być przekazywany do obiektu wywołującego z istniejącym wyjątkiem .NET Framework. Należy zgłosić najbardziej pochodny wyjątek. Na przykład jeśli metoda wymaga, aby argument był prawidłowym elementem członkowskim typu wyliczenia, należy zgłosić <xref:System.ComponentModel.InvalidEnumArgumentException> (najbardziej pochodną klasę), a nie. <xref:System.ArgumentException>  
   
- W poniższej tabeli wymieniono typowe typy wyjątków i warunki, na których będzie zgłaszają je.  
+ W poniższej tabeli wymieniono typowe typy wyjątków i warunki, w których zostałyby one wyrzucane.  
   
 |Wyjątek|Warunek|  
 |---------------|---------------|  
-|<xref:System.ArgumentException>|Argument inną niż null, który jest przekazywany do metody jest nieprawidłowy.|  
-|<xref:System.ArgumentNullException>|Argument, który jest przekazywany do metody jest `null`.|  
-|<xref:System.ArgumentOutOfRangeException>|Argument jest poza zakresem prawidłowych wartości.|  
-|<xref:System.IO.DirectoryNotFoundException>|Część ścieżki katalogu jest nieprawidłowy.|  
-|<xref:System.DivideByZeroException>|Denominator w liczbą całkowitą lub <xref:System.Decimal> operacji dzielenia wynosi zero.|  
+|<xref:System.ArgumentException>|Argument o wartości innej niż null, który jest przesyłany do metody jest nieprawidłowy.|  
+|<xref:System.ArgumentNullException>|Argument, który jest przekazaniem do metody `null`, to.|  
+|<xref:System.ArgumentOutOfRangeException>|Argument znajduje się poza zakresem prawidłowych wartości.|  
+|<xref:System.IO.DirectoryNotFoundException>|Część ścieżki katalogu jest nieprawidłowa.|  
+|<xref:System.DivideByZeroException>|Mianownik w operacji typu Integer lub <xref:System.Decimal> dzielenie ma wartość zero.|  
 |<xref:System.IO.DriveNotFoundException>|Dysk jest niedostępny lub nie istnieje.|  
 |<xref:System.IO.FileNotFoundException>|Plik nie istnieje.|  
-|<xref:System.FormatException>|Wartość nie jest w odpowiednim formacie, który ma zostać przekonwertowany z ciągu za pomocą metody konwersji, takie jak `Parse`.|  
-|<xref:System.IndexOutOfRangeException>|Indeks jest poza granicami tablicy lub kolekcji.|  
-|<xref:System.InvalidOperationException>|Wywołanie metody jest nieprawidłowy w bieżącym stanie obiektu.|  
-|<xref:System.Collections.Generic.KeyNotFoundException>|Nie można odnaleźć określonego klucza do uzyskiwania dostępu do elementu członkowskiego w kolekcji.|  
+|<xref:System.FormatException>|Wartość nie jest w odpowiednim formacie do przekonwertowania z ciągu przez metodę konwersji taką jak `Parse`.|  
+|<xref:System.IndexOutOfRangeException>|Indeks znajduje się poza granicami tablicy lub kolekcji.|  
+|<xref:System.InvalidOperationException>|Wywołanie metody jest nieprawidłowe w bieżącym stanie obiektu.|  
+|<xref:System.Collections.Generic.KeyNotFoundException>|Nie można znaleźć określonego klucza do uzyskania dostępu do elementu członkowskiego w kolekcji.|  
 |<xref:System.NotImplementedException>|Metoda lub operacja nie jest zaimplementowana.|  
 |<xref:System.NotSupportedException>|Metoda lub operacja nie jest obsługiwana.|  
-|<xref:System.ObjectDisposedException>|Operacja jest wykonywana na obiekt, który został usunięty.|  
-|<xref:System.OverflowException>|Operacje arytmetyczne, rzutowania lub konwersji operacja powoduje przepełnienie.|  
-|<xref:System.IO.PathTooLongException>|Nazwa pliku lub ścieżki przekracza maksymalną długość zdefiniowaną przez system.|  
+|<xref:System.ObjectDisposedException>|Operacja jest wykonywana na obiekcie, który został usunięty.|  
+|<xref:System.OverflowException>|Operacja arytmetyczna, rzutowania lub konwersji powoduje przepełnienie.|  
+|<xref:System.IO.PathTooLongException>|Ścieżka lub nazwa pliku przekracza maksymalną długość zdefiniowaną przez system.|  
 |<xref:System.PlatformNotSupportedException>|Operacja nie jest obsługiwana na bieżącej platformie.|  
-|<xref:System.RankException>|Tablica z nieprawidłową liczbą wymiarów jest przekazywany do metody.|  
-|<xref:System.TimeoutException>|Przedział czasu przydzielony na wykonanie operacji wygasł.|  
-|<xref:System.UriFormatException>|Nieprawidłowy identyfikator (URI) jest używany.|  
+|<xref:System.RankException>|Tablica o nieprawidłowej liczbie wymiarów jest przenoszona do metody.|  
+|<xref:System.TimeoutException>|Przedział czasu przypisany do operacji wygasł.|  
+|<xref:System.UriFormatException>|Użyto nieprawidłowego Uniform Resource Identifier (URI).|  
   
 <a name="Custom"></a>   
 ## <a name="implementing-custom-exceptions"></a>Implementowanie wyjątków niestandardowych  
- Przy użyciu istniejących wyjątek .NET Framework do obsługi warunek błędu nie jest w następujących przypadkach odpowiednia:  
+ W następujących przypadkach użycie istniejącego wyjątku .NET Framework w celu obsłużenia warunku błędu nie jest wystarczające:  
   
--   Gdy wyjątek odzwierciedla błąd unikatowy program, który nie może być mapowana na istniejące wyjątek .NET Framework.  
+-   Gdy wyjątek odzwierciedla unikatowy błąd programu, którego nie można zamapować na istniejący wyjątek .NET Framework.  
   
--   Gdy wyjątek wymaga obsługi, który różni się od obsługi, który jest odpowiedni dla istniejących wyjątek .NET Framework lub wyjątku, musi rozróżniane z podobnych wyjątku. Na przykład, jeśli Generowanie <xref:System.ArgumentOutOfRangeException> wyjątek podczas analizowania reprezentację liczbową ciąg, który znajduje się poza zakresem typu całkowitego docelowej, nie chcesz używać ten sam wyjątek wystąpił błąd powstały na skutek obiekt wywołujący nie podano odpowiednie wartości ograniczone podczas wywoływania metody.  
+-   Gdy wyjątek wymaga obsługi, która różni się od obsługi, która jest odpowiednia dla istniejącego wyjątku .NET Framework, lub wyjątek należy odróżnić od podobnego wyjątku. Na przykład jeśli <xref:System.ArgumentOutOfRangeException> zgłaszasz wyjątek podczas analizowania liczbowej reprezentacji ciągu, który jest poza zakresem docelowego typu całkowitego, nie chcesz używać tego samego wyjątku w przypadku błędu, który wynika z wywołującego niedostarczającego odpowiednie ograniczone wartości podczas wywoływania metody.  
   
- <xref:System.Exception> Klasa jest klasą bazową wszystkich wyjątków w programie .NET Framework. Wiele klas pochodnych opierają się na zachowaniu dziedziczonych członków <xref:System.Exception> klasy; nie zastępowały one członkowie <xref:System.Exception>, ani nie mogą określać żadnych unikatowych elementów członkowskich.  
+ <xref:System.Exception> Klasa jest klasą bazową wszystkich wyjątków w .NET Framework. Wiele klas pochodnych opiera się na dziedziczonym zachowaniu elementów członkowskich <xref:System.Exception> klasy; nie przesłaniają oni <xref:System.Exception>elementów członkowskich ani nie definiują żadnych unikatowych elementów członkowskich.  
   
- Aby zdefiniować własne klasy wyjątku:  
+ Aby zdefiniować własną klasę wyjątku:  
   
-1.  Definiowanie klasy, która dziedziczy po elemencie <xref:System.Exception>. Jeśli to konieczne, należy zdefiniować żadnych unikatowych elementów członkowskich wymagane przez klasy, aby podać dodatkowe informacje o wyjątku. Na przykład <xref:System.ArgumentException> klasa zawiera <xref:System.ArgumentException.ParamName%2A> właściwość, która określa nazwę parametru, którego argument spowodował wyjątek, a <xref:System.Text.RegularExpressions.RegexMatchTimeoutException> zawiera właściwość <xref:System.Text.RegularExpressions.RegexMatchTimeoutException.MatchTimeout%2A> właściwość, która określa interwał limitu czasu.  
+1.  Zdefiniuj klasę, która dziedziczy z <xref:System.Exception>. W razie potrzeby Zdefiniuj wszelkich unikatowych członków wymaganych przez klasę, aby podać dodatkowe informacje o wyjątku. Na przykład <xref:System.ArgumentException> Klasa <xref:System.ArgumentException.ParamName%2A> zawiera właściwość, która określa nazwę parametru, którego argument spowodował wyjątek, <xref:System.Text.RegularExpressions.RegexMatchTimeoutException.MatchTimeout%2A> a <xref:System.Text.RegularExpressions.RegexMatchTimeoutException> Właściwość zawiera właściwość, która wskazuje interwał limitu czasu.  
   
-2.  Jeśli to konieczne, należy zastąpić wszystkie dziedziczone elementy członkowskie funkcji, których chcesz zmieniać ani modyfikować. Należy pamiętać, że większość istniejących pochodne klasy <xref:System.Exception> nie zastępują zachowanie dziedziczone elementy członkowskie.  
+2.  W razie potrzeby Zastąp wszystkie Odziedziczone elementy członkowskie, których funkcjonalność chcesz zmienić lub zmodyfikować. Należy zauważyć, że większość istniejących klas <xref:System.Exception> pochodnych nie przesłania zachowania dziedziczonych elementów członkowskich.  
   
-3.  Ustal, czy obiekt niestandardowy wyjątek jest możliwy do serializacji. Serializacja umożliwia zapisanie informacji o wyjątku i pozwala na informacje o wyjątku współdzielonych przez pracowników i serwera proxy klienta w kontekście usług zdalnych. Aby obiekt wyjątku serializacji, oznacz go za pomocą <xref:System.SerializableAttribute> atrybutu.  
+3.  Ustal, czy obiekt wyjątku niestandardowego jest możliwy do serializacji. Serializacja umożliwia zapisywanie informacji o wyjątku i Zezwalanie na udostępnianie informacji o wyjątku przez serwer i serwer proxy klienta w kontekście komunikacji zdalnej. Aby można było serializować obiekt wyjątku, oznacz go <xref:System.SerializableAttribute> atrybutem.  
   
-4.  Zdefiniuj Konstruktory klasy wyjątku. Zazwyczaj klasy wyjątków mają co najmniej jedną z następujących konstruktorów:  
+4.  Zdefiniuj konstruktory klasy wyjątków. Zazwyczaj klasy wyjątków mają jeden lub więcej z następujących konstruktorów:  
   
-    -   <xref:System.Exception.%23ctor>, który używa domyślnych wartości do zainicjowania właściwości nowy obiekt wyjątku.  
+    -   <xref:System.Exception.%23ctor>, który używa wartości domyślnych do inicjowania właściwości nowego obiektu wyjątku.  
   
-    -   <xref:System.Exception.%23ctor%28System.String%29>, która inicjuje nowy obiekt wyjątku z określonym komunikatem o błędzie.  
+    -   <xref:System.Exception.%23ctor%28System.String%29>, który inicjuje nowy obiekt wyjątku z określonym komunikatem o błędzie.  
   
-    -   <xref:System.Exception.%23ctor%28System.String%2CSystem.Exception%29>, która inicjuje nowy obiekt wyjątku z określonego błędu wiadomości i wewnętrzny wyjątek.  
+    -   <xref:System.Exception.%23ctor%28System.String%2CSystem.Exception%29>, który inicjuje nowy obiekt wyjątku z określonym komunikatem o błędzie i wyjątkiem wewnętrznym.  
   
-    -   <xref:System.Exception.%23ctor%28System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext%29>, która jest `protected` danych serializowanych na fragmenty Konstruktor, który inicjuje nowy obiekt wyjątku. Ten konstruktor powinien implementować, jeśli wybrano możliwy do serializacji obiektu wyjątku.  
+    -   <xref:System.Exception.%23ctor%28System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext%29>, który jest `protected` konstruktorem, który inicjuje nowy obiekt wyjątku z danych serializowanych. Należy zaimplementować ten Konstruktor, jeśli wybrano opcję, aby obiekt wyjątku był możliwy do serializacji.  
   
- Poniższy przykład ilustruje użycie klasy niestandardowy wyjątek. Definiuje `NotPrimeException` wyjątek, który jest zgłaszany, gdy klient próbuje pobrać sekwencję liczb pierwszych, określając początkowy numer, który nie jest podstawowym. Wyjątek definiuje nową właściwość `NonPrime`, która zwraca innych niż prime numer który spowodował wyjątek. Oprócz wykonania chroniony konstruktor bez parametrów i konstruktora z <xref:System.Runtime.Serialization.SerializationInfo> i <xref:System.Runtime.Serialization.StreamingContext> parametry w celu serializacji, `NotPrimeException` klasa definiuje trzy konstruktory dodatkowe do obsługi `NonPrime` właściwości.  Każdy Konstruktor wywołuje konstruktora klasy bazowej, oprócz zachowania wartości z innych niż liczba pierwsza. `NotPrimeException` Klasy, również jest oznaczona za pomocą <xref:System.SerializableAttribute> atrybutu.  
+ Poniższy przykład ilustruje użycie niestandardowej klasy wyjątków. Definiuje `NotPrimeException` wyjątek, który jest generowany, gdy klient próbuje pobrać sekwencję numerów początkowych przez określenie początkowego numeru, który nie jest podstawowy. Wyjątek definiuje nową właściwość `NonPrime`, która zwraca liczbę niewskazującą, która spowodowała wyjątek. Oprócz implementacji <xref:System.Runtime.Serialization.SerializationInfo> chronionego konstruktora bez parametrów i konstruktora z <xref:System.Runtime.Serialization.StreamingContext> `NotPrimeException` parametrami dla serializacji, `NonPrime` Klasa definiuje trzy dodatkowe konstruktory do obsługi właściwości.  Każdy Konstruktor wywołuje konstruktora klasy bazowej oprócz zachowania wartości numeru niebędącego znakiem. Klasa jest również oznaczona <xref:System.SerializableAttribute> przy użyciu atrybutu. `NotPrimeException`  
   
  [!code-csharp[System.Exception.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/notprimeexception.cs#1)]
  [!code-vb[System.Exception.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/notprimeexception.vb#1)]  
   
- `PrimeNumberGenerator` Pokazano w poniższym przykładzie klasa używa nazwanego sitem Eratostenesa do obliczania sekwencji liczb pierwszych od 2 do limitu określonego przez klienta w wywołaniu do jej konstruktora klasy. `GetPrimesFrom` Metoda zwraca wszystkie liczby pierwsze, które są większe niż lub równa określonej dolną granicę, ale zgłasza `NotPrimeException` Jeśli tego dolną granicę nie jest liczba pierwsza.  
+ `PrimeNumberGenerator` Klasa pokazana w poniższym przykładzie używa sita Eratostenesa, aby obliczyć sekwencję liczb pierwszych z 2 do limitu określonego przez klienta w wywołaniu jego konstruktora klasy. Metoda zwraca wszystkie liczby podstawowe, które są większe niż lub równe określonemu dolnemu limitowi, ale `NotPrimeException` zgłasza, jeśli ten dolny limit nie jest liczbą najmniejszą. `GetPrimesFrom`  
   
  [!code-csharp[System.Exception.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/primenumbergenerator.cs#2)]
  [!code-vb[System.Exception.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/primenumbergenerator.vb#2)]  
   
- Poniższy przykład wykonuje dwa wywołania `GetPrimesFrom` metody przy użyciu innego niż liczb pierwszych, z których jedna przekracza granice domen aplikacji. W obu przypadkach wyjątek jest generowany i pomyślnie obsłużony w kodzie klienta.  
+ Poniższy przykład tworzy dwa wywołania `GetPrimesFrom` metody z liczbami niepodstawowymi, z których jedna przecina granice domeny aplikacji. W obu przypadkach wyjątek jest zgłaszany i pomyślnie obsłużony w kodzie klienta.  
   
  [!code-csharp[System.Exception.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.class/cs/example.cs#3)]
  [!code-vb[System.Exception.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.class/vb/example.vb#3)]  
   
-## <a name="windows-runtime-and-includenetv451includesnet-v451-mdmd"></a>Windows Runtime i [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
- W [!INCLUDE[net_win8_profile](~/includes/net-win8-profile-md.md)] dla [!INCLUDE[win8](~/includes/win8-md.md)], niektóre informacje o wyjątku jest zazwyczaj utracone w przypadku, gdy wyjątek jest propagowany przez ramek stosu — .NET Framework. Począwszy od [!INCLUDE[net_v451](~/includes/net-v451-md.md)] i [!INCLUDE[win81](~/includes/win81-md.md)], środowisko uruchomieniowe języka wspólnego w dalszym ciągu używa oryginalny <xref:System.Exception> obiektu, który został zgłoszony, chyba że ten wyjątek został zmodyfikowany w ramce stosu — .NET Framework.  
+## <a name="windows-runtime-and-includenetv451includesnet-v451-mdmd"></a>środowisko wykonawcze systemu Windows i[!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
+ W [!INCLUDE[net_win8_profile](~/includes/net-win8-profile-md.md)] przypadku [!INCLUDE[win8](~/includes/win8-md.md)]programu niektóre informacje o wyjątkach są zazwyczaj tracone, gdy wyjątek jest propagowany przez ramki stosu non-.NET Framework. Począwszy od [!INCLUDE[win81](~/includes/win81-md.md)] <xref:System.Exception> i, środowisko uruchomieniowe języka wspólnego nadal używa oryginalnego obiektu, który został wygenerowany, chyba że ten wyjątek został zmodyfikowany w ramce stosu non-.NET Framework. [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano `catch` blok, który jest zdefiniowany w celu obsługi <xref:System.ArithmeticException> błędy. To `catch` również zablokować połowy <xref:System.DivideByZeroException> błędy, ponieważ <xref:System.DivideByZeroException> pochodzi od klasy <xref:System.ArithmeticException> i ma nie `catch` jawnie określony dla bloku <xref:System.DivideByZeroException> błędy.  
+ Poniższy przykład ilustruje `catch` blok, który jest zdefiniowany do obsługi <xref:System.ArithmeticException> błędów. Ten `catch` blok również <xref:System.DivideByZeroException> przechwytuje błędy, <xref:System.DivideByZeroException> ponieważ pochodzi <xref:System.ArithmeticException> od i nie `catch` istnieje blok jawnie zdefiniowany dla <xref:System.DivideByZeroException> błędów.  
   
  [!code-cpp[CatchException#1](~/samples/snippets/cpp/VS_Snippets_CLR/CatchException/CPP/catchexception.cpp#1)]
  [!code-csharp[CatchException#1](~/samples/snippets/csharp/VS_Snippets_CLR/CatchException/CS/catchexception.cs#1)]
@@ -333,9 +333,9 @@ Stack Trace:
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ten konstruktor inicjuje <xref:System.Exception.Message%2A> właściwości nowego wystąpienia dostarczane przez system komunikatu, opisujący błąd i uwzględnia bieżącej kultury systemu.  
+ Ten konstruktor inicjuje <xref:System.Exception.Message%2A> właściwość nowego wystąpienia do komunikatu dostarczonego przez system, który opisuje błąd i bierze pod uwagę bieżącą kulturę systemu.  
   
- Wszystkie klasy pochodne powinny dostarczyć ten konstruktor domyślny. W poniższej tabeli przedstawiono początkowe wartości właściwości dla wystąpienia <xref:System.Exception>.  
+ Wszystkie klasy pochodne powinny udostępniać ten konstruktor bez parametrów. W poniższej tabeli przedstawiono początkowe wartości właściwości dla wystąpienia <xref:System.Exception>.  
   
 |Właściwość|Wartość|  
 |--------------|-----------|  
@@ -345,7 +345,7 @@ Stack Trace:
    
   
 ## Examples  
- Poniższy przykładowy kod pochodzi `Exception` , który używa wstępnie zdefiniowaną wiadomość. Demonstruje użycie konstruktora bez parametrów dla klasy pochodnej, a podstawą `Exception` klasy.  
+ Poniższy przykład kodu pochodzi `Exception` , który używa wstępnie zdefiniowanego komunikatu. Kod demonstruje użycie konstruktora bez parametrów dla klasy pochodnej i klasy bazowej `Exception` .  
   
  [!code-cpp[System.Exception.Ctor#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/new.cpp#1)]
  [!code-csharp[System.Exception.Ctor#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/new.cs#1)]
@@ -394,7 +394,7 @@ Stack Trace:
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ten konstruktor inicjuje <xref:System.Exception.Message%2A> właściwości nowego wystąpienia przy użyciu `message` parametru. Jeśli `message` parametr jest `null`, to jest taka sama, co wywołanie metody <xref:System.Exception.%23ctor%2A> konstruktora.  
+ Ten konstruktor inicjuje <xref:System.Exception.Message%2A> właściwość nowego wystąpienia przy `message` użyciu parametru. Jeśli parametr ma `null`wartość, jest to taka sama jak wywołanie <xref:System.Exception.%23ctor%2A> konstruktora. `message`  
   
  W poniższej tabeli przedstawiono początkowe wartości właściwości dla wystąpienia <xref:System.Exception>.  
   
@@ -406,7 +406,7 @@ Stack Trace:
    
   
 ## Examples  
- Poniższy przykładowy kod pochodzi `Exception` dla określonego warunku. Przykład demonstruje użycie konstruktora przyjmującego komunikat określony przez obiekt wywołujący jako parametru, zarówno w klasie pochodnej, jak i w bazie `Exception` klasy.  
+ Poniższy przykład kodu dziedziczy `Exception` dla określonego warunku. Kod demonstruje użycie konstruktora, który przyjmuje komunikat określony przez obiekt wywołujący jako parametr, dla klasy pochodnej i klasy bazowej `Exception` .  
   
  [!code-cpp[System.Exception.Ctor#2](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/news.cpp#2)]
  [!code-csharp[System.Exception.Ctor#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/news.cs#2)]
@@ -451,8 +451,8 @@ Stack Trace:
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Zawierający dane zserializowanego obiektu dotyczące zgłaszanego wyjątku.</param>
-        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> Zawierający informacje kontekstowe o źródle lub miejscu docelowym.</param>
+        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Przechowujący dane serializowanego obiektu o generowanym wyjątku.</param>
+        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> Zawiera informacje kontekstowe o źródle lub miejscu docelowym.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Exception" /> klasy z serializowanych danych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -463,7 +463,7 @@ Stack Trace:
    
   
 ## Examples  
- Poniższy kod definiuje pochodnej serializacji `Exception` klasy. Kod wymusza błąd dzielenie przez 0, a następnie tworzy wystąpienie klasy pochodnej wyjątków za pomocą (<xref:System.Runtime.Serialization.SerializationInfo>, <xref:System.Runtime.Serialization.StreamingContext>) konstruktora. Kod wykonuje serializację wystąpień z plikiem, deserializuje pliku do nowy wyjątek wyniku weryfikacji zgłasza wyjątek, a następnie przechwytuje i wyświetla dane o wyjątkach.  
+ Poniższy przykład kodu definiuje pochodną klasę, `Exception` której można serializować. Kod wymusza błąd dzielenia przez 0, a następnie tworzy wystąpienie wyjątku pochodnego przy użyciu konstruktora (<xref:System.Runtime.Serialization.SerializationInfo>, <xref:System.Runtime.Serialization.StreamingContext>). Kod serializować wystąpienie do pliku, deserializacji pliku do nowego wyjątku, który zgłasza, a następnie przechwytuje i wyświetla dane wyjątku.  
   
  [!code-cpp[System.Exception.GetObjectData#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
  [!code-csharp[System.Exception.GetObjectData#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
@@ -471,8 +471,8 @@ Stack Trace:
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="info" /> jest <see langword="null" />.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">Nazwa klasy jest <see langword="null" /> lub <see cref="P:System.Exception.HResult" /> wynosi zero (0).</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="info" />jest <see langword="null" />.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">Nazwa klasy ma <see langword="null" /> wartość lub <see cref="P:System.Exception.HResult" /> jest równa zero (0).</exception>
         <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
         <altmember cref="T:System.Runtime.Serialization.StreamingContext" />
         <related type="Article" href="~/docs/standard/serialization/xml-and-soap-serialization.md">Serializacja XML i SOAP</related>
@@ -513,13 +513,13 @@ Stack Trace:
       </Parameters>
       <Docs>
         <param name="message">Komunikat o błędzie wyjaśniający przyczynę wyjątku.</param>
-        <param name="innerException">Wyjątek będący przyczyną bieżącego wyjątku lub odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic), jeśli jest określony żaden wyjątek wewnętrzny.</param>
+        <param name="innerException">Wyjątek, który jest przyczyną bieżącego wyjątku lub odwołaniem null (<see langword="Nothing" /> w Visual Basic), jeśli nie określono wyjątku wewnętrznego.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Exception" /> klasy przy użyciu określonego komunikatu o błędzie i odwołania do wewnętrznego wyjątku, który jest przyczyną tego wyjątku.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wyjątek generowany jako bezpośredni wynik poprzedniego wyjątku powinien zawierać odwołanie do poprzedniego wyjątku we <xref:System.Exception.InnerException%2A> właściwości. <xref:System.Exception.InnerException%2A> Właściwość zwraca taką samą wartość, która jest przekazywana do konstruktora, lub odwołanie o wartości null (`Nothing` w języku Visual Basic) jeżeli <xref:System.Exception.InnerException%2A> nie dostarcza wartości wewnętrznego wyjątku do konstruktora.  
+ Wyjątek generowany jako bezpośredni wynik poprzedniego wyjątku powinien zawierać odwołanie do poprzedniego wyjątku we <xref:System.Exception.InnerException%2A> właściwości. Właściwość zwraca tę samą wartość, która jest przenoszona do konstruktora lub odwołanie o wartości null (`Nothing` <xref:System.Exception.InnerException%2A> w Visual Basic), jeśli właściwość nie poda wewnętrznej wartości wyjątku do konstruktora. <xref:System.Exception.InnerException%2A>  
   
  W poniższej tabeli przedstawiono początkowe wartości właściwości dla wystąpienia <xref:System.Exception>.  
   
@@ -531,7 +531,7 @@ Stack Trace:
    
   
 ## Examples  
- Poniższy przykładowy kod pochodzi `Exception` dla określonego warunku. Przykład demonstruje użycie konstruktora przyjmującego komunikat i wyjątek wewnętrzny, jako parametry, zarówno w klasie pochodnej, jak i w bazie `Exception` klasy.  
+ Poniższy przykład kodu dziedziczy `Exception` dla określonego warunku. Kod demonstruje użycie konstruktora, który przyjmuje komunikat i wyjątek wewnętrzny jako parametry, dla klasy pochodnej i klasy bazowej `Exception` .  
   
  [!code-cpp[System.Exception.Ctor#3](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Ctor/CPP/newsi.cpp#3)]
  [!code-csharp[System.Exception.Ctor#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Ctor/CS/newsi.cs#3)]
@@ -578,36 +578,36 @@ Stack Trace:
         <ReturnType>System.Collections.IDictionary</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera kolekcję par klucz/wartość, które zawierają dodatkowe informacje zdefiniowane przez użytkownika o wyjątku.</summary>
+        <summary>Pobiera kolekcję par klucz/wartość, które zawierają dodatkowe informacje zdefiniowane przez użytkownika dotyczące wyjątku.</summary>
         <value>Obiekt, który implementuje <see cref="T:System.Collections.IDictionary" /> interfejs i zawiera kolekcję par klucz/wartość zdefiniowanych przez użytkownika. Wartością domyślną jest pusta kolekcja.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.Collections.IDictionary?displayProperty=nameWithType> obiektu zwróconego przez <xref:System.Exception.Data%2A> właściwość, aby przechowywać i pobierać informacje dodatkowe, które są odpowiednie do wyjątku. Informacje są w formularzu dowolną liczbę par klucz/wartość zdefiniowanych przez użytkownika. Kluczowym elementem każdej pary klucz/wartość jest zazwyczaj ciąg identyfikujący składnik wartości pary mogą być dowolnego typu obiektu.  
+ Użyj obiektu zwróconego przez właściwość w celu przechowywania i pobierania informacji dodatkowych dotyczących wyjątku. <xref:System.Exception.Data%2A> <xref:System.Collections.IDictionary?displayProperty=nameWithType> Informacje są w postaci dowolnej liczby par klucz-wartość zdefiniowanych przez użytkownika. Najważniejszym składnikiem pary klucz/wartość jest zazwyczaj ciąg identyfikacyjny, natomiast składnik wartości pary może być dowolnym typem obiektu.  
   
 ## <a name="keyvalue-pair-security"></a>Zabezpieczenia pary klucz/wartość  
- Pary klucz/wartość przechowywana w kolekcji zwróconej przez <xref:System.Exception.Data%2A> właściwości nie są bezpieczne. Jeśli Twoja aplikacja wywołuje szereg zagnieżdżonych procedury, a każda procedura zawiera obsługi wyjątków, wynikowy stos wywołań zawiera hierarchię tych programów obsługi wyjątków. Jeśli procedura niższego poziomu zgłasza wyjątek, wszystkie obsługi wyjątków wyższego poziomu w hierarchii stos wywołań może odczytywać i/lub zmodyfikować pary klucz/wartość przechowywanych w kolekcji przez inne obsługi wyjątków. Oznacza to, że musisz gwarantować, że informacje zawarte w pary klucz/wartość nie jest poufne i że aplikacja będzie działać prawidłowo Jeśli informacje zawarte w pary klucz/wartość jest uszkodzony.  
+ Pary klucz/wartość przechowywane w kolekcji zwróconej przez <xref:System.Exception.Data%2A> właściwość nie są bezpieczne. Jeśli aplikacja wywołuje zagnieżdżoną serię procedur, a każda procedura zawiera obsługę wyjątków, powstaje stos wywołań zawiera hierarchię programów obsługi wyjątków. Jeśli procedura niższego poziomu zgłasza wyjątek, każdy program obsługi wyjątków najwyższego poziomu w hierarchii stosu wywołań może odczytać i/lub zmodyfikować pary klucz/wartość przechowywane w kolekcji przez dowolną inną procedurę obsługi wyjątków. Oznacza to, że należy zagwarantować, że informacje w parach klucz/wartość nie są poufne i że aplikacja będzie działać prawidłowo, jeśli informacje w parach klucz/wartość są uszkodzone.  
   
 ## <a name="key-conflicts"></a>Konflikty klucza  
- Konflikt klucza występuje, gdy programy obsługi wyjątków różnych określić ten sam klucz dostępu jest parą klucz/wartość do. Tworzenie aplikacji, ponieważ konsekwencją konflikt klucza jest, że programy obsługi wyjątków niższego poziomu przypadkowo mogą komunikować się z wyższego poziomu obsługi wyjątków, a ta komunikacja może spowodować błędy subtelne programu, należy zachować ostrożność. Jednak w przypadku należy zachować ostrożność umożliwia konfliktów klucza ulepszanie aplikacji.  
+ Konflikt klucza występuje, gdy różne programy obsługi wyjątków określają ten sam klucz, aby uzyskać dostęp do pary klucz/wartość. Należy zachować ostrożność podczas opracowywania aplikacji, ponieważ występuje konflikt klucza, że programy obsługi wyjątków niższego poziomu mogą przypadkowo komunikować się z obsługą wyjątków wyższego poziomu, a ta komunikacja może spowodować drobne błędy programu. Jednak jeśli jest to ostrożne, można użyć konfliktów kluczy do udoskonalenia aplikacji.  
   
 ## <a name="avoiding-key-conflicts"></a>Unikanie konfliktów klucza  
- Przyjęcie konwencji nazewnictwa do generowania unikatowego klucza dla pary klucz/wartość, aby uniknąć konfliktów klucza. Na przykład konwencji nazewnictwa może przynieść klucza, który składa się z nazwą rozdzielanego kropką aplikacji, metody, która zawiera dodatkowe informacje dotyczące pary i unikatowy identyfikator.  
+ Unikaj konfliktów kluczowych przez przyjęcie konwencji nazewnictwa w celu wygenerowania unikatowych kluczy dla par klucz/wartość. Na przykład Konwencja nazewnictwa może dać klucz, który składa się z rozdzielanej kropką nazwy aplikacji, metody, która zawiera dodatkowe informacje dla pary i unikatowy identyfikator.  
   
- Załóżmy, że dwie aplikacje o nazwie produktów i dostawców, każda ma metodę o nazwie sprzedaży. Metoda sprzedaży w aplikacji produktów zawiera numer identyfikacyjny (magazynową lub jednostki SKU) produktu. Metoda sprzedaży w aplikacji dostawcy zawiera numer identyfikacyjny lub identyfikator SID dostawcy. W związku z tym konwencji nazewnictwa, w tym przykładzie daje kluczy "Products.Sales.SKU" i "Suppliers.Sales.SID".  
+ Załóżmy, że dwie aplikacje, nazwane produkty i dostawcy, mają metodę o nazwie Sales. Metoda Sales w aplikacji Products zawiera numer identyfikacyjny (jednostka magazynowa lub SKU) produktu. Metoda Sales w aplikacji dostawcy udostępnia numer identyfikacyjny lub identyfikator SID dostawcy. W związku z tym, Konwencja nazewnictwa dla tego przykładu daje klucze "Products. Sales. SKU" i "dostawcy. Sales. SID".  
   
 ## <a name="exploiting-key-conflicts"></a>Wykorzystanie konfliktów klucza  
- Wykorzystanie konfliktów klucza przy użyciu obecności co najmniej jeden klucz specjalną, wstępnie ustalane do kontrolowania przetwarzania. Załóżmy scenariusz, najwyższego poziomu obsługi wyjątków w hierarchii stosu wywołań przechwytuje wszystkie wyjątki generowane przez programy obsługi wyjątków niższego poziomu. Jeśli istnieje para klucza i wartości, przy użyciu specjalnego klucza, program obsługi wyjątków wyższego poziomu formatuje pozostałe pary klucz/wartość w <xref:System.Collections.IDictionary> obiektu w jakiś sposób niestandardowych; w przeciwnym razie pozostałe pary klucz/wartość są formatowane w normalny sposób.  
+ Luki w zabezpieczeniach z wykorzystaniem klucza wykorzystującego jeden lub więcej specjalnych, nastawianych kluczy do sterowania przetwarzaniem. Załóżmy, że w jednym scenariuszu program obsługi wyjątków najwyższego poziomu w hierarchii stosu wywołań przechwytuje wszystkie wyjątki zgłoszone przez programy obsługi wyjątków niższego poziomu. Jeśli istnieje para klucz/wartość z kluczem specjalnym, program obsługi wyjątków wysokiego poziomu formatuje pozostałe pary klucz/wartość w <xref:System.Collections.IDictionary> obiekcie w niestandardowym trybie; w przeciwnym razie pozostałe pary klucz/wartość są sformatowane w zwykły sposób.  
   
- Teraz załóżmy, w innym scenariuszu program obsługi wyjątków, na każdym poziomie hierarchii stosu wywołań przechwytuje wyjątek zgłoszony przez kolejna procedura obsługi wyjątków niższego poziomu. Ponadto każdy program obsługi wyjątków zna zbiorze zwróconym przez <xref:System.Exception.Data%2A> właściwość zawiera zestaw pary klucz/wartość, które mogą być udostępniane za pomocą wstępnie ustalane zestawu kluczy.  
+ Teraz Załóżmy, że w innym scenariuszu program obsługi wyjątków na każdym poziomie hierarchii stosu wywołań przechwytuje wyjątek zgłoszony przez następną procedurę obsługi wyjątków niższego poziomu. Ponadto każdy program obsługi wyjątków wie, że Kolekcja zwracana przez <xref:System.Exception.Data%2A> Właściwość zawiera zestaw par klucz/wartość, do których można uzyskać dostęp przy użyciu premieszczonego zestawu kluczy.  
   
- Każdy program obsługi wyjątków używa wstępnie ustalane zestawu kluczy do aktualizacji składnik wartości w odpowiednich pary klucz/wartość przy użyciu informacji specyficznych dla tego programu obsługi wyjątków. Po zakończeniu procesu aktualizacji program obsługi wyjątków zgłasza wyjątek do następnego wyższego poziomu obsługi wyjątków. Na koniec najwyższego poziomu obsługi wyjątków uzyskuje dostęp do pary klucz/wartość i wyświetla informacje o aktualizacji skonsolidowanego z całej obsługi wyjątku z niższego poziomu.  
+ Każdy program obsługi wyjątków używa wstępnie utworzonego zestawu kluczy, aby zaktualizować składnik wartości odpowiedniej pary klucz/wartość z informacjami unikatowymi dla tego programu obsługi wyjątków. Po zakończeniu procesu aktualizacji procedura obsługi wyjątków zgłasza wyjątek do następnego programu obsługi wyjątków wyższego poziomu. Na koniec program obsługi wyjątków najwyższego poziomu uzyskuje dostęp do par klucz/wartość i wyświetla skonsolidowane informacje o aktualizacji ze wszystkich programów obsługi wyjątków niższego poziomu.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak dodawanie i pobieranie informacji za pomocą <xref:System.Exception.Data%2A> właściwości.  
+ Poniższy przykład ilustruje sposób dodawania i pobierania informacji przy użyciu <xref:System.Exception.Data%2A> właściwości.  
   
  [!code-cpp[exception.data#1](~/samples/snippets/cpp/VS_Snippets_CLR/exception.data/CPP/data.cpp#1)]
  [!code-csharp[exception.data#1](~/samples/snippets/csharp/VS_Snippets_CLR/exception.data/CS/data.cs#1)]
@@ -655,22 +655,22 @@ Stack Trace:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Po przesłonięciu w klasie pochodnej zwraca <see cref="T:System.Exception" /> czyli główną przyczynę jeden lub kilka kolejnych wyjątków.</summary>
-        <returns>Pierwszy wyjątek w łańcuchu wyjątków. Jeśli <see cref="P:System.Exception.InnerException" /> właściwość bieżący wyjątek jest odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic), ta właściwość zwraca bieżący wyjątek.</returns>
+        <summary>Gdy jest zastępowany w klasie pochodnej, zwraca <see cref="T:System.Exception" /> wartość będącą główną przyczyną jednego lub kilku kolejnych wyjątków.</summary>
+        <returns>Pierwszy wyjątek zgłoszony w łańcuchu wyjątków. Jeśli właściwość bieżącego wyjątku jest odwołaniem null (<see langword="Nothing" /> w Visual Basic), ta właściwość zwraca bieżący wyjątek. <see cref="P:System.Exception.InnerException" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Łańcuch wyjątków zawiera zestaw wyjątków tak, aby każdy w łańcuchu wyjątek bezpośrednio z powodu wyjątku, do którego odwołuje się jego `InnerException` właściwości. Dla danego łańcucha może istnieć dokładnie jeden wyjątek, który jest główną przyczynę wszystkie wyjątki w łańcuchu. Wyjątek ten jest nazywany wyjątek podstawowy i jego `InnerException` właściwość zawsze zawiera odwołanie o wartości null.  
+ Łańcuch wyjątków składa się z zestawu wyjątków, w taki sposób, że każdy wyjątek w łańcuchu został zgłoszony jako bezpośredni wynik wyjątku, do którego istnieje `InnerException` odwołanie w jego właściwości. Dla danego łańcucha może istnieć tylko jeden wyjątek, który jest główną przyczyną wszystkich innych wyjątków w łańcuchu. Ten wyjątek nosi nazwę wyjątku podstawowego, a jego `InnerException` Właściwość zawsze zawiera odwołanie o wartości null.  
   
- Dla wszystkich wyjątków w łańcuchu wyjątków `GetBaseException` metoda musi zwracać ten sam obiekt (podstawowy wyjątek).  
+ Dla wszystkich wyjątków w łańcuchu wyjątków `GetBaseException` Metoda musi zwracać ten sam obiekt (wyjątek podstawowy).  
   
- Użyj `GetBaseException` metody, gdy chcesz znaleźć przyczynę wyjątku, ale nie potrzebujących informacji dotyczących wyjątków, które mogły wystąpić między bieżący wyjątek i pierwszy wyjątek.  
+ Użyj metody `GetBaseException` , jeśli chcesz znaleźć główną przyczynę wyjątku, ale nie potrzebujesz informacji o wyjątkach, które mogły wystąpić między bieżącym wyjątkiem a pierwszym wyjątkiem.  
   
    
   
 ## Examples  
- Poniższy kod definiuje dwa pochodne `Exception` klasy. Jego wymusza wyjątek, a następnie go generuje ponownie z każdą z klas pochodnych. Kod pokazuje użycie klasy `GetBaseException` metodę, aby pobrać oryginalnego wyjątku.  
+ Poniższy przykład kodu definiuje dwie klasy pochodne `Exception` . Wymusza wyjątek, a następnie generuje go ponownie z każdą klasą pochodną. Kod pokazuje użycie `GetBaseException` metody do pobrania oryginalnego wyjątku.  
   
  [!code-cpp[System.Exception.GetBaseException#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CPP/getbaseexc.cpp#1)]
  [!code-csharp[System.Exception.GetBaseException#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetBaseException/CS/getbaseexc.cs#1)]
@@ -678,7 +678,7 @@ Stack Trace:
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para><see langword="GetBaseException" /> Metoda zostanie przesłonięta w klasach, które wymagają kontroli nad wyjątek zawartość lub format.</para></block>
+        <block subset="none" type="overrides"><para><see langword="GetBaseException" /> Metoda jest zastępowana w klasach, które wymagają kontroli nad zawartością lub formatem wyjątku.</para></block>
       </Docs>
     </Member>
     <Member MemberName="GetObjectData">
@@ -723,19 +723,19 @@ Stack Trace:
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Zawierający dane zserializowanego obiektu dotyczące zgłaszanego wyjątku.</param>
-        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> Zawierający informacje kontekstowe o źródle lub miejscu docelowym.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, ustawia <see cref="T:System.Runtime.Serialization.SerializationInfo" /> przy użyciu informacji o wyjątku.</summary>
+        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Przechowujący dane serializowanego obiektu o generowanym wyjątku.</param>
+        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> Zawiera informacje kontekstowe o źródle lub miejscu docelowym.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, ustawia <see cref="T:System.Runtime.Serialization.SerializationInfo" /> informacje o wyjątku.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `GetObjectData` Ustawia <xref:System.Runtime.Serialization.SerializationInfo> ze wszystkimi danymi obiekt wyjątku, przeznaczony dla serializacji. Podczas deserializacji, wyjątek jest odtworzonych z `SerializationInfo` przesyłanego w strumieniu.  
+ `GetObjectData`<xref:System.Runtime.Serialization.SerializationInfo> ustawia wszystkie dane obiektu wyjątku przeznaczone do serializacji. Podczas deserializacji wyjątek zostaje odtworzony od `SerializationInfo` przekazanego strumienia.  
   
    
   
 ## Examples  
- Poniższy kod definiuje pochodnej serializacji `Exception` klasę, która implementuje `GetObjectData`, co sprawia, że drobne zmiany do dwie właściwości, a następnie wywołania, klasy bazowej, aby wykonać serializacji. Przykład wymusza błąd dzielenie przez 0, a następnie tworzy wystąpienie klasy pochodnej wyjątek. Kod wykonuje serializację wystąpień z plikiem, deserializuje pliku do nowy wyjątek wyniku weryfikacji zgłasza wyjątek, a następnie przechwytuje i wyświetla dane o wyjątkach.  
+ Poniższy przykład kodu definiuje pochodną klasę do `Exception` serializacji, która `GetObjectData`implementuje, która wprowadza drobne zmiany do dwóch właściwości, a następnie wywołuje klasę bazową w celu wykonania serializacji. Przykład wymusza błąd dzielenia przez 0, a następnie tworzy wystąpienie wyjątku pochodnego. Kod serializować wystąpienie do pliku, deserializacji pliku do nowego wyjątku, który zgłasza, a następnie przechwytuje i wyświetla dane wyjątku.  
   
  [!code-cpp[System.Exception.GetObjectData#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CPP/getobjdata.cpp#1)]
  [!code-csharp[System.Exception.GetObjectData#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.GetObjectData/CS/getobjdata.cs#1)]
@@ -743,7 +743,7 @@ Stack Trace:
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="info" /> Parametr to odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic).</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr jest odwołaniem o wartości null<see langword="Nothing" /> (w Visual Basic). <paramref name="info" /></exception>
         <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
         <altmember cref="T:System.Runtime.Serialization.SerializationInfo" />
         <altmember cref="T:System.Runtime.Serialization.StreamingContext" />
@@ -782,12 +782,12 @@ Stack Trace:
       <Parameters />
       <Docs>
         <summary>Pobiera typ środowiska uruchomieniowego bieżącego wystąpienia.</summary>
-        <returns>Element <see cref="T:System.Type" /> obiektu, który reprezentuje typ dokładnego czasu wykonywania bieżącego wystąpienia.</returns>
+        <returns><see cref="T:System.Type" /> Obiekt, który reprezentuje dokładny typ środowiska uruchomieniowego bieżącego wystąpienia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Exception.GetType%2A> Metoda istnieje obsługuje infrastrukturę .NET Framework i wewnętrznie wywołuje metodę podstawową, <xref:System.Object.GetType%2A?displayProperty=nameWithType>.  
+ Metoda istnieje do obsługi infrastruktury .NET Framework i wewnętrznie wywołuje metodę podstawową, <xref:System.Object.GetType%2A?displayProperty=nameWithType>. <xref:System.Exception.GetType%2A>  
   
  ]]></format>
         </remarks>
@@ -831,20 +831,20 @@ Stack Trace:
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia łącze, aby plik pomocy skojarzony z tym wyjątkiem.</summary>
-        <value>Nazwa zasobu jednolite (URN) lub adres URL (adres URL).</value>
+        <summary>Pobiera lub ustawia link do pliku pomocy skojarzonego z tym wyjątkiem.</summary>
+        <value>Jednolita nazwa zasobu (URN) lub adres URL (Uniform Resource Locator).</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wartość zwracana, który reprezentuje plik pomocy, jest adres URL lub URN. Na przykład `HelpLink` może to być:  
+ Wartość zwracana, która reprezentuje plik pomocy, jest URN lub adresem URL. Na przykład może to `HelpLink` być:  
   
  "file:///C:/Applications/Bazzal/help.html#ErrorNum42"  
   
    
   
 ## Examples  
- Poniższy kod zgłasza przykład `Exception` określająca `HelpLink` właściwości w jego konstruktorze, a następnie połowy wyjątek i wyświetla `HelpLink`.  
+ Poniższy przykład kodu zgłasza `Exception` , że `HelpLink` właściwość w jego konstruktorze, a następnie przechwytuje wyjątek i wyświetla `HelpLink`.  
   
  [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
  [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
@@ -887,20 +887,20 @@ Stack Trace:
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość HRESULT, kodowane wartość liczbową, która jest przypisana do określonego wyjątku.</summary>
+        <summary>Pobiera lub ustawia wartość HRESULT, kodowane wartości liczbowe przypisane do określonego wyjątku.</summary>
         <value>Wartość HRESULT.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wartość HRESULT jest 32-bitową wartość podzielone na trzy różne pola: kod ważność, kod funkcji i kod błędu. Kod ważności Określa, czy zwracana wartość reprezentuje informacje, ostrzeżenia lub błędu. Kod funkcji identyfikuje obszaru systemem odpowiedzialnym za błąd. Kod błędu to unikatowy numer, który jest przypisany do reprezentowania wyjątku. Każdy wyjątek jest zamapowana na różne HRESULT. Gdy zarządzany kod zgłasza wyjątek, środowisko uruchomieniowe przekazuje HRESULT do klient modelu COM. Po powrocie z kodem niezarządzanym błąd HRESULT jest konwertowana na wyjątek, który następnie jest generowany w czasie wykonywania. Aby uzyskać informacje o wartości HRESULT i ich odpowiednie wyjątki .NET Framework, zobacz [jak: Mapowanie wyników HRESULT i wyjątków](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md). Zobacz [typowe wartości HRESULT](https://msdn.microsoft.com/library/windows/desktop/aa378137.aspx) w dokumentacji programu Windows listę wartości, możesz z największym prawdopodobieństwem mogą wystąpić.  
+ HRESULT jest wartością 32-bitową podzieloną na trzy różne pola: kod ważności, kod obiektu i kod błędu. Kod ważności wskazuje, czy wartość zwracana reprezentuje informacje, ostrzeżenie lub błąd. Kod obiektu służy do identyfikowania obszaru systemu odpowiedzialnego za błąd. Kod błędu jest unikatowym numerem, który jest przypisywany do reprezentowania wyjątku. Każdy wyjątek jest mapowany na oddzielny wynik HRESULT. Gdy kod zarządzany zgłasza wyjątek, środowisko uruchomieniowe przekazuje wynik HRESULT do klienta COM. Gdy kod niezarządzany zwraca błąd, wynik HRESULT jest konwertowany na wyjątek, który jest następnie generowany przez środowisko uruchomieniowe. Aby uzyskać informacje na temat wartości HRESULT i ich odpowiednich wyjątków .NET Framework [, zobacz How to: Mapuj HRESULTs i Exceptions](~/docs/framework/interop/how-to-map-hresults-and-exceptions.md). Zobacz [typowe wartości HRESULT](https://msdn.microsoft.com/library/windows/desktop/aa378137.aspx) w dokumentacji systemu Windows, aby zapoznać się z listą wartości, które najprawdopodobniej napotkasz.  
   
- Począwszy od [!INCLUDE[net_v45](~/includes/net-v45-md.md)], <xref:System.Exception.HResult%2A> właściwości metody ustawiającej są chronione, natomiast pobierającej nie jest publiczny.  W poprzednich wersjach programu .NET Framework zarówno metodę getter i setter są chronione.  
+ Począwszy od [!INCLUDE[net_v45](~/includes/net-v45-md.md)] <xref:System.Exception.HResult%2A> , Metoda ustawiająca właściwości jest chroniona, podczas gdy jej metoda pobierająca jest publiczna.  W poprzednich wersjach .NET Framework są chronione metody pobierające i setter.  
   
    
   
 ## Examples  
- Poniższy kod definiuje pochodnej `Exception` klasy, która ustawia `HResult` właściwości niestandardowej wartości w jego konstruktorze.  
+ Poniższy przykład kodu definiuje klasę pochodną `Exception` , która `HResult` ustawia właściwość na wartość niestandardową w konstruktorze.  
   
  [!code-cpp[System.Exception.HResult#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.HResult/CPP/hresult.cpp#1)]
  [!code-csharp[System.Exception.HResult#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.HResult/CS/hresult.cs#1)]
@@ -948,26 +948,26 @@ Stack Trace:
         <ReturnType>System.Exception</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Exception" /> wystąpienia, który spowodował bieżący wyjątek.</summary>
-        <value>Obiekt, który opisuje błąd, który spowodował bieżący wyjątek. <see cref="P:System.Exception.InnerException" /> Właściwość zwraca taką samą wartość jak została przekazana do <see cref="M:System.Exception.#ctor(System.String,System.Exception)" /> konstruktora, lub <see langword="null" /> Jeśli nie podano wartości wewnętrznego wyjątku do konstruktora. Ta właściwość jest tylko do odczytu.</value>
+        <summary><see cref="T:System.Exception" /> Pobiera wystąpienie, które spowodowało bieżący wyjątek.</summary>
+        <value>Obiekt, który opisuje błąd, który spowodował bieżący wyjątek. Właściwość zwraca tę samą wartość, która została przekazana <see cref="M:System.Exception.#ctor(System.String,System.Exception)" /> do konstruktora, lub <see langword="null" /> Jeśli wewnętrzna wartość wyjątku nie została dostarczona do konstruktora. <see cref="P:System.Exception.InnerException" /> Ta właściwość jest tylko do odczytu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy wyjątek `X` jest generowany jako bezpośredni wynik poprzedniego wyjątku `Y`, <xref:System.Exception.InnerException%2A> właściwość `X` powinien zawierać odwołanie do `Y`.  
+ Gdy `X` wyjątek jest zgłaszany jako bezpośredni wynik poprzedniego wyjątku <xref:System.Exception.InnerException%2A> `Y`, właściwość `X` powinna zawierać odwołanie do `Y`.  
   
- Użyj <xref:System.Exception.InnerException%2A> właściwości, aby uzyskać zestaw wyjątków, które doprowadziły do bieżącego wyjątku.  
+ <xref:System.Exception.InnerException%2A> Użyj właściwości, aby uzyskać zestaw wyjątków, które doprowadziły do bieżącego wyjątku.  
   
- Możesz utworzyć nowy wyjątek, który wyłapuje wyjątek wcześniej. Kod, że uchwyty, wprowadzić drugi wyjątek umożliwia dodatkowych informacji z wcześniejszych wyjątek bardziej odpowiednio obsłużyć błąd.  
+ Można utworzyć nowy wyjątek, który przechwytuje wcześniejszy wyjątek. Kod, który obsługuje drugi wyjątek, może używać dodatkowych informacji z wcześniejszego wyjątku, aby bardziej odpowiednio obsłużyć błąd.  
   
- Załóżmy, że funkcja, która odczytuje plik i formatuje dane z tego pliku. W tym przykładzie jako kod próbuje odczytać pliku <xref:System.IO.IOException> zgłaszany. Funkcja przechwytuje <xref:System.IO.IOException> i zgłasza <xref:System.IO.FileNotFoundException>. <xref:System.IO.IOException> Mogły zostać zapisane w <xref:System.Exception.InnerException%2A> właściwość <xref:System.IO.FileNotFoundException>, umożliwiając kod, który przechwytuje <xref:System.IO.FileNotFoundException> zbadać przyczynę błędu początkowej.  
+ Załóżmy, że istnieje funkcja, która odczytuje plik i formatuje dane z tego pliku. W tym przykładzie, ponieważ kod próbuje odczytać plik, <xref:System.IO.IOException> zostanie zgłoszony. Funkcja przechwytuje <xref:System.IO.IOException> i <xref:System.IO.FileNotFoundException>zgłasza. Może być zapisany <xref:System.Exception.InnerException%2A> we właściwości <xref:System.IO.FileNotFoundException>, co umożliwia kod, który przechwytuje, <xref:System.IO.FileNotFoundException> aby poznać przyczynę błędu początkowego. <xref:System.IO.IOException>  
   
- <xref:System.Exception.InnerException%2A> Ustawiono właściwość, która zawiera odwołanie do wewnętrznego wyjątku, po zainicjowaniu obiektu wyjątku.  
+ <xref:System.Exception.InnerException%2A> Właściwość, która przechowuje odwołanie do wewnętrznego wyjątku, jest ustawiana podczas inicjowania obiektu Exception.  
   
    
   
 ## Examples  
- Poniższy przykład ilustruje zgłaszania i przechwytywania wyjątek, który odwołuje się do wyjątku wewnętrznego.  
+ Poniższy przykład demonstruje generowanie i przechwytywanie wyjątku, który odwołuje się do wyjątku wewnętrznego.  
   
  [!code-cpp[InnerEx#1](~/samples/snippets/cpp/VS_Snippets_CLR/InnerEx/CPP/innerex.cpp#1)]
  [!code-csharp[InnerEx#1](~/samples/snippets/csharp/VS_Snippets_CLR/InnerEx/CS/innerex.cs#1)]
@@ -1019,25 +1019,25 @@ Stack Trace:
       </ReturnValue>
       <Docs>
         <summary>Pobiera komunikat, który opisuje bieżący wyjątek.</summary>
-        <value>Komunikat o błędzie wyjaśniający przyczynę wyjątku lub ciąg pusty ("").</value>
+        <value>Komunikat o błędzie objaśniający przyczynę wyjątku lub pusty ciąg ("").</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Komunikaty o błędach przeznaczone dla deweloperów, który jest obsługa wyjątku. Tekst <xref:System.Exception.Message%2A> właściwość całkowicie powinna opisywać błąd i, jeśli to możliwe, należy również wyjaśniają, jak do naprawienia błędu. Programy obsługi wyjątków najwyższego poziomu mogą być wyświetlane komunikat do użytkowników końcowych, dlatego należy upewnić się, że jest poprawnych gramatycznie i że każde zdanie wiadomości kończy się kropką. Nie należy używać znaków zapytania lub wykrzykniki. Jeśli aplikacja używa komunikaty o wyjątkach zlokalizowane, należy upewnić się, że dokładnie translacji.  
+ Komunikaty o błędach są przeznaczone dla deweloperów, którzy obsługują wyjątek. Tekst <xref:System.Exception.Message%2A> właściwości powinien całkowicie opisać błąd i, jeśli to możliwe, powinien również wyjaśnić, jak naprawić błąd. Programy obsługi wyjątków najwyższego poziomu mogą wyświetlać komunikat dla użytkowników końcowych, dlatego należy upewnić się, że jest on poprawny gramatycznie i że każde zdanie komunikatu kończy się kropką. Nie należy używać znaków zapytania ani wykrzykników. Jeśli aplikacja używa zlokalizowanych komunikatów o wyjątkach, należy się upewnić, że są one dokładnie tłumaczone.  
   
 > [!IMPORTANT]
->  Nie ujawniaj poufnych informacji w komunikaty o wyjątkach bez sprawdzania pod kątem odpowiednich uprawnień.  
+>  Nie ujawniaj poufnych informacji w komunikatach o wyjątku bez sprawdzania odpowiednich uprawnień.  
   
- Wartość <xref:System.Exception.Message%2A> uwzględniono informacje zwrócone przez właściwość <xref:System.Exception.ToString%2A>. <xref:System.Exception.Message%2A> Właściwość jest ustawiona tylko wtedy, gdy tworzenie <xref:System.Exception>. Jeśli żaden komunikat nie został dostarczony do konstruktora dla bieżącego wystąpienia, system zawiera wiadomość domyślną, która jest formatowana przy użyciu bieżącej kultury systemu.  
+ Wartość <xref:System.Exception.Message%2A> właściwości jest uwzględniona w informacjach zwracanych przez <xref:System.Exception.ToString%2A>. Właściwość jest ustawiana tylko podczas <xref:System.Exception>tworzenia. <xref:System.Exception.Message%2A> Jeśli żaden komunikat nie został dostarczony do konstruktora dla bieżącego wystąpienia, system poda komunikat domyślny sformatowany przy użyciu bieżącej kultury systemowej.  
   
-## <a name="windows-runtime-and-includenetv451includesnet-v451-mdmd"></a>Windows Runtime i [!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
- Począwszy od [!INCLUDE[net_v451](~/includes/net-v451-md.md)] i [!INCLUDE[win81](~/includes/win81-md.md)], Lepsza wierności komunikaty o błędach z wyjątków, które zostały przeniesione z typami środowiska wykonawczego Windows i elementów członkowskich, które nie są częścią programu .NET Framework. W szczególności wyjątek komunikaty z rozszerzeniami składnika środowiska Visual C++ (C + +/ CX) są teraz propagowane do .NET Framework <xref:System.Exception> obiektów.  
+## <a name="windows-runtime-and-includenetv451includesnet-v451-mdmd"></a>środowisko wykonawcze systemu Windows i[!INCLUDE[net_v451](~/includes/net-v451-md.md)]  
+ Poczynając od [!INCLUDE[net_v451](~/includes/net-v451-md.md)] programu [!INCLUDE[win81](~/includes/win81-md.md)]i, wierność komunikatów o błędach z wyjątków, które są propagowane z typów środowisko wykonawcze systemu Windows i elementów członkowskich, które nie są częścią .NET Framework, jest ulepszona. W szczególności komunikaty o wyjątkach z C++ rozszerzeń składników wizualnych (C++/CX) są teraz propagowane z <xref:System.Exception> powrotem do .NET Framework obiektów.  
   
    
   
 ## Examples  
- Poniższy kod zgłasza wyjątek, a następnie przechwytuje <xref:System.Exception> wyjątek i wyświetla tekst wyjątku komunikat przy użyciu <xref:System.Exception.Message%2A> właściwości.
+ Poniższy przykład kodu zgłasza, a następnie przechwytuje <xref:System.Exception> wyjątek i wyświetla komunikat tekstowy wyjątku <xref:System.Exception.Message%2A> przy użyciu właściwości.
   
  [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
  [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
@@ -1045,8 +1045,8 @@ Stack Trace:
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Jeśli zgłoszenie wyjątku z właściwością, a także musisz odwołać się w tekście <see cref="P:System.Exception.Message" /> właściwości argumentu, który set lub get, użyj "value" jako nazwy właściwości argumentu.</para></block>
-        <block subset="none" type="overrides"><para><see cref="P:System.Exception.Message" /> Właściwość nie zostanie zastąpiona w klasach, które wymagają kontroli nad format lub zawartość komunikatu. Kod aplikacji zwykle uzyskuje dostęp do tej właściwości kiedy zachodzi potrzeba wyświetlenia informacji na temat wyjątek, który został przechwycony.  
+        <block subset="none" type="overrides"><para>Jeśli zgłaszasz wyjątek z właściwości i musisz odwołać się w tekście <see cref="P:System.Exception.Message" /> do argumentu właściwości, który został ustawiony lub pobrany, użyj "value" jako nazwy argumentu właściwości.</para></block>
+        <block subset="none" type="overrides"><para><see cref="P:System.Exception.Message" /> Właściwość jest zastępowana w klasach, które wymagają kontroli nad zawartością lub formatem wiadomości. Kod aplikacji zwykle uzyskuje dostęp do tej właściwości, gdy musi wyświetlić informacje o wychwyconym wyjątku.  
   
 Komunikat o błędzie powinien być zlokalizowany.</para></block>
       </Docs>
@@ -1078,34 +1078,34 @@ Komunikat o błędzie powinien być zlokalizowany.</para></block>
         <ReturnType>System.EventHandler&lt;System.Runtime.Serialization.SafeSerializationEventArgs&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Występuje, gdy wyjątek jest serializowana. Aby utworzyć obiekt stan wyjątku, który zawiera serializowane dane o wyjątku.</summary>
+        <summary>Występuje, gdy wyjątek jest serializowany w celu utworzenia obiektu stanu wyjątku, który zawiera serializowane dane dotyczące wyjątku.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Obiekt stanu wyjątek implementuje <xref:System.Runtime.Serialization.ISafeSerializationData> interfejsu.  
+ Obiekt stanu wyjątku implementuje <xref:System.Runtime.Serialization.ISafeSerializationData> interfejs.  
   
- Gdy <xref:System.Exception.SerializeObjectState> subskrybuje zdarzenia, wyjątek jest przeprowadzona i utworzony jako pusty wyjątek. Konstruktor tego wyjątku nie jest uruchamiane, a stan wyjątku jest również przeprowadzona. <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A> Metody wywołania zwrotnego stanu obiektu wyjątku następnie zostanie powiadomiony, tak, aby go można wypchnąć danych zdeserializowany do pustego wyjątku.  
+ Po zasubskrybowaniu <xref:System.Exception.SerializeObjectState> zdarzenia wyjątek jest deserializowany i tworzony jako pusty wyjątek. Konstruktor wyjątku nie jest uruchomiony, a stan wyjątku jest również deserializowany. Metoda <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A> wywołania zwrotnego obiektu stanu wyjątku jest następnie powiadamiana, aby można było wypchnąć deserializowane dane do pustego wyjątku.  
   
- <xref:System.Exception.SerializeObjectState> Zdarzeń umożliwia typów wyjątków przezroczyste do serializacji i deserializacji danych wyjątku. Kod o przezroczystym można wykonywać polecenia w granicach zestawu uprawnień, który działa wewnątrz, ale nie można wykonać, wywołania, pochodzi od lub zawierać kodu krytycznego.  
+ <xref:System.Exception.SerializeObjectState> Zdarzenie włącza przezroczyste typy wyjątków do serializacji i deserializacji danych wyjątków. Kod przezroczysty może wykonywać polecenia w granicach zestawu uprawnień, który działa w ramach, ale nie może wykonać wywołania, wywołać, pochodzić z lub zawierać kod krytyczny.  
   
- Jeśli <xref:System.Exception.SerializeObjectState> zdarzeń nie jest subskrybentem, deserializacji występuje w zwykły sposób przy użyciu <xref:System.Exception.%23ctor%2A> konstruktora.  
+ Jeśli zdarzenie nie jest subskrybowane, deserializacja odbywa się w zwykły sposób <xref:System.Exception.%23ctor%2A> przy użyciu konstruktora. <xref:System.Exception.SerializeObjectState>  
   
- Zazwyczaj procedury obsługi dla <xref:System.Exception.SerializeObjectState> zdarzenie zostanie dodany do konstruktora wyjątków w celu zapewnienia jego serializacji. Ale ponieważ Konstruktor nie jest wykonana przy <xref:System.Exception.SerializeObjectState> wykonuje procedury obsługi zdarzeń, serializowania zdeserializowana wyjątek może zgłosić <xref:System.Runtime.Serialization.SerializationException> wyjątek podczas próby deserializacji wyjątku. Aby tego uniknąć, należy również dodać program obsługi dla <xref:System.Exception.SerializeObjectState> zdarzenia w <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=nameWithType> metody. Zobacz sekcję przykłady ilustrację.  
+ Zazwyczaj procedura obsługi <xref:System.Exception.SerializeObjectState> zdarzenia jest dodawana w konstruktorze wyjątku w celu zapewnienia serializacji. Jednak, ponieważ Konstruktor nie jest wykonywany, gdy <xref:System.Exception.SerializeObjectState> program obsługi zdarzeń jest wykonywany, Serializowanie wyjątku deserializowanego może <xref:System.Runtime.Serialization.SerializationException> zgłosić wyjątek podczas próby deserializacji wyjątku. Aby tego uniknąć, należy również dodać procedurę obsługi dla <xref:System.Exception.SerializeObjectState> zdarzenia <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=nameWithType> w metodzie. Zobacz sekcję przykłady, aby zapoznać się z ilustracją.  
   
    
   
 ## Examples  
- W poniższym przykładzie zdefiniowano `BadDivisionException` obsługująca <xref:System.Exception.SerializeObjectState> zdarzeń. Zawiera również obiekt stanu, który jest zagnieżdżoną struktury o nazwie `BadDivisionExceptionState` implementującej <xref:System.Runtime.Serialization.ISafeSerializationData> interfejsu.  
+ W poniższym przykładzie zdefiniowano `BadDivisionException` , który <xref:System.Exception.SerializeObjectState> obsługuje zdarzenie. Zawiera również obiekt stanu, który jest zagnieżdżoną strukturą o nazwie `BadDivisionExceptionState` <xref:System.Runtime.Serialization.ISafeSerializationData> implementującej interfejs.  
   
  [!code-csharp[System.Exception.SerializeObjectState#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.serializeobjectstate/cs/example2.cs#1)]
  [!code-vb[System.Exception.SerializeObjectState#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.exception.serializeobjectstate/vb/example2.vb#1)]  
   
- `BadDivisionException` Wyjątek jest zgłaszany, gdy występuje Zmiennoprzecinkowe dzielenie przez zero. Podczas pierwszego dzielenie przez zero, tworzy przykład `BadDivisionException` obiektu serializuje go i zgłasza wyjątek. Po wystąpieniu kolejnych podziałów przez zero, przykład deserializuje wcześniej Zserializowany obiekt reserializes go i zgłasza wyjątek. Aby zapewnić odpowiedzialność za serializację obiektu, deserializacji, reserialization i deserializacji, w przykładzie dodano <xref:System.Exception.SerializeObjectState> programu obsługi zdarzeń zarówno w `BadDivisionException` konstruktora klasy i w <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=nameWithType> implementacji.  
+ `BadDivisionException` Wyjątek jest zgłaszany, gdy występuje dzielenie zmiennoprzecinkowe przez zero. Podczas pierwszego dzielenia przez zero, przykład tworzy `BadDivisionException` obiekt, serializować go i zgłasza wyjątek. Gdy występują kolejne podziały przez zero, przykład deserializacji poprzednio serializowanego obiektu, deserializacji go i zgłasza wyjątek. W celu zapewnienia serializacji obiektu, deserializacji, deserializacji i deserializacji, przykład dodaje <xref:System.Exception.SerializeObjectState> procedurę obsługi zdarzeń zarówno `BadDivisionException` w konstruktorze <xref:System.Runtime.Serialization.ISafeSerializationData.CompleteDeserialization%2A?displayProperty=nameWithType> klasy, jak i w implementacji.  
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Jeśli to zdarzenie jest subskrybowania i używania, wszystkie typy pochodne, które należy wykonać w hierarchii dziedziczenia musi implementować ten sam mechanizm serializacji.</para></block>
+        <block subset="none" type="overrides"><para>Jeśli to zdarzenie jest subskrybowane i używane, wszystkie typy pochodne, które są zgodne w hierarchii dziedziczenia, muszą implementować ten sam mechanizm serializacji.</para></block>
       </Docs>
     </Member>
     <Member MemberName="Source">
@@ -1150,17 +1150,17 @@ Komunikat o błędzie powinien być zlokalizowany.</para></block>
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia nazwę aplikacji lub obiekt, który powoduje błąd.</summary>
-        <value>Nazwa aplikacji lub obiekt, który powoduje błąd.</value>
+        <value>Nazwa aplikacji lub obiektu, który powoduje błąd.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Exception.Source%2A> właściwość nie została jawnie ustawiona, środowisko wykonawcze automatycznie ustawia jego nazwa zestawu, w którym wyjątek pochodzi.  
+ <xref:System.Exception.Source%2A> Jeśli właściwość nie zostanie ustawiona jawnie, środowisko uruchomieniowe automatycznie ustawi ją na nazwę zestawu, z którego pochodzi wyjątek.  
   
    
   
 ## Examples  
- Poniższy przykład generuje `Exception` określająca `Source` właściwości w jego konstruktorze, a następnie połowy wyjątek i wyświetla `Source`.  
+ Poniższy przykład zgłasza `Exception` , że `Source` ustawia właściwość w jego konstruktorze, a następnie przechwytuje wyjątek i wyświetla `Source`.  
   
  [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
  [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
@@ -1168,7 +1168,7 @@ Komunikat o błędzie powinien być zlokalizowany.</para></block>
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Obiekt musi być środowisko uruchomieniowe <see cref="N:System.Reflection" /> obiektu.</exception>
+        <exception cref="T:System.ArgumentException">Obiekt musi być obiektem środowiska <see cref="N:System.Reflection" /> uruchomieniowego.</exception>
       </Docs>
     </Member>
     <Member MemberName="StackTrace">
@@ -1212,24 +1212,24 @@ Komunikat o błędzie powinien być zlokalizowany.</para></block>
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera reprezentację ciągu natychmiastowego ramek na stosie wywołań.</summary>
-        <value>Ciąg, który opisuje natychmiastowego ramki stosu wywołań.</value>
+        <summary>Pobiera ciąg reprezentujący bezpośrednie ramki w stosie wywołań.</summary>
+        <value>Ciąg, który opisuje bezpośrednie klatki stosu wywołań.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Stos wykonywania przechowuje informacje o wszystkich metod, które są wykonywane w danej chwili. Śledzenie wywołań metody jest wywoływana ślad stosu. Lista śledzenia stosu zapewnia sposób wykonaj stos wywołań do numeru wiersza w metodzie, gdzie występuje wyjątek.  
+ Stos wykonywania śledzi wszystkie metody, które są wykonywane w danym momencie. Śledzenie wywołań metod jest nazywane śladem stosu. Lista śladów stosu zapewnia sposób, aby postępować zgodnie ze stosem wywołań do numeru wiersza w metodzie, w której występuje wyjątek.  
   
- <xref:System.Exception.StackTrace%2A> Właściwość zwraca ramki stosu wywołań, które pochodzi z lokalizacji, w którym został zgłoszony wyjątek. Możesz uzyskać informacje na temat dodatkowych ramek na stosie wywołań, tworząc nowe wystąpienie klasy <xref:System.Diagnostics.StackTrace?displayProperty=nameWithType> klasy i używanie jej <xref:System.Diagnostics.StackTrace.ToString%2A?displayProperty=nameWithType> metody.  
+ <xref:System.Exception.StackTrace%2A> Właściwość zwraca ramki stosu wywołań, które pochodzą z lokalizacji, w której został zgłoszony wyjątek. Możesz uzyskać informacje o dodatkowych klatkach w stosie wywołań, tworząc nowe wystąpienie <xref:System.Diagnostics.StackTrace?displayProperty=nameWithType> klasy i używając jej <xref:System.Diagnostics.StackTrace.ToString%2A?displayProperty=nameWithType> metody.  
   
- Środowisko uruchomieniowe języka wspólnego (CLR) aktualizuje ślad stosu, zawsze wtedy, gdy wyjątek jest zgłaszany w kodzie aplikacji (przy użyciu `throw` — słowo kluczowe). Jeśli wyjątek był zgłaszany ponownie w metodzie, która jest inna niż metody, gdzie pierwotnie został zgłoszony, ślad stosu zawiera zarówno w metodzie w lokalizacji, w którym pierwotnie został zgłoszony wyjątek, jak i w metodzie w lokalizacji, w którym wyjątek zgłaszany ponownie. Jeśli wyjątek jest generowany i później ponownie zgłaszany, w tej samej metody, ślad stosu zawiera tylko lokalizacji, w którym wyjątek był zgłaszany ponownie i nie ma lokalizacji, w którym pierwotnie został zgłoszony wyjątek.  
+ Środowisko uruchomieniowe języka wspólnego (CLR) aktualizuje ślad stosu za każdym razem, gdy wyjątek jest zgłaszany w kodzie aplikacji `throw` (za pomocą słowa kluczowego). Jeśli wyjątek został ponownie zgłoszony w metodzie, która jest inna niż metoda, w której został pierwotnie zgłoszony, ślad stosu zawiera zarówno lokalizację w metodzie, w której został wygenerowany wyjątek, jak i lokalizację w metodzie, w której wystąpił wyjątek zgłaszany ponownie. Jeśli wyjątek jest zgłaszany, a później ponownie zgłaszany, w tej samej metodzie ślad stosu zawiera tylko lokalizację, w której wyjątek został ponownie zgłoszony i nie zawiera lokalizacji, w której pierwotnie został zgłoszony wyjątek.  
   
- <xref:System.Exception.StackTrace%2A> Właściwości mogą nie zgłaszać dowolną liczbę wywołań metod, zgodnie z oczekiwaniami z powodu kodu transformacji, takie jak wbudowanie, które występują podczas tej optymalizacji.  
+ <xref:System.Exception.StackTrace%2A> Właściwość może nie raportować tylu wywołań metod zgodnie z oczekiwaniami, ponieważ przekształcenia kodu, takie jak derysowanie, występują podczas optymalizacji.  
   
    
   
 ## Examples  
- Poniższy kod zgłasza przykład `Exception` go przechwycił i wyświetla ślad stosu przy użyciu `StackTrace` właściwości.  
+ Poniższy przykład kodu zgłasza `Exception` , a następnie przechwytuje i wyświetla ślad stosu `StackTrace` przy użyciu właściwości.  
   
  [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
  [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
@@ -1237,9 +1237,9 @@ Komunikat o błędzie powinien być zlokalizowany.</para></block>
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para><see langword="StackTrace" /> Właściwość nie zostanie zastąpiona w klasach, które wymagają kontroli nad stosu śledzenia zawartość lub format.  
+        <block subset="none" type="overrides"><para><see langword="StackTrace" /> Właściwość jest zastępowana w klasach, które wymagają kontroli nad zawartością lub formatem śladu stosu.  
   
-Domyślnie ślad stosu są przechwytywane natychmiast, zanim zostanie zgłoszony obiekt wyjątku. Użyj <see cref="P:System.Environment.StackTrace" /> Aby uzyskać informacje o śladzie stosu, gdy jest zgłaszany żaden wyjątek.</para></block>
+Domyślnie ślad stosu jest przechwytywany bezpośrednio przed zgłoszeniem obiektu wyjątku. Użyj <see cref="P:System.Environment.StackTrace" /> , aby uzyskać informacje o śledzeniu stosu, gdy żaden wyjątek nie jest zgłaszany.</para></block>
         <altmember cref="P:System.Environment.StackTrace" />
       </Docs>
     </Member>
@@ -1280,21 +1280,21 @@ Domyślnie ślad stosu są przechwytywane natychmiast, zanim zostanie zgłoszony
         <ReturnType>System.Reflection.MethodBase</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera metodę, która bieżący wyjątek.</summary>
-        <value><see cref="T:System.Reflection.MethodBase" /> Zgłosił, bieżący wyjątek.</value>
+        <summary>Pobiera metodę, która zgłasza bieżący wyjątek.</summary>
+        <value><see cref="T:System.Reflection.MethodBase" /> , Który wywołał bieżący wyjątek.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli metoda, która zgłasza ten wyjątek nie jest dostępny i ślad stosu nie jest odwołanie o wartości null (`Nothing` w języku Visual Basic), <xref:System.Exception.TargetSite%2A> uzyskuje metody ślad stosu. Jeśli ślad stosu jest odwołanie o wartości null, <xref:System.Exception.TargetSite%2A> również zwraca odwołanie o wartości null.  
+ Jeśli metoda zwracająca ten wyjątek jest niedostępna, a ślad stosu nie jest odwołaniem null (`Nothing` w Visual Basic), <xref:System.Exception.TargetSite%2A> uzyskuje metodę z śladu stosu. Jeśli ślad stosu jest odwołaniem o wartości null <xref:System.Exception.TargetSite%2A> , zwraca również odwołanie o wartości null.  
   
 > [!NOTE]
->  <xref:System.Exception.TargetSite%2A> Właściwość nie może precyzyjnie nazwę metody, w którym został zgłoszony wyjątek, jeśli program obsługi wyjątku obsługuje wyjątek poza granice domeny aplikacji.  
+>  <xref:System.Exception.TargetSite%2A> Właściwość może nieprawidłowo zgłosić nazwę metody, w której wystąpił wyjątek, jeśli procedura obsługi wyjątków obsługuje wyjątek między domeną aplikacji.  
   
    
   
 ## Examples  
- Poniższy kod zgłasza przykład `Exception` go przechwycił i Wyświetla źródłowy przy użyciu metody `TargetSite` właściwości.  
+ Poniższy przykład kodu zgłasza `Exception` , a następnie przechwytuje i wyświetla metodę źródłową `TargetSite` przy użyciu właściwości.  
   
  [!code-cpp[System.Exception.Properties#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Exception.Properties/CPP/properties.cpp#1)]
  [!code-csharp[System.Exception.Properties#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Exception.Properties/CS/properties.cs#1)]
@@ -1347,23 +1347,23 @@ Domyślnie ślad stosu są przechwytywane natychmiast, zanim zostanie zgłoszony
       <Parameters />
       <Docs>
         <summary>Tworzy i zwraca reprezentację ciągu bieżącego wyjątku.</summary>
-        <returns>Reprezentacja ciągu bieżącego wyjątku.</returns>
+        <returns>Ciąg reprezentujący bieżący wyjątek.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Exception.ToString%2A> Zwraca reprezentację bieżącego wyjątku, który ma być zrozumiała dla ludzi. W przypadku, gdy wyjątek zawiera dane wrażliwe na ustawienia kulturowe, reprezentacja ciągu zwracane przez `ToString` jest wymagany do uwzględnienia bieżącej kultury systemu. Mimo że nie istnieją wymagania dokładny format zwracanego ciągu, należy próbować odzwierciedlać wartość obiektu jako postrzegany przez użytkownika.  
+ <xref:System.Exception.ToString%2A>Zwraca reprezentację bieżącego wyjątku, która ma być zrozumiała dla ludzi. W przypadku, gdy wyjątek zawiera dane zależne od kultury, reprezentacja `ToString` ciągu zwracanego przez jest wymagana do uwzględnienia bieżącej kultury systemowej. Chociaż nie ma dokładnych wymagań dotyczących formatu zwracanego ciągu, powinien on próbować odzwierciedlić wartość obiektu, tak jak zostało to postrzegane przez użytkownika.  
   
- Domyślna implementacja klasy <xref:System.Exception.ToString%2A> uzyskuje nazwę klasy, która zgłosiła bieżącego wyjątku, wiadomość, w wyniku wywołania metody <xref:System.Exception.ToString%2A> na wewnętrzny wyjątek, a w wyniku wywołania metody <xref:System.Environment.StackTrace%2A?displayProperty=nameWithType>. W przypadku spełnienia któregoś z tych elementów członkowskich `null`, jego wartość nie jest uwzględniona w zwracanym ciągu.  
+ Domyślna implementacja programu <xref:System.Exception.ToString%2A> uzyskuje nazwę klasy, która wywołała bieżący wyjątek, komunikat, wynik wywołania <xref:System.Exception.ToString%2A> wyjątku wewnętrznego i wynik wywołania <xref:System.Environment.StackTrace%2A?displayProperty=nameWithType>. Jeśli którykolwiek z tych elementów członkowskich `null`jest, jego wartość nie jest uwzględniona w zwracanym ciągu.  
   
- Jeśli nie ma błędów lub jest pustym ciągiem (""), zwracana jest bez komunikatu o błędzie. Nazwa wewnętrznego wyjątku i ślad stosu są zwracane tylko wtedy, gdy nie są one `null`.  
+ Jeśli nie ma komunikatu o błędzie lub jeśli jest to ciąg pusty (""), nie zostanie zwrócony żaden komunikat o błędzie. Nazwa wewnętrznego wyjątku i ślad stosu są zwracane tylko wtedy, gdy nie `null`są.  
   
- Ta metoda zastępuje <xref:System.Object.ToString%2A?displayProperty=nameWithType>.  
+ Ta metoda przesłania <xref:System.Object.ToString%2A?displayProperty=nameWithType>.  
   
    
   
 ## Examples  
- Poniższy przykład powoduje wyjątek i wyświetla wynik wywołania metody <xref:System.Exception.ToString%2A> na ten wyjątek. Należy pamiętać, że <xref:System.Exception.ToString%2A?displayProperty=nameWithType> metoda jest wywoływana niejawnie, gdy wystąpienie klasy wyjątku pojawi się na liście argumentów <xref:System.Console.WriteLine%2A?displayProperty=nameWithType> metody.  
+ Poniższy przykład powoduje wystąpienie wyjątku i wyświetla wynik wywołania <xref:System.Exception.ToString%2A> tego wyjątku. Należy zauważyć, <xref:System.Exception.ToString%2A?displayProperty=nameWithType> że metoda jest wywoływana niejawnie, gdy wystąpienie klasy wyjątku pojawia się na liście <xref:System.Console.WriteLine%2A?displayProperty=nameWithType> argumentów metody.  
   
  [!code-cpp[System.Exception.ToString#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.exception.tostring/cpp/ToStringEx1.cpp#1)]
  [!code-csharp[System.Exception.ToString#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.exception.tostring/cs/ToStringEx1.cs#1)]

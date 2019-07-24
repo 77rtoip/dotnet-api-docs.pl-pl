@@ -1,5 +1,5 @@
 <Type Name="LazyInitializer" FullName="System.Threading.LazyInitializer">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="9d610ccd14ffc2fbf55ba0c7a01c44865c2f030f" /><Meta Name="ms.sourcegitcommit" Value="690605a2d62010b93e13edf329aafe2bdc57423a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/11/2019" /><Meta Name="ms.locfileid" Value="67801579" /></Metadata><TypeSignature Language="C#" Value="public static class LazyInitializer" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="bf82d55381028f3f86623ac04ec8d6b0c0ef7f3b" /><Meta Name="ms.sourcegitcommit" Value="e7974886b08aa83a8fb461e8550f31a7d4331ee3" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/23/2019" /><Meta Name="ms.locfileid" Value="68392404" /></Metadata><TypeSignature Language="C#" Value="public static class LazyInitializer" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit LazyInitializer extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Threading.LazyInitializer" />
   <TypeSignature Language="VB.NET" Value="Public Class LazyInitializer" />
@@ -27,17 +27,17 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Zawiera procedury inicjowania z opóźnieniem.</summary>
+    <summary>Dostarcza procedury inicjowania z opóźnieniem.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Te procedury uniknąć konieczności przydzielenie wystąpienia dedykowaną, inicjowania z opóźnieniem, zamiast tego w celu zapewnienia, że elementy docelowe zostały zainicjowane, ponieważ są one używane przy użyciu odwołań.  
+ Te procedury nie wymagają przydzielenia dedykowanego wystąpienia inicjalizacji z opóźnieniem, zamiast tego przy użyciu odwołań, aby upewnić się, że obiekty docelowe zostały zainicjowane w miarę uzyskiwania do nich dostępu.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak używać EnsureInitialized opóźnieniem zainicjować wartość przy użyciu wartość logiczną w celu sprawdzenia, czy Inicjowanie zostało już przeprowadzone i obiekt ma być używany jako blokadę wykluczania wzajemnego.  
+ W poniższym przykładzie pokazano, jak używać EnsureInitialized do opóźnieniem zainicjować wartości przy użyciu wartości logicznej, aby sprawdzić, czy Inicjalizacja już się zakończyła, oraz obiekt, który ma być używany jako wzajemne blokady wykluczenia.  
   
 ```vb  
 Dim _data As ExpensiveData = Nothing  
@@ -59,7 +59,7 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
   
  ]]></format>
     </remarks>
-    <threadsafe>Metody <see cref="T:System.Threading.LazyInitializer" /> są odporne na wątki i może być wywoływana z wielu wątków jednocześnie.</threadsafe>
+    <threadsafe>Metody <see cref="T:System.Threading.LazyInitializer" /> są bezpieczne dla wątków i mogą być wywoływane z wielu wątków jednocześnie.</threadsafe>
     <related type="Article" href="~/docs/framework/performance/lazy-initialization.md">Inicjalizacja z opóźnieniem</related>
   </Docs>
   <Members>
@@ -71,7 +71,7 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Inicjuje typ docelowy, jeśli jeszcze nie zostało zainicjowane.</summary>
+        <summary>Inicjuje typ docelowy, jeśli nie został jeszcze zainicjowany.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="EnsureInitialized&lt;T&gt;">
@@ -113,24 +113,24 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <Parameter Name="target" Type="T" RefType="ref" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ odwołania do zainicjowania.</typeparam>
-        <param name="target">Odwołanie do zainicjowania, jeśli nie został już zainicjowany.</param>
-        <summary>Inicjuje typu odwołania docelowego przy użyciu typu domyślnego konstruktora, jeśli jeszcze nie zostało zainicjowane.</summary>
-        <returns>Zainicjowanego obiektu.</returns>
+        <typeparam name="T">Typ odwołania, który ma zostać zainicjowany.</typeparam>
+        <param name="target">Odwołanie do zainicjowania, jeśli nie zostało jeszcze zainicjowane.</param>
+        <summary>Inicjuje docelowy typ referencyjny z konstruktorem bez parametrów typu, jeśli nie został jeszcze zainicjowany.</summary>
+        <returns>Zainicjowany obiekt.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda może być wykorzystywane w typach referencyjnych. Aby zapewnić inicjowania typów wartości, zobacz inne przeciążenia `EnsureInitialized`.  
+ Ta metoda może być używana tylko w przypadku typów referencyjnych. Aby zapewnić inicjalizację typów wartości, zobacz inne przeciążenia `EnsureInitialized`.  
   
- Ta metoda może służyć współbieżnie przez wiele wątków można zainicjować `target`.  
+ Ta metoda może być używana współbieżnie przez wiele wątków do zainicjowania `target`.  
   
- W przypadku, gdy wiele wątków dostęp do tej metody współbieżnie, wiele wystąpień `T` maja zostać utworzona, ale tylko jeden będą przechowywane w `target`. W wystąpieniu ta metoda będzie Likwiduj obiektów, które nie zostały zapisane. Jeśli takie obiekty musi zostać usunięty, jest obiekt wywołujący, aby określić, jeśli obiekt nie był używany i następnie odpowiednio usunięcia obiektu.  
+ W przypadku, gdy wiele wątków uzyskuje dostęp do tej metody współbieżnie, można `T` utworzyć wiele wystąpień, ale tylko jeden z nich będzie przechowywany `target`w. W takim przypadku ta metoda nie spowoduje usunięcia obiektów, które nie zostały zapisane. Jeśli takie obiekty muszą zostać usunięte, jest do obiektu wywołującego, aby określić, czy obiekt nie był używany, a następnie odpowiednio usunąć obiekt.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Uprawnienia dostępu konstruktora typu <paramref name="T" /> brakowało.</exception>
-        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma domyślnego konstruktora.</exception>
+        <exception cref="T:System.MemberAccessException">Brak uprawnień dostępu do konstruktora typu <paramref name="T" /> .</exception>
+        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma konstruktora bez parametrów.</exception>
         <related type="Article" href="~/docs/framework/performance/lazy-initialization.md">Inicjalizacja z opóźnieniem</related>
       </Docs>
     </Member>
@@ -174,25 +174,25 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ odwołania do zainicjowania.</typeparam>
-        <param name="target">Odwołanie do zainicjowania, jeśli jeszcze nie zostało zainicjowane.</param>
+        <typeparam name="T">Typ odwołania, który ma zostać zainicjowany.</typeparam>
+        <param name="target">Odwołanie do zainicjowania, jeśli nie zostało jeszcze zainicjowane.</param>
         <param name="valueFactory">Funkcja, która jest wywoływana w celu zainicjowania odwołania.</param>
-        <summary>Docelowy typ odwołania jest inicjowana przy użyciu określonej funkcji, jeśli jeszcze nie zostało zainicjowane.</summary>
-        <returns>Zainicjowanego obiektu.</returns>
+        <summary>Inicjuje docelowy typ referencyjny przy użyciu określonej funkcji, jeśli nie została jeszcze zainicjowana.</summary>
+        <returns>Zainicjowany obiekt.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda może używać tylko w typach referencyjnych i `valueFactory` może nie zwrócić odwołanie o wartości null (Nothing w języku Visual Basic). Aby upewnić się, inicjowania typów wartości lub zezwala na typy odwołania o wartości null, zobacz inne przeciążenia EnsureInitialized.  
+ Ta metoda może być używana tylko w typach referencyjnych i `valueFactory` nie może zwracać odwołania o wartości null (Nothing w Visual Basic). Aby zapewnić inicjalizację typów wartości lub zezwolić na puste typy odwołań, zobacz inne przeciążenia EnsureInitialized.  
   
- Ta metoda może służyć współbieżnie przez wiele wątków można zainicjować `target`.  
+ Ta metoda może być używana współbieżnie przez wiele wątków do zainicjowania `target`.  
   
- W przypadku, gdy wiele wątków dostęp do tej metody współbieżnie, wiele wystąpień `T` maja zostać utworzona, ale tylko jeden będą przechowywane w `target`. W wystąpieniu ta metoda będzie Likwiduj obiektów, które nie zostały zapisane. Jeśli takie obiekty musi zostać usunięty, jest obiekt wywołujący, aby określić, jeśli obiekt nie był używany i następnie odpowiednio usunięcia obiektu.  
+ W przypadku, gdy wiele wątków uzyskuje dostęp do tej metody współbieżnie, można `T` utworzyć wiele wystąpień, ale tylko jeden z nich będzie przechowywany `target`w. W takim przypadku ta metoda nie spowoduje usunięcia obiektów, które nie zostały zapisane. Jeśli takie obiekty muszą zostać usunięte, jest do obiektu wywołującego, aby określić, czy obiekt nie był używany, a następnie odpowiednio usunąć obiekt.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma domyślnego konstruktora.</exception>
-        <exception cref="T:System.InvalidOperationException"><paramref name="valueFactory" /> zwróciła wartość null (Nothing w języku Visual Basic).</exception>
+        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma konstruktora bez parametrów.</exception>
+        <exception cref="T:System.InvalidOperationException"><paramref name="valueFactory" />zwrócono wartość null (Nothing w Visual Basic).</exception>
         <related type="Article" href="~/docs/framework/performance/lazy-initialization.md">Inicjalizacja z opóźnieniem</related>
       </Docs>
     </Member>
@@ -233,22 +233,22 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <Parameter Name="syncLock" Type="System.Object" RefType="ref" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ odwołania do zainicjowania.</typeparam>
-        <param name="target">Odwołanie lub wartość typu <c>T</c> zainicjować, jeśli jeszcze nie zostało zainicjowane.</param>
-        <param name="initialized">Odwołanie do wartość logiczna określająca, czy element docelowy został już zainicjowany.</param>
-        <param name="syncLock">Odwołanie do obiektu, używane jako wzajemnie się wykluczają blokady dla inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> jest <see langword="null" />, będzie można utworzyć wystąpienia nowego obiektu.</param>
-        <summary>Inicjuje typ docelowy odwołanie lub wartość, przy użyciu jego domyślnego konstruktora, jeśli jeszcze nie zostało zainicjowane.</summary>
-        <returns>Zainicjowanego obiektu.</returns>
+        <typeparam name="T">Typ odwołania, który ma zostać zainicjowany.</typeparam>
+        <param name="target">Odwołanie lub wartość typu <c>T</c> do zainicjowania, jeśli nie została jeszcze zainicjowana.</param>
+        <param name="initialized">Odwołanie do wartości logicznej określającej, czy element docelowy został już zainicjowany.</param>
+        <param name="syncLock">Odwołanie do obiektu używanego jako wzajemnie wykluczające się blokady do inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> ma<see langword="null" />wartość, zostanie utworzony nowy obiekt.</param>
+        <summary>Inicjuje odwołanie docelowe lub typ wartości z konstruktorem bez parametrów, jeśli nie został jeszcze zainicjowany.</summary>
+        <returns>Zainicjowany obiekt.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `initialized` zostanie określony jako wartość true, nie dalsze Inicjalizacja występuje.  
+ Jeśli `initialized` wartość jest równa true, dalsze inicjowanie nie jest wykonywane.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Uprawnienia dostępu konstruktora typu <paramref name="T" /> brakowało.</exception>
-        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma domyślnego konstruktora.</exception>
+        <exception cref="T:System.MemberAccessException">Brak uprawnień dostępu do konstruktora typu <paramref name="T" /> .</exception>
+        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma konstruktora bez parametrów.</exception>
         <related type="Article" href="~/docs/framework/performance/lazy-initialization.md">Inicjalizacja z opóźnieniem</related>
       </Docs>
     </Member>
@@ -288,12 +288,12 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ odwołania do zainicjowania.</typeparam>
-        <param name="target">Odwołanie do zainicjowania, jeśli nie został już zainicjowany.</param>
-        <param name="syncLock">Odwołanie do obiektu, używane jako wzajemnie się wykluczają blokady dla inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> jest <see langword="null" />, będzie można utworzyć wystąpienia nowego obiektu.</param>
-        <param name="valueFactory">Metoda do wywołania, aby zainicjować <paramref name="target" />.</param>
-        <summary>Inicjuje typu odwołania docelowego przy użyciu określonej funkcji, jeśli nie został już zainicjowany.</summary>
-        <returns>Zainicjowanego obiektu.</returns>
+        <typeparam name="T">Typ odwołania, który ma zostać zainicjowany.</typeparam>
+        <param name="target">Odwołanie do zainicjowania, jeśli nie zostało jeszcze zainicjowane.</param>
+        <param name="syncLock">Odwołanie do obiektu używanego jako wzajemnie wykluczające się blokady do inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> ma<see langword="null" />wartość, zostanie utworzony nowy obiekt.</param>
+        <param name="valueFactory">Metoda do wywołania do zainicjowania <paramref name="target" />.</param>
+        <summary>Inicjuje docelowy typ referencyjny z określoną funkcją, jeśli nie została jeszcze zainicjowana.</summary>
+        <returns>Zainicjowany obiekt.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -335,23 +335,23 @@ ExpensiveData dataToUse = LazyInitializer.EnsureInitialized(ref _data, ref _data
         <Parameter Name="valueFactory" Type="System.Func&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ odwołania do zainicjowania.</typeparam>
-        <param name="target">Odwołanie lub wartość typu <c>T</c> zainicjować, jeśli jeszcze nie zostało zainicjowane.</param>
-        <param name="initialized">Odwołanie do wartość logiczna określająca, czy element docelowy został już zainicjowany.</param>
-        <param name="syncLock">Odwołanie do obiektu, używane jako wzajemnie się wykluczają blokady dla inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> jest <see langword="null" />, będzie można utworzyć wystąpienia nowego obiektu.</param>
-        <param name="valueFactory">Funkcja, która jest wywoływana, aby zainicjować odwołanie lub wartość.</param>
-        <summary>Typ docelowy odwołanie lub wartość jest inicjowana przy użyciu określonej funkcji, jeśli jeszcze nie zostało zainicjowane.</summary>
-        <returns>Zainicjowanego obiektu.</returns>
+        <typeparam name="T">Typ odwołania, który ma zostać zainicjowany.</typeparam>
+        <param name="target">Odwołanie lub wartość typu <c>T</c> do zainicjowania, jeśli nie została jeszcze zainicjowana.</param>
+        <param name="initialized">Odwołanie do wartości logicznej określającej, czy element docelowy został już zainicjowany.</param>
+        <param name="syncLock">Odwołanie do obiektu używanego jako wzajemnie wykluczające się blokady do inicjowania <paramref name="target" />. Jeśli <paramref name="syncLock" /> ma<see langword="null" />wartość, zostanie utworzony nowy obiekt.</param>
+        <param name="valueFactory">Funkcja, która jest wywoływana w celu zainicjowania odwołania lub wartości.</param>
+        <summary>Inicjuje odwołanie docelowe lub typ wartości przy użyciu określonej funkcji, jeśli nie została jeszcze zainicjowana.</summary>
+        <returns>Zainicjowany obiekt.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `initialized` zostanie określony jako wartość true, nie dalsze Inicjalizacja występuje.  
+ Jeśli `initialized` wartość jest równa true, dalsze inicjowanie nie jest wykonywane.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.MemberAccessException">Uprawnienia dostępu konstruktora typu <paramref name="T" /> brakowało.</exception>
-        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma domyślnego konstruktora.</exception>
+        <exception cref="T:System.MemberAccessException">Brak uprawnień dostępu do konstruktora typu <paramref name="T" /> .</exception>
+        <exception cref="T:System.MissingMemberException">Typ <paramref name="T" /> nie ma konstruktora bez parametrów.</exception>
         <related type="Article" href="~/docs/framework/performance/lazy-initialization.md">Inicjalizacja z opóźnieniem</related>
       </Docs>
     </Member>
