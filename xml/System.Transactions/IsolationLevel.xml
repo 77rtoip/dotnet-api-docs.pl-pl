@@ -1,5 +1,5 @@
 <Type Name="IsolationLevel" FullName="System.Transactions.IsolationLevel">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d1176e5be29a4b8e279db5cfaa5d4e608a7dbf0e" /><Meta Name="ms.sourcegitcommit" Value="9170ef1c277dbe29b425d453dc133624b156d393" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/01/2019" /><Meta Name="ms.locfileid" Value="67488081" /></Metadata><TypeSignature Language="C#" Value="public enum IsolationLevel" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3719d48611b14255a610d885cd372389907dc5bc" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68437563" /></Metadata><TypeSignature Language="C#" Value="public enum IsolationLevel" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed IsolationLevel extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Transactions.IsolationLevel" />
   <TypeSignature Language="VB.NET" Value="Public Enum IsolationLevel" />
@@ -30,11 +30,11 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Nosi nazwę nietrwałych danych wpływ transakcji. Po utworzeniu transakcji można określić poziom izolacji, który ma zastosowanie do transakcji. Poziom izolacji transakcji określa poziom dostępu do innych transakcji muszą nietrwałych danych przed transakcja kończy.  
+ Dane, na które ma wpływ transakcja, są nazywane nietrwałym. Podczas tworzenia transakcji można określić poziom izolacji, który ma zastosowanie do transakcji. Poziom izolacji transakcji określa poziom dostępu innych transakcji do danych nietrwałych przed ukończeniem transakcji.  
   
- Najniższy poziom izolacji `ReadUncommitted`, zezwala na wiele transakcji może działać w magazynie danych jednocześnie i nie chroni przed uszkodzeniem danych z powodu interruptive transakcji. Najwyższy poziom izolacji, `Serializable`, zapewnia wysoki stopień ochrony przed interruptive transakcje, ale wymaga, że każda transakcja ukończenie inne transakcje mogą działać na danych.  
+ Najniższy poziom `ReadUncommitted`izolacji, umożliwia wykonywanie wielu transakcji w magazynie danych jednocześnie i zapewnia ochronę przed uszkodzeniem danych z powodu przerywania transakcji. Najwyższy poziom `Serializable`izolacji,, zapewnia wysoką ochronę przed nieprzerwanymi transakcjami, ale wymaga, aby każda transakcja została ukończona, zanim inne transakcje będą mogły działać na danych.  
   
- Poziom izolacji transakcji jest określana podczas tworzenia transakcji. Domyślnie <xref:System.Transactions> infrastruktury tworzy `Serializable` transakcji. Można określić poziom izolacji istniejącej transakcji przy użyciu <xref:System.Transactions.Transaction.IsolationLevel%2A?displayProperty=nameWithType> właściwości transakcji.  
+ Poziom izolacji transakcji jest określany podczas tworzenia transakcji. Domyślnie <xref:System.Transactions> infrastruktura tworzy `Serializable` transakcje. Możesz określić poziom izolacji istniejącej transakcji przy użyciu <xref:System.Transactions.Transaction.IsolationLevel%2A?displayProperty=nameWithType> właściwości transakcji.  
   
  ]]></format>
     </remarks>
@@ -69,7 +69,7 @@
       </ReturnValue>
       <MemberValue>5</MemberValue>
       <Docs>
-        <summary>Nie można zastąpić oczekujące zmiany z bardziej szczegółowymi izolowanych transakcji.</summary>
+        <summary>Oczekujące zmiany z bardziej wysoce izolowanych transakcji nie mogą zostać nadpisywane.</summary>
       </Docs>
     </Member>
     <Member MemberName="ReadCommitted">
@@ -101,7 +101,7 @@
       </ReturnValue>
       <MemberValue>2</MemberValue>
       <Docs>
-        <summary>Nietrwałych danych nie można odczytać podczas transakcji, ale może być modyfikowany.</summary>
+        <summary>Nie można odczytać danych nietrwałych podczas transakcji, ale można ją zmodyfikować.</summary>
       </Docs>
     </Member>
     <Member MemberName="ReadUncommitted">
@@ -133,7 +133,7 @@
       </ReturnValue>
       <MemberValue>3</MemberValue>
       <Docs>
-        <summary>Nietrwałych danych może odczytywać i modyfikować podczas wykonywania tej transakcji.</summary>
+        <summary>Dane nietrwałe mogą być odczytywane i modyfikowane w trakcie transakcji.</summary>
       </Docs>
     </Member>
     <Member MemberName="RepeatableRead">
@@ -165,7 +165,7 @@
       </ReturnValue>
       <MemberValue>1</MemberValue>
       <Docs>
-        <summary>Nietrwałych danych mogą być odczytywane, ale nie jest modyfikowany podczas wykonywania tej transakcji. Można dodawać nowe dane podczas wykonywania tej transakcji.</summary>
+        <summary>Dane nietrwałe mogą być odczytywane, ale nie modyfikowane podczas transakcji. Nowe dane można dodać podczas transakcji.</summary>
       </Docs>
     </Member>
     <Member MemberName="Serializable">
@@ -197,7 +197,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>Nietrwałych danych mogą być odczytywane, ale nie zostały zmodyfikowane, a żadne nowe dane nie można dodać podczas transakcji.</summary>
+        <summary>Dane nietrwałe mogą być odczytywane, ale nie modyfikowane, a w trakcie transakcji nie można dodawać nowych danych.</summary>
       </Docs>
     </Member>
     <Member MemberName="Snapshot">
@@ -229,7 +229,8 @@
       </ReturnValue>
       <MemberValue>4</MemberValue>
       <Docs>
-        <summary><para>Volatile dane mogą być odczytywane. Zanim transakcja modyfikuje dane, sprawdza, czy po odczytaniu początkowo innej transakcji został zmieniony danych. Jeśli dane zostały zaktualizowane, zgłaszany jest błąd. Dzięki temu transakcji przejść do wcześniej zadeklarowanej wartość danych.</para><para>Podczas próby podwyższenia poziomu transakcji, który został utworzony za pomocą <see langword="Snapshot" /> poziom izolacji <see cref="T:System.InvalidOperationException" /> zgłaszany błąd komunikat "transakcje IsolationLevel migawki nie można podwyższyć poziomu".</para></summary>
+        <summary><para>Dane nietrwałe można odczytać. Przed zmodyfikowaniem danych przez transakcję sprawdza, czy inna transakcja zmieniła dane po jej początkowym odczytaniu. Jeśli dane zostały zaktualizowane, zostanie zgłoszony błąd. Dzięki temu transakcja będzie mogła uzyskać dostęp do wcześniej zatwierdzonej wartości danych.</para>
+          <para>Gdy próbujesz podwyższyć poziom transakcji, która została utworzona <see langword="Snapshot" /> przy użyciu poziomu izolacji <see cref="T:System.InvalidOperationException" /> , zgłaszany jest komunikat o błędzie "transakcje z migawką IsolationLevel nie mogą być podwyższane".</para></summary>
       </Docs>
     </Member>
     <Member MemberName="Unspecified">
@@ -261,7 +262,7 @@
       </ReturnValue>
       <MemberValue>6</MemberValue>
       <Docs>
-        <summary>Poziom izolacji różnych niż określona, jest on używany, ale nie może być określony poziom. Wyjątek jest generowany, jeśli ta wartość jest ustawiona.</summary>
+        <summary>Jest używany inny poziom izolacji niż określony, ale nie można ustalić poziomu. Wyjątek jest generowany, jeśli ta wartość jest ustawiona.</summary>
       </Docs>
     </Member>
   </Members>

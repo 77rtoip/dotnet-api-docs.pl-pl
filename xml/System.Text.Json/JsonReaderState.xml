@@ -1,5 +1,5 @@
 <Type Name="JsonReaderState" FullName="System.Text.Json.JsonReaderState">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="134658575824ec7ab34ef310d545b4b8914b9306" /><Meta Name="ms.sourcegitcommit" Value="ef1f0c8985003a14413f66c3de381b8f3b6e4436" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/30/2019" /><Meta Name="ms.locfileid" Value="66380643" /></Metadata><TypeSignature Language="C#" Value="public struct JsonReaderState" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="62a0cf74d99495feb18860cc8597af7d51d6831d" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68435022" /></Metadata><TypeSignature Language="C#" Value="public struct JsonReaderState" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit JsonReaderState extends System.ValueType" />
   <TypeSignature Language="DocId" Value="T:System.Text.Json.JsonReaderState" />
   <TypeSignature Language="VB.NET" Value="Public Structure JsonReaderState" />
@@ -14,13 +14,13 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Definiuje typ nieprzezroczyste, która przechowuje i zapisuje wszystkie istotne informacje o stanie, który należy podać w celu <see cref="T:System.Text.Json.Utf8JsonReader" /> kontynuować odczytywanie po przetworzeniu niepełne dane.</summary>
+    <summary>Definiuje nieprzezroczysty typ, który przechowuje i zapisuje wszystkie odpowiednie informacje o stanie, które muszą zostać przekazane <see cref="T:System.Text.Json.Utf8JsonReader" /> do dalszego odczytu po przetworzeniu niepełnych danych.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
-`JsonReaderState` jest wymagany do obsługi współużytkowania wątkowości, odczytując niekompletne dane i Czytaj dalej, gdy dostępnych jest więcej danych. W odróżnieniu od <xref:System.Text.Json.Utf8JsonReader> struktury, która jest strukturą ref tego typu mogą przetrwać w granicach async/await i dlatego są wymagane, aby zapewnić obsługę dla asynchronicznego odczytywania większej ilości danych, przed kontynuowaniem nowe wystąpienie klasy <xref:System.Text.Json.Utf8JsonReader>.
+`JsonReaderState`jest wymagany do obsługi współużytkowania wątkowości podczas odczytywania niepełnych danych i dalszego odczytywania, gdy więcej danych jest dostępnych. W przeciwieństwie <xref:System.Text.Json.Utf8JsonReader> do struktury, która jest strukturą ref, ten typ może być przechodzący przez granice asynchroniczne/oczekujące i dlatego jest wymagany do zapewnienia obsługi odczytywania większej ilości danych asynchronicznie przed kontynuowaniem <xref:System.Text.Json.Utf8JsonReader>nowego wystąpienia.
 
  ]]></format>
     </remarks>
@@ -41,37 +41,16 @@
         <Parameter Name="options" Type="System.Text.Json.JsonReaderOptions" />
       </Parameters>
       <Docs>
-        <param name="options">Definiuje niestandardowe zachowanie <see cref="T:System.Text.Json.Utf8JsonReader" /> różni się od RFC JSON (na przykład sposobu obsługi komentarze lub maksymalną głębokość dozwoloną podczas odczytu). Domyślnie <see cref="T:System.Text.Json.Utf8JsonReader" /> JSON RFC jest ściśle zgodna (komentarze w kodzie JSON jest nieprawidłowy) i operacji odczytu do maksymalnej głębokości 64.</param>
-        <summary>Tworzy nowy <see cref="T:System.Text.Json.JsonReaderState" /> wystąpienia.</summary>
+        <param name="options">Definiuje dostosowane zachowanie <see cref="T:System.Text.Json.Utf8JsonReader" /> , które różni się od specyfikacji RFC JSON (na przykład jak obsługiwać komentarze lub maksymalną głębokość dopuszczalną podczas czytania). Domyślnie <see cref="T:System.Text.Json.Utf8JsonReader" /> zgodnie ze specyfikacją JSON RFC (Komentarze w formacie JSON są nieprawidłowe) i odczytuje do maksymalnej głębokości 64.</param>
+        <summary>Tworzy nowe <see cref="T:System.Text.Json.JsonReaderState" /> wystąpienie.</summary>
         <remarks>
           <format><![CDATA[
           
-Wystąpienie tego stanu muszą zostać przekazane do <xref:System.Text.Json.Utf8JsonReader> konstruktora z danych JSON. W odróżnieniu od <xref:System.Text.Json.Utf8JsonReader>, która jest strukturą ref, stan mogą przetrwać w granicach async/await i dlatego tego typu są wymagane do świadczenia pomocy technicznej do odczytu w większej ilości danych asynchronicznie przed kontynuowaniem nowe wystąpienie klasy <xref:System.Text.Json.Utf8JsonReader>.
+Wystąpienie tego stanu musi zostać przesłane do <xref:System.Text.Json.Utf8JsonReader> konstruktora z danymi JSON. W przeciwieństwie <xref:System.Text.Json.Utf8JsonReader>do, który jest strukturą ref, stan może przetrwać w granicach asynchronicznych/oczekujących, dlatego ten typ jest wymagany w celu zapewnienia obsługi odczytywania danych w większej liczbie asynchronicznych przed <xref:System.Text.Json.Utf8JsonReader>kontynuowaniem pracy z nowym wystąpieniem.
             
             ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Maksymalna głębokość ma ustawioną wartość ujemna (&lt; 0).</exception>
-      </Docs>
-    </Member>
-    <Member MemberName="BytesConsumed">
-      <MemberSignature Language="C#" Value="public long BytesConsumed { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance int64 BytesConsumed" />
-      <MemberSignature Language="DocId" Value="P:System.Text.Json.JsonReaderState.BytesConsumed" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property BytesConsumed As Long" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property long BytesConsumed { long get(); };" />
-      <MemberSignature Language="F#" Value="member this.BytesConsumed : int64" Usage="System.Text.Json.JsonReaderState.BytesConsumed" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Text.Json</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.Int64</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Pobiera liczba bajtów, używane przez <see cref="T:System.Text.Json.Utf8JsonReader" /> do tej pory dla danego UTF-8 kodowany tekst wejściowy.</summary>
-        <value>Całkowita liczba bajtów, używane przez <see cref="T:System.Text.Json.Utf8JsonReader" /> do tej pory.</value>
-        <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException">Maksymalna głębokość jest ustawiona na wartość niedodatnią (&lt; 0).</exception>
       </Docs>
     </Member>
     <Member MemberName="Options">
@@ -90,29 +69,8 @@ Wystąpienie tego stanu muszą zostać przekazane do <xref:System.Text.Json.Utf8
         <ReturnType>System.Text.Json.JsonReaderOptions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera zachowanie niestandardowe do użycia podczas odczytywania danych JSON przy użyciu <see cref="T:System.Text.Json.Utf8JsonReader" /> struktury, która może różnić się od postępowania zgodnie ze specyfikacją formatu JSON, który jest zachowaniem domyślnym.</summary>
-        <value>Niestandardowe zachowanie do użycia podczas odczytywania danych JSON.</value>
-        <remarks>To be added.</remarks>
-      </Docs>
-    </Member>
-    <Member MemberName="Position">
-      <MemberSignature Language="C#" Value="public SequencePosition Position { get; }" />
-      <MemberSignature Language="ILAsm" Value=".property instance valuetype System.SequencePosition Position" />
-      <MemberSignature Language="DocId" Value="P:System.Text.Json.JsonReaderState.Position" />
-      <MemberSignature Language="VB.NET" Value="Public ReadOnly Property Position As SequencePosition" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; property SequencePosition Position { SequencePosition get(); };" />
-      <MemberSignature Language="F#" Value="member this.Position : SequencePosition" Usage="System.Text.Json.JsonReaderState.Position" />
-      <MemberType>Property</MemberType>
-      <AssemblyInfo>
-        <AssemblyName>System.Text.Json</AssemblyName>
-        <AssemblyVersion>4.0.0.0</AssemblyVersion>
-      </AssemblyInfo>
-      <ReturnValue>
-        <ReturnType>System.SequencePosition</ReturnType>
-      </ReturnValue>
-      <Docs>
-        <summary>Pobiera bieżący <see cref="T:System.SequencePosition" /> w podanej UTF-8 zakodowany w danych wejściowych ReadOnlySequence&lt;bajt&gt;. Jeśli <see cref="T:System.Text.Json.Utf8JsonReader" /> struktury został skonstruowany przy użyciu ReadOnlySpan&lt;bajtów&gt; zamiast tego należy zawsze spowoduje zwrócenie domyślny <see cref="T:System.SequencePosition" />.</summary>
-        <value>Bieżący <see cref="T:System.SequencePosition" /> w podanej UTF-8 zakodowany w danych wejściowych ReadOnlySequence&lt;bajt&gt;.</value>
+        <summary>Pobiera niestandardowe zachowanie, które ma być używane podczas odczytywania danych <see cref="T:System.Text.Json.Utf8JsonReader" /> json przy użyciu struktury, która może odbiegać od ścisłego przestrzegania specyfikacji JSON, która jest zachowaniem domyślnym.</summary>
+        <value>Niestandardowe zachowanie, które ma być używane podczas odczytywania danych JSON.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

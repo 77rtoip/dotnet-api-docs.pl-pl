@@ -1,5 +1,5 @@
 <Type Name="HashCode" FullName="System.HashCode">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="a9c8aeaa459e84d5207c9d3068bd8e103c6609e9" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58723324" /></Metadata><TypeSignature Language="C#" Value="public struct HashCode" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5d7792e00e0659eb565d01c655ac15776a8c8f46" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68434607" /></Metadata><TypeSignature Language="C#" Value="public struct HashCode" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit HashCode extends System.ValueType" />
   <TypeSignature Language="DocId" Value="T:System.HashCode" />
   <TypeSignature Language="VB.NET" Value="Public Structure HashCode" />
@@ -13,48 +13,51 @@
     <AssemblyName>netstandard</AssemblyName>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
   </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+  </AssemblyInfo>
   <Base>
     <BaseTypeName>System.ValueType</BaseTypeName>
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Łączy wartość skrótu dla wielu wartości w pojedynczy skrótu.</summary>
+    <summary>Łączy kod skrótu dla wielu wartości w jeden kod skrótu.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
-Możesz użyć <xref:System.HashCode> do łączenia wielu wartości (na przykład pola struktury lub klasy) w jednym skrótu. Ta struktura działa w jeden z dwóch sposobów:
+Można użyć <xref:System.HashCode> , aby połączyć wiele wartości (na przykład pól struktury lub klasy) w jeden kod skrótu. Ta struktura działa na jeden z dwóch sposobów:
 
- * Metody statyczne, które akceptują zestawu do ośmiu wartości do połączenia.
- * Dwa wystąpienia metody, które działają w sposób przesyłania strumieniowego, akceptując wartości co w danym momencie.
+ * Metody statyczne, które akceptują zestaw maksymalnie ośmiu wartości do połączenia.
+ * Dwie metody instancji, które działają w sposób przesyłania strumieniowego, akceptując wartości pojedynczo.
 
 > [!WARNING]
-> Jak implementacja może ulec zmianie między wersji zestawu, jest najlepszym rozwiązaniem z zakresu można rozważyć kody skrótów jako szczegół implementacji. Nie należy przechowywać kody skrótów produkowane przez <xref:System.HashCode> w strukturach serializacji, na przykład na dysku. <xref:System.HashCode> używa statycznie zainicjowane Inicjator losowy, aby wymusić na tym najlepszym rozwiązaniem, co oznacza, że kody mieszania tylko deterministyczne w zakresie procesu systemu operacyjnego.
+> Najlepszym rozwiązaniem jest uwzględnienie kodów skrótów jako szczegółów implementacji, ponieważ implementacja może ulec zmianie w różnych wersjach zestawu. Nie przechowuj kodów skrótu utworzonych przez <xref:System.HashCode> serializowane struktury, na przykład na dysku. <xref:System.HashCode>stosuje statycznie zainicjowany losowy inicjator, aby wymusić to najlepsze rozwiązanie, co oznacza, że kody skrótów są deterministyczne tylko w zakresie procesu systemu operacyjnego.
 
 ### <a name="static-methods"></a>Metody statyczne
 
-Metody statyczne łączyć kody skrótów domyślne do ośmiu wartości.
+Metody statyczne łączą domyślne kody skrótów zawierające maksymalnie osiem wartości.
  
  [!code-csharp[System.HashCode.Structure#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.hashcode.structure/cs/example1.cs#1)]
  [!code-vb[System.HashCode.Structure#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.hashcode.structure/vb/example1.vb#1)] 
 
-### <a name="instance-methods"></a>Metody wystąpienia
+### <a name="instance-methods"></a>Metody wystąpień
 
 > [!IMPORTANT]
-> <xref:System.HashCode.ToHashCode> musi zostać wywołana najwyżej raz na każde wystąpienie programu <xref:System.HashCode>.
+> <xref:System.HashCode.ToHashCode>musi być wywoływana maksymalnie raz na wystąpienie <xref:System.HashCode>.
 
-Metody wystąpienia łączyć kody skrótów więcej niż ośmiu wartości.
+Metody instancji łączą kody skrótów zawierające więcej niż osiem wartości.
  
  [!code-csharp[System.HashCode.Structure#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.hashcode.structure/cs/example2.cs#1)]
  [!code-vb[System.HashCode.Structure#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.hashcode.structure/vb/example2.vb#1)]
 
-Metody wystąpienia także połączyć kody skrótów produkowane przez określony <xref:System.Collections.Generic.IEqualityComparer%601> implementacji.
+Metody wystąpienia łączą również kody skrótów tworzone przez określoną <xref:System.Collections.Generic.IEqualityComparer%601> implementację.
 
  [!code-csharp[System.HashCode.Structure#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.hashcode.structure/cs/example3.cs#1)]
  [!code-vb[System.HashCode.Structure#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.hashcode.structure/vb/example3.vb#1)]
 
-<xref:System.HashCode> Struktury muszą być przekazywane przez odwołanie do innych metod, ponieważ jest typem wartości.
+<xref:System.HashCode> Struktura musi być przesyłana przez odwołanie do innych metod, ponieważ jest to typ wartości.
  
  [!code-csharp[System.HashCode.Structure#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.hashcode.structure/cs/example4.cs#1)]
  [!code-vb[System.HashCode.Structure#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.hashcode.structure/vb/example4.vb#1)]
@@ -79,6 +82,9 @@ Metody wystąpienia także połączyć kody skrótów produkowane przez określo
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -89,9 +95,9 @@ Metody wystąpienia także połączyć kody skrótów produkowane przez określo
         <Parameter Name="value" Type="T" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ wartości do dodania do skrótu.</typeparam>
-        <param name="value">Wartość do dodania do skrótu.</param>
-        <summary>Dodaje jedną wartość skrótu.</summary>
+        <typeparam name="T">Typ wartości, która ma zostać dodana do kodu skrótu.</typeparam>
+        <param name="value">Wartość, która ma zostać dodana do kodu skrótu.</param>
+        <summary>Dodaje pojedynczą wartość do kodu skrótu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -111,6 +117,9 @@ Metody wystąpienia także połączyć kody skrótów produkowane przez określo
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Void</ReturnType>
       </ReturnValue>
@@ -122,11 +131,11 @@ Metody wystąpienia także połączyć kody skrótów produkowane przez określo
         <Parameter Name="comparer" Type="System.Collections.Generic.IEqualityComparer&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <typeparam name="T">Typ wartości do dodania do skrótu.</typeparam>
-        <param name="value">Wartość do dodania do skrótu.</param>
-        <param name="comparer"><see cref="T:System.Collections.Generic.IEqualityComparer`1" /> Służące do obliczania skrótu.
-Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual Basic), który będzie używany domyślny moduł porównujący równość dla <typeparamref name="T" />.</param>
-        <summary>Dodaje jedną wartość skrótu, określając typ, który zawiera kod funkcji skrótu.</summary>
+        <typeparam name="T">Typ wartości, która ma zostać dodana do kodu skrótu.</typeparam>
+        <param name="value">Wartość, która ma zostać dodana do kodu skrótu.</param>
+        <param name="comparer">, <see cref="T:System.Collections.Generic.IEqualityComparer`1" /> Aby użyć do obliczenia kodu skrótu.
+Ta wartość może być odwołaniem null (Nothing w Visual Basic), które będzie używać domyślnej opcji porównującej równość <typeparamref name="T" />dla.</param>
+        <summary>Dodaje pojedynczą wartość do kodu skrótu, określając typ, który dostarcza funkcję kodu skrótu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -146,6 +155,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -157,10 +169,10 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       </Parameters>
       <Docs>
         <typeparam name="T1">Typ wartości, aby dodać kod skrótu.</typeparam>
-        <param name="value1">Wartość do dodania do skrótu.</param>
-        <summary>Diffuses skrótu zwrócony przez określoną wartość.</summary>
+        <param name="value1">Wartość, która ma zostać dodana do kodu skrótu.</param>
+        <summary>Rozprasza kod skrótu zwrócony przez określoną wartość.</summary>
         <returns>Kod skrótu, który reprezentuje pojedynczą wartość.</returns>
-        <remarks>Niektóre struktur danych przyjęto założenie, że kody mieszania są rozpraszane w wielu dużych. Ta metoda poprawia jakość skrótu zwracane przez wartość i jest przydatne, gdy podstawowy typ danych to prosty, na przykład, wartość całkowitą.</remarks>
+        <remarks>W niektórych strukturach danych założono, że kody skrótów są rozpraszane przez duży zakres. Ta metoda poprawia jakość kodu skrótu zwracanego przez wartość i jest przydatna, gdy podstawowy typ danych jest prosty, na przykład wartość całkowita.</remarks>
       </Docs>
     </Member>
     <Member MemberName="Combine&lt;T1,T2&gt;">
@@ -179,6 +191,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -191,11 +206,11 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value2" Type="T2" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <summary>Łączy dwie wartości skrótu.</summary>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy dwie wartości w kod skrótu.</summary>
         <returns>Kod skrótu, który reprezentuje dwie wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -216,6 +231,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -230,14 +248,14 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value3" Type="T3" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <summary>Łączy trzy wartości skrótu.</summary>
-        <returns>Kod skrótu, który reprezentuje trzech wartości.</returns>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy trzy wartości w kod skrótu.</summary>
+        <returns>Kod skrótu, który reprezentuje trzy wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -257,6 +275,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -273,15 +294,15 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value4" Type="T4" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T4">Typ czwarta wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <param name="value4">Wartość czwartego połączyć do skrótu.</param>
-        <summary>Łączy cztery wartości skrótu.</summary>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T4">Typ czwartej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value4">Czwarta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy cztery wartości w kod skrótu.</summary>
         <returns>Kod skrótu, który reprezentuje cztery wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -302,6 +323,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
@@ -320,18 +344,18 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value5" Type="T5" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T4">Typ czwarta wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T5">Typ piątego wartości do połączenia w skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <param name="value4">Wartość czwartego połączyć do skrótu.</param>
-        <param name="value5">Wartość piątego połączyć do skrótu.</param>
-        <summary>Łączy pięciu wartości skrótu.</summary>
-        <returns>Kod skrótu, który reprezentuje pięciu wartości.</returns>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T4">Typ czwartej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T5">Typ piątej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value4">Czwarta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value5">Piąta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy pięć wartości w kod skrótu.</summary>
+        <returns>Kod skrótu, który reprezentuje pięć wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -350,6 +374,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -371,20 +398,20 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value6" Type="T6" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T4">Typ czwarta wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T5">Typ piątego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T6">Typ szóstego wartości do połączenia w skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <param name="value4">Wartość czwartego połączyć do skrótu.</param>
-        <param name="value5">Wartość piątego połączyć do skrótu.</param>
-        <param name="value6">Szósty wartość połączyć do skrótu.</param>
-        <summary>Łączy sześć wartości skrótu.</summary>
-        <returns>Kod skrótu, który reprezentuje sześciu wartości.</returns>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T4">Typ czwartej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T5">Typ piątej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T6">Typ szóstej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value4">Czwarta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value5">Piąta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value6">Szósta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy sześć wartości w kod skrótu.</summary>
+        <returns>Kod skrótu, który reprezentuje sześć wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -403,6 +430,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -426,22 +456,22 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value7" Type="T7" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T4">Typ czwarta wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T5">Typ piątego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T6">Typ szóstego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T7">Typ siódmego wartości do połączenia w skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <param name="value4">Wartość czwartego połączyć do skrótu.</param>
-        <param name="value5">Wartość piątego połączyć do skrótu.</param>
-        <param name="value6">Szósty wartość połączyć do skrótu.</param>
-        <param name="value7">Wartość siódmego połączyć do skrótu.</param>
-        <summary>Łączy siedmiu wartości skrótu.</summary>
-        <returns>Kod skrótu, który reprezentuje siedmiu wartości.</returns>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T4">Typ czwartej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T5">Typ piątej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T6">Typ szóstej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T7">Typ siódmej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value4">Czwarta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value5">Piąta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value6">Szósta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value7">Siódma wartość do połączenia w kodzie skrótu.</param>
+        <summary>Łączy siedem wartości w kod skrótu.</summary>
+        <returns>Kod skrótu, który reprezentuje siedem wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -460,6 +490,9 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       <AssemblyInfo>
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
       </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
@@ -485,24 +518,24 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <Parameter Name="value8" Type="T8" />
       </Parameters>
       <Docs>
-        <typeparam name="T1">Typ pierwsza wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T2">Typ druga wartość do łączenia się z kodem skrótu.</typeparam>
-        <typeparam name="T3">Typ trzecia wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T4">Typ czwarta wartość, aby połączyć się z kodem skrótu.</typeparam>
-        <typeparam name="T5">Typ piątego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T6">Typ szóstego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T7">Typ siódmego wartości do połączenia w skrótu.</typeparam>
-        <typeparam name="T8">Typ ósmego wartości do połączenia w skrótu.</typeparam>
-        <param name="value1">Pierwsza wartość do łączenia się z kodem skrótu.</param>
-        <param name="value2">Druga wartość do łączenia się z kodem skrótu.</param>
-        <param name="value3">Trzecia wartość połączyć do skrótu.</param>
-        <param name="value4">Wartość czwartego połączyć do skrótu.</param>
-        <param name="value5">Wartość piątego połączyć do skrótu.</param>
-        <param name="value6">Szósty wartość połączyć do skrótu.</param>
-        <param name="value7">Wartość siódmego połączyć do skrótu.</param>
-        <param name="value8">Wartość ósmego połączyć do skrótu.</param>
-        <summary>Łączy ośmiu wartości skrótu.</summary>
-        <returns>Kod skrótu, który reprezentuje ośmiu wartości.</returns>
+        <typeparam name="T1">Typ pierwszej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T2">Typ drugiej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T3">Typ trzeciej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T4">Typ czwartej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T5">Typ piątej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T6">Typ szóstej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T7">Typ siódmej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <typeparam name="T8">Typ ósmej wartości, która ma zostać połączona do kodu skrótu.</typeparam>
+        <param name="value1">Pierwsza wartość do połączenia w kodzie skrótu.</param>
+        <param name="value2">Druga wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value3">Trzecia wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value4">Czwarta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value5">Piąta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value6">Szósta wartość, która ma zostać połączona do kodu skrótu.</param>
+        <param name="value7">Siódma wartość do połączenia w kodzie skrótu.</param>
+        <param name="value8">Ósma wartość, która ma zostać połączona do kodu skrótu.</param>
+        <summary>Łączy osiem wartości w kod skrótu.</summary>
+        <returns>Kod skrótu, który reprezentuje osiem wartości.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -522,11 +555,14 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1">
+        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1;dotnet-plat-ext-3.0">
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1">
+        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1;dotnet-plat-ext-3.0">
           <AttributeName>System.Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes.", true)</AttributeName>
         </Attribute>
       </Attributes>
@@ -538,10 +574,10 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       </Parameters>
       <Docs>
         <param name="obj">Ignorowane.</param>
-        <summary>Ta metoda nie jest obsługiwane i nie powinna być wywoływana.</summary>
-        <returns>Ta metoda będzie zawsze zgłaszał <see cref="T:System.NotSupportedException" />.</returns>
+        <summary>Ta metoda nie jest obsługiwana i nie powinna być wywoływana.</summary>
+        <returns>Ta metoda zawsze generuje <see cref="T:System.NotSupportedException" />.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Zawsze generowany, gdy ta metoda jest wywoływana.</exception>
+        <exception cref="T:System.NotSupportedException">Zawsze generowane, gdy ta metoda jest wywoływana.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetHashCode">
@@ -560,11 +596,14 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <Attributes>
-        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1">
+        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1;dotnet-plat-ext-3.0">
           <AttributeName>System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)</AttributeName>
         </Attribute>
-        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1">
+        <Attribute FrameworkAlternate="netcore-3.0;netcore-2.1;netcore-2.2;netstandard-2.1;dotnet-plat-ext-3.0">
           <AttributeName>System.Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes. Use ToHashCode to retrieve the computed hash code.", true)</AttributeName>
         </Attribute>
       </Attributes>
@@ -573,10 +612,10 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Ta metoda nie jest obsługiwane i nie powinna być wywoływana.</summary>
-        <returns>Ta metoda będzie zawsze zgłaszał <see cref="T:System.NotSupportedException" />.</returns>
+        <summary>Ta metoda nie jest obsługiwana i nie powinna być wywoływana.</summary>
+        <returns>Ta metoda zawsze generuje <see cref="T:System.NotSupportedException" />.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotSupportedException">Zawsze generowany, gdy ta metoda jest wywoływana.</exception>
+        <exception cref="T:System.NotSupportedException">Zawsze generowane, gdy ta metoda jest wywoływana.</exception>
       </Docs>
     </Member>
     <Member MemberName="ToHashCode">
@@ -595,14 +634,17 @@ Ta wartość może być odwołaniem do wartości null (Nothing w języku Visual 
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.HashCode</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Oblicza końcowy skrótu po kolejnych <see cref="Overload:System.HashCode.Add" /> wywołania.</summary>
-        <returns>Obliczona wartość skrótu.</returns>
-        <remarks>Ta metoda musi zostać wywołana co najwyżej raz na wystąpienie <see cref="T:System.HashCode" />.</remarks>
+        <summary>Oblicza końcowy kod skrótu po kolejnych <see cref="Overload:System.HashCode.Add" /> wywołaniach.</summary>
+        <returns>Obliczony kod skrótu.</returns>
+        <remarks>Ta metoda musi być wywoływana tylko raz dla każdego wystąpienia <see cref="T:System.HashCode" />.</remarks>
       </Docs>
     </Member>
   </Members>

@@ -1,5 +1,5 @@
 <Type Name="LifetimeContext" FullName="System.Composition.Hosting.Core.LifetimeContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="83777aa7a78ab4e6309de80c934ef73bbabb1983" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63896519" /></Metadata><TypeSignature Language="C#" Value="public sealed class LifetimeContext : System.Composition.CompositionContext, IDisposable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a3000cd53598381030b5c97fb6d3a5b893f46130" /><Meta Name="ms.sourcegitcommit" Value="24f564114ee2fa9c63dbac1b25b82826cc4e320f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/25/2019" /><Meta Name="ms.locfileid" Value="68487728" /></Metadata><TypeSignature Language="C#" Value="public sealed class LifetimeContext : System.Composition.CompositionContext, IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit LifetimeContext extends System.Composition.CompositionContext implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Composition.Hosting.Core.LifetimeContext" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class LifetimeContext&#xA;Inherits CompositionContext&#xA;Implements IDisposable" />
@@ -26,9 +26,9 @@
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
-<xref:System.Composition.Hosting.Core.LifetimeContext> Obiektu to jednostka do udostępniania dla części udostępnionych. Ona kontroluje usuwania powiązanych części i może służyć do pobierania wystąpień, w ramach istniejących operacji tworzenia lub jako podstawy nowej operacji tworzenia. Kontekst poszczególnych okres istnienia może być oznaczony zawierać części, które są ograniczone przez konkretnego granice do udostępniania.
+<xref:System.Composition.Hosting.Core.LifetimeContext> Obiekt jest jednostką udostępniania dla części udostępnionych. Kontroluje usuwanie części powiązanych i może służyć do pobierania wystąpień, w ramach istniejącej operacji tworzenia kompozycji lub jako podstawa nowej operacji tworzenia kompozycji. Kontekst pojedynczego okresu istnienia może być oznaczony jako zawierający części, które są ograniczone przez określone granice udostępniania.
 
-Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu: udostępnionego wystąpienia, a powiązany wystąpieniach. Wystąpienie część udostępniona jest wolne od blokady odczytu i nie powoduje problemów, jeśli jest ona dodawana do podczas usuwania. Jest chroniony przez Trwa blokowanie pliku sam. W obszarze Ta blokada nieunikniony sposób nosi nazwę logiki aktywacji. Wystąpienie część powiązane są zawsze chronione przez zablokowanie <see langword="this" />i nigdy nie mają być zapisywane po usuwania. Wystąpienie część powiązanej jest ustawiona na <see langword="null" /> w ramach blokady w <xref:System.Composition.Hosting.Core.LifetimeContext.Dispose> metody. Zapisywanie zezwolono na po usuwania dla wystąpienia powiązanej części, efekt byłby w częściach możliwe do rozporządzania nie zostały udostępnione. Metodę dispose dla części powiązanej nazywa się poza blokady. 
+Ten obiekt zawiera dwa elementy niezależnie chronionego stanu udostępnionego: wystąpienia części udostępnionej i wystąpienia części powiązanej. Wystąpienie części udostępnionej jest odblokowane, czytelne i nie powoduje problemów, jeśli jest dodawane do podczas usuwania. Jest ona chroniona przed zablokowaniem. Logika aktywacji nie jest wywoływana w ramach tej blokady. Wystąpienie części powiązanej jest zawsze chronione przez blokowanie <see langword="this" />i nigdy nie powinno być zapisywane po usunięciu. Wystąpienie części powiązanej jest ustawione na <see langword="null" /> blokadę <xref:System.Composition.Hosting.Core.LifetimeContext.Dispose> w metodzie. Jeśli zapis jest dozwolony po usunięciu wystąpienia części powiązanej, może to spowodować, że nie wydano części niedozwolonych. Metoda Dispose w części powiązanej jest wywoływana poza blokadą. 
   
  ]]></format>
     </remarks>
@@ -57,9 +57,9 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
       </Parameters>
       <Docs>
         <param name="instance">Część.</param>
-        <summary>Wiąże okres istnienia możliwe do rozporządzania część tego kontekstu okresu istnienia.</summary>
+        <summary>Wiąże okres istnienia części jednorazowej z tym kontekstem okresu istnienia.</summary>
         <remarks></remarks>
-        <exception cref="T:System.ObjectDisposedException">Operacja została wykonana dla zlikwidowanego obiektu.</exception>
+        <exception cref="T:System.ObjectDisposedException">Operacja została wykonana na usuniętym obiekcie.</exception>
       </Docs>
     </Member>
     <Member MemberName="AllocateSharingId">
@@ -82,7 +82,7 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Generuje identyfikator, który może służyć do zlokalizowania udostępnionego wystąpienia.</summary>
+        <summary>Generuje identyfikator, który może być używany do lokalizowania wystąpień części udostępnionej.</summary>
         <returns>Nowy unikatowy identyfikator.</returns>
         <remarks></remarks>
       </Docs>
@@ -110,7 +110,7 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Udostępnia kontekst okres istnienia, jak i wszystkie wystąpienia części powiązane z nim.</summary>
+        <summary>Zwalnia kontekst okresu istnienia i powiązane z nim wystąpienia części.</summary>
         <remarks></remarks>
       </Docs>
     </Member>
@@ -136,14 +136,14 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
         <Parameter Name="sharingBoundary" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="sharingBoundary">Granicy udostępniania można znaleźć w kontekście okres istnienia.</param>
-        <summary>Umożliwia znalezienie największą kontekstu okres istnienia w obrębie całego określonymi granicami udostępniania.</summary>
-        <returns>Największą okres istnienia kontekst w obrębie całego określonymi granicami udostępniania.</returns>
+        <param name="sharingBoundary">Granica udostępniania, aby znaleźć kontekst czasu istnienia w programie.</param>
+        <summary>Znajduje najszerszego kontekstu okresu istnienia we wszystkich określonych granicach udostępniania.</summary>
+        <returns>Najszerszy kontekst okresu istnienia we wszystkich określonych granicach udostępniania.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Obecnie katalog główny nie może być granicą.  
+ Obecnie element główny nie może być granicą.  
   
  ]]></format>
         </remarks>
@@ -173,16 +173,16 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
         <Parameter Name="creator" Type="System.Composition.Hosting.Core.CompositeActivator" />
       </Parameters>
       <Docs>
-        <param name="sharingId">Identyfikator część udostępniona.</param>
-        <param name="operation">Operacja, w której chcesz utworzyć element, jeśli to konieczne.</param>
-        <param name="creator">Aktywator, która może aktywować nowe wystąpienie części, jeśli to konieczne.</param>
-        <summary>Pobiera wystąpienie część udostępniona, o określonym identyfikatorze lub — jeśli nie można odnaleźć wystąpienia części, tworzy i udostępnia wystąpienia części, przy użyciu określonego autora w ramach określonej operacji.</summary>
-        <returns>Część nowego lub pobrana.</returns>
+        <param name="sharingId">Identyfikator części udostępnionej.</param>
+        <param name="operation">Operacja, w której należy utworzyć część, w razie potrzeby.</param>
+        <param name="creator">Aktywator, który może uaktywnić nowe wystąpienie części, w razie potrzeby.</param>
+        <summary>Pobiera wystąpienie części udostępnionej o określonym IDENTYFIKATORze lub jeśli nie można znaleźć wystąpienia części, tworzy i udostępnia wystąpienie części przy użyciu określonego twórcy w ramach określonej operacji.</summary>
+        <returns>Nowy lub pobrany składnik.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wolne od blokady Jeśli wystąpienie część już istnieje. Jeśli wystąpienie część musi zostać utworzona, blokadę nastąpi przejście, będzie serializować innych zapisy, które używają tej metody (współbieżnego odczytywania będą nadal bezpiecznego i wolne od blokady). Ważne jest, że kompozycji, a zatem pozyskiwania blokady jest ściśle liścia do-katalog główny w drzewie okresu istnienia.  
+ Ta metoda jest blokowana, jeśli wystąpienie części już istnieje. W przypadku wystąpienia części należy utworzyć blokadę, która będzie serializować inne zapisy korzystające z tej metody (w dalszym ciągu będą bezpieczne i zablokowane). Ważne jest, aby kompozycja i w ten sposób zablokowały blokadę, w drzewie okresu istnienia jest ściśle dostęp do katalogu głównego.  
   
  ]]></format>
         </remarks>
@@ -208,8 +208,8 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca reprezentację ciągu tego <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiektu.</summary>
-        <returns>Reprezentacja ciągu <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiektu.</returns>
+        <summary>Zwraca ciąg reprezentujący ten <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiekt.</summary>
+        <returns>Ciąg reprezentujący ten <see cref="T:System.Composition.Hosting.Core.LifetimeContext" /> obiekt.</returns>
         <remarks></remarks>
       </Docs>
     </Member>
@@ -237,10 +237,11 @@ Ten obiekt zawiera dwie części niezależnie chronionego udostępnionego stanu:
       </Parameters>
       <Docs>
         <param name="contract">Kontrakt.</param>
-        <param name="export">Po powrocie z tej metody zawiera wystąpienie kontraktu, jeśli jest dostępna; w przeciwnym razie <see langword="null" />.</param>
-        <summary>Pobiera wystąpienie umowy w kontekście kompozycji.</summary>
-        <returns><see langword="true" /> Jeśli pobrano wystąpienie; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="export">Po powrocie tej metody program zawiera wystąpienie kontraktu, jeśli jest dostępne; w przeciwnym razie. <see langword="null" /></param>
+        <summary>Pobiera wystąpienie kontraktu z kontekstu kompozycji.</summary>
+        <returns><see langword="true" />Jeśli wystąpienie zostało pobrane; w przeciwnym razie. <see langword="false" /></returns>
         <remarks></remarks>
+        <exception cref="T:System.Composition.Hosting.CompositionFailedException">Nie znaleziono eksportu dla <paramref name="contract" />.</exception>
       </Docs>
     </Member>
   </Members>

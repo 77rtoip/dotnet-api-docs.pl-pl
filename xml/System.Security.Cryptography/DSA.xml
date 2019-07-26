@@ -1,5 +1,5 @@
 <Type Name="DSA" FullName="System.Security.Cryptography.DSA">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="6ac44eda268d88916404c0d78df632e3adcc6208" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58680785" /></Metadata><TypeSignature Language="C#" Value="public abstract class DSA : System.Security.Cryptography.AsymmetricAlgorithm" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5810ffcf2a89ddbe031f4fb21f191c68c49810bc" /><Meta Name="ms.sourcegitcommit" Value="24f564114ee2fa9c63dbac1b25b82826cc4e320f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/25/2019" /><Meta Name="ms.locfileid" Value="68488150" /></Metadata><TypeSignature Language="C#" Value="public abstract class DSA : System.Security.Cryptography.AsymmetricAlgorithm" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit DSA extends System.Security.Cryptography.AsymmetricAlgorithm" />
   <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.DSA" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class DSA&#xA;Inherits AsymmetricAlgorithm" />
@@ -32,19 +32,23 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Reprezentuje abstrakcyjna klasa bazowa, z których wszystkie implementacji algorytmu Digital Signature Algorithm (<see cref="T:System.Security.Cryptography.DSA" />) musi dziedziczyć.</summary>
+    <summary>Reprezentuje abstrakcyjną klasę bazową, z której wszystkie implementacje algorytmu podpisu cyfrowego<see cref="T:System.Security.Cryptography.DSA" />() muszą dziedziczyć.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Możesz użyć <xref:System.Security.Cryptography.DSA> klasa i klasy pochodne, tworzenie podpisów cyfrowych, które pomagają w ochronie integralność danych.  <xref:System.Security.Cryptography.DSACryptoServiceProvider> Dostarcza implementację tej klasy.  
+ <xref:System.Security.Cryptography.DSA> Klasy i klasy pochodne mogą służyć do tworzenia podpisów cyfrowych, które pomagają chronić integralność danych.  <xref:System.Security.Cryptography.DSACryptoServiceProvider> Zawiera implementację tej klasy.  
   
- Aby użyć systemu klucza publicznego do cyfrowego podpisywania wiadomości, nadawca najpierw dotyczy funkcji skrótu wiadomości, aby utworzyć skrót wiadomości. Nadawca następnie szyfruje skrót wiadomości przy użyciu klucza prywatnego przez nadawcę do tworzenia podpisu nadawcy. Po odebraniu wiadomości i podpisie, należy określić odbiorcę odszyfrowuje podpis przy użyciu klucza publicznego nadawcy, aby odzyskać skrót wiadomości i wyznacza wartość skrótu wiadomości przy użyciu tego samego algorytmu wyznaczania wartości skrótu używanym przez nadawcę. Odebranie skrót wiadomości, że odbiorca oblicza dokładnie pasuje skrót wiadomości od nadawcy, odbiorcy można założyć, że wiadomość nie została zmodyfikowana przesyłanych. Należy pamiętać, że sygnatury można sprawdzić przez nikogo, ponieważ klucz publiczny nadawcy jest popularną wiedzę.  
+ Aby użyć systemu klucza publicznego do cyfrowego podpisywania wiadomości, nadawca najpierw stosuje funkcję skrótu do wiadomości, aby utworzyć skrót wiadomości. Nadawca szyfruje następnie skrót wiadomości z kluczem prywatnym nadawcy w celu utworzenia podpisu osobistego nadawcy. Po odebraniu komunikatu i podpisu odbiorca odszyfrowuje podpis przy użyciu klucza publicznego nadawcy w celu odzyskania skrótu wiadomości i mieszania komunikatu przy użyciu tego samego algorytmu wyznaczania wartości skrótu, który został użyty przez nadawcę. Jeśli skrót wiadomości, który jest obliczany przez odbiorcę dokładnie pasuje do skrótu wiadomości otrzymanego od nadawcy, odbiorca może założyć, że komunikat nie został zmodyfikowany podczas przesyłania. Należy pamiętać, że podpis może być zweryfikowany przez każdego użytkownika, ponieważ klucz publiczny nadawcy jest powszechną wiedzą.  
   
- Dostępne są nowsze asymetryczne algorytmy. Należy rozważyć użycie <xref:System.Security.Cryptography.RSA> klasy <xref:System.Security.Cryptography.ECDsa> klasy lub <xref:System.Security.Cryptography.ECDiffieHellman> klasy zamiast <xref:System.Security.Cryptography.DSA> klasy. Użyj <xref:System.Security.Cryptography.DSA> tylko na potrzeby utrzymywania zgodności z starszych aplikacji i danych.  
+> [!IMPORTANT]
+> Dostępne są nowsze algorytmy asymetryczne. Rozważ użycie <xref:System.Security.Cryptography.RSA> klasy <xref:System.Security.Cryptography.ECDsa> lub klasy zamiast <xref:System.Security.Cryptography.DSA> klasy. Służy <xref:System.Security.Cryptography.DSA> tylko do zgodności ze starszymi aplikacjami i danymi.  
   
- Ten algorytm obsługuje długości kluczy od 512 bitów do długości 1024 bitów rosnąco co 64-bitowy.  
-  
+ Istnieje dwie różne wersje algorytmu DSA.
+Oryginalny formularz, opisany w standardzie FIPS 186-2, wymaga użycia algorytmu SHA-1 jako algorytm wyznaczania wartości skrótu i obsługuje długości kluczy z 512 bitów do 1024 bitów w przyrostach wynoszących 64 bitów.
+Zaktualizowana wersja algorytmu została opisana w standardzie FIPS 186-3, który umożliwia korzystanie z rodziny SHA-2 algorytmów wyznaczania wartości skrótu i dodanie obsługi kluczy bitowych 2048 oraz 3072 klucze bitowe.
+Nie wszystkie pochodne implementacje tego typu nie obsługują rozszerzeń FIPS 186-3 dla DSA. Pomoc techniczna może zostać wykryta <xref:System.Security.Cryptography.AsymmetricAlgorithm.LegalKeySizes> za pośrednictwem właściwości.
+ 
  ]]></format>
     </remarks>
     <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
@@ -86,7 +90,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tworzy obiekt kryptograficzne używane do wykonywania algorytmu asymetrycznego.</summary>
+        <summary>Tworzy obiekt kryptograficzny używany do wykonywania algorytmu asymetrycznego.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Create">
@@ -124,8 +128,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy domyślny obiekt kryptograficzne używane do wykonywania algorytmu asymetrycznego.</summary>
-        <returns>Obiekt kryptograficzne używane do wykonywania algorytmu asymetrycznego.</returns>
+        <summary>Tworzy domyślny obiekt kryptograficzny używany do wykonywania algorytmu asymetrycznego.</summary>
+        <returns>Obiekt kryptograficzny używany do wykonywania algorytmu asymetrycznego.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
       </Docs>
@@ -159,10 +163,10 @@
       </Parameters>
       <Docs>
         <param name="keySizeInBits">Rozmiar klucza w bitach.</param>
-        <summary>Tworzy nowy klucz DSA tymczasowych z określonego rozmiaru klucza.</summary>
-        <returns>Efemeryczne DSA klucza z kluczem o określonej długości.</returns>
+        <summary>Tworzy nowy klucz tymczasowych DSA o określonym rozmiarze klucza.</summary>
+        <returns>Nowy klucz tymczasowych DSA o określonym rozmiarze klucza.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="keySizeInBits" /> różni się od <see cref="P:System.Security.Cryptography.AsymmetricAlgorithm.KeySize" />.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="keySizeInBits" />nie jest dozwolony przez <see cref="P:System.Security.Cryptography.AsymmetricAlgorithm.LegalKeySizes" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Create">
@@ -194,8 +198,8 @@
       </Parameters>
       <Docs>
         <param name="parameters">Parametry <see cref="T:System.Security.Cryptography.DSA" /> algorytmu.</param>
-        <summary>Tworzy nowy klucz DSA tymczasowych z określonymi parametrami klucza DSA.</summary>
-        <returns>Efemeryczne DSA klucza.</returns>
+        <summary>Tworzy nowy klucz tymczasowych DSA z określonymi parametrami klucza DSA.</summary>
+        <returns>Nowy klucz tymczasowych DSA.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -236,14 +240,14 @@
         <Parameter Name="algName" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="algName">Nazwa określonej implementacji <see cref="T:System.Security.Cryptography.DSA" /> do użycia.</param>
-        <summary>Tworzy określony obiekt kryptograficzne używane do wykonywania algorytmu asymetrycznego.</summary>
-        <returns>Obiekt kryptograficzne używane do wykonywania algorytmu asymetrycznego.</returns>
+        <param name="algName">Nazwa konkretnej implementacji <see cref="T:System.Security.Cryptography.DSA" /> do użycia.</param>
+        <summary>Tworzy określony obiekt kryptograficzny używany do wykonywania algorytmu asymetrycznego.</summary>
+        <returns>Obiekt kryptograficzny używany do wykonywania algorytmu asymetrycznego.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać <xref:System.Security.Cryptography.DSA>, użyj nazwy System.Security.Cryptography.DSA.  
+ W <xref:System.Security.Cryptography.DSA>przypadku programu należy użyć nazwy System. Security. Cryptography. DSA.  
   
  ]]></format>
         </remarks>
@@ -282,8 +286,8 @@
         <Parameter Name="rgbHash" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="rgbHash">Dane, które były podpisane.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej tworzy <see cref="T:System.Security.Cryptography.DSA" /> podpisu dla określonych danych.</summary>
+        <param name="rgbHash">Dane, które mają być podpisane.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, program <see cref="T:System.Security.Cryptography.DSA" /> tworzy sygnaturę dla określonych danych.</summary>
         <returns>Podpis cyfrowy dla określonych danych.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
@@ -321,8 +325,8 @@
         <Parameter Name="includePrivateParameters" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="includePrivateParameters"><see langword="true" /> Aby uwzględnić parametry prywatny; w przeciwnym razie <see langword="false" />.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, eksportuje <see cref="T:System.Security.Cryptography.DSAParameters" />.</summary>
+        <param name="includePrivateParameters"><see langword="true" />Aby uwzględnić parametry prywatne; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, eksportuje <see cref="T:System.Security.Cryptography.DSAParameters" />.</summary>
         <returns>Parametry <see cref="T:System.Security.Cryptography.DSA" />.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
@@ -360,11 +364,11 @@
         <Parameter Name="xmlString" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="xmlString">Ciąg XML na potrzeby rekonstrukcji <see cref="T:System.Security.Cryptography.DSA" /> obiektu.</param>
+        <param name="xmlString">Ciąg XML, który ma zostać użyty do odtworzenia <see cref="T:System.Security.Cryptography.DSA" /> obiektu.</param>
         <summary>Rekonstruuje <see cref="T:System.Security.Cryptography.DSA" /> obiekt z ciągu XML.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="xmlString" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Security.Cryptography.CryptographicException">Format <paramref name="xmlString" /> parametr jest nieprawidłowy.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="xmlString" /></exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Format <paramref name="xmlString" /> parametru jest nieprawidłowy.</exception>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
       </Docs>
     </Member>
@@ -408,12 +412,12 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="data">Strumień danych binarnych do wyznaczania wartości skrótu.</param>
-        <param name="hashAlgorithm">Algorytm, który ma być używany do tworzenia skrótu danych.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, oblicza wartość skrótu określonego strumienia binarnego, przy użyciu określonego algorytmu wyznaczania wartości skrótu.</summary>
-        <returns>Dane w formie skrótu.</returns>
+        <param name="data">Strumień binarny do mieszania.</param>
+        <param name="hashAlgorithm">Algorytm używany do mieszania danych.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, oblicza wartość skrótu określonego strumienia binarnego przy użyciu określonego algorytmu wyznaczania wartości skrótu.</summary>
+        <returns>Dane zmieszane.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotImplementedException">Klasy pochodne muszą przesłaniać tę metodę.</exception>
+        <exception cref="T:System.NotImplementedException">Klasa pochodna musi przesłonić tę metodę.</exception>
       </Docs>
     </Member>
     <Member MemberName="HashData">
@@ -448,14 +452,82 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="3" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="data">Dane, aby zostać obliczona wartość skrótu.</param>
-        <param name="offset">Indeks pierwszego bajtu w <paramref name="data" /> który ma zostać obliczona wartość skrótu.</param>
-        <param name="count">Liczba bajtów do wyznaczania wartości skrótu.</param>
-        <param name="hashAlgorithm">Algorytm, który ma być używany do tworzenia skrótu danych.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, oblicza wartość skrótu określoną część tablicy bajtów przy użyciu określonego algorytmu wyznaczania wartości skrótu.</summary>
-        <returns>Dane w formie skrótu.</returns>
+        <param name="data">Dane, które mają zostać zmieszane.</param>
+        <param name="offset">Indeks pierwszego bajtu w <paramref name="data" /> , który ma zostać poddany skrótowi.</param>
+        <param name="count">Liczba bajtów do skrótu.</param>
+        <param name="hashAlgorithm">Algorytm używany do mieszania danych.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, oblicza wartość skrótu określonej części tablicy bajtowej przy użyciu określonego algorytmu wyznaczania wartości skrótu.</summary>
+        <returns>Dane zmieszane.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.NotImplementedException">Klasy pochodne muszą przesłaniać tę metodę.</exception>
+        <exception cref="T:System.NotImplementedException">Klasa pochodna musi przesłonić tę metodę.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="ImportEncryptedPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override void ImportEncryptedPkcs8PrivateKey (ReadOnlySpan&lt;byte&gt; passwordBytes, ReadOnlySpan&lt;byte&gt; source, out int bytesRead);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ImportEncryptedPkcs8PrivateKey(valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; passwordBytes, valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; source, [out] int32&amp; bytesRead) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan{System.Byte},System.ReadOnlySpan{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ImportEncryptedPkcs8PrivateKey (passwordBytes As ReadOnlySpan(Of Byte), source As ReadOnlySpan(Of Byte), ByRef bytesRead As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ImportEncryptedPkcs8PrivateKey(ReadOnlySpan&lt;System::Byte&gt; passwordBytes, ReadOnlySpan&lt;System::Byte&gt; source, [Runtime::InteropServices::Out] int % bytesRead);" />
+      <MemberSignature Language="F#" Value="override this.ImportEncryptedPkcs8PrivateKey : ReadOnlySpan&lt;byte&gt; * ReadOnlySpan&lt;byte&gt; *  -&gt; unit" Usage="dSA.ImportEncryptedPkcs8PrivateKey (passwordBytes, source, bytesRead)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="passwordBytes" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="source" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="1" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="2" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="passwordBytes">To be added.</param>
+        <param name="source">To be added.</param>
+        <param name="bytesRead">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImportEncryptedPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override void ImportEncryptedPkcs8PrivateKey (ReadOnlySpan&lt;char&gt; password, ReadOnlySpan&lt;byte&gt; source, out int bytesRead);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ImportEncryptedPkcs8PrivateKey(valuetype System.ReadOnlySpan`1&lt;char&gt; password, valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; source, [out] int32&amp; bytesRead) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.ImportEncryptedPkcs8PrivateKey(System.ReadOnlySpan{System.Char},System.ReadOnlySpan{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ImportEncryptedPkcs8PrivateKey (password As ReadOnlySpan(Of Char), source As ReadOnlySpan(Of Byte), ByRef bytesRead As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ImportEncryptedPkcs8PrivateKey(ReadOnlySpan&lt;char&gt; password, ReadOnlySpan&lt;System::Byte&gt; source, [Runtime::InteropServices::Out] int % bytesRead);" />
+      <MemberSignature Language="F#" Value="override this.ImportEncryptedPkcs8PrivateKey : ReadOnlySpan&lt;char&gt; * ReadOnlySpan&lt;byte&gt; *  -&gt; unit" Usage="dSA.ImportEncryptedPkcs8PrivateKey (password, source, bytesRead)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="password" Type="System.ReadOnlySpan&lt;System.Char&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="source" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="1" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="2" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="password">To be added.</param>
+        <param name="source">To be added.</param>
+        <param name="bytesRead">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <Member MemberName="ImportParameters">
@@ -491,9 +563,73 @@
       </Parameters>
       <Docs>
         <param name="parameters">Parametry <see cref="T:System.Security.Cryptography.DSA" />.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, importuje określonego <see cref="T:System.Security.Cryptography.DSAParameters" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, importuje <see cref="T:System.Security.Cryptography.DSAParameters" />określony.</summary>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
+      </Docs>
+    </Member>
+    <Member MemberName="ImportPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override void ImportPkcs8PrivateKey (ReadOnlySpan&lt;byte&gt; source, out int bytesRead);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ImportPkcs8PrivateKey(valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; source, [out] int32&amp; bytesRead) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.ImportPkcs8PrivateKey(System.ReadOnlySpan{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ImportPkcs8PrivateKey (source As ReadOnlySpan(Of Byte), ByRef bytesRead As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ImportPkcs8PrivateKey(ReadOnlySpan&lt;System::Byte&gt; source, [Runtime::InteropServices::Out] int % bytesRead);" />
+      <MemberSignature Language="F#" Value="override this.ImportPkcs8PrivateKey : ReadOnlySpan&lt;byte&gt; *  -&gt; unit" Usage="dSA.ImportPkcs8PrivateKey (source, bytesRead)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="source">To be added.</param>
+        <param name="bytesRead">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="ImportSubjectPublicKeyInfo">
+      <MemberSignature Language="C#" Value="public override void ImportSubjectPublicKeyInfo (ReadOnlySpan&lt;byte&gt; source, out int bytesRead);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance void ImportSubjectPublicKeyInfo(valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; source, [out] int32&amp; bytesRead) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.ImportSubjectPublicKeyInfo(System.ReadOnlySpan{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Sub ImportSubjectPublicKeyInfo (source As ReadOnlySpan(Of Byte), ByRef bytesRead As Integer)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override void ImportSubjectPublicKeyInfo(ReadOnlySpan&lt;System::Byte&gt; source, [Runtime::InteropServices::Out] int % bytesRead);" />
+      <MemberSignature Language="F#" Value="override this.ImportSubjectPublicKeyInfo : ReadOnlySpan&lt;byte&gt; *  -&gt; unit" Usage="dSA.ImportSubjectPublicKeyInfo (source, bytesRead)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Void</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="source" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="source">To be added.</param>
+        <param name="bytesRead">To be added.</param>
+        <summary>To be added.</summary>
+        <remarks>To be added.</remarks>
       </Docs>
     </Member>
     <MemberGroup MemberName="SignData">
@@ -503,7 +639,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Oblicza wartość skrótu określone dane i podpisuje go.</summary>
+        <summary>Oblicza wartość skrótu określonych danych i podpisuje ją.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="SignData">
@@ -536,12 +672,12 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="data">Dane wejściowe, dla których można obliczyć wartość skrótu.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu służące do tworzenia wartości skrótu.</param>
-        <summary>Oblicza wartość skrótu określonej tablicy bajtów przy użyciu określonego algorytmu skrótu i podpisuje wynikowy wartość skrótu.</summary>
+        <param name="data">Dane wejściowe, dla których ma zostać obliczona wartość skrótu.</param>
+        <param name="hashAlgorithm">Algorytm skrótu używany do tworzenia wartości skrótu.</param>
+        <summary>Oblicza wartość skrótu określonej tablicy bajtów przy użyciu określonego algorytmu wyznaczania wartości skrótu i podpisuje wynikową wartość skrótu.</summary>
         <returns>Podpis DSA dla określonych danych.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
       </Docs>
     </Member>
@@ -575,12 +711,12 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="data">Strumień wejściowy, którego można obliczyć wartość skrótu.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu służące do tworzenia wartości skrótu.</param>
-        <summary>Oblicza wartość skrótu określonego strumienia za pomocą określonego algorytmu skrótu i podpisuje wynikowy wartość skrótu.</summary>
+        <param name="data">Strumień wejściowy, dla którego ma zostać obliczona wartość skrótu.</param>
+        <param name="hashAlgorithm">Algorytm skrótu używany do tworzenia wartości skrótu.</param>
+        <summary>Oblicza wartość skrótu określonego strumienia przy użyciu określonego algorytmu wyznaczania wartości skrótu i podpisuje wynikową wartość skrótu.</summary>
         <returns>Podpis DSA dla określonych danych.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
       </Docs>
     </Member>
@@ -616,22 +752,22 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="3" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="data">Dane wejściowe, dla których można obliczyć wartość skrótu.</param>
-        <param name="offset">Przesunięcie do tablicy, od którego należy rozpocząć korzystanie z danych.</param>
-        <param name="count">Liczba bajtów w tablicy można użyć jako danych.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu służące do tworzenia wartości skrótu.</param>
-        <summary>Oblicza wartość skrótu części określonej tablicy bajtów przy użyciu określonego algorytmu skrótu i podpisuje wynikowy wartość skrótu.</summary>
+        <param name="data">Dane wejściowe, dla których ma zostać obliczona wartość skrótu.</param>
+        <param name="offset">Przesunięcie do tablicy, w której chcesz rozpocząć korzystanie z danych.</param>
+        <param name="count">Liczba bajtów w tablicy, które mają być używane jako dane.</param>
+        <param name="hashAlgorithm">Algorytm skrótu używany do tworzenia wartości skrótu.</param>
+        <summary>Oblicza wartość skrótu części określonej tablicy bajtów przy użyciu określonego algorytmu wyznaczania wartości skrótu i podpisuje wynikową wartość skrótu.</summary>
         <returns>Podpis DSA dla określonych danych.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> jest mniejsza niż zero.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" />jest mniejsza od zera.  
   
 —lub— 
- <paramref name="count" /> jest mniejsza niż zero.  
+ <paramref name="count" />jest mniejsza od zera.  
   
 —lub— 
- <paramref name="offset" /> + <paramref name="count" /> -1 powoduje indeksu, który jest wyższy niż górna granica <paramref name="data" />.</exception>
+ <paramref name="offset" /> + <paramref name="count" />-1 powoduje, że indeks wykracza poza górną granicę <paramref name="data" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="ToXmlString">
@@ -666,9 +802,9 @@
         <Parameter Name="includePrivateParameters" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="includePrivateParameters"><see langword="true" /> Aby uwzględnić parametry prywatny; w przeciwnym razie <see langword="false" />.</param>
+        <param name="includePrivateParameters"><see langword="true" />Aby uwzględnić parametry prywatne; w przeciwnym razie. <see langword="false" /></param>
         <summary>Tworzy i zwraca reprezentację ciągu XML bieżącego <see cref="T:System.Security.Cryptography.DSA" /> obiektu.</summary>
-        <returns>Ciąg XML bieżącego kodowania <see cref="T:System.Security.Cryptography.DSA" /> obiektu.</returns>
+        <returns>Kodowanie ciągu XML bieżącego <see cref="T:System.Security.Cryptography.DSA" /> obiektu.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
       </Docs>
@@ -701,7 +837,161 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="2" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="hash">To be added.</param>
+        <param name="hash">Skrót do podpisania.</param>
+        <param name="destination">Zakres bajtów do odebrania podpisu.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano.</param>
+        <summary>Próbuje utworzyć podpis DSA dla określonego skrótu do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />aby otrzymać wynik; w przeciwnym razie.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Domyślną implementacją tej metody jest wywołanie <xref:System.Security.Cryptography.DSA.CreateSignature(System.Byte[])> i skopiowanie wyniku do. `destination`
+Typy pochodne powinny przesłaniać tę metodę, aby uniknąć pośredniego tworzenia tablicy.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">To wystąpienie reprezentuje tylko klucz publiczny.
+
+—lub—
+
+Typ implementacji obsługuje tylko starszą wersję DSA (FIPS 186-2) i <paramref name="hash" /> nie jest wartością 20-bajtową.
+
+—lub—
+
+Tworzenie podpisu nie powiodło się.</exception>
+      </Docs>
+    </Member>
+    <Member MemberName="TryExportEncryptedPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override bool TryExportEncryptedPkcs8PrivateKey (ReadOnlySpan&lt;byte&gt; passwordBytes, System.Security.Cryptography.PbeParameters pbeParameters, Span&lt;byte&gt; destination, out int bytesWritten);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool TryExportEncryptedPkcs8PrivateKey(valuetype System.ReadOnlySpan`1&lt;unsigned int8&gt; passwordBytes, class System.Security.Cryptography.PbeParameters pbeParameters, valuetype System.Span`1&lt;unsigned int8&gt; destination, [out] int32&amp; bytesWritten) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan{System.Byte},System.Security.Cryptography.PbeParameters,System.Span{System.Byte},System.Int32@)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool TryExportEncryptedPkcs8PrivateKey(ReadOnlySpan&lt;System::Byte&gt; passwordBytes, System::Security::Cryptography::PbeParameters ^ pbeParameters, Span&lt;System::Byte&gt; destination, [Runtime::InteropServices::Out] int % bytesWritten);" />
+      <MemberSignature Language="F#" Value="override this.TryExportEncryptedPkcs8PrivateKey : ReadOnlySpan&lt;byte&gt; * System.Security.Cryptography.PbeParameters * Span&lt;byte&gt; *  -&gt; bool" Usage="dSA.TryExportEncryptedPkcs8PrivateKey (passwordBytes, pbeParameters, destination, bytesWritten)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="passwordBytes" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="pbeParameters" Type="System.Security.Cryptography.PbeParameters" Index="1" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="destination" Type="System.Span&lt;System.Byte&gt;" Index="2" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="passwordBytes">To be added.</param>
+        <param name="pbeParameters">To be added.</param>
+        <param name="destination">To be added.</param>
+        <param name="bytesWritten">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryExportEncryptedPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override bool TryExportEncryptedPkcs8PrivateKey (ReadOnlySpan&lt;char&gt; password, System.Security.Cryptography.PbeParameters pbeParameters, Span&lt;byte&gt; destination, out int bytesWritten);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool TryExportEncryptedPkcs8PrivateKey(valuetype System.ReadOnlySpan`1&lt;char&gt; password, class System.Security.Cryptography.PbeParameters pbeParameters, valuetype System.Span`1&lt;unsigned int8&gt; destination, [out] int32&amp; bytesWritten) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.TryExportEncryptedPkcs8PrivateKey(System.ReadOnlySpan{System.Char},System.Security.Cryptography.PbeParameters,System.Span{System.Byte},System.Int32@)" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool TryExportEncryptedPkcs8PrivateKey(ReadOnlySpan&lt;char&gt; password, System::Security::Cryptography::PbeParameters ^ pbeParameters, Span&lt;System::Byte&gt; destination, [Runtime::InteropServices::Out] int % bytesWritten);" />
+      <MemberSignature Language="F#" Value="override this.TryExportEncryptedPkcs8PrivateKey : ReadOnlySpan&lt;char&gt; * System.Security.Cryptography.PbeParameters * Span&lt;byte&gt; *  -&gt; bool" Usage="dSA.TryExportEncryptedPkcs8PrivateKey (password, pbeParameters, destination, bytesWritten)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="password" Type="System.ReadOnlySpan&lt;System.Char&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="pbeParameters" Type="System.Security.Cryptography.PbeParameters" Index="1" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="destination" Type="System.Span&lt;System.Byte&gt;" Index="2" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="password">To be added.</param>
+        <param name="pbeParameters">To be added.</param>
+        <param name="destination">To be added.</param>
+        <param name="bytesWritten">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryExportPkcs8PrivateKey">
+      <MemberSignature Language="C#" Value="public override bool TryExportPkcs8PrivateKey (Span&lt;byte&gt; destination, out int bytesWritten);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool TryExportPkcs8PrivateKey(valuetype System.Span`1&lt;unsigned int8&gt; destination, [out] int32&amp; bytesWritten) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.TryExportPkcs8PrivateKey(System.Span{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function TryExportPkcs8PrivateKey (destination As Span(Of Byte), ByRef bytesWritten As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool TryExportPkcs8PrivateKey(Span&lt;System::Byte&gt; destination, [Runtime::InteropServices::Out] int % bytesWritten);" />
+      <MemberSignature Language="F#" Value="override this.TryExportPkcs8PrivateKey : Span&lt;byte&gt; *  -&gt; bool" Usage="dSA.TryExportPkcs8PrivateKey (destination, bytesWritten)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destination" Type="System.Span&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
+        <param name="destination">To be added.</param>
+        <param name="bytesWritten">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
+        <remarks>To be added.</remarks>
+      </Docs>
+    </Member>
+    <Member MemberName="TryExportSubjectPublicKeyInfo">
+      <MemberSignature Language="C#" Value="public override bool TryExportSubjectPublicKeyInfo (Span&lt;byte&gt; destination, out int bytesWritten);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig virtual instance bool TryExportSubjectPublicKeyInfo(valuetype System.Span`1&lt;unsigned int8&gt; destination, [out] int32&amp; bytesWritten) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.Security.Cryptography.DSA.TryExportSubjectPublicKeyInfo(System.Span{System.Byte},System.Int32@)" />
+      <MemberSignature Language="VB.NET" Value="Public Overrides Function TryExportSubjectPublicKeyInfo (destination As Span(Of Byte), ByRef bytesWritten As Integer) As Boolean" />
+      <MemberSignature Language="C++ CLI" Value="public:&#xA; override bool TryExportSubjectPublicKeyInfo(Span&lt;System::Byte&gt; destination, [Runtime::InteropServices::Out] int % bytesWritten);" />
+      <MemberSignature Language="F#" Value="override this.TryExportSubjectPublicKeyInfo : Span&lt;byte&gt; *  -&gt; bool" Usage="dSA.TryExportSubjectPublicKeyInfo (destination, bytesWritten)" />
+      <MemberType>Method</MemberType>
+      <AssemblyInfo>
+        <AssemblyName>System.Security.Cryptography.Algorithms</AssemblyName>
+        <AssemblyVersion>4.3.1.0</AssemblyVersion>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>mscorlib</AssemblyName>
+      </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>netstandard</AssemblyName>
+      </AssemblyInfo>
+      <ReturnValue>
+        <ReturnType>System.Boolean</ReturnType>
+      </ReturnValue>
+      <Parameters>
+        <Parameter Name="destination" Type="System.Span&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
+        <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
+      </Parameters>
+      <Docs>
         <param name="destination">To be added.</param>
         <param name="bytesWritten">To be added.</param>
         <summary>To be added.</summary>
@@ -738,13 +1028,20 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <param name="destination">To be added.</param>
-        <param name="hashAlgorithm">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="data">Dane, które mają zostać zmieszane.</param>
+        <param name="destination">Zakres bajtów do odebrania wartości skrótu.</param>
+        <param name="hashAlgorithm">Nazwa algorytmu wyznaczania wartości skrótu, który ma być używany.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano.</param>
+        <summary>Próbuje obliczyć wartość skrótu dostarczonych danych do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />aby otrzymać wynik; w przeciwnym razie.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Domyślną implementacją tej metody jest wywołanie <xref:System.Security.Cryptography.DSA.HashData(System.Byte[], System.Int32, System.Int32, System.Security.Cryptography.HashAlgorithmName)> i skopiowanie wyniku do. `destination`
+Typy pochodne powinny przesłaniać tę metodę, aby uniknąć pośredniego tworzenia tablicy.
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TrySignData">
@@ -776,12 +1073,12 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <param name="destination">To be added.</param>
-        <param name="hashAlgorithm">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="data">Dane do wyznaczania wartości skrótu i podpisywania.</param>
+        <param name="destination">Zakres bajtów do odebrania podpisu.</param>
+        <param name="hashAlgorithm">Nazwa algorytmu wyznaczania wartości skrótu, który ma być używany.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano.</param>
+        <summary>Próbuje utworzyć podpis DSA dla określonych danych w podanym buforze.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />aby otrzymać wynik; w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -792,7 +1089,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowa.</summary>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="VerifyData">
@@ -827,15 +1124,20 @@
       </Parameters>
       <Docs>
         <param name="data">Podpisane dane.</param>
-        <param name="signature">Dane sygnatur do weryfikacji.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu używany do tworzenia wartości skrótu danych.</param>
-        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowa, obliczając wartość skrótu określone dane przy użyciu określonego hash algorithm i porównanie z podanego podpisu.</summary>
-        <returns><see langword="true" /> Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="signature">Dane podpisu do zweryfikowania.</param>
+        <param name="hashAlgorithm">Algorytm skrótu służący do tworzenia wartości skrótu danych.</param>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy, obliczając wartość skrótu określonych danych przy użyciu określonego algorytmu wyznaczania wartości skrótu i porównując go z podaną sygnaturą.</summary>
+        <returns><see langword="true" />Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.  
   
 —lub— 
- <paramref name="signature" /> jest <see langword="null" />.</exception>
+ <paramref name="signature" />jest <see langword="null" />.</exception>
+  <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starsze wersje programu DSA (FIPS 186-2), a algorytm wyznaczania wartości skrótu nie jest algorytmem SHA-1.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
       </Docs>
     </Member>
@@ -871,16 +1173,21 @@
       </Parameters>
       <Docs>
         <param name="data">Podpisane dane.</param>
-        <param name="signature">Dane sygnatur do weryfikacji.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu używany do tworzenia wartości skrótu danych.</param>
-        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowa, obliczając wartość skrótu określonego strumienia za pomocą określonego algorytmu skrótu i porównanie go z podanego podpisu.</summary>
-        <returns><see langword="true" /> Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="signature">Dane podpisu do zweryfikowania.</param>
+        <param name="hashAlgorithm">Algorytm skrótu służący do tworzenia wartości skrótu danych.</param>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy, obliczając wartość skrótu określonego strumienia przy użyciu określonego algorytmu wyznaczania wartości skrótu i porównując go z podaną sygnaturą.</summary>
+        <returns><see langword="true" />Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.  
   
 —lub— 
- <paramref name="signature" /> jest <see langword="null" />.</exception>
+ <paramref name="signature" />jest <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starsze wersje programu DSA (FIPS 186-2), a algorytm wyznaczania wartości skrótu nie jest algorytmem SHA-1.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="VerifyData">
@@ -911,12 +1218,18 @@
         <Parameter Name="hashAlgorithm" Type="System.Security.Cryptography.HashAlgorithmName" Index="2" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="data">To be added.</param>
-        <param name="signature">To be added.</param>
-        <param name="hashAlgorithm">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="data">Podpisane dane.</param>
+        <param name="signature">Podpis do zweryfikowania.</param>
+        <param name="hashAlgorithm">Algorytm skrótu służący do tworzenia wartości skrótu danych.</param>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy, obliczając wartość skrótu danych w zakresie bajtów przy użyciu określonego algorytmu wyznaczania wartości skrótu i porównując ją z podaną sygnaturą.</summary>
+        <returns><see langword="true" />Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starsze wersje programu DSA (FIPS 186-2), a algorytm wyznaczania wartości skrótu nie jest algorytmem SHA-1.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="VerifyData">
@@ -953,25 +1266,30 @@
       </Parameters>
       <Docs>
         <param name="data">Podpisane dane.</param>
-        <param name="offset">Indeks początkowy, od którego należy obliczyć wartość skrótu.</param>
-        <param name="count">Liczba bajtów do wyznaczania wartości skrótu.</param>
-        <param name="signature">Dane sygnatur do weryfikacji.</param>
-        <param name="hashAlgorithm">Algorytm wyznaczania wartości skrótu używany do tworzenia wartości skrótu danych.</param>
-        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowa, obliczając wartość skrótu danych znajdujących się w części typu byte array przy użyciu określonego algorytmu skrótu i porównanie go z podanego podpisu.</summary>
-        <returns><see langword="true" /> Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="offset">Początkowy indeks, pod którym ma zostać obliczony skrót.</param>
+        <param name="count">Liczba bajtów do skrótu.</param>
+        <param name="signature">Dane podpisu do zweryfikowania.</param>
+        <param name="hashAlgorithm">Algorytm skrótu służący do tworzenia wartości skrótu danych.</param>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy, obliczając wartość skrótu danych w części tablicy bajtowej przy użyciu określonego algorytmu wyznaczania wartości skrótu i porównując ją z podaną sygnaturą.</summary>
+        <returns><see langword="true" />Jeśli podpis cyfrowy jest prawidłowy; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="data" /> jest <see langword="null" />.  
+        <exception cref="T:System.ArgumentNullException"><paramref name="data" />jest <see langword="null" />.  
   
 —lub— 
- <paramref name="signature" /> jest <see langword="null" />.</exception>
+ <paramref name="signature" />jest <see langword="null" />.</exception>
         <exception cref="T:System.ArgumentException"><paramref name="hashAlgorithm" />.<see cref="P:System.Security.Cryptography.HashAlgorithmName.Name" /> jest <see langword="null" /> lub <see cref="F:System.String.Empty" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" /> jest mniejsza niż zero.  
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="offset" />jest mniejsza od zera.  
   
 —lub— 
- <paramref name="count" /> jest mniejsza niż zero.  
+ <paramref name="count" />jest mniejsza od zera.  
   
 —lub— 
- <paramref name="offset" /> + <paramref name="count" /> -1 powoduje indeksu, który jest wyższy niż górna granica <paramref name="data" />.</exception>
+ <paramref name="offset" /> + <paramref name="count" />-1 powoduje, że indeks wykracza poza górną granicę <paramref name="data" />.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starsze wersje programu DSA (FIPS 186-2), a algorytm wyznaczania wartości skrótu nie jest algorytmem SHA-1.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="VerifySignature">
@@ -1007,11 +1325,16 @@
         <Parameter Name="rgbSignature" Type="System.Byte[]" />
       </Parameters>
       <Docs>
-        <param name="rgbHash">Skrót danych podpisany przy użyciu <paramref name="rgbSignature" />.</param>
-        <param name="rgbSignature">Można zweryfikować podpisu <c>rgbData</c>.</param>
-        <summary>Po przesłonięciu w klasie pochodnej weryfikuje <see cref="T:System.Security.Cryptography.DSA" /> podpisu dla określonych danych.</summary>
-        <returns><see langword="true" /> Jeśli <paramref name="rgbSignature" /> pasuje do podpisu obliczane przy użyciu określonego algorytmu skrótu oraz klucz na <paramref name="rgbHash" />; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="rgbHash">Skrót danych podpisanych za pomocą <paramref name="rgbSignature" />.</param>
+        <param name="rgbSignature">Podpis do zweryfikowania dla <c>rgbData</c>.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, program weryfikuje <see cref="T:System.Security.Cryptography.DSA" /> podpis dla określonych danych.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="rgbSignature" /> pasuje do sygnatury obliczanej przy użyciu określonego algorytmu wyznaczania wartości skrótu <see langword="false" />i klucza na <paramref name="rgbHash" />; w przeciwnym razie,.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starszą wersję programu DSA (FIPS 186-2), a wartość skrótu nie ma długości 20 bajtów.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
         <related type="Article" href="~/docs/standard/security/cryptographic-services.md">Usługi kryptograficzne</related>
       </Docs>
     </Member>
@@ -1042,11 +1365,23 @@
         <Parameter Name="signature" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="1" FrameworkAlternate="netcore-2.1;netcore-2.2;netcore-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="hash">To be added.</param>
-        <param name="signature">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="hash">Skrót danych do zweryfikowania.</param>
+        <param name="signature">Podpis, który ma zostać zweryfikowany.</param>
+        <summary>Sprawdza, czy podpis cyfrowy jest prawidłowy dla podanego skrótu danych.</summary>
+        <returns><see langword="true" />Jeśli podpis cyfrowy jest prawidłowy dla skrótu; w przeciwnym razie. <see langword="false" /></returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Domyślna implementacja tej metody wywołuje <xref:System.Security.Cryptography.DSA.VerifySignature(System.Byte[], System.Byte[])> się po skopiowaniu zakresów do tablic.
+Typy pochodne powinny przesłaniać tę metodę, aby uniknąć pośredniego tworzenia tablicy.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Typ implementacji obsługuje tylko starszą wersję programu DSA (FIPS 186-2), a wartość skrótu nie ma długości 20 bajtów.
+
+—lub—
+
+Weryfikowanie podpisu nie powiodło się.</exception>
       </Docs>
     </Member>
   </Members>

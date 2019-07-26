@@ -1,5 +1,5 @@
 <Type Name="ThreadAbortException" FullName="System.Threading.ThreadAbortException">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="c63e23e12a420cd7f1fba7fe8266956341a846bc" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58720687" /></Metadata><TypeSignature Language="C#" Value="public sealed class ThreadAbortException : SystemException" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="223645db6d3f0a32779a09530c04ad6aaa0e4959" /><Meta Name="ms.sourcegitcommit" Value="24f564114ee2fa9c63dbac1b25b82826cc4e320f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/25/2019" /><Meta Name="ms.locfileid" Value="68488072" /></Metadata><TypeSignature Language="C#" Value="public sealed class ThreadAbortException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit ThreadAbortException extends System.SystemException" />
   <TypeSignature Language="DocId" Value="T:System.Threading.ThreadAbortException" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ThreadAbortException&#xA;Inherits SystemException" />
@@ -35,25 +35,27 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Wyjątek, który jest zgłaszany, gdy połączenie jest nawiązywane w przypadku <see cref="M:System.Threading.Thread.Abort(System.Object)" /> metody. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Wyjątek, który jest generowany w przypadku wywołania <see cref="M:System.Threading.Thread.Abort(System.Object)" /> metody. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy połączenie jest nawiązywane w przypadku <xref:System.Threading.Thread.Abort%2A> metoda zniszczyć wątku środowiska uruchomieniowego języka wspólnego generuje <xref:System.Threading.ThreadAbortException>. <xref:System.Threading.ThreadAbortException> to specjalne wyjątek, który może zostać przechwycony, ale jej zostanie automatycznie wygenerowany ponownie na końcu `catch` bloku. Gdy ten wyjątek jest zgłaszany, środowisko uruchomieniowe wykonuje wszystkie `finally` bloki przed zakończeniem wątku. Ponieważ wątku można zrobić niepowiązane obliczeń w `finally` bloków lub wywołanie <xref:System.Threading.Thread.ResetAbort%2A?displayProperty=nameWithType> Aby anulować przerwanie, nie ma żadnej gwarancji, które nigdy nie zakończy się wątek. Jeśli chcesz poczekać, aż wątek przerwane została zakończona, można wywołać <xref:System.Threading.Thread.Join%2A?displayProperty=nameWithType> metody. <xref:System.Threading.Thread.Join%2A> to wywołanie blokowania, która nie zwraca aż wątek faktycznie zatrzymuje wykonywanie.  
+ Gdy wywołanie <xref:System.Threading.Thread.Abort%2A> metody niszczy wątek, środowisko uruchomieniowe języka wspólnego <xref:System.Threading.ThreadAbortException>generuje. <xref:System.Threading.ThreadAbortException>to specjalny wyjątek, który może zostać przechwycony, ale zostanie automatycznie podniesiony na końcu `catch` bloku. Gdy ten wyjątek jest wywoływany, środowisko uruchomieniowe wykonuje `finally` wszystkie bloki przed końcem wątku. Ponieważ wątek może wykonać nieograniczone obliczenia w `finally` blokach lub wywołać <xref:System.Threading.Thread.ResetAbort%2A?displayProperty=nameWithType> anulowanie przerwania, nie ma gwarancji, że wątek będzie kiedykolwiek się kończyć. Jeśli chcesz poczekać na zakończenie przerwanego wątku, możesz wywołać <xref:System.Threading.Thread.Join%2A?displayProperty=nameWithType> metodę. <xref:System.Threading.Thread.Join%2A>jest wywołaniem blokującym, które nie zwraca do momentu faktycznego zatrzymania wykonywania wątku.  
+  
+**Tylko .NET Core:** Mimo że ten typ istnieje w środowisku .NET Core, <xref:System.Threading.Thread.Abort%2A> ponieważ nie jest obsługiwany, środowisko uruchomieniowe języka wspólnego nie <xref:System.Threading.ThreadAbortException>zostanie kiedykolwiek wyrzucane.
+
+> [!NOTE]
+>  Gdy środowisko uruchomieniowe języka wspólnego (CLR) przestaje wątki w tle po zakończeniu wszystkich wątków pierwszego planu w zarządzanym pliku wykonywalnym, <xref:System.Threading.Thread.Abort%2A?displayProperty=nameWithType>nie jest używane. W związku z tym nie <xref:System.Threading.ThreadAbortException> można użyć programu do wykrycia, kiedy wątki w tle są kończone przez środowisko CLR.  
+  
+ <xref:System.Threading.ThreadAbortException>używa HRESULT COR_E_THREADABORTED o wartości 0x80131530.  
   
 > [!NOTE]
->  Gdy środowisko uruchomieniowe języka wspólnego (CLR) zatrzymuje wątków w tle po zakończeniu wszystkie wątki pierwszego planu w zarządzanych pliku wykonywalnego, nie używa <xref:System.Threading.Thread.Abort%2A?displayProperty=nameWithType>. W związku z tym, nie można użyć <xref:System.Threading.ThreadAbortException> do wykrycia podczas wątków w tle są przerywane przez środowisko CLR.  
-  
- <xref:System.Threading.ThreadAbortException> używa COR_E_THREADABORTED HRESULT, która ma wartość 0x80131530.  
-  
-> [!NOTE]
->  Wartość dziedziczonego <xref:System.Exception.Data%2A> właściwość jest zawsze `null`.  
+>  Wartość dziedziczonej <xref:System.Exception.Data%2A> właściwości jest zawsze `null`.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano, przerywanie wątków. Wątek, który odbiera `ThreadAbortException` używa <xref:System.Threading.Thread.ResetAbort%2A> metodę, aby anulować żądanie przerwania i kontynuuj wykonywanie.  
+ Poniższy przykład demonstruje przerwanie wątku. Wątek, który odbiera `ThreadAbortException` <xref:System.Threading.Thread.ResetAbort%2A> metodę używa metody do anulowania żądania przerwania i kontynuuje wykonywanie.  
   
  [!code-cpp[ThreadAbEx#1](~/samples/snippets/cpp/VS_Snippets_CLR/ThreadAbEx/CPP/threadabex.cpp#1)]
  [!code-csharp[ThreadAbEx#1](~/samples/snippets/csharp/VS_Snippets_CLR/ThreadAbEx/CS/threadabex.cs#1)]
@@ -112,18 +114,18 @@ Main ending.
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera obiekt, który zawiera informacje specyficzne dla aplikacji związane z przerwanie wątku.</summary>
+        <summary>Pobiera obiekt, który zawiera informacje specyficzne dla aplikacji powiązane z przerwaniem wątku.</summary>
         <value>Obiekt zawierający informacje specyficzne dla aplikacji.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Obiekt zwracany przez właściwość ta jest określona za pośrednictwem `stateInfo` parametru <xref:System.Threading.Thread.Abort%2A> metody. Dokładna zawartość i użycie tego obiektu jest zdefiniowany aplikacji Zazwyczaj służy do przekazywania informacji zrozumiały dla wątku przerwanie.  
+ Obiekt zwrócony przez tę właściwość jest określany za pomocą `stateInfo` parametru <xref:System.Threading.Thread.Abort%2A> metody. Dokładna zawartość i użycie tego obiektu jest zdefiniowane przez aplikację; zwykle jest używany do przekazywania informacji, które są zrozumiałe dla przerywanego wątku.  
   
    
   
 ## Examples  
- Poniższy przykład kodu pokazuje sposób przekazywania informacji do wątku, który jest przerywana.  
+ Poniższy przykład kodu pokazuje, jak przekazać informacje do wątku, który jest przerywany.  
   
  [!code-cpp[System.Threading.Thread.Abort2#1](~/samples/snippets/cpp/VS_Snippets_CLR_System/system.Threading.Thread.Abort2/CPP/source.cpp#1)]
  [!code-csharp[System.Threading.Thread.Abort2#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.Threading.Thread.Abort2/CS/source.cs#1)]

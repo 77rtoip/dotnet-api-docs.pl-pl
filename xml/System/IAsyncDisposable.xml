@@ -1,5 +1,5 @@
 <Type Name="IAsyncDisposable" FullName="System.IAsyncDisposable">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="bbd87cb9c175eb0c4d5aa893ad32101018b03b5b" /><Meta Name="ms.sourcegitcommit" Value="bc24a3ba616ee1df8b858f9400cae4f058ea3a7e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/19/2019" /><Meta Name="ms.locfileid" Value="67245138" /></Metadata><TypeSignature Language="C#" Value="public interface IAsyncDisposable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b281543e944f0f143783d5ca393fbbc6218dc985" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68434566" /></Metadata><TypeSignature Language="C#" Value="public interface IAsyncDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IAsyncDisposable" />
   <TypeSignature Language="DocId" Value="T:System.IAsyncDisposable" />
   <TypeSignature Language="VB.NET" Value="Public Interface IAsyncDisposable" />
@@ -13,33 +13,36 @@
     <AssemblyName>netstandard</AssemblyName>
     <AssemblyVersion>2.1.0.0</AssemblyVersion>
   </AssemblyInfo>
+  <AssemblyInfo>
+    <AssemblyName>Microsoft.Bcl.AsyncInterfaces</AssemblyName>
+  </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Udostępnia mechanizm do zwalniania niezarządzanych zasobów asynchronicznie.</summary>
+    <summary>Zapewnia mechanizm zwalniania niezarządzanych zasobów asynchronicznie.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
 ## Remarks
 
-Na platformie .NET, Implementowanie klas, które posiadają zasoby niezarządzane, zwykle <xref:System.IDisposable> interfejsu mechanizm służącą do zwalniania niezarządzanych zasobów, synchronicznie. Jednak w niektórych przypadkach potrzebne do zapewnienia z asynchronicznego mechanizmu do zwalniania niezarządzanych zasobów, oprócz (lub zamiast) jeden synchroniczne. Zapewnianie taki mechanizm umożliwia, aby wykonywać operacje usuwania obciążający zasoby bez blokowania wątku głównego aplikacji GUI przez długi czas.
+W programie .NET klasy, które są niezarządzanych zasobów zwykle <xref:System.IDisposable> implementują interfejs, aby zapewnić mechanizm do synchronicznego zwalniania niezarządzanych zasobów. Jednak w niektórych przypadkach należy zapewnić asynchroniczny mechanizm zwalniania niezarządzanych zasobów oprócz (lub zamiast) synchronicznie. Dzięki temu mechanizm umożliwia konsumentom wykonywanie operacji usuwania intensywnie korzystających z zasobów bez blokowania głównego wątku aplikacji graficznego interfejsu użytkownika przez długi czas.
 
-<xref:System.IAsyncDisposable.DisposeAsync%2A?displayProperty=nameWithType> Powrocie z metody tego interfejsu <xref:System.Threading.Tasks.ValueTask> reprezentujący operację asynchroniczną metodę dispose. Klasy, które posiadają zasoby niezarządzane zaimplementować tę metodę i konsumenta w ramach tych zajęć wywołuje tę metodę do obiektu, gdy nie jest już potrzebny.
+Metoda tego interfejsu <xref:System.Threading.Tasks.ValueTask> zwraca wartość reprezentującą asynchroniczną operację Dispose. <xref:System.IAsyncDisposable.DisposeAsync%2A?displayProperty=nameWithType> Klasy, w których są używane zasoby niezarządzane, implementują tę metodę, a odbiorca tych klas wywołuje tę metodę na obiekcie, gdy nie jest już potrzebne.
 
-Metody asynchroniczne są używane w połączeniu z `async` i `await` słów kluczowych w C# i Visual Basic. Aby uzyskać więcej insformation, zobacz [zadania asynchronicznego modelu programowania w C# ](/dotnet/csharp/programming-guide/concepts/async/index) lub [Asynchronous Programming with Async and Await (Visual Basic)](/dotnet/visual-basic/programming-guide/concepts/async/).
+Metody asynchroniczne są używane w połączeniu ze `async` słowami kluczowymi i C# `await` w i Visual Basic. Aby uzyskać więcej insformation, zobacz [model programowania asynchronicznego zadań w C# programie](/dotnet/csharp/programming-guide/concepts/async/index) lub [asynchroniczne programowanie z użyciem Async i Await (Visual Basic)](/dotnet/visual-basic/programming-guide/concepts/async/).
 
-### <a name="using-an-object-that-implements-iasyncdisposable"></a>Za pomocą obiektu, który implementuje IAsyncDisposable
+### <a name="using-an-object-that-implements-iasyncdisposable"></a>Korzystanie z obiektu, który implementuje IAsyncDisposable
 
-Jeśli aplikacja używa obiektu, który implementuje `IAsyncDisposable`, należy wywołać obiektu <xref:System.IAsyncDisposable.DisposeAsync%2A> wykonania po zakończeniu korzystania z niego. Aby upewnić się, że zasoby są zwalniane, nawet w przypadku wyjątku, należy wywołać <xref:System.IAsyncDisposable.DisposeAsync%2A> metody w ramach `finally` klauzuli `try` / `finally` instrukcji. Aby uzyskać więcej informacji na temat `try` / `finally` wzorca, zobacz [try-finally](~/docs/csharp/language-reference/keywords/try-finally.md) (C#) lub [spróbuj... CATCH... Na koniec instrukcji](~/docs/visual-basic/language-reference/statements/try-catch-finally-statement.md) (Visual Basic).
+Jeśli aplikacja używa obiektu, który implementuje `IAsyncDisposable`, należy wywołać <xref:System.IAsyncDisposable.DisposeAsync%2A> implementację obiektu po zakończeniu korzystania z niego. Aby upewnić się, że zasoby są wydane nawet w przypadku wyjątku, <xref:System.IAsyncDisposable.DisposeAsync%2A> Wywołaj metodę `finally` wewnątrz klauzuli `try` / `finally` instrukcji. Aby uzyskać więcej informacji na `try` temat / `finally` wzorca, zobacz [try-finally](~/docs/csharp/language-reference/keywords/try-finally.md) (C#) lub [try... Catch... Finally — instrukcja](~/docs/visual-basic/language-reference/statements/try-catch-finally-statement.md) (Visual Basic).
 
 ### <a name="implementing-iasyncdisposable"></a>Implementowanie IAsyncDisposable   
     
-Można wdrożyć `IAsyncDisposable` w następujących sytuacjach:
+Można zaimplementować `IAsyncDisposable` w następujących sytuacjach:
 
-- Podczas tworzenia asynchronicznego moduł wyliczający, który jest właścicielem niezarządzane zasoby. Asynchroniczne moduły wyliczające są używane wraz z C# 8.0 funkcji strumieni asynchronicznych. Aby uzyskać więcej informacji na temat strumieni asynchronicznych, zobacz [samouczka: Generowanie i używanie strumieni asynchronicznych za pomocą C# 8.0 i .NET Core 3.0](/dotnet/csharp/tutorials/generate-consume-asynchronous-stream).
+- Podczas tworzenia asynchronicznego modułu wyliczającego należącego do niezarządzanych zasobów. Asynchroniczne moduły wyliczające są używane z C# funkcją strumieni asynchronicznych 8,0. Aby uzyskać więcej informacji na temat strumieni asynchronicznych, zobacz [samouczek: Generuj strumienie asynchroniczne i korzystaj C# z nich przy użyciu 8,0](/dotnet/csharp/tutorials/generate-consume-asynchronous-stream)i .NET Core 3,0.
 
-- W przypadku klasy jest właścicielem niezarządzanych zasobów i zwalniania ich wymaga zasobochłonnej operacji We/Wy, takich jak opróżnianie zawartość pośrednich bufor do pliku lub wysłania pakietu przez sieć w celu zamknięcia połączenia.
+- Gdy klasa posiada niezarządzane zasoby i zwalnia je, wymaga operacji We/Wy intensywnie obciążających zasoby, takich jak opróżnianie zawartości buforu pośredniego do pliku lub wysyłanie pakietu przez sieć w celu zamknięcia połączenia.
 
-Użyj <xref:System.IAsyncDisposable.DisposeAsync%2A> metodę, aby wykonać dowolne oczyszczania jest konieczne po nim za pomocą niezarządzanych zasobów, takich jak zwalnianie lub resetowaniem zasobów niezarządzanych. Aby uzyskać więcej informacji na temat niezarządzanych zasobów na platformie .NET, zobacz [Cleaning Up Unmanaged Resources](/dotnet/standard/garbage-collection/unmanaged).
+<xref:System.IAsyncDisposable.DisposeAsync%2A> Użyj metody, aby wykonać dowolne oczyszczanie po użyciu zasobów niezarządzanych, takich jak zwalnianie, zwalnianie lub resetowanie niezarządzanych zasobów. Aby uzyskać więcej informacji na temat zasobów niezarządzanych w programie .NET, zobacz [Oczyszczanie zasobów niezarządzanych](/dotnet/standard/garbage-collection/unmanaged).
  
  ]]></format>
     </remarks>
@@ -61,26 +64,29 @@ Użyj <xref:System.IAsyncDisposable.DisposeAsync%2A> metodę, aby wykonać dowol
         <AssemblyName>netstandard</AssemblyName>
         <AssemblyVersion>2.1.0.0</AssemblyVersion>
       </AssemblyInfo>
+      <AssemblyInfo>
+        <AssemblyName>Microsoft.Bcl.AsyncInterfaces</AssemblyName>
+      </AssemblyInfo>
       <ReturnValue>
         <ReturnType>System.Threading.Tasks.ValueTask</ReturnType>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wykonuje zdefiniowane przez aplikację zadania skojarzone z zwalnianie lub resetowaniem zasobów niezarządzanych asynchronicznie.</summary>
-        <returns>Zadanie reprezentujące operację asynchroniczną metodę dispose.</returns>
+        <summary>Wykonuje zadania zdefiniowane przez aplikację skojarzone z zwalnianiem, zwalnianiem lub resetowaniem niezarządzanych zasobów asynchronicznie.</summary>
+        <returns>Zadanie, które reprezentuje asynchroniczną operację Dispose.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
 ## Remarks
 
-Ta metoda asynchronicznie Zamknij i zwalniania niezarządzanych zasobów, takich jak pliki strumieni i utrzymywane przez wystąpienie klasy, który implementuje ten interfejs obsługuje. Za pomocą tej metody, zamiast <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> umożliwia wykonywanie operacji usuwania obciążający zasoby bez blokowania wątku głównego aplikacji GUI przez długi czas.
+Ta metoda służy do asynchronicznego zamykania lub zwalniania niezarządzanych zasobów, takich jak pliki, strumienie i uchwyty przechowywane przez wystąpienie klasy implementującej ten interfejs. Użycie tej metody zamiast <xref:System.IDisposable.Dispose%2A?displayProperty=nameWithType> umożliwia wykonywanie operacji Dispose intensywnie korzystających z zasobów bez blokowania głównego wątku aplikacji graficznego interfejsu użytkownika przez długi czas.
 
 > [!WARNING]
->  Jeśli używasz klasy, która implementuje <xref:System.IAsyncDisposable> interfejsu, należy wywołać jej `DisposeAsync` wykonania po zakończeniu, za pomocą klasy. Aby uzyskać więcej informacji, zobacz sekcję "Za pomocą obiektu, który implementuje IAsyncDisposable" w <xref:System.IAsyncDisposable> tematu.
+>  Jeśli używasz klasy implementującej <xref:System.IAsyncDisposable> interfejs, należy wywołać jej `DisposeAsync` implementację po zakończeniu korzystania z klasy. Aby uzyskać więcej informacji, zobacz sekcję "Używanie obiektu implementującego IAsyncDisposable" w <xref:System.IAsyncDisposable> temacie.
 
-Po wdrożeniu tej metody, upewnij się, wszystkie przechowywane, że zasoby są zwalniane poprzez propagowanie wywołanie przez hierarchię zawierania. Na przykład, jeśli obiekt A przydziela obiekt B, a obiekt B przydziela obiektu C, A następnie `DisposeAsync` należy wywołać implementację `DisposeAsync` na B, który z kolei wywołać `DisposeAsync` w C. Obiekt musi także wywołać metodę `DisposeAsync` metoda swojej klasy bazowej, jeśli klasa bazowa implementuje <xref:System.IAsyncDisposable>.
+Podczas implementowania tej metody upewnij się, że wszystkie przechowywane zasoby są zwolnione przez propagowanie wywołania przez hierarchię zawierania. Na przykład jeśli obiekt a przydzieli obiekt b, a obiekt b przydzieli obiekt c, `DisposeAsync` implementacja musi wywoływać `DisposeAsync` na B, `DisposeAsync` która musi nawiązać wywołanie w C. Obiekt musi również wywołać `DisposeAsync` metodę klasy bazowej, jeśli implementuje <xref:System.IAsyncDisposable>klasy bazowej.
 
-Jeśli obiekt `DisposeAsync` metoda jest wywoływana więcej niż jeden raz, obiekt musi Ignoruj wszystkich wywołań po pierwszej i synchroniczne zwracają pomyślnie ukończono <xref:System.Threading.Tasks.ValueTask>. Obiekt nie może zgłaszać wyjątek, jeśli jego `DisposeAsync` metoda jest wywoływana wiele razy. Wystąpienie metody innej niż `DisposeAsync` może zgłosić <xref:System.ObjectDisposedException> gdy zasoby są już usunięte.
+Jeśli `DisposeAsync` metoda obiektu jest wywoływana więcej niż jeden raz, obiekt musi zignorować wszystkie wywołania po pierwszej i synchronicznie zakończony <xref:System.Threading.Tasks.ValueTask>pomyślnie. Obiekt nie może zgłosić wyjątku, jeśli jego `DisposeAsync` Metoda jest wywoływana wiele razy. Metody wystąpienia inne niż `DisposeAsync` mogą zgłosić, <xref:System.ObjectDisposedException> gdy zasoby zostały już usunięte.
  
  ]]></format>
         </remarks>

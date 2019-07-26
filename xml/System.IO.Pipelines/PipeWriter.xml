@@ -1,5 +1,5 @@
 <Type Name="PipeWriter" FullName="System.IO.Pipelines.PipeWriter">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0b622dc070ab36dcf6b941c734e30c03d2c0237d" /><Meta Name="ms.sourcegitcommit" Value="0de246131f8a87c71d008d055adec7bf72470c4f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/29/2019" /><Meta Name="ms.locfileid" Value="66301879" /></Metadata><TypeSignature Language="C#" Value="public abstract class PipeWriter : System.Buffers.IBufferWriter&lt;byte&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="516bf85c50018c232baa1f57d372bb071e982018" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68437776" /></Metadata><TypeSignature Language="C#" Value="public abstract class PipeWriter : System.Buffers.IBufferWriter&lt;byte&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit PipeWriter extends System.Object implements class System.Buffers.IBufferWriter`1&lt;unsigned int8&gt;" />
   <TypeSignature Language="DocId" Value="T:System.IO.Pipelines.PipeWriter" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class PipeWriter&#xA;Implements IBufferWriter(Of Byte)" />
@@ -20,7 +20,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Definiuje klasę, która zawiera potok, do którego mogą być zapisywane dane.</summary>
+    <summary>Definiuje klasę, która dostarcza potok, do którego można pisać dane.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -67,19 +67,18 @@
         <Parameter Name="bytes" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="bytes">Liczba bajtów zapisanych na <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</param>
-        <summary>Powiadamia <see cref="T:System.IO.Pipelines.PipeWriter" /> , <paramref name="bytes" /> bajty zostały napisane w danych wyjściowych <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />. Należy zażądać bufor nowego po wywołaniu <see cref="M:System.IO.Pipelines.PipeWriter.Advance(System.Int32)" /> aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.</summary>
+        <param name="bytes">Liczba bajtów zapisywana <see cref="T:System.Span`1" /> w lub <see cref="T:System.Memory`1" />.</param>
+        <summary>Powiadamia, że <paramref name="bytes" /> bajty zostały zapisaną w danych <see cref="T:System.Span`1" /> wyjściowych lub <see cref="T:System.Memory`1" />. <see cref="T:System.IO.Pipelines.PipeWriter" /> Musisz zażądać nowego buforu po wywołaniu <see cref="M:System.IO.Pipelines.PipeWriter.Advance(System.Int32)" /> , aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.</summary>
         <remarks>To be added.</remarks>
         <inheritdoc />
       </Docs>
     </Member>
     <Member MemberName="AsStream">
-      <MemberSignature Language="C#" Value="public virtual System.IO.Stream AsStream ();" />
-      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IO.Stream AsStream() cil managed" />
-      <MemberSignature Language="DocId" Value="M:System.IO.Pipelines.PipeWriter.AsStream" />
-      <MemberSignature Language="VB.NET" Value="Public Overridable Function AsStream () As Stream" />
-      <MemberSignature Language="C++ CLI" Value="public:&#xA; virtual System::IO::Stream ^ AsStream();" />
-      <MemberSignature Language="F#" Value="abstract member AsStream : unit -&gt; System.IO.Stream&#xA;override this.AsStream : unit -&gt; System.IO.Stream" Usage="pipeWriter.AsStream " />
+      <MemberSignature Language="C#" Value="public virtual System.IO.Stream AsStream (bool leaveOpen = false);" />
+      <MemberSignature Language="ILAsm" Value=".method public hidebysig newslot virtual instance class System.IO.Stream AsStream(bool leaveOpen) cil managed" />
+      <MemberSignature Language="DocId" Value="M:System.IO.Pipelines.PipeWriter.AsStream(System.Boolean)" />
+      <MemberSignature Language="VB.NET" Value="Public Overridable Function AsStream (Optional leaveOpen As Boolean = false) As Stream" />
+      <MemberSignature Language="F#" Value="abstract member AsStream : bool -&gt; System.IO.Stream&#xA;override this.AsStream : bool -&gt; System.IO.Stream" Usage="pipeWriter.AsStream leaveOpen" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
         <AssemblyName>System.IO.Pipelines</AssemblyName>
@@ -88,10 +87,13 @@
       <ReturnValue>
         <ReturnType>System.IO.Stream</ReturnType>
       </ReturnValue>
-      <Parameters />
+      <Parameters>
+        <Parameter Name="leaveOpen" Type="System.Boolean" Index="0" FrameworkAlternate="dotnet-plat-ext-3.0" />
+      </Parameters>
       <Docs>
-        <summary>Zwraca tylko do zapisu <see cref="T:System.IO.Stream" /> to opakowuje <see cref="T:System.IO.Pipelines.PipeWriter" />.</summary>
-        <returns><see cref="T:System.IO.Stream" />.</returns>
+        <param name="leaveOpen">To be added.</param>
+        <summary>To be added.</summary>
+        <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -114,7 +116,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Przerywa oczekujące <see cref="M:System.IO.Pipelines.PipeWriter.FlushAsync(System.Threading.CancellationToken)" /> operacji. W przypadku none, następnie anuluje <see cref="M:System.IO.Pipelines.PipeWriter.FlushAsync(System.Threading.CancellationToken)" /> operacji przerywając <see cref="T:System.IO.Pipelines.PipeWriter" />.</summary>
+        <summary>Anuluje oczekującą <see cref="M:System.IO.Pipelines.PipeWriter.FlushAsync(System.Threading.CancellationToken)" /> operację. Jeśli nie ma żadnych, anuluje następną <see cref="M:System.IO.Pipelines.PipeWriter.FlushAsync(System.Threading.CancellationToken)" /> operację bez <see cref="T:System.IO.Pipelines.PipeWriter" />kończenia.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -137,8 +139,8 @@
         <Parameter Name="exception" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="exception">Opcjonalnie <see cref="T:System.Exception" /> wskazujący błąd, który jest przyczyną potoku zakończyć.</param>
-        <summary>Znaczniki <see cref="T:System.IO.Pipelines.PipeWriter" /> jako ukończone, co oznacza brak elementów zostanie zapisany do niego.</summary>
+        <param name="exception">Opcjonalne <see cref="T:System.Exception" /> oznaczanie błędu powodującego zakończenie potoku.</param>
+        <summary><see cref="T:System.IO.Pipelines.PipeWriter" /> Oznacza jako kompletną, co oznacza, że nie będą w nim zapisywane żadne elementy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -162,8 +164,8 @@
       <Docs>
         <param name="source">Strumień, z którego zostanie skopiowana zawartość.</param>
         <param name="cancellationToken">Token do monitorowania żądań anulowania. Wartość domyślna to <see cref="P:System.Threading.CancellationToken.None" />.</param>
-        <summary>Asynchronicznie odczytuje bajtów ze strumienia i zapisuje je do <see cref="T:System.IO.Pipelines.PipeWriter" />.</summary>
-        <returns>Zadanie reprezentujące operację asynchroniczną kopiowania.</returns>
+        <summary>Asynchronicznie odczytuje bajty z określonego strumienia i zapisuje je w <see cref="T:System.IO.Pipelines.PipeWriter" />.</summary>
+        <returns>Zadanie, które reprezentuje asynchroniczną operację kopiowania.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -185,10 +187,10 @@
         <Parameter Name="writerOptions" Type="System.IO.Pipelines.StreamPipeWriterOptions" Index="1" FrameworkAlternate="dotnet-plat-ext-3.0" />
       </Parameters>
       <Docs>
-        <param name="stream">Strumień, który będzie zawijany składnika zapisywania programu potoku.</param>
-        <param name="writerOptions">Opcje służące do konfigurowania składnika zapisywania programu potoku.</param>
-        <summary>Tworzy <see cref="T:System.IO.Pipelines.PipeWriter" /> zawijania określonego <see cref="T:System.IO.Stream" />.</summary>
-        <returns>A <see cref="T:System.IO.Pipelines.PipeWriter" /> to opakowuje <see cref="T:System.IO.Stream" />.</returns>
+        <param name="stream">Strumień, który będzie zawijał składnik zapisywania potoku.</param>
+        <param name="writerOptions">Opcje konfigurowania modułu zapisywania potoku.</param>
+        <summary>Tworzy otokę określonego <see cref="T:System.IO.Stream" />. <see cref="T:System.IO.Pipelines.PipeWriter" /></summary>
+        <returns>Obiekt <see cref="T:System.IO.Pipelines.PipeWriter" /> , który zawija <see cref="T:System.IO.Stream" />.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -212,7 +214,7 @@
       </Parameters>
       <Docs>
         <param name="cancellationToken">To be added.</param>
-        <summary>Udostępnia zapisanych bajtów <see cref="T:System.IO.Pipelines.PipeReader" /> i uruchamia <see cref="M:System.IO.Pipelines.PipeReader.ReadAsync(System.Threading.CancellationToken)" /> kontynuacji.</summary>
+        <summary>Sprawia, że bajty <see cref="T:System.IO.Pipelines.PipeReader" /> są dostępne <see cref="M:System.IO.Pipelines.PipeReader.ReadAsync(System.Threading.CancellationToken)" /> dla i uruchamiają kontynuację.</summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
@@ -240,21 +242,21 @@
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Memory`1" />. Jeśli jest to 0, zwracany jest bufor pamięci niepuste dowolnego rozmiaru.</param>
-        <summary>Zwraca <see cref="T:System.Memory`1" /> do zapisu jest co najmniej żądany rozmiar, określony przez <paramref name="sizeHint" /> parametru.</summary>
-        <returns>Bufor pamięci co najmniej <paramref name="sizeHint" /> bajtów. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor dowolnego rozmiaru.</returns>
+        <param name="sizeHint">Minimalna długość zwracanych <see cref="T:System.Memory`1" />wartości. Jeśli 0, zwracany jest niepusty bufor pamięci o dowolnym rozmiarze.</param>
+        <summary>Zwraca do zapisu, który jest co najmniej żądanym rozmiarem, określonym <paramref name="sizeHint" /> przez parametr. <see cref="T:System.Memory`1" /></summary>
+        <returns>Bufor pamięci o wielkości co najmniej <paramref name="sizeHint" /> bajtów. Jeśli <paramref name="sizeHint" /> jest równa 0, zwraca niepusty bufor o dowolnym rozmiarze.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
-Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+Nie ma gwarancji, że kolejne wywołania będą zwracać ten sam bufor lub bufor o takim samym rozmiarze.
 
-Ta metoda nie zwraca <xref:System.Memory`1.Empty?displayProperty=nameWithType>, ale wyniku weryfikacji zgłasza wyjątek <xref:System.OutOfMemoryException> Jeśli rozmiar buforu żądanego nie jest dostępna.
+Ta metoda nigdy nie <xref:System.Memory`1.Empty?displayProperty=nameWithType>zwraca, ale <xref:System.OutOfMemoryException> zgłasza, że żądany rozmiar buforu jest niedostępny.
 
-Należy zażądać bufor nowego po wywołaniu <xref:System.IO.Pipelines.PipeWriter.Advance%2A> aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+Musisz zażądać nowego buforu po wywołaniu <xref:System.IO.Pipelines.PipeWriter.Advance%2A> , aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.
 
               ]]></format>
         </remarks>
-        <exception cref="T:System.OutOfMemoryException">Rozmiar buforu żądanego nie jest dostępna.</exception>
+        <exception cref="T:System.OutOfMemoryException">Żądany rozmiar buforu jest niedostępny.</exception>
         <inheritdoc />
       </Docs>
     </Member>
@@ -281,21 +283,21 @@ Należy zażądać bufor nowego po wywołaniu <xref:System.IO.Pipelines.PipeWrit
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Span`1" />. Jeśli jest to 0, zwracany jest pusty bufor dowolnego rozmiaru.</param>
-        <summary>Zwraca <see cref="T:System.Span`1" /> do zapisu jest co najmniej żądany rozmiar, określony przez <paramref name="sizeHint" /> parametru.</summary>
-        <returns>Bufor o co najmniej <paramref name="sizeHint" /> bajtów. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor dowolnego rozmiaru.</returns>
+        <param name="sizeHint">Minimalna długość zwracanych <see cref="T:System.Span`1" />wartości. Jeśli 0, zwracany jest niepusty bufor dowolnego rozmiaru.</param>
+        <summary>Zwraca do zapisu, który jest co najmniej żądanym rozmiarem, określonym <paramref name="sizeHint" /> przez parametr. <see cref="T:System.Span`1" /></summary>
+        <returns>Bufor o wielkości co najmniej <paramref name="sizeHint" /> bajtów. Jeśli <paramref name="sizeHint" /> jest równa 0, zwraca niepusty bufor o dowolnym rozmiarze.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
-Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+Nie ma gwarancji, że kolejne wywołania będą zwracać ten sam bufor lub bufor o takim samym rozmiarze.
 
-Ta metoda nie zwraca <see cref="P:System.Span`1.Empty" />, ale wyniku weryfikacji zgłasza wyjątek <see cref="T:System.OutOfMemoryException" /> Jeśli rozmiar buforu żądanego nie jest dostępna.
+Ta metoda nigdy nie <see cref="P:System.Span`1.Empty" />zwraca, ale <see cref="T:System.OutOfMemoryException" /> zgłasza, że żądany rozmiar buforu jest niedostępny.
 
-Należy zażądać bufor nowego po wywołaniu <xref:System.IO.Pipelines.PipeWriter.Advance(System.Int32)> aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+Musisz zażądać nowego buforu po wywołaniu <xref:System.IO.Pipelines.PipeWriter.Advance(System.Int32)> , aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.
 
               ]]></format>
         </remarks>
-        <exception cref="T:System.OutOfMemoryException">Rozmiar buforu żądanego nie jest dostępna.</exception>
+        <exception cref="T:System.OutOfMemoryException">Żądany rozmiar buforu jest niedostępny.</exception>
         <inheritdoc />
       </Docs>
     </Member>
@@ -323,7 +325,7 @@ Należy zażądać bufor nowego po wywołaniu <xref:System.IO.Pipelines.PipeWrit
       <Docs>
         <param name="callback">To be added.</param>
         <param name="state">To be added.</param>
-        <summary>Rejestruje wywołanie zwrotne, które pobiera wykonana przy <see cref="T:System.IO.Pipelines.PipeReader" /> boku potoku zostało zakończone.</summary>
+        <summary>Rejestruje wywołanie zwrotne, które jest wykonywane <see cref="T:System.IO.Pipelines.PipeReader" /> po zakończeniu boku potoku.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -349,7 +351,7 @@ Należy zażądać bufor nowego po wywołaniu <xref:System.IO.Pipelines.PipeWrit
       <Docs>
         <param name="source">To be added.</param>
         <param name="cancellationToken">To be added.</param>
-        <summary>Zapisuje <paramref name="source" /> do potoku i sprawia, że dostęp do danych do <see cref="T:System.IO.Pipelines.PipeReader" /></summary>
+        <summary>Zapisuje <paramref name="source" /> w potoku i udostępnia dane dla<see cref="T:System.IO.Pipelines.PipeReader" /></summary>
         <returns>To be added.</returns>
         <remarks>To be added.</remarks>
       </Docs>
