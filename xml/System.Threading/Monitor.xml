@@ -1,5 +1,5 @@
 <Type Name="Monitor" FullName="System.Threading.Monitor">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="975f9fe84ae180121f8d3ba53f7a2ddc2eb3da28" /><Meta Name="ms.sourcegitcommit" Value="690605a2d62010b93e13edf329aafe2bdc57423a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/11/2019" /><Meta Name="ms.locfileid" Value="67801589" /></Metadata><TypeSignature Language="C#" Value="public static class Monitor" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5f67004b524b1dde95e7dc5e120aabea2beaccd5" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68543699" /></Metadata><TypeSignature Language="C#" Value="public static class Monitor" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Monitor extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Monitor" />
   <TypeSignature Language="VB.NET" Value="Public Class Monitor" />
@@ -34,134 +34,134 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Udostępnia mechanizm, który synchronizuje dostęp do obiektów.</summary>
+    <summary>Zapewnia mechanizm, który synchronizuje dostęp do obiektów.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Threading.Monitor> Klasy służy do synchronizowania dostępu do regionu kodu przez pobranie i zwalniania blokady dla określonego obiektu przez wywołanie metody <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType>, <xref:System.Threading.Monitor.TryEnter%2A?displayProperty=nameWithType>, i <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType> metody. Blokady obiektu pozwalają ograniczyć dostęp do bloku kodu, często nazywane sekcję krytyczną. Podczas gdy wątek jest właścicielem blokady dla obiektu, nie z innego wątku można uzyskać tego blokady. Można również użyć <xref:System.Threading.Monitor> klasy, aby upewnić się, że nie inne wątek nie może być dostęp do części aplikacji kodu, wykonywane przez właściciela blokady, chyba że innego wątku jest wykonywany kod przy użyciu innego obiektu zablokowane.  
+ Klasa pozwala synchronizować dostęp do regionu kodu przez pobranie i zwolnienie blokady dla określonego obiektu przez <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType>wywołanie metod, <xref:System.Threading.Monitor.TryEnter%2A?displayProperty=nameWithType>, i <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType>. <xref:System.Threading.Monitor> Blokady obiektów zapewniają możliwość ograniczenia dostępu do bloku kodu, który jest często określany jako sekcja krytyczna. Gdy wątek jest właścicielem blokady obiektu, żaden inny wątek nie może uzyskać tej blokady. Można również użyć <xref:System.Threading.Monitor> klasy, aby upewnić się, że żaden inny wątek nie może uzyskać dostępu do sekcji kodu aplikacji wykonywanej przez właściciela blokady, chyba że inny wątek wykonuje kod przy użyciu innego zablokowanego obiektu.  
   
  W tym artykule:  
   
- [Klasa monitora: Omówienie](#Overview)   
+ [Klasa monitora: Przegląd](#Overview)   
  [Obiekt blokady](#Lock)   
- [Sekcja krytycznego](#CriticalSection)   
- [Puls, PulseAll i oczekiwania](#Pulse)   
- [Monitory i uchwytami oczekiwania](#WaitHandles)  
+ [Sekcja krytyczna](#CriticalSection)   
+ [Puls, PulseAll i Wait](#Pulse)   
+ [Monitory i uchwyty oczekiwania](#WaitHandles)  
   
 <a name="Overview"></a>   
-## <a name="the-monitor-class-an-overview"></a>Klasa monitora: Omówienie  
- <xref:System.Threading.Monitor> ma następujące cechy:  
+## <a name="the-monitor-class-an-overview"></a>Klasa monitora: Przegląd  
+ <xref:System.Threading.Monitor>ma następujące funkcje:  
   
--   Jest skojarzony z obiektem na żądanie.  
+-   Jest ona skojarzona z obiektem na żądanie.  
   
--   Jest ona niezwiązany, co oznacza, że mogą być wywoływane bezpośrednio z dowolnym kontekście.  
+-   Jest on niepowiązany, co oznacza, że może być wywoływana bezpośrednio z dowolnego kontekstu.  
   
--   Wystąpienie <xref:System.Threading.Monitor> nie można utworzyć klasy; metody <xref:System.Threading.Monitor> klasy są wszystkie statyczne. Każda metoda jest przekazywana zsynchronizowane obiekt, który kontroluje dostęp do sekcji krytycznych.  
+-   Nie można utworzyć wystąpienia <xref:System.Threading.Monitor> klasy; metody <xref:System.Threading.Monitor> klasy są statyczne. Każda metoda jest przenoszona do synchronizowanego obiektu, który kontroluje dostęp do sekcji krytycznej.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> klasy obiektów blokady inne niż ciągi (czyli odwoływać się do typów innych niż <xref:System.String>), nie typów wartości. Aby uzyskać szczegółowe informacje, zobacz przeciążenia <xref:System.Threading.Monitor.Enter%2A> metody i [zablokować obiektu](#Lock) sekcję w dalszej części tego artykułu.  
+>  Użyj klasy <xref:System.Threading.Monitor> , aby zablokować obiekty inne niż ciągi (czyli typy odwołań inne niż <xref:System.String>), a nie typy wartości. Aby uzyskać szczegółowe informacje, zobacz przeciążenia <xref:System.Threading.Monitor.Enter%2A> metody i [blokady obiektu](#Lock) w dalszej części tego artykułu.  
   
- W poniższej tabeli opisano akcje, które mogą być podejmowane przez wątki, do których dostęp synchronizowane obiekty:  
+ W poniższej tabeli opisano akcje, które mogą być podejmowane przez wątki, które uzyskują dostęp do synchronizowanych obiektów:  
   
 |Akcja|Opis|  
 |------------|-----------------|  
-|<xref:System.Threading.Monitor.Enter%2A>, <xref:System.Threading.Monitor.TryEnter%2A>|Uzyskuje blokadę dla obiektu. Ta akcja oznacza również początek sekcję krytyczną. Nie innego wątku można wprowadzić sekcję krytyczną, o ile nie wykonuje instrukcji w sekcji krytycznych, przy użyciu innego obiektu zablokowane.|  
-|<xref:System.Threading.Monitor.Wait%2A>|Zwalnia blokadę na obiekcie, aby zezwolić na inne wątki, aby zablokować i uzyskać dostęp do obiektu. Wątek wywołujący czeka, podczas gdy inny wątek uzyskuje dostęp do obiektu. Sygnały Pulse są używane do powiadamiania wątków oczekujących o zmianach stanu obiektu.|  
-|<xref:System.Threading.Monitor.Pulse%2A> (sygnał) <xref:System.Threading.Monitor.PulseAll%2A>|Wysyła sygnał do jednego lub więcej wątków oczekujących. Sygnał powiadamia wątku oczekiwania, który zmienił stan obiektu zablokowane, a właściciel blokady jest gotowy do zwolnienia blokady. Wątek oczekiwania jest umieszczana w kolejce gotowe obiektu, tak, aby otrzymać ostatecznie blokady dla obiektu. Gdy wątek ma blokadę, jego Sprawdź nowy stan obiektu, aby zobaczyć, jeśli osiągnięty wymaganego stanu.|  
-|<xref:System.Threading.Monitor.Exit%2A>|Zwalnia blokadę na obiekcie. Ta akcja oznacza również końcu sekcję krytyczną, chronione przez zablokowany obiekt.|  
+|<xref:System.Threading.Monitor.Enter%2A>, <xref:System.Threading.Monitor.TryEnter%2A>|Uzyskuje blokadę dla obiektu. Ta akcja oznacza również początek sekcji krytycznej. Żaden inny wątek nie może wejść do sekcji krytycznej, chyba że wykonuje instrukcje w sekcji krytycznej przy użyciu innego zablokowanego obiektu.|  
+|<xref:System.Threading.Monitor.Wait%2A>|Zwalnia blokadę obiektu w celu zezwolenia innym wątkom na zablokowanie i uzyskanie dostępu do obiektu. Wątek wywołujący czeka, gdy inny wątek uzyskuje dostęp do obiektu. Sygnały pulsu służą do powiadamiania oczekujących wątków o zmianach stanu obiektu.|  
+|<xref:System.Threading.Monitor.Pulse%2A>(sygnał),<xref:System.Threading.Monitor.PulseAll%2A>|Wysyła sygnał do co najmniej jednego oczekującego wątku. Sygnał powiadamia wątek oczekujący, że stan zablokowanego obiektu został zmieniony, a właściciel blokady jest gotowy do zwolnienia blokady. Wątek oczekujący jest umieszczany w kolejce gotowości obiektu, tak aby mógł ostatecznie odebrać blokadę dla obiektu. Gdy wątek ma blokadę, może sprawdzić nowy stan obiektu, aby sprawdzić, czy wymagany stan został osiągnięty.|  
+|<xref:System.Threading.Monitor.Exit%2A>|Zwalnia blokadę obiektu. Ta akcja oznacza również koniec sekcji krytycznej chronionej przez zablokowany obiekt.|  
   
- Począwszy od [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], istnieją dwa zestawy przeciążenia <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.TryEnter%2A> metody. Zawiera jeden zestaw przeciążenia `ref` (w języku C#) lub `ByRef` (w języku Visual Basic) <xref:System.Boolean> parametr, który niepodzielnie jest ustawiony na `true` Jeśli jest blokada, nawet wtedy, gdy wyjątek jest generowany podczas uzyskiwania blokady. Użyj te przeciążenia, jeśli jest niezwykle zwalnia blokadę we wszystkich przypadkach, nawet wtedy, gdy zasoby, które chroni blokady może nie być w stanie spójności.  
+ Począwszy od <xref:System.Threading.Monitor.Enter%2A> <xref:System.Threading.Monitor.TryEnter%2A> , istnieją dwa zestawy przeciążenia dla metod i. [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)] Jeden zbiór przeciążeń ma `ref` parametr ( C#in) `ByRef` lub (w Visual Basic <xref:System.Boolean> ), który jest niepodzielnie `true` ustawiony na wartość, jeśli zaznaczono blokadę, nawet jeśli wystąpi wyjątek podczas uzyskiwania blokady. Użyj tych przeciążeń, jeśli ma krytyczne znaczenie dla zwolnienia blokady we wszystkich przypadkach, nawet jeśli zasoby, które są chronione przez blokadę, mogą nie być w spójnym stanie.  
   
 <a name="Lock"></a>   
 ## <a name="the-lock-object"></a>Obiekt blokady  
- Klasa monitora składa się z `static` (w języku C#) lub `Shared` (w języku Visual Basic) metody, które działają na obiekt, które kontroluje dostęp do krytycznych części.  Poniższe informacje są obsługiwane dla poszczególnych obiektów synchronizowanych:  
+ Klasa monitora składa się `static` z metod C#(in `Shared` ) lub (w Visual Basic), które działają na obiekcie, który kontroluje dostęp do sekcji krytycznej.  Dla każdego synchronizowanego obiektu są utrzymywane następujące informacje:  
   
--   Odwołanie do wątku, który obecnie posiada blokadę.  
+-   Odwołanie do wątku, w którym aktualnie znajduje się blokada.  
   
--   Odwołanie do kolejki gotowości, która zawiera wątki, które są gotowe do uzyskania blokady.  
+-   Odwołanie do kolejki gotowości, która zawiera wątki gotowe do uzyskania blokady.  
   
--   Odwołanie do kolejki oczekujące, która zawiera wątków, które oczekują na powiadomienia o zmianie w stanie zablokowanym obiektu.  
+-   Odwołanie do oczekującej kolejki, która zawiera wątki czekające na powiadomienie zmiany stanu zablokowanego obiektu.  
   
- <xref:System.Threading.Monitor> blokuje obiektów (czyli typy referencyjne), nie typów wartości. Można przekazać typu wartości do <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A>, jest spakowany osobno dla każdego wywołania. Ponieważ każde wywołanie tworzy oddzielny obiekt <xref:System.Threading.Monitor.Enter%2A> nigdy nie bloków i kodu funkcji rzekomo chroni nie jest tak naprawdę zsynchronizowany. Ponadto przekazany obiekt <xref:System.Threading.Monitor.Exit%2A> jest inny niż obiekt przekazany do <xref:System.Threading.Monitor.Enter%2A>, więc <xref:System.Threading.Monitor> zgłasza <xref:System.Threading.SynchronizationLockException> wyjątek z komunikatem "Metoda synchronizacji obiektu została wywołana z niezsynchronizowanego bloku kodu."  
+ <xref:System.Threading.Monitor>blokuje obiekty (czyli typy odwołań), a nie typy wartości. Można przekazać typ wartości do <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A>, jest on opakowany oddzielnie dla każdego wywołania. Ponieważ każde wywołanie tworzy oddzielny obiekt <xref:System.Threading.Monitor.Enter%2A> , nigdy nie bloki, a kod, który jest supposedly chroniący, nie jest w rzeczywistości synchronizowany. Ponadto obiekt przekazano do <xref:System.Threading.Monitor.Exit%2A> jest inny niż obiekt przekazano do <xref:System.Threading.Monitor.Enter%2A>, więc <xref:System.Threading.Monitor> zgłasza <xref:System.Threading.SynchronizationLockException> wyjątek z komunikatem "Metoda synchronizacji obiektów została wywołana z niezsynchronizowanego bloku kodu".  
   
- Poniższy przykład ilustruje ten problem. Uruchamia ona dziesięciu zadań, z których każdy po prostu zostanie uśpiony 250 milisekund. Każde zadanie podrzędne następnie aktualizuje zmienną licznika `nTasks`, który jest przeznaczony do zliczania liczby zadań, które faktycznie uruchomić i wykonywane. Ponieważ `nTasks` jest zmienną globalną, które mogą być aktualizowane przez wiele zadań jednocześnie, monitor służy do ochrony przed jednoczesnych modyfikacji przez wiele zadań. Jednak jako dane wyjściowe w przykładzie pokazano, każde z zadań zgłasza <xref:System.Threading.SynchronizationLockException> wyjątku.  
+ Poniższy przykład ilustruje ten problem. Uruchamia dziesięć zadań, z których każdy stanie się uśpiony przez 250 milisekund. Każde zadanie aktualizuje zmienną `nTasks`licznika, która jest przeznaczona do policzania liczby zadań, które faktycznie zostały uruchomione i wykonane. Ponieważ `nTasks` jest zmienną globalną, która może być aktualizowana jednocześnie przez wiele zadań, monitor służy do ochrony przed jednoczesnymi modyfikacjami przez wiele zadań. Jednak dane wyjściowe z przykładu pokazują, że każdy z zadań zgłasza <xref:System.Threading.SynchronizationLockException> wyjątek.  
   
  [!code-csharp[Conceptual.Monitors#2](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.monitors/cs/badlock1.cs#2)]
  [!code-vb[Conceptual.Monitors#2](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.monitors/vb/badlock1.vb#2)]  
   
- Każde zadanie podrzędne zgłasza <xref:System.Threading.SynchronizationLockException> wyjątków ponieważ `nTasks` zmienna jest umieszczona przed wywołaniem do <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType> metodę w każdym zadaniu. Innymi słowy każde wywołanie metody jest przekazywany oddzielna zmienna, która jest niezależna od innych. `nTasks` jest ponownie umieszczona w wywołaniu <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType> metody. Jeszcze raz, spowoduje to utworzenie dziesięć nowych zmiennych spakowany, które są niezależne od siebie nawzajem, `nTasks`, i spakowane dziesięciu zmiennych utworzonych w wywołaniu <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType> metody. Wyjątek jest zgłaszany, następnie, ponieważ nasz kod próbuje zwolnić blokady na nowo utworzonej zmiennej, która wcześniej nie był zablokowany.  
+ Każde zadanie zgłasza <xref:System.Threading.SynchronizationLockException> wyjątek, `nTasks` ponieważ zmienna jest opakowana <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType> przed wywołaniem metody w każdym zadaniu. Innymi słowy, każde wywołanie metody jest przekazanie oddzielnej zmiennej, która jest niezależna od innych. `nTasks`jest ponownie opakowany w wywołaniu <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType> metody. Ponownie spowoduje to utworzenie dziesięciu nowych zmiennych opakowanych, które są niezależne od siebie, `nTasks`oraz dziesięciu zmiennych opakowanych utworzonych w wywołaniu <xref:System.Threading.Monitor.Enter%2A?displayProperty=nameWithType> metody. Wyjątek jest zgłaszany, a następnie, ponieważ nasz kod próbuje zwolnić blokadę dla nowo utworzonej zmiennej, która nie została wcześniej zablokowana.  
   
- Mimo że można polu zmienną typu wartości przed wywołaniem <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A>, jak pokazano w następujących przykład i przekazać tego samego obiektu w ramce do obu tych metod, nie ma żadnych dodatkowych zalet w ten sposób. Zmiany do zmiennej rozpakowany nie są odzwierciedlane w ramce kopii i nie ma sposobu na zmianę wartości spakowanej kopiowania.  
+ Chociaż można wpisać zmienną typu wartości przed wywołaniem <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A>, jak pokazano w poniższym przykładzie, i przekazać ten sam obiekt opakowany do obu tych metod, nie ma to żadnego znaczenia. Zmiany w zmiennej nieopakowanej nie są uwzględniane w kopii w ramce i nie ma sposobu zmiany wartości kopii w ramce.  
   
  [!code-csharp[Conceptual.Monitors#3](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.monitors/cs/badbox1.cs#3)]
  [!code-vb[Conceptual.Monitors#3](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.monitors/vb/badbox1.vb#3)]  
   
- Po wybraniu obiektu, na którym należy zsynchronizować, należy zablokować tylko w obiektach prywatne lub wewnętrzne. Blokowanie zewnętrznych obiektów może spowodować zakleszczenia, ponieważ niepowiązanych kod można wybrać te same obiekty do blokowania na do różnych celów.  
+ Podczas wybierania obiektu do synchronizowania należy zablokować tylko w obiektach prywatnych i wewnętrznych. Zablokowanie obiektów zewnętrznych może spowodować zakleszczenie, ponieważ niezwiązany kod może wybrać te same obiekty do zablokowania w różnych celach.  
   
- Należy zauważyć, że można synchronizować na obiekcie w wielu domenach aplikacji, jeśli obiekt używany do blokowania pochodzi od klasy <xref:System.MarshalByRefObject>.  
+ Należy pamiętać, że można synchronizować obiekt w wielu domenach aplikacji, jeśli obiekt używany do blokowania pochodzi od <xref:System.MarshalByRefObject>.  
   
 <a name="CriticalSection"></a>   
-## <a name="the-critical-section"></a>Sekcja krytycznego  
- Użyj <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A> metody służące do oznaczania początku i końcu sekcję krytyczną.  
+## <a name="the-critical-section"></a>Sekcja krytyczna  
+ Użyj metod <xref:System.Threading.Monitor.Exit%2A> i, aby oznaczyć początek i koniec sekcji krytycznej. <xref:System.Threading.Monitor.Enter%2A>  
   
 > [!NOTE]
->  Funkcje udostępniane przez <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A> metod jest taka sama jak dostarczony przez [blokady](~/docs/csharp/language-reference/keywords/lock-statement.md) instrukcji w języku C# i [SyncLock](~/docs/visual-basic/language-reference/statements/synclock-statement.md) instrukcji w języku Visual Basic, chyba że Zawijanie konstrukcji językowych <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29?displayProperty=nameWithType> przeciążenie metody i <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType> method in Class metoda `try`...`finally` blok, aby upewnić się, jest zwolnienie monitora.  
+>  Funkcje zapewniane przez <xref:System.Threading.Monitor.Enter%2A> metody i <xref:System.Threading.Monitor.Exit%2A> są takie same jak podane przez instrukcję [Lock](~/docs/csharp/language-reference/keywords/lock-statement.md) w C# i instrukcji [SyncLock](~/docs/visual-basic/language-reference/statements/synclock-statement.md) w Visual Basic, z tą różnicą, że konstrukcja języka otacza <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29?displayProperty=nameWithType>Przeciążenie metody i <xref:System.Threading.Monitor.Exit%2A?displayProperty=nameWithType> `try`metody w...`finally` Blokuj, aby upewnić się, że monitor został opublikowany.  
   
- Jeśli sekcja krytycznego to zbiór instrukcji ciągły, a następnie blokadę uzyskaną przez <xref:System.Threading.Monitor.Enter%2A> metoda gwarantuje, że tylko jednego wątku można wykonać ujęty kod zablokowany obiekt. W tym przypadku zaleca się umieszczenie tego kodu w `try` blokowania i umieść wywołanie <xref:System.Threading.Monitor.Exit%2A> method in Class metoda `finally` bloku. Daje to gwarancję, że blokada jest zwalniana, nawet jeśli wystąpi wyjątek. Poniższy fragment kodu ilustruje ten wzorzec.  
+ Jeśli Sekcja krytyczna jest zbiorem instrukcji ciągłych, blokada uzyskana przez <xref:System.Threading.Monitor.Enter%2A> metodę gwarantuje, że tylko jeden wątek może wykonać załączony kod z zablokowanym obiektem. W tym przypadku zalecamy umieszczenie tego kodu w `try` bloku i umieszczenie wywołania <xref:System.Threading.Monitor.Exit%2A> metody w `finally` bloku. Gwarantuje to, że blokada zostanie wydana, nawet jeśli wystąpi wyjątek. Poniższy fragment kodu ilustruje ten wzorzec.  
   
  [!code-csharp[System.Threading.Monitor.Class#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.class/cs/Pattern2.cs#2)]
  [!code-vb[System.Threading.Monitor.Class#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.class/vb/Pattern2.vb#2)]  
   
- Tej funkcji jest zwykle używane do synchronizowania dostępu na statyczną lub metodę wystąpienia klasy.  
+ Ta funkcja jest zwykle używana do synchronizowania dostępu do statycznej metody lub klasy wystąpień.  
   
- Jeśli sekcja krytycznego obejmuje całą metodę, blokowanie funkcji można osiągnąć, umieszczając <xref:System.Runtime.CompilerServices.MethodImplAttribute?displayProperty=nameWithType> na metodzie i podając <xref:System.Runtime.CompilerServices.MethodImplOptions.Synchronized> wartość w Konstruktorze typu <xref:System.Runtime.CompilerServices.MethodImplAttribute?displayProperty=nameWithType>. Korzystając z tego atrybutu <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A> wywołań metod nie są wymagane. Poniższy fragment kodu ilustruje tego wzorca:  
+ Jeśli Sekcja krytyczna obejmuje całą metodę, funkcję blokowania można osiągnąć, umieszczając ją <xref:System.Runtime.CompilerServices.MethodImplAttribute?displayProperty=nameWithType> na metodzie i <xref:System.Runtime.CompilerServices.MethodImplOptions.Synchronized> określając <xref:System.Runtime.CompilerServices.MethodImplAttribute?displayProperty=nameWithType>wartość w konstruktorze. W przypadku korzystania z <xref:System.Threading.Monitor.Enter%2A> tego atrybutu wywołania metod i <xref:System.Threading.Monitor.Exit%2A> nie są potrzebne. Poniższy fragment kodu ilustruje ten wzorzec:  
   
  [!code-csharp[System.Threading.Monitor.Class#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.class/cs/Pattern2.cs#3)]
  [!code-vb[System.Threading.Monitor.Class#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.class/vb/Pattern2.vb#3)]  
   
- Należy pamiętać, że atrybutu powoduje, że bieżący wątek posiada blokady, dopóki metoda zwraca; Jeśli blokada może być zwolnione szybciej, użyj <xref:System.Threading.Monitor> klasy C# [blokady](~/docs/csharp/language-reference/keywords/lock-statement.md) instrukcji lub Visual Basic [SyncLock](~/docs/visual-basic/language-reference/statements/synclock-statement.md) instrukcji wewnątrz metody zamiast atrybutu.  
+ Należy zauważyć, że ten atrybut powoduje, że bieżący wątek utrzymuje blokadę do momentu, gdy metoda zwróci wartość; Jeśli blokada może być wydawana wcześniej, należy użyć <xref:System.Threading.Monitor> klasy, C# instrukcji [Lock](~/docs/csharp/language-reference/keywords/lock-statement.md) lub instrukcji Visual Basic [SyncLock](~/docs/visual-basic/language-reference/statements/synclock-statement.md) wewnątrz metody zamiast atrybutu.  
   
- Choć jest możliwe dla <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A> instrukcji, blokowanie, które dany obiekt przetnie elementu członkowskiego klasy granice i/lub wersji tej praktyką nie jest zalecane.  
+ Chociaż można <xref:System.Threading.Monitor.Enter%2A> wykonać instrukcje i <xref:System.Threading.Monitor.Exit%2A> , które zablokują i zwalniają dany obiekt do granic składowych lub klas, lub obie te metody nie są zalecane.  
   
 <a name="Pulse"></a>   
-## <a name="pulse-pulseall-and-wait"></a>Puls, PulseAll i oczekiwania  
- Gdy wątek jest właścicielem blokady i wprowadził sekcję krytyczną, który jest chroniony przez blokadę, może wywołać <xref:System.Threading.Monitor.Wait%2A?displayProperty=nameWithType>, <xref:System.Threading.Monitor.Pulse%2A?displayProperty=nameWithType>, i <xref:System.Threading.Monitor.PulseAll%2A?displayProperty=nameWithType> metody.  
+## <a name="pulse-pulseall-and-wait"></a>Puls, PulseAll i Wait  
+ Gdy wątek jest właścicielem blokady i wprowadzono sekcję krytyczną, która jest chroniona przez blokadę, może wywołać <xref:System.Threading.Monitor.Wait%2A?displayProperty=nameWithType>metody <xref:System.Threading.Monitor.Pulse%2A?displayProperty=nameWithType>,, <xref:System.Threading.Monitor.PulseAll%2A?displayProperty=nameWithType> i.  
   
- Kiedy wątek przechowuje wywołania blokady <xref:System.Threading.Monitor.Wait%2A>, blokada jest zwalniana i wątku jest dodawane do kolejki oczekiwania obiektu zsynchronizowane. Pierwszym wątkiem w kolejce gotowe, uzyskuje blokadę i wprowadza sekcję krytyczną. Wątek został przeniesiony z kolejce oczekiwania w kolejce gotowy po albo <xref:System.Threading.Monitor.Pulse%2A?displayProperty=nameWithType> (do przeniesienia, wątek to na czele kolejce oczekiwania) lub <xref:System.Threading.Monitor.PulseAll%2A?displayProperty=nameWithType> metoda jest wywoływana przez wątek, który posiada blokadę. <xref:System.Threading.Monitor.Wait%2A> Metoda zwraca wartość, gdy wątek wywołujący reacquires blokady.  
+ Gdy wątek, który przechowuje wywołania <xref:System.Threading.Monitor.Wait%2A>blokady, blokada zostaje wydana i wątek zostanie dodany do oczekującej kolejki synchronizowanego obiektu. Pierwszy wątek w kolejce gotowości, jeśli istnieje, uzyskuje blokadę i wprowadza sekcję krytyczną. Wątek jest przenoszony z kolejki oczekujące do kolejki gotowości, gdy <xref:System.Threading.Monitor.Pulse%2A?displayProperty=nameWithType> (do przeniesienia wątek musi znajdować się na początku kolejki oczekiwania) <xref:System.Threading.Monitor.PulseAll%2A?displayProperty=nameWithType> lub metoda jest wywoływana przez wątek, który przechowuje blokadę. <xref:System.Threading.Monitor.Wait%2A> Metoda zwraca, gdy wątek wywołujący ponownie uzyskuje blokadę.  
   
- Kiedy wątek przechowuje wywołania blokady <xref:System.Threading.Monitor.Pulse%2A>, wątek na czele kolejce oczekiwania zostanie przeniesiona do kolejki gotowe. Wywołanie <xref:System.Threading.Monitor.PulseAll%2A> metoda przenosi wszystkie wątki z kolejce oczekiwania w kolejce gotowe.  
+ Gdy wątek, który przechowuje wywołania <xref:System.Threading.Monitor.Pulse%2A>blokady, wątek w nagłówku oczekującej kolejki zostanie przeniesiony do kolejki gotowości. Wywołanie <xref:System.Threading.Monitor.PulseAll%2A> metody przenosi wszystkie wątki z oczekującej kolejki do kolejki gotowości.  
   
 <a name="WaitHandles"></a>   
-## <a name="monitors-and-wait-handles"></a>Monitory i uchwytami oczekiwania  
- Należy zauważyć różnicę między użytkowania jest <xref:System.Threading.Monitor> klasy i <xref:System.Threading.WaitHandle> obiektów.  
+## <a name="monitors-and-wait-handles"></a>Monitory i uchwyty oczekiwania  
+ Ważne jest, aby zauważyć rozróżnienie między użyciem <xref:System.Threading.Monitor> klasy i <xref:System.Threading.WaitHandle> obiektów.  
   
--   <xref:System.Threading.Monitor> Klasy jest całkowicie zarządzana i całkowicie przenośne i może być bardziej efektywne pod kątem wymagań dotyczących zasobów systemu operacyjnego.  
+-   <xref:System.Threading.Monitor> Klasa jest całkowicie zarządzana, w pełni przenośna i może być bardziej wydajna w zakresie wymagań dotyczących zasobów systemu operacyjnego.  
   
--   <xref:System.Threading.WaitHandle> obiekty reprezentowała obiekty oczekujący systemu operacyjnego, są przydatne podczas synchronizacji między kodem zarządzanym i niezarządzanym i ujawniać niektórych zaawansowanych funkcji systemu operacyjnego, takich jak możliwość czekać na wiele obiektów jednocześnie.  
+-   <xref:System.Threading.WaitHandle>obiekty reprezentują obiekty oczekiwane w systemie operacyjnym, są przydatne do synchronizowania kodu zarządzanego i niezarządzanego oraz uwidaczniają pewne zaawansowane funkcje systemu operacyjnego, takie jak możliwość oczekiwania na wiele obiektów jednocześnie.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto <xref:System.Threading.Monitor> klasy do synchronizowania dostępu do pojedynczego wystąpienia generator liczb losowych reprezentowany przez <xref:System.Random> klasy. Ten przykład tworzy dziesięć zadań, z których każdy wykonuje asynchronicznie na wątku z puli wątków. Każde zadanie podrzędne generuje 10 000 liczb losowych, oblicza średnią ich i aktualizuje dwie zmienne na poziomie procedury zapewniające suma liczby liczb losowych, które są generowane, a ich suma. Po wykonaniu wszystkich zadań, te dwie wartości są następnie używane do obliczania średniej ogólnej.  
+ Poniższy przykład używa <xref:System.Threading.Monitor> klasy do synchronizowania dostępu do jednego wystąpienia generatora liczb losowych reprezentowanego <xref:System.Random> przez klasę. Przykład tworzy dziesięć zadań, z których każdy jest wykonywany asynchronicznie w wątku puli wątków. Każde zadanie generuje liczbę losową 10 000, oblicza ich średnią i aktualizuje dwie zmienne na poziomie procedury, które utrzymują liczbę liczb losowych wygenerowanych i ich sumę. Po wykonaniu wszystkich zadań te dwie wartości są następnie używane do obliczania średniej.  
   
  [!code-csharp[System.Threading.Monitor.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.class/cs/example1.cs#1)]
  [!code-vb[System.Threading.Monitor.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.class/vb/example1.vb#1)]  
   
- Ponieważ są one dostępne z dowolnego zadania podrzędnego uruchamiania w wątku z puli wątków, uzyskać dostęp do zmiennych `total` i `n` również muszą być synchronizowane. <xref:System.Threading.Interlocked.Add%2A?displayProperty=nameWithType> Metoda jest używana w tym celu.  
+ Ponieważ można uzyskać do nich dostęp z dowolnego zadania uruchomionego w wątku puli wątków, należy również zsynchronizować `total` dostęp `n` do zmiennych i. <xref:System.Threading.Interlocked.Add%2A?displayProperty=nameWithType> Metoda jest używana do tego celu.  
   
- W poniższym przykładzie pokazano łącznego użycia <xref:System.Threading.Monitor> klasy (implementowane za pomocą `lock` lub `SyncLock` konstrukcją języka pierwszej klasy), <xref:System.Threading.Interlocked> klasy, a <xref:System.Threading.AutoResetEvent> klasy. Definiuje dwa `internal` (w języku C#) lub `Friend` (w języku Visual Basic) klas, `SyncResource` i `UnSyncResource`, które zapewniają odpowiednio zsynchronizowane i zsynchronizowany dostęp do zasobu. Aby upewnić się, że w przykładzie pokazano różnicę między dostępu zsynchronizowane i które nie są synchronizowane, (która może wystąpić w przypadku, jeśli każde wywołanie metody zakończy się szybko), metoda obejmuje losowe opóźnienie: dla wątków, którego <xref:System.Threading.Thread.ManagedThreadId%2A?displayProperty=nameWithType> właściwość jest parzysta, metoda wywołuje metodę <xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType> do wprowadzania opóźnienia 2000 MS. Należy zauważyć, że ponieważ `SyncResource` klasy nie jest publiczna, żaden kod klienta ma blokadę zsynchronizowane zasobu; w samej klasy wewnętrznej przyjmuje blokady. Zapobiega to tworzenia blokady obiektu publicznego złośliwego kodu.  
+ Poniższy przykład <xref:System.Threading.Monitor> demonstruje użycie klasy (zaimplementowane `lock` z lub `SyncLock` <xref:System.Threading.AutoResetEvent> konstrukcja języka), <xref:System.Threading.Interlocked> klasy i klasy. `internal` Definiuje dwie (w C#) lub `Friend` (w Visual Basic) klasy `SyncResource` i `UnSyncResource`, które odpowiednio zapewniają synchronizację i niezsynchronizowany dostęp do zasobu. Aby zapewnić, że przykład ilustruje różnicę między synchronizowanym i niezsynchronizowanym dostępem (może to być przypadek, jeśli każde wywołanie metody zostanie szybko zakończone), metoda obejmuje losowe opóźnienie: dla wątków, których <xref:System.Threading.Thread.ManagedThreadId%2A?displayProperty=nameWithType> właściwość jest parzysta, wywołuje <xref:System.Threading.Thread.Sleep%2A?displayProperty=nameWithType> metodę, aby wprowadzić opóźnienie 2 000 milisekund. Należy zauważyć, że ponieważ `SyncResource` Klasa nie jest publiczna, żaden kod klienta nie ma blokady w synchronizowanym zasobie; sama sama klasa przyjmuje blokadę. Zapobiega to zablokowaniu obiektu publicznego przez złośliwy kod.  
   
  [!code-csharp[Conceptual.Monitors#1](~/samples/snippets/csharp/VS_Snippets_CLR/conceptual.monitors/cs/source.cs#1)]
  [!code-vb[Conceptual.Monitors#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/conceptual.monitors/vb/source.vb#1)]  
   
- W przykładzie zdefiniowano zmienną, `numOps`, który definiuje liczbę wątków, które próbują uzyskać dostęp do zasobu. Wywołania wątku aplikacji <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> metoda synchronizacji i/procent niezsynchronizowanych dostępu pięć razy każdego. <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> Metoda ma jeden parametr delegata, która przyjmuje żadnych parametrów i nie zwraca żadnej wartości. Zsynchronizowane dostępu wywołuje `SyncUpdateResource` metody; niezsynchronizowane dostępu wywołuje `UnSyncUpdateResource` metody. Po każdy zestaw wywołań metody wywołuje wątku aplikacji [AutoResetEvent.WaitOne](xref:System.Threading.WaitHandle.WaitOne*) metodę, tak że blokuje aż do <xref:System.Threading.AutoResetEvent> zasygnalizowania wystąpienia.  
+ W przykładzie zdefiniowano zmienną, `numOps`która definiuje liczbę wątków, które będą próbować uzyskać dostęp do zasobu. Wątek aplikacji wywołuje metodę, <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> aby zsynchronizować i niezsynchronizowany dostęp pięć razy każdy. <xref:System.Threading.ThreadPool.QueueUserWorkItem%28System.Threading.WaitCallback%29?displayProperty=nameWithType> Metoda ma jeden parametr, delegat, który nie akceptuje parametrów i nie zwraca żadnej wartości. W przypadku dostępu zsynchronizowanego `SyncUpdateResource` metoda wywołuje metodę; w przypadku niezsynchronizowanego dostępu `UnSyncUpdateResource` wywołuje metodę. Po każdym zestawie wywołań metod wątek aplikacji wywołuje metodę [AutoResetEvent. WaitOne](xref:System.Threading.WaitHandle.WaitOne*) , aby blokowała do momentu <xref:System.Threading.AutoResetEvent> zasygnalizowania wystąpienia.  
   
- Każde wywołanie `SyncUpdateResource` metoda wywołuje wewnętrzny `SyncResource.Access` metody, a następnie wywołania <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> metodę, aby zmniejszyć `numOps` licznika. <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> Metoda jest używana do dekrementacja licznika, ponieważ w przeciwnym razie nie będzie określone, że drugi wątek dostęp do wartości przed pierwszym wątku użytkownika wraz z przydzielaniem wartości zostały zapisane w zmiennej. Ostatni synchronizowane zmniejsza wątku roboczego licznika do zera, wskazujący, że wszystkie wątki synchronizowane została ukończona, dostęp do zasobu `SyncUpdateResource` wywołania metody <xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType> metody, które sygnalizują wątku głównego, aby kontynuować wykonanie.  
+ Każde wywołanie `SyncUpdateResource` metody `numOps` wywołuje `SyncResource.Access` metodę wewnętrzną, a następnie wywołuje metodęwceluzmniejszenialicznika.<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> Metoda jest używana do zmniejszania licznika, ponieważ w przeciwnym razie nie można mieć pewności, że drugi wątek będzie miał dostęp do wartości przed zapisaniem w zmiennej wartości w pierwszym wątku. Gdy ostatni zsynchronizowany wątek roboczy zmniejsza licznik do zera, wskazując, że wszystkie zsynchronizowane wątki zakończyły uzyskiwanie dostępu do `SyncUpdateResource` zasobu, Metoda <xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType> wywołuje metodę, która sygnalizuje główny wątek, aby kontynuować działania.  
   
- Każde wywołanie `UnSyncUpdateResource` metoda wywołuje wewnętrzny `UnSyncResource.Access` metody, a następnie wywołania <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> metodę, aby zmniejszyć `numOps` licznika. Jeszcze raz <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> metoda jest używana do dekrementacja licznika, aby upewnić się, że drugi wątek nie dostęp do wartości, zanim pierwszy wątek zmniejszona wartość przypisana do zmiennej. Podczas ostatniego/procent niezsynchronizowanych zmniejsza wątku roboczego licznika do zera, wskazujący, że kolejne niezsynchronizowane wątków muszą uzyskać dostęp do zasobu `UnSyncUpdateResource` wywołania metody <xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType> metody, które sygnalizują wątku głównego, aby kontynuować wykonywanie .  
+ Każde wywołanie `UnSyncUpdateResource` metody `numOps` wywołuje `UnSyncResource.Access` metodę wewnętrzną, a następnie wywołuje metodęwceluzmniejszenialicznika.<xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> Po ponownym <xref:System.Threading.Interlocked.Decrement%2A?displayProperty=nameWithType> uruchomieniu Metoda jest używana do zmniejszenia licznika, aby upewnić się, że drugi wątek nie uzyskuje dostępu do wartości przed przypisaniem przez pierwszy wątek wartości do zmiennej. Kiedy ostatni niezsynchronizowany wątek roboczy zmniejsza licznik do zera, co oznacza, że nie ma więcej niezsynchronizowanych wątków potrzebnych do uzyskania dostępu do zasobu `UnSyncUpdateResource` , Metoda <xref:System.Threading.EventWaitHandle.Set%2A?displayProperty=nameWithType> wywołuje metodę, która sygnalizuje główny wątek, aby kontynuować wykonywanie .  
   
- Dane wyjściowe z przykładu pokazują, zsynchronizowany dostęp zapewnia wątek wywołujący zamyka chronionego zasobu, zanim dostęp inny wątek. Każdy wątek czeka na jego poprzednika. Z drugiej strony, bez blokady `UnSyncResource.Access` metoda jest wywoływana w kolejności, w którym wątków przejść do niego.  
+ Jak wynika z przykładu, zsynchronizowany dostęp gwarantuje, że wątek wywołujący opuszcza chroniony zasób, zanim inny wątek będzie mógł uzyskać do niego dostęp. Każdy wątek czeka na jego poprzednika. Z drugiej strony, bez blokady, `UnSyncResource.Access` Metoda jest wywoływana w kolejności, w której wątki docierają do niego.  
   
  ]]></format>
     </remarks>
@@ -179,7 +179,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Uzyskuje blokady na wyłączność dla określonego obiektu.</summary>
+        <summary>Uzyskuje blokadę na wyłączność dla określonego obiektu.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Enter">
@@ -221,24 +221,24 @@
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady monitora.</param>
-        <summary>Uzyskuje blokady na wyłączność dla określonego obiektu.</summary>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę monitora.</param>
+        <summary>Uzyskuje blokadę na wyłączność dla określonego obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj `Enter` uzyskania <xref:System.Threading.Monitor> na obiekt przekazany jako parametr. Jeśli inny wątek został wykonany `Enter` obiektu, ale nie ma jeszcze wykonać odpowiednie <xref:System.Threading.Monitor.Exit%2A>, spowoduje zablokowanie bieżącego wątku, dopóki innego wątku zwalnia obiekt. Jest legalne, tym samym wątku wywołać `Enter` więcej niż jeden raz bez blokowania; jednak równej liczby `Exit` wywołania musi być wywoływany przed odblokowanie innych wątków oczekujących na obiekt.  
+ Użyj `Enter` , aby <xref:System.Threading.Monitor> uzyskać obiekt dla obiektu przesyłanego jako parametr. Jeśli inny wątek `Enter` wykonał obiekt, ale nie wykonał jeszcze odpowiadającego <xref:System.Threading.Monitor.Exit%2A>, bieżący wątek zostanie zablokowany do momentu, gdy inny wątek zwolni obiekt. Jest to dozwolone dla tego samego wątku, który `Enter` jest wywoływany więcej niż jeden raz bez blokowania, jednak taka `Exit` liczba wywołań musi być wywoływana, zanim inne wątki oczekujące na obiekt zostaną odblokowane.  
   
- Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Podczas przekazywania zmienną typu wartości `Enter`, jest spakowany jako obiekt. Jeśli przekażesz tę samą zmienną do `Enter` ponownie jest spakowany jako oddzielny obiekt i nie są blokowane w wątku. W tym przypadku kod, `Monitor` jest funkcji rzekomo ochrony nie jest chroniony. Ponadto, gdy możesz przekazać zmienną do `Exit`, inny oddzielny obiekt zostanie utworzony. Ponieważ przekazany obiekt `Exit` jest inny niż obiekt przekazany do `Enter`, `Monitor` zgłasza <xref:System.Threading.SynchronizationLockException>. Aby uzyskać więcej informacji, zobacz temat dotyczący pojęć [monitorów](xref:System.Threading.Monitor).  
+ Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Gdy przekazujesz zmienną typu wartości do `Enter`, jest ona opakowana jako obiekt. Jeśli ta sama zmienna `Enter` zostanie przekazana ponownie, jest opakowana jako oddzielny obiekt, a wątek nie blokuje. W takim przypadku kod `Monitor` supposedly ochronę nie jest chroniony. Ponadto po przekazaniem zmiennej do `Exit`, nadal tworzony jest inny oddzielny obiekt. Ponieważ obiekt przeszedł do `Exit` jest inny niż obiekt przeszedł do `Enter`, `Monitor` zgłasza <xref:System.Threading.SynchronizationLockException>. Aby uzyskać więcej informacji, zobacz [Monitory](xref:System.Threading.Monitor)tematu koncepcyjnego.  
   
- <xref:System.Threading.Thread.Interrupt%2A> można przerwać wątki, które oczekują na wprowadzanie `Monitor` na obiekcie. A <xref:System.Threading.ThreadInterruptedException> zostanie zgłoszony.  
+ <xref:System.Threading.Thread.Interrupt%2A>może przerywać wątki, które oczekują na `Monitor` wprowadzenie do obiektu. <xref:System.Threading.ThreadInterruptedException> Zostanie zgłoszony.  
   
- Używaj języka C# `try`...`finally` blok (`Try`...`Finally` w Visual Basic), aby upewnić się, monitor wersji lub używać języka C# `lock` — instrukcja (`SyncLock` instrukcji w języku Visual Basic), który opakowuje <xref:System.Threading.Monitor.Enter%2A> i <xref:System.Threading.Monitor.Exit%2A> metody `try`...`finally` blok.  
+ C# Użyj...`try``finally` Blokuj (`Try`...`Finally` w Visual Basic), aby upewnić się, że monitor zostanie zwolniony lub C# `lock` Użyj instrukcji`SyncLock` (instrukcja w <xref:System.Threading.Monitor.Enter%2A> Visual Basic), która `try`zawija metody i <xref:System.Threading.Monitor.Exit%2A> w...`finally` odblokowan.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia `Enter` metody.  
+ Poniższy przykład ilustruje sposób używania `Enter` metody.  
   
  [!code-cpp[MonitorExmpl2#1](~/samples/snippets/cpp/VS_Snippets_CLR/MonitorExmpl2/CPP/monitor2.cpp#1)]
  [!code-csharp[MonitorExmpl2#1](~/samples/snippets/csharp/VS_Snippets_CLR/MonitorExmpl2/CS/monitor2.cs#1)]
@@ -246,7 +246,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -293,35 +293,35 @@
         <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <param name="lockTaken">Wynik próba uzyskania blokady, przekazywany przez odwołanie. Wartość wejściowa musi być <see langword="false" />. Dane wyjściowe są <see langword="true" /> Jeśli jest blokada; w przeciwnym razie wynikiem jest <see langword="false" />. Dane wyjściowe jest ustawiona, nawet jeśli wystąpi wyjątek podczas próby uzyskania blokady.  
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <param name="lockTaken">Wynik próby uzyskania blokady, która została przeniesiona przez odwołanie. Wartość wejściowa musi <see langword="false" />być. Dane wyjściowe są <see langword="true" /> w przypadku pozyskania blokady; w przeciwnym razie dane <see langword="false" />wyjściowe to. Dane wyjściowe są ustawiane nawet wtedy, gdy wystąpi wyjątek podczas próby uzyskania blokady.  
   
-Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej metody jest zawsze <see langword="true" />.</param>
-        <summary>Uzyskuje blokady na wyłączność dla określonego obiektu i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
+Zwróć uwagę, jeśli nie wystąpi żaden wyjątek, dane wyjściowe tej metody <see langword="true" />są zawsze.</param>
+        <summary>Uzyskuje blokadę na wyłączność dla określonego obiektu i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj `Enter` uzyskania <xref:System.Threading.Monitor> na obiekt przekazany jako `obj` parametru. Jeśli inny wątek został wykonany `Enter` obiektu, ale nie ma jeszcze wykonać odpowiednie <xref:System.Threading.Monitor.Exit%2A>, spowoduje zablokowanie bieżącego wątku, dopóki innego wątku zwalnia obiekt. Jest legalne, tym samym wątku wywołać `Enter` więcej niż jeden raz bez blokowania; jednak równej liczby `Exit` wywołania musi być wywoływany przed odblokowanie innych wątków oczekujących na obiekt.  
+ Użyj `Enter` , aby <xref:System.Threading.Monitor> uzyskać obiekt dla obiektu przesyłanego jako `obj` parametr. Jeśli inny wątek `Enter` wykonał obiekt, ale nie wykonał jeszcze odpowiadającego <xref:System.Threading.Monitor.Exit%2A>, bieżący wątek zostanie zablokowany do momentu, gdy inny wątek zwolni obiekt. Jest to dozwolone dla tego samego wątku, który `Enter` jest wywoływany więcej niż jeden raz bez blokowania, jednak taka `Exit` liczba wywołań musi być wywoływana, zanim inne wątki oczekujące na obiekt zostaną odblokowane.  
   
- Jeśli blokada nie została wykonana, ponieważ wystąpił wyjątek, zmienna jest określona dla `lockTaken` parametr jest `false` po zakończeniu tej metody. Dzięki temu program określić, we wszystkich przypadkach, czy jest to konieczne zwolnić blokadę. Jeśli ta metoda zwraca bez zgłaszania wyjątku, zmienna jest określona dla `lockTaken` parametr jest zawsze `true`, i trzeba ją przetestować.  
+ Jeśli blokada nie została wykonana, ponieważ został zgłoszony wyjątek, zmienna określona dla `lockTaken` parametru jest `false` po zakończeniu tej metody. Dzięki temu program może określić, we wszystkich przypadkach, czy konieczne jest zwolnienie blokady. Jeśli ta metoda zwróci wartość bez zgłaszania wyjątku, zmienna określona dla `lockTaken` parametru jest zawsze `true`i nie ma potrzeby jej przetestowania.  
   
- Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Podczas przekazywania zmienną typu wartości `Enter`, jest spakowany jako obiekt. Jeśli przekażesz tę samą zmienną do `Enter` ponownie jest spakowany jako oddzielny obiekt i nie są blokowane w wątku. W tym przypadku kod, `Monitor` jest funkcji rzekomo ochrony nie jest chroniony. Ponadto, gdy możesz przekazać zmienną do `Exit`, innej oddzielny obiekt zostanie utworzony. Ponieważ przekazany obiekt `Exit` jest inny niż obiekt przekazany do `Enter`, `Monitor` zgłasza <xref:System.Threading.SynchronizationLockException>. Aby uzyskać więcej informacji, zobacz temat dotyczący pojęć [monitorów](xref:System.Threading.Monitor).  
+ Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Gdy przekazujesz zmienną typu wartości do `Enter`, jest ona opakowana jako obiekt. Jeśli ta sama zmienna `Enter` zostanie przekazana ponownie, jest opakowana jako oddzielny obiekt, a wątek nie blokuje. W takim przypadku kod `Monitor` supposedly ochronę nie jest chroniony. Ponadto podczas przekazywania zmiennej do `Exit`, tworzony jest inny oddzielny obiekt. Ponieważ obiekt przeszedł do `Exit` jest inny niż obiekt przeszedł do `Enter`, `Monitor` zgłasza <xref:System.Threading.SynchronizationLockException>. Aby uzyskać więcej informacji, zobacz [Monitory](xref:System.Threading.Monitor)tematu koncepcyjnego.  
   
- <xref:System.Threading.Thread.Interrupt%2A> można przerwać wątki, które oczekują na wprowadzanie `Monitor` na obiekcie. A <xref:System.Threading.ThreadInterruptedException> zostanie zgłoszony.  
+ <xref:System.Threading.Thread.Interrupt%2A>może przerywać wątki, które oczekują na `Monitor` wprowadzenie do obiektu. <xref:System.Threading.ThreadInterruptedException> Zostanie zgłoszony.  
   
    
   
 ## Examples  
- Poniższy kod przedstawia podstawowy wzorzec przy użyciu <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29> przeciążenie metody. To przeciążenie zawsze ustawia wartość zmiennej, która jest przekazywana do `ref` parametru (`ByRef` w języku Visual Basic) `lockTaken`nawet wtedy, gdy metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodny sposób, aby sprawdzić, czy blokada musi być wydana.  
+ Poniższy kod przedstawia podstawowy wzorzec używania <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29> przeciążenia metody. To Przeciążenie zawsze ustawia wartość zmiennej, która jest przenoszona do `ref` parametru (`ByRef` w Visual Basic) `lockTaken`, nawet jeśli metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodnym sposobem sprawdzenia, czy blokada musi być zwolni.  
   
  [!code-csharp[System.Threading.Monitor.Enter#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.enter/cs/example.cs#2)]
  [!code-vb[System.Threading.Monitor.Enter#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.enter/vb/example.vb#2)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> jest <see langword="true" />.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> to <see langword="true" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
       </Docs>
     </Member>
     <Member MemberName="Exit">
@@ -366,20 +366,20 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym chcesz zwolnić blokadę.</param>
-        <summary>Zwalnia blokady na wyłączność dla określonego obiektu.</summary>
+        <param name="obj">Obiekt, na którym ma zostać wydaną blokadę.</param>
+        <summary>Zwalnia blokadę na wyłączność dla określonego obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wątek wywołujący musi być właścicielem blokady na `obj` parametru. Jeśli wątek wywołujący posiada blokadę określony obiekt i podejścia biznesowego uczyniło równej liczby `Exit` i <xref:System.Threading.Monitor.Enter%2A> wywołuje dla obiektu, a następnie blokada jest zwalniana. Jeśli wątek wywołujący nie zostało wywołane `Exit` tyle razy, ile `Enter`, blokada nie jest zwalniana.  
+ Wątek wywołujący musi być własnym blokadą dla `obj` parametru. Jeśli wątek wywołujący jest właścicielem blokady określonego obiektu i ma taką samą liczbę `Exit` wywołań i <xref:System.Threading.Monitor.Enter%2A> jest wywoływany dla tego obiektu, blokada zostanie wydana. Jeśli wątek wywołujący nie został wywołany `Exit` tyle razy jak `Enter`, blokada nie zostanie wydana.  
   
- Jeśli blokada jest zwalniana i inne wątki znajdują się w kolejce gotowe dla obiektu, jeden z wątków uzyskuje blokadę. W przypadku innych wątków w kolejce oczekiwania, oczekiwania na uzyskanie blokady, ich nie są automatycznie przenoszone do kolejki gotowe gdy właściciel blokady wywołuje `Exit`. Aby przenieść jeden lub więcej wątków oczekujących w kolejce gotowe, należy wywołać <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> przed wywołaniem `Exit`.  
+ Jeśli blokada jest wydana i inne wątki znajdują się w kolejce gotowości dla obiektu, jeden z wątków uzyskuje blokadę. Jeśli inne wątki znajdują się w oczekującej kolejce oczekiwania na uzyskanie blokady, nie są automatycznie przenoszone do kolejki gotowości, gdy właściciel wywołań `Exit`blokady. Aby przenieść jeden lub więcej oczekujących wątków do kolejki gotowości, <xref:System.Threading.Monitor.Pulse%2A> Wywołaj lub <xref:System.Threading.Monitor.PulseAll%2A> przed `Exit`wywołaniem.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje sposób użycia `Exit` metody.  
+ Poniższy przykład ilustruje sposób używania `Exit` metody.  
   
  [!code-cpp[MonitorExmpl2#1](~/samples/snippets/cpp/VS_Snippets_CLR/MonitorExmpl2/CPP/monitor2.cpp#1)]
  [!code-csharp[MonitorExmpl2#1](~/samples/snippets/csharp/VS_Snippets_CLR/MonitorExmpl2/CS/monitor2.cs#1)]
@@ -387,8 +387,8 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Bieżący wątek nie posiada blokady dla określonego obiektu.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Bieżący wątek nie jest obiektem blokady określonego obiektu.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -432,19 +432,19 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
       </Parameters>
       <Docs>
         <param name="obj">Obiekt do przetestowania.</param>
-        <summary>Określa, czy bieżący wątek posiada blokadę na określony obiekt.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek nałoży blokadę <paramref name="obj" />; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Określa, czy bieżący wątek przechowuje blokadę określonego obiektu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek utrzymuje blokadę <paramref name="obj" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda działa tylko w przypadku blokad, które są nabywane za pomocą metody <xref:System.Threading.Monitor> klasy lub przy użyciu języka C# `lock` instrukcji lub Visual Basic `SyncLock` instrukcji, które są implementowane za pomocą <xref:System.Threading.Monitor>.  
+ Ta metoda działa tylko w przypadku blokad, które są uzyskiwane przy użyciu metod <xref:System.Threading.Monitor> klasy lub C# `lock` instrukcji lub instrukcji Visual Basic `SyncLock` , które są implementowane z <xref:System.Threading.Monitor>.  
   
- Ta metoda za pomocą narzędzia diagnostyczne, takie jak <xref:System.Diagnostics.Debug.Assert%2A> metody i <xref:System.Diagnostics.Contracts.Contract> klasy, aby debugować problemy blokujące, obejmujące <xref:System.Threading.Monitor> klasy.  
+ Użyj tej metody z narzędziami diagnostycznymi, takimi jak <xref:System.Diagnostics.Debug.Assert%2A> Metoda <xref:System.Diagnostics.Contracts.Contract> i Klasa, do debugowania problemów z <xref:System.Threading.Monitor> blokowaniem, które obejmują klasę.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="obj" />jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="LockContentionCount">
@@ -469,8 +469,8 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera liczbę razy podczas rywalizacji o zasoby podczas próby podjęcia blokady monitora.</summary>
-        <value>Liczba razy była rywalizacji o zasoby, podczas próby podjęcia blokady monitora.</value>
+        <summary>Pobiera informacje o tym, ile razy wystąpił rywalizacja podczas próby przeprowadzenia blokady monitora.</summary>
+        <value>Liczba przypadków rywalizacji podczas próby przeprowadzenia blokady monitora.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -513,29 +513,29 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Oczekiwanie obiektu wątku.</param>
-        <summary>Powiadamia wątek w kolejce oczekiwania zmiany w stanie zablokowanym obiektu.</summary>
+        <param name="obj">Obiekt, dla którego jest oczekiwany wątek.</param>
+        <summary>Powiadamia wątek w kolejce oczekujące zmiany stanu zablokowanego obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Tylko bieżący właściciel blokady może zasygnalizowania obiektu oczekiwania przy użyciu `Pulse`.  
+ Tylko bieżący właściciel blokady może sygnalizować obiekt oczekujący przy użyciu `Pulse`.  
   
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę w celu zasygnalizowania następny wątek w wierszu blokady. Po odebraniu pulse, wątek oczekiwania została przeniesiona do kolejki gotowe. Kiedy wątek, wywołana `Pulse` zwalnia blokadę, następny wątek w kolejce gotowe, (które niekoniecznie jest wątek, który został impulsu) uzyskuje blokadę.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę, aby sygnalizować Następny wątek w wierszu dla blokady. Po odebraniu pulsu oczekujący wątek zostanie przeniesiony do kolejki gotowości. Gdy wątek, który wywołał `Pulse` , zwalnia blokadę, Następny wątek w kolejce gotowości (który nie jest konieczny do wątku, który został impulsowo) uzyskuje blokadę.  
   
 > [!IMPORTANT]
->  <xref:System.Threading.Monitor> Klasy nie przechowuje stan wskazujący, że <xref:System.Threading.Monitor.Pulse%2A> została wywołana metoda. W związku z tym jeśli wywołasz <xref:System.Threading.Monitor.Pulse%2A> po żadnych wątków oczekujących, następny wątek, który wywołuje <xref:System.Threading.Monitor.Wait%2A> bloki tak, jakby <xref:System.Threading.Monitor.Pulse%2A> nigdy nie została wywołana. Jeśli z dwoma wątkami <xref:System.Threading.Monitor.Pulse%2A> i <xref:System.Threading.Monitor.Wait%2A> wchodzić w interakcje, może to spowodować zakleszczenia. Natomiast to zachowanie <xref:System.Threading.AutoResetEvent> klasy: Jeśli użytkownik sygnał <xref:System.Threading.AutoResetEvent> przez wywołanie jego <xref:System.Threading.EventWaitHandle.Set%2A> metody i nie istnieją wątki oczekujące, <xref:System.Threading.AutoResetEvent> pozostanie w zasygnalizowany stan do momentu wywołania wątku <xref:System.Threading.WaitHandle.WaitOne%2A>, <xref:System.Threading.WaitHandle.WaitAny%2A>, lub <xref:System.Threading.WaitHandle.WaitAll%2A>. <xref:System.Threading.AutoResetEvent> Zwalnia wątek, a następnie wróci do stanu unsignaled.  
+>  Klasa nie utrzymuje stanu wskazującego <xref:System.Threading.Monitor.Pulse%2A> , że metoda została wywołana. <xref:System.Threading.Monitor> W tym przypadku, jeśli <xref:System.Threading.Monitor.Pulse%2A> wywołasz, gdy żaden wątek nie oczekuje, następnym wątku <xref:System.Threading.Monitor.Wait%2A> , który wywołuje <xref:System.Threading.Monitor.Pulse%2A> bloki, tak jakby nigdy nie został wywołany. Jeśli dwa wątki używają <xref:System.Threading.Monitor.Pulse%2A> i <xref:System.Threading.Monitor.Wait%2A> do działania, może to spowodować zakleszczenie. W przeciwieństwie do zachowania <xref:System.Threading.AutoResetEvent> klasy: W przypadku sygnalizowania <xref:System.Threading.AutoResetEvent> przez <xref:System.Threading.EventWaitHandle.Set%2A> wywołanie metody, gdy <xref:System.Threading.AutoResetEvent> nie ma żadnych wątków oczekujących, pozostaje w stanie zasygnalizowania do momentu wywołania <xref:System.Threading.WaitHandle.WaitOne%2A>wątku, <xref:System.Threading.WaitHandle.WaitAny%2A>, lub <xref:System.Threading.WaitHandle.WaitAll%2A>. <xref:System.Threading.AutoResetEvent> Zwalnia ten wątek i powraca do stanu niesygnalizowanego.  
   
- Należy pamiętać, że synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątków, które oczekują na powiadomienia o zmianie stanu obiektu.  
+ Należy zauważyć, że zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości zawierającej wątki, które są gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki czekające na powiadomienie zmiany stanu obiektu.  
   
- `Pulse`, <xref:System.Threading.Monitor.PulseAll%2A>, I <xref:System.Threading.Monitor.Wait%2A> metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Metody `Pulse`, <xref:System.Threading.Monitor.PulseAll%2A> i<xref:System.Threading.Monitor.Wait%2A> muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
   
- O wiele wątków, użyj <xref:System.Threading.Monitor.PulseAll%2A> metody.  
+ Aby sygnalizować wiele wątków, użyj <xref:System.Threading.Monitor.PulseAll%2A> metody.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie posiada blokady dla określonego obiektu.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie jest obiektem blokady określonego obiektu.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -580,26 +580,26 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, który wysyła Puls.</param>
-        <summary>Powiadamia wszystkie wątki oczekujące zmiany w stan obiektu.</summary>
+        <param name="obj">Obiekt, który wysyła impuls.</param>
+        <summary>Powiadamia wszystkie oczekujące wątki zmiany stanu obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę w celu zasygnalizowania wszystkie wątki, oczekiwania na uzyskanie blokady obiektu. Po wysłaniu sygnału wątków oczekujących są przenoszone do kolejki gotowe. Kiedy wątek, wywołana `PulseAll` zwalnia blokadę, następny wątek w kolejce gotowe uzyskuje blokadę.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę, aby sygnalizować wszystkie wątki oczekujące na uzyskanie blokady obiektu. Po wysłaniu sygnału oczekujące wątki są przenoszone do kolejki gotowości. Gdy wątek wywoływany `PulseAll` przez program zwalnia blokadę, Następny wątek w kolejce gotowej uzyskuje blokadę.  
   
- Należy pamiętać, że synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątków, które oczekują na powiadomienia o zmianie stanu obiektu.  
+ Należy zauważyć, że zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości zawierającej wątki, które są gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki czekające na powiadomienie zmiany stanu obiektu.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, `PulseAll`, I <xref:System.Threading.Monitor.Wait%2A> metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, `PulseAll` i<xref:System.Threading.Monitor.Wait%2A> muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
- Aby zasygnalizować pojedynczego wątku, należy użyć `Pulse` metody.  
+ Aby sygnalizować pojedynczy wątek, użyj `Pulse` metody.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie posiada blokady dla określonego obiektu.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie jest obiektem blokady określonego obiektu.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -613,7 +613,7 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Próbuje uzyskać wyłącznej blokady określony obiekt.</summary>
+        <summary>Próbuje uzyskać blokadę na wyłączność dla określonego obiektu.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="TryEnter">
@@ -650,21 +650,21 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
-        <summary>Próbuje uzyskać wyłącznej blokady określony obiekt.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
+        <summary>Próbuje uzyskać blokadę na wyłączność dla określonego obiektu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli operacja się powiedzie, ta metoda uzyskuje blokady na wyłączność w `obj` parametru. Ta metoda zwraca natychmiast, czy blokada jest dostępna.  
+ Jeśli to się powiedzie, ta metoda uzyskuje blokadę `obj` na wyłączność dla parametru. Ta metoda wraca natychmiast, niezależnie od tego, czy blokada jest dostępna.  
   
- Ta metoda jest podobna do <xref:System.Threading.Monitor.Enter%2A>, ale nigdy nie blokuje bieżącego wątku. Jeśli wątek nie można wprowadzić bez blokowania, metoda zwraca `false,`.  
+ Ta metoda jest podobna do <xref:System.Threading.Monitor.Enter%2A>, ale nigdy nie blokuje bieżącego wątku. Jeśli wątek nie może wejść bez blokowania, metoda zwraca `false,`.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> artykułu.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać szczegółowe informacje, <xref:System.Threading.Monitor> Zobacz artykuł.  
   
- Aby upewnić się, że wątek nie wprowadził sekcję krytyczną, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcję krytyczną, tylko wtedy, gdy jego wartość zwracana jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość zwracana `true`to. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#1)]
  [!code-vb[System.Threading.Monitor.TryEnter#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#1)]  
@@ -680,7 +680,7 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
       </Docs>
@@ -726,23 +726,23 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
-        <param name="lockTaken">Wynik próba uzyskania blokady, przekazywany przez odwołanie. Wartość wejściowa musi być <see langword="false" />. Dane wyjściowe są <see langword="true" /> Jeśli jest blokada; w przeciwnym razie wynikiem jest <see langword="false" />. Dane wyjściowe jest ustawiona, nawet jeśli wystąpi wyjątek podczas próby uzyskania blokady.</param>
-        <summary>Próbuje uzyskać wyłącznej blokady określony obiekt i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
+        <param name="lockTaken">Wynik próby uzyskania blokady, która została przeniesiona przez odwołanie. Wartość wejściowa musi <see langword="false" />być. Dane wyjściowe są <see langword="true" /> w przypadku pozyskania blokady; w przeciwnym razie dane <see langword="false" />wyjściowe to. Dane wyjściowe są ustawiane nawet wtedy, gdy wystąpi wyjątek podczas próby uzyskania blokady.</param>
+        <summary>Próbuje uzyskać wyłączną blokadę określonego obiektu i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli operacja się powiedzie, ta metoda uzyskuje blokady na wyłączność w `obj` parametru. Ta metoda zwraca natychmiast, czy blokada jest dostępna.  
+ Jeśli to się powiedzie, ta metoda uzyskuje blokadę `obj` na wyłączność dla parametru. Ta metoda wraca natychmiast, niezależnie od tego, czy blokada jest dostępna.  
   
- Jeśli blokada nie została wykonana, ponieważ wystąpił wyjątek, zmienna jest określona dla `lockTaken` parametr jest `false` po zakończeniu tej metody. Dzięki temu program określić, we wszystkich przypadkach, czy jest to konieczne zwolnić blokadę.  
+ Jeśli blokada nie została wykonana, ponieważ został zgłoszony wyjątek, zmienna określona dla `lockTaken` parametru jest `false` po zakończeniu tej metody. Dzięki temu program może określić, we wszystkich przypadkach, czy konieczne jest zwolnienie blokady.  
   
- Ta metoda jest podobna do <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29>, ale nigdy nie blokuje bieżącego wątku. Jeśli wątek nie można wprowadzić bez blokowania, `lockTaken` argument ma wartość `false` gdy metoda ta zwraca.  
+ Ta metoda jest podobna do <xref:System.Threading.Monitor.Enter%28System.Object%2CSystem.Boolean%40%29>, ale nigdy nie blokuje bieżącego wątku. Jeśli wątek nie może wejść bez blokowania, `lockTaken` argument jest ustawiany na `false` , gdy metoda zwraca.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> artykułu.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> artykuł.  
   
- Aby upewnić się, że wątek wprowadzaj sekcję krytyczną, należy sprawdzić wartość `lockTaken` i wykonania kodu w sekcję krytyczną, tylko wtedy, gdy jej wartość jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość `lockTaken` i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość to. `true` Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#2)]
  [!code-vb[System.Threading.Monitor.TryEnter#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#2)]  
@@ -750,15 +750,15 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
    
   
 ## Examples  
- Poniższy kod przedstawia podstawowy wzorzec przy użyciu <xref:System.Threading.Monitor.TryEnter%28System.Object%2CSystem.Boolean%40%29> przeciążenie metody. To przeciążenie zawsze ustawia wartość zmiennej, która jest przekazywana do `ref` parametru (`ByRef` w języku Visual Basic) `lockTaken`nawet wtedy, gdy metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodny sposób, aby sprawdzić, czy blokada musi być wydana.  
+ Poniższy kod przedstawia podstawowy wzorzec używania <xref:System.Threading.Monitor.TryEnter%28System.Object%2CSystem.Boolean%40%29> przeciążenia metody. To Przeciążenie zawsze ustawia wartość zmiennej, która jest przenoszona do `ref` parametru (`ByRef` w Visual Basic) `lockTaken`, nawet jeśli metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodnym sposobem sprawdzenia, czy blokada musi być zwolni.  
   
  [!code-csharp[System.Threading.Monitor.Enter#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.enter/cs/example.cs#3)]
  [!code-vb[System.Threading.Monitor.Enter#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.enter/vb/example.vb#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> jest <see langword="true" />.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> to <see langword="true" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
       </Docs>
     </Member>
     <Member MemberName="TryEnter">
@@ -801,28 +801,28 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
         <param name="millisecondsTimeout">Liczba milisekund oczekiwania na blokadę.</param>
-        <summary>Próbuje określoną liczbę milisekund, można uzyskać blokady na wyłączność dla określonego obiektu.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Próby dla określonej liczby milisekund w celu uzyskania blokady na wyłączność dla określonego obiektu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `millisecondsTimeout` parametr ma wartość <xref:System.Threading.Timeout.Infinite>, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.Enter%2A>. Jeśli `millisecondsTimeout` jest równa 0, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.TryEnter%2A>.  
+ Jeśli parametr ma wartość <xref:System.Threading.Timeout.Infinite>, ta metoda jest równoważna <xref:System.Threading.Monitor.Enter%2A>z. `millisecondsTimeout` Jeśli `millisecondsTimeout` jest równa 0, ta metoda jest <xref:System.Threading.Monitor.TryEnter%2A>równoważna z.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> artykułu.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać szczegółowe informacje, <xref:System.Threading.Monitor> Zobacz artykuł.  
   
- Aby upewnić się, że wątek nie wprowadził sekcję krytyczną, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcję krytyczną, tylko wtedy, gdy jego wartość zwracana jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość zwracana `true`to. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#3)]
  [!code-vb[System.Threading.Monitor.TryEnter#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest ujemny i nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest ujemna i nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
       </Docs>
@@ -862,28 +862,28 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący ilość czasu oczekiwania na blokadę. Wartość-1 milisekundy określa nieskończone oczekiwanie.</param>
-        <summary>Prób, określoną ilość czasu, aby pozyskać blokady na wyłączność dla określonego obiektu.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Reprezentująca ilość czasu oczekiwania na blokadę. Wartość-1 milisekunda określa nieskończony czas oczekiwania.</param>
+        <summary>Próby, przez określony czas, uzyskania blokady wyłącznej dla określonego obiektu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek uzyskuje blokadę; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli wartość `timeout` parametr przekonwertowane na milisekund jest równa -1, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.Enter%2A>. Jeśli wartość `timeout` jest równa 0, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.TryEnter%2A>.  
+ Jeśli wartość `timeout` parametru konwertowana na milisekundy jest równa-1, ta metoda jest równoważna <xref:System.Threading.Monitor.Enter%2A>z. Jeśli wartość `timeout` jest równa 0, ta metoda jest równoważna <xref:System.Threading.Monitor.TryEnter%2A>z.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> temat poświęcony klasie.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać szczegółowe informacje, <xref:System.Threading.Monitor> Zobacz temat Klasa.  
   
- Aby upewnić się, że wątek nie wprowadził sekcję krytyczną, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcję krytyczną, tylko wtedy, gdy jego wartość zwracana jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość zwracaną metody i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość zwracana `true`to. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#5](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#5)]
  [!code-vb[System.Threading.Monitor.TryEnter#5](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#5)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> w milisekundach jest ujemna, a nie jest równa <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekundy), lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> w milisekundach jest ujemna i nie jest <see cref="F:System.Threading.Timeout.Infinite" /> równa (-1 milisekund) lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
       </Docs>
@@ -930,22 +930,22 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" Index="2" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
         <param name="millisecondsTimeout">Liczba milisekund oczekiwania na blokadę.</param>
-        <param name="lockTaken">Wynik próba uzyskania blokady, przekazywany przez odwołanie. Wartość wejściowa musi być <see langword="false" />. Dane wyjściowe są <see langword="true" /> Jeśli jest blokada; w przeciwnym razie wynikiem jest <see langword="false" />. Dane wyjściowe jest ustawiona, nawet jeśli wystąpi wyjątek podczas próby uzyskania blokady.</param>
-        <summary>Próbuje, określoną liczbę milisekund, można uzyskać blokady na wyłączność dla określonego obiektu, dzięki czemu niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
+        <param name="lockTaken">Wynik próby uzyskania blokady, która została przeniesiona przez odwołanie. Wartość wejściowa musi <see langword="false" />być. Dane wyjściowe są <see langword="true" /> w przypadku pozyskania blokady; w przeciwnym razie dane <see langword="false" />wyjściowe to. Dane wyjściowe są ustawiane nawet wtedy, gdy wystąpi wyjątek podczas próby uzyskania blokady.</param>
+        <summary>Próby, przez określoną liczbę milisekund, do uzyskania blokady na wyłączność określonego obiektu i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `millisecondsTimeout` parametr ma wartość <xref:System.Threading.Timeout.Infinite>, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.Enter%28System.Object%29>. Jeśli `millisecondsTimeout` jest równa 0, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.TryEnter%28System.Object%29>.  
+ Jeśli parametr ma wartość <xref:System.Threading.Timeout.Infinite>, ta metoda jest równoważna <xref:System.Threading.Monitor.Enter%28System.Object%29>z. `millisecondsTimeout` Jeśli `millisecondsTimeout` jest równa 0, ta metoda jest <xref:System.Threading.Monitor.TryEnter%28System.Object%29>równoważna z.  
   
- Jeśli blokada nie została wykonana, ponieważ wystąpił wyjątek, zmienna jest określona dla `lockTaken` parametr jest `false` po zakończeniu tej metody. Dzięki temu program określić, we wszystkich przypadkach, czy jest to konieczne zwolnić blokadę.  
+ Jeśli blokada nie została wykonana, ponieważ został zgłoszony wyjątek, zmienna określona dla `lockTaken` parametru jest `false` po zakończeniu tej metody. Dzięki temu program może określić, we wszystkich przypadkach, czy konieczne jest zwolnienie blokady.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> temat poświęcony klasie.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać więcej informacji, zapoznaj się z <xref:System.Threading.Monitor> tematem klasy.  
   
- Aby upewnić się, że wątek wprowadzaj sekcję krytyczną, należy sprawdzić wartość `lockTaken` i wykonania kodu w sekcję krytyczną, tylko wtedy, gdy jej wartość jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość `lockTaken` i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość to. `true` Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#4)]
  [!code-vb[System.Threading.Monitor.TryEnter#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#4)]  
@@ -953,16 +953,16 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
    
   
 ## Examples  
- Poniższy kod przedstawia podstawowy wzorzec przy użyciu <xref:System.Threading.Monitor.TryEnter%28System.Object%2CSystem.Boolean%40%29> przeciążenie metody. To przeciążenie zawsze ustawia wartość zmiennej, która jest przekazywana do `ref` parametru (`ByRef` w języku Visual Basic) `lockTaken`nawet wtedy, gdy metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodny sposób, aby sprawdzić, czy blokada musi być wydana.  
+ Poniższy kod przedstawia podstawowy wzorzec używania <xref:System.Threading.Monitor.TryEnter%28System.Object%2CSystem.Boolean%40%29> przeciążenia metody. To Przeciążenie zawsze ustawia wartość zmiennej, która jest przenoszona do `ref` parametru (`ByRef` w Visual Basic) `lockTaken`, nawet jeśli metoda zgłasza wyjątek, więc wartość zmiennej jest niezawodnym sposobem sprawdzenia, czy blokada musi być zwolni.  
   
  [!code-csharp[System.Threading.Monitor.Enter#4](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.monitor.enter/cs/example.cs#4)]
  [!code-vb[System.Threading.Monitor.Enter#4](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.monitor.enter/vb/example.vb#4)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> jest <see langword="true" />.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest ujemny i nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> to <see langword="true" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest ujemna i nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryEnter">
@@ -1004,31 +1004,31 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="lockTaken" Type="System.Boolean" RefType="ref" Index="2" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, w którym można uzyskać blokady.</param>
-        <param name="timeout">Ilość czasu oczekiwania na blokadę. Wartość-1 milisekundy określa nieskończone oczekiwanie.</param>
-        <param name="lockTaken">Wynik próba uzyskania blokady, przekazywany przez odwołanie. Wartość wejściowa musi być <see langword="false" />. Dane wyjściowe są <see langword="true" /> Jeśli jest blokada; w przeciwnym razie wynikiem jest <see langword="false" />. Dane wyjściowe jest ustawiona, nawet jeśli wystąpi wyjątek podczas próby uzyskania blokady.</param>
-        <summary>Próbuje uzyskać określoną ilość czasu, aby pozyskać blokady na wyłączność dla określonego obiektu, a niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
+        <param name="obj">Obiekt, na którym należy uzyskać blokadę.</param>
+        <param name="timeout">Czas oczekiwania na blokadę. Wartość-1 milisekunda określa nieskończony czas oczekiwania.</param>
+        <param name="lockTaken">Wynik próby uzyskania blokady, która została przeniesiona przez odwołanie. Wartość wejściowa musi <see langword="false" />być. Dane wyjściowe są <see langword="true" /> w przypadku pozyskania blokady; w przeciwnym razie dane <see langword="false" />wyjściowe to. Dane wyjściowe są ustawiane nawet wtedy, gdy wystąpi wyjątek podczas próby uzyskania blokady.</param>
+        <summary>Próbuje, przez określony czas, uzyskać blokadę na wyłączność określonego obiektu i niepodzielnie ustawia wartość wskazującą, czy blokada została wykonana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli wartość `timeout` parametr przekonwertowane na milisekund jest równa -1, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.Enter%28System.Object%29>. Jeśli wartość `timeout` jest równa 0, ta metoda jest odpowiednikiem <xref:System.Threading.Monitor.TryEnter%28System.Object%29>.  
+ Jeśli wartość `timeout` parametru konwertowana na milisekundy jest równa-1, ta metoda jest równoważna <xref:System.Threading.Monitor.Enter%28System.Object%29>z. Jeśli wartość `timeout` jest równa 0, ta metoda jest równoważna <xref:System.Threading.Monitor.TryEnter%28System.Object%29>z.  
   
- Jeśli blokada nie została wykonana, ponieważ wystąpił wyjątek, zmienna jest określona dla `lockTaken` parametr jest `false` po zakończeniu tej metody. Dzięki temu program określić, we wszystkich przypadkach, czy jest to konieczne zwolnić blokadę.  
+ Jeśli blokada nie została wykonana, ponieważ został zgłoszony wyjątek, zmienna określona dla `lockTaken` parametru jest `false` po zakończeniu tej metody. Dzięki temu program może określić, we wszystkich przypadkach, czy konieczne jest zwolnienie blokady.  
   
 > [!NOTE]
->  Użyj <xref:System.Threading.Monitor> blokowanie obiektów (czyli typy referencyjne), nie typów wartości. Aby uzyskać więcej informacji, zobacz <xref:System.Threading.Monitor> temat poświęcony klasie.  
+>  Służy <xref:System.Threading.Monitor> do blokowania obiektów (czyli typów referencyjnych), a nie typów wartości. Aby uzyskać więcej informacji, zapoznaj się z <xref:System.Threading.Monitor> tematem klasy.  
   
- Aby upewnić się, że wątek wprowadzaj sekcję krytyczną, należy sprawdzić wartość `lockTaken` i wykonania kodu w sekcję krytyczną, tylko wtedy, gdy jej wartość jest `true`. Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy zauważyć, że należy wywołać <xref:System.Threading.Monitor.Exit%2A> w `finally` bloku, aby upewnić się, czy wątek wywołujący zwalnia jego blokadę sekcję krytyczną, jeśli wystąpi wyjątek.  
+ Aby upewnić się, że wątek nie wprowadza sekcji krytycznej, należy sprawdzić wartość `lockTaken` i wykonać kod w sekcji krytycznej tylko wtedy, gdy jej wartość to. `true` Poniższy fragment kodu przedstawia wzorzec używany do wywołania tej metody. Należy pamiętać, że należy <xref:System.Threading.Monitor.Exit%2A> wywołać `finally` w bloku, aby upewnić się, że wywoływany wątek zwalnia jego blokadę w sekcji krytycznej, jeśli wystąpi wyjątek.  
   
  [!code-csharp[System.Threading.Monitor.TryEnter#6](~/samples/snippets/csharp/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/cs/pattern1.cs#6)]
  [!code-vb[System.Threading.Monitor.TryEnter#6](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/System.Threading.Monitor.TryEnter/vb/pattern1.vb#6)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> jest <see langword="true" />.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> w milisekundach jest ujemna, a nie jest równa <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekundy), lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentException">Dane wejściowe <paramref name="lockTaken" /> to <see langword="true" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> w milisekundach jest ujemna i nie jest <see cref="F:System.Threading.Timeout.Infinite" /> równa (-1 milisekund) lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
       </Docs>
@@ -1041,7 +1041,7 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady.</summary>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Wait">
@@ -1083,32 +1083,32 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="obj" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady.</summary>
-        <returns><see langword="true" /> Jeśli wywołanie zwróciło, ponieważ obiekt wywołujący reacquired blokady dla określonego obiektu. Ta metoda nie zwraca, jeśli blokada nie jest reacquired.</returns>
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady.</summary>
+        <returns><see langword="true" />Jeśli wywołanie zostało zwrócone, ponieważ obiekt wywołujący odzyskuje blokadę dla określonego obiektu. Ta metoda nie zwraca, jeśli blokada nie zostanie odbrana.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę, aby zwolnić obiekt, dzięki czemu można do niego dostęp inny wątek. Obiekt wywołujący jest blokowane podczas oczekiwania na ponownie pobrać blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmiany stanu, które będzie wysyłane w wyniku operacji inny wątek.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę w celu zwolnienia obiektu, tak aby inny wątek mógł uzyskać do niego dostęp. Obiekt wywołujący jest zablokowany podczas oczekiwania na odzyskanie blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmianę stanu, która zostanie wykonana w wyniku operacji innego wątku.  
   
- Kiedy wątek wywołuje `Wait`, zwalnia blokadę na obiekcie i wprowadza kolejce oczekiwania obiektu. Następny wątek w kolejce gotowe obiektu (jeśli istnieje) uzyskuje blokadę, a ma wyłącznego użytku obiektu. Wszystkie wątki, które wywołują `Wait` pozostaną w kolejce oczekiwania, aż otrzyma sygnał od <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A>, wysłanych przez właściciela blokady. Jeśli `Pulse` wysłaniu dotyczy tylko wątku na czele kolejce oczekiwania. Jeśli `PulseAll` zostanie wysłany, wpływają na wszystkie wątki, które oczekują na obiekt. Po odebraniu sygnału jeden lub więcej wątków pozostaw kolejce oczekiwania i wprowadź kolejkę gotowe. Wątek w kolejce gotowe może ponownie pobrać blokady.  
+ Gdy wątek wywołuje `Wait`, zwalnia blokadę obiektu i przechodzi do oczekującej kolejki obiektu. Następny wątek w kolejce gotowości obiektu (jeśli istnieje) uzyskuje blokadę i ma wyłączny dostęp do obiektu. Wszystkie wątki, które `Wait` wywołują, pozostaną w kolejce oczekiwania do momentu <xref:System.Threading.Monitor.Pulse%2A> otrzymania <xref:System.Threading.Monitor.PulseAll%2A>sygnału z lub, wysyłane przez właściciela blokady. W `Pulse` przypadku wysłania tej zmiany dotyczy tylko wątku w kolejce oczekiwania. Jeśli `PulseAll` jest wysyłana, wpłynie to na wszystkie wątki, które oczekują na obiekt. Po odebraniu sygnału co najmniej jeden wątek opuszcza oczekującą kolejkę i wprowadza gotową kolejkę. Wątek w kolejce gotowości jest dozwolony do odzyskania blokady.  
   
- Ta metoda zwraca, jeśli wątek wywołujący reacquires blokadę na obiekcie. Należy zauważyć, że ta metoda blokuje, przez czas nieokreślony, jeśli właściciel blokady nie mogą wywoływać `Pulse` lub `PulseAll`.  
+ Ta metoda zwraca, gdy wątek wywołujący ponownie uzyskuje blokadę obiektu. Należy zauważyć, że ta metoda blokuje się w nieskończoność, jeśli posiadacz blokady nie `Pulse` wywołuje `PulseAll`lub.  
   
- Element wywołujący wykonuje `Wait` raz, niezależnie od tego, ile razy <xref:System.Threading.Monitor.Enter%2A> zostało wywołane dla określonego obiektu. Model `Wait` metoda przechowuje liczbę wywołany obiekt wywołujący `Enter` w obiekcie, a następnie wywołuje `Exit` tyle razy, aby całkowicie zwolnić zablokowany obiekt. Obiekt wywołujący blokuje wtedy dane podczas oczekiwania na ponownie pobrać obiekt. Gdy obiekt wywołujący reacquires blokady, system wywołuje `Enter` tyle razy, aby przywrócić zapisane `Enter` liczba do obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę dla określonego obiektu Jeśli element wywołujący jest właściciel blokady na inne obiekty, blokadami tymi nie zostaną zwolnione.  
+ Obiekt wywołujący `Wait` jest wykonywany jednokrotnie, niezależnie od tego <xref:System.Threading.Monitor.Enter%2A> , ile razy został wywołany dla określonego obiektu. Koncepcyjnie `Enter` `Exit` metoda przechowuje liczbę wywołanych przez obiekt wywołujący w obiekcie i wywołuje tyle razy, ile jest to konieczne, aby w pełni zwolnić zablokowany obiekt. `Wait` Obiekt wywołujący jest następnie blokowany podczas oczekiwania na ponowne uzyskanie obiektu. Gdy obiekt wywołujący ponownie uzyska blokadę, system wywoła `Enter` tyle razy, ile jest to konieczne, aby przywrócić zapisaną `Enter` liczbę dla obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę tylko dla określonego obiektu; Jeśli obiekt wywołujący jest właścicielem blokad dla innych obiektów, te blokady nie są zwalniane.  
   
- Należy pamiętać, że synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątków, które oczekują na powiadomienia o zmianie stanu obiektu.  
+ Należy zauważyć, że zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości zawierającej wątki, które są gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki czekające na powiadomienie zmiany stanu obiektu.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A>, I `Wait` metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A> i`Wait` muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie posiada blokady dla określonego obiektu.</exception>
-        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> później zostanie przerwany ze stanu oczekiwania. Tak się stanie, gdy inny wątek wywołuje ten wątek <see cref="M:System.Threading.Thread.Interrupt" /> metody.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie jest obiektem blokady określonego obiektu.</exception>
+        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> , został później przerwany ze stanu oczekiwania. Dzieje się tak, gdy inny wątek wywołuje <see cref="M:System.Threading.Thread.Interrupt" /> metodę tego wątku.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -1154,40 +1154,40 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <param name="millisecondsTimeout">Liczba milisekund oczekiwania przed wątku przechodzi gotowe kolejki.</param>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady. Jeżeli określony limit czasu upłynie, wątku przechodzi gotowe kolejki.</summary>
-        <returns><see langword="true" /> Jeśli blokada została reacquired przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została reacquired po upływie określonego czasu. Metoda nie zwraca, dopóki blokada jest reacquired.</returns>
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania przed przejściem wątku do kolejki gotowości.</param>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady. Jeśli upłynie określony interwał limitu czasu, wątek przechodzi do kolejki gotowości.</summary>
+        <returns><see langword="true" />Jeśli blokada została odbrana przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została odzyskania po upływie określonego czasu. Metoda nie zwraca do momentu odzyskania blokady.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda nie zwraca do momentu jej reacquires blokady na wyłączność w `obj` parametru.  
+ Ta metoda nie zwraca do momentu odzyskania blokady wyłącznej na `obj` parametrze.  
   
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę, aby zwolnić obiekt, dzięki czemu można do niego dostęp inny wątek. Obiekt wywołujący jest blokowane podczas oczekiwania na ponownie pobrać blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmiany stanu, które będzie wysyłane w wyniku operacji inny wątek.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę w celu zwolnienia obiektu, tak aby inny wątek mógł uzyskać do niego dostęp. Obiekt wywołujący jest zablokowany podczas oczekiwania na odzyskanie blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmianę stanu, która zostanie wykonana w wyniku operacji innego wątku.  
   
- Limit czasu zapewnia, że bieżący wątek nie blokuje przez czas nieokreślony Jeśli inny wątek zwalnia blokadę bez wywoływania pierwszy <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody. Przesuwa się również wątek do kolejki gotowe, tak, aby je można ponownie pobrać blokady wcześniej z pominięciem innych wątków w przód od jej w kolejce oczekiwania. Wątek można sprawdzić wartość zwracaną przez <xref:System.Threading.Monitor.Wait%2A> metodę pozwala ustalić, czy jego reacquired blokady przed limit czasu. Wątek może służyć do oceny warunków, które spowodowało wprowadzenie czas oczekiwania, czas i, jeśli konieczne wywołanie <xref:System.Threading.Monitor.Wait%2A> ponownie metodą.  
+ Limit czasu zapewnia, że bieżący wątek nie blokuje się w nieskończoność, jeśli inny wątek zwolni blokadę bez uprzedniego wywołania <xref:System.Threading.Monitor.Pulse%2A> metody <xref:System.Threading.Monitor.PulseAll%2A> lub. Przenosi również wątek do kolejki gotowości, pomijając inne wątki przed nim w kolejce oczekiwania, dzięki czemu może on ponownie uzyskać blokadę. Wątek może testować wartość <xref:System.Threading.Monitor.Wait%2A> zwracaną metody, aby określić, czy odzyskuje blokadę przed upływem limitu czasu. Wątek może oszacować warunki, które spowodowały wprowadzenie oczekiwania, i w razie potrzeby ponownie wywołać <xref:System.Threading.Monitor.Wait%2A> metodę.  
   
- Kiedy wątek wywołuje `Wait`, zwalnia blokadę na obiekcie i wprowadza kolejce oczekiwania obiektu. Następny wątek w kolejce gotowe obiektu (jeśli istnieje) uzyskuje blokadę, a ma wyłącznego użytku obiektu. Wątek, który jest wywoływany `Wait` pozostaje w kolejce oczekiwania, aż do wątku, który posiada blokadę wywołuje <xref:System.Threading.Monitor.PulseAll%2A>, lub jest dalej w kolejce, i wywołuje wątku, który posiada blokadę <xref:System.Threading.Monitor.Pulse%2A>. Jednak jeśli `millisecondsTimeout` musi upłynąć, zanim inny wątek wywołuje ten obiekt <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody, oryginalnym wątku została przeniesiona do kolejki gotowe w celu odzyskania blokady.  
-  
-> [!NOTE]
->  Jeśli <xref:System.Threading.Timeout.Infinite> jest określona dla `millisecondsTimeout` parametru tej metody na czas nieokreślony blokuje, chyba że właściciel blokady wywołuje <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `millisecondsTimeout` jest równa 0, wątek, który wywołuje `Wait` zwalnia blokadę, a następnie od razu wchodzi gotowe kolejki w celu odzyskania blokady.  
-  
- Element wywołujący wykonuje `Wait` raz, niezależnie od tego, ile razy <xref:System.Threading.Monitor.Enter%2A> zostało wywołane dla określonego obiektu. Model `Wait` metoda przechowuje liczbę wywołany obiekt wywołujący <xref:System.Threading.Monitor.Enter%2A> w obiekcie, a następnie wywołuje <xref:System.Threading.Monitor.Exit%2A> tyle razy, aby całkowicie zwolnić zablokowany obiekt. Obiekt wywołujący blokuje wtedy dane podczas oczekiwania na ponownie pobrać obiekt. Gdy obiekt wywołujący reacquires blokady, system wywołuje <xref:System.Threading.Monitor.Enter%2A> tyle razy, aby przywrócić zapisane <xref:System.Threading.Monitor.Enter%2A> liczba do obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę dla określonego obiektu Jeśli element wywołujący jest właściciel blokady na inne obiekty, blokadami tymi nie zostaną zwolnione.  
+ Gdy wątek wywołuje `Wait`, zwalnia blokadę obiektu i przechodzi do oczekującej kolejki obiektu. Następny wątek w kolejce gotowości obiektu (jeśli istnieje) uzyskuje blokadę i ma wyłączny dostęp do obiektu. Wywoływany `Wait` wątek pozostaje w kolejce oczekiwania do momentu, aż wątek, który przechowuje <xref:System.Threading.Monitor.PulseAll%2A>blokadę, lub jest następnym w kolejce i wątek <xref:System.Threading.Monitor.Pulse%2A>, który przechowuje blokadę. Jeśli `millisecondsTimeout` jednak upłynie, zanim inny wątek wywoła ten <xref:System.Threading.Monitor.Pulse%2A> obiekt lub <xref:System.Threading.Monitor.PulseAll%2A> metodę, oryginalny wątek zostanie przeniesiony do kolejki gotowości w celu odzyskania blokady.  
   
 > [!NOTE]
->  Synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątki, które oczekują na powiadomienia o zmianie stanu obiektu.  
+>  Jeśli <xref:System.Threading.Timeout.Infinite> jest określony `millisecondsTimeout` dla parametru, ta metoda blokuje się w nieskończoność, chyba że posiadacz wywołań <xref:System.Threading.Monitor.Pulse%2A> Lock lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `millisecondsTimeout` wartość jest równa 0, wątek `Wait` , który wywołuje zwalnia blokadę, a następnie natychmiast wprowadza gotową kolejkę do odzyskania blokady.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A>, I `Wait` metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Obiekt wywołujący `Wait` jest wykonywany jednokrotnie, niezależnie od tego <xref:System.Threading.Monitor.Enter%2A> , ile razy został wywołany dla określonego obiektu. Koncepcyjnie <xref:System.Threading.Monitor.Enter%2A> <xref:System.Threading.Monitor.Exit%2A> metoda przechowuje liczbę wywołanych przez obiekt wywołujący w obiekcie i wywołuje tyle razy, ile jest to konieczne, aby w pełni zwolnić zablokowany obiekt. `Wait` Obiekt wywołujący jest następnie blokowany podczas oczekiwania na ponowne uzyskanie obiektu. Gdy obiekt wywołujący ponownie uzyska blokadę, system wywoła <xref:System.Threading.Monitor.Enter%2A> tyle razy, ile jest to konieczne, aby przywrócić zapisaną <xref:System.Threading.Monitor.Enter%2A> liczbę dla obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę tylko dla określonego obiektu; Jeśli obiekt wywołujący jest właścicielem blokad dla innych obiektów, te blokady nie są zwalniane.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+> [!NOTE]
+>  Zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości, która zawiera wątki gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki, które oczekują na powiadomienie o zmianie stanu obiektu.  
+  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A> i`Wait` muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
+  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie posiada blokady dla określonego obiektu.</exception>
-        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> później zostanie przerwany ze stanu oczekiwania. Tak się stanie, gdy inny wątek wywołuje ten wątek <see cref="M:System.Threading.Thread.Interrupt" /> metody.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="millisecondsTimeout" /> parametr ma wartość ujemną, a nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie jest obiektem blokady określonego obiektu.</exception>
+        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> , został później przerwany ze stanu oczekiwania. Dzieje się tak, gdy inny wątek wywołuje <see cref="M:System.Threading.Thread.Interrupt" /> metodę tego wątku.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="millisecondsTimeout" /> parametru jest ujemna i nie jest <see cref="F:System.Threading.Timeout.Infinite" />równa.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -1233,40 +1233,40 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący ilość czasu oczekiwania na wątku przechodzi gotowe kolejki.</param>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady. Jeżeli określony limit czasu upłynie, wątku przechodzi gotowe kolejki.</summary>
-        <returns><see langword="true" /> Jeśli blokada została reacquired przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została reacquired po upływie określonego czasu. Metoda nie zwraca, dopóki blokada jest reacquired.</returns>
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Reprezentująca ilość czasu oczekiwania przed przejściem wątku do kolejki gotowości.</param>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady. Jeśli upłynie określony interwał limitu czasu, wątek przechodzi do kolejki gotowości.</summary>
+        <returns><see langword="true" />Jeśli blokada została odbrana przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została odzyskania po upływie określonego czasu. Metoda nie zwraca do momentu odzyskania blokady.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda nie zwraca do momentu jej reacquires blokady na wyłączność w `obj` parametru.  
+ Ta metoda nie zwraca do momentu odzyskania blokady wyłącznej na `obj` parametrze.  
   
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę, aby zwolnić obiekt, dzięki czemu można do niego dostęp inny wątek. Obiekt wywołujący jest blokowane podczas oczekiwania na ponownie pobrać blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmiany stanu, które będzie wysyłane w wyniku operacji inny wątek.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę w celu zwolnienia obiektu, tak aby inny wątek mógł uzyskać do niego dostęp. Obiekt wywołujący jest zablokowany podczas oczekiwania na odzyskanie blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmianę stanu, która zostanie wykonana w wyniku operacji innego wątku.  
   
- Limit czasu zapewnia, że bieżący wątek nie blokuje przez czas nieokreślony Jeśli inny wątek zwalnia blokadę bez wywoływania pierwszy <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody. Przesuwa się również wątek do kolejki gotowe, tak, aby je można ponownie pobrać blokady wcześniej z pominięciem innych wątków w przód od jej w kolejce oczekiwania. Wątek można sprawdzić wartość zwracaną przez <xref:System.Threading.Monitor.Wait%2A> metodę pozwala ustalić, czy jego reacquired blokady przed limit czasu. Wątek może służyć do oceny warunków, które spowodowało wprowadzenie czas oczekiwania, czas i, jeśli konieczne wywołanie <xref:System.Threading.Monitor.Wait%2A> ponownie metodą.  
+ Limit czasu zapewnia, że bieżący wątek nie blokuje się w nieskończoność, jeśli inny wątek zwolni blokadę bez uprzedniego wywołania <xref:System.Threading.Monitor.Pulse%2A> metody <xref:System.Threading.Monitor.PulseAll%2A> lub. Przenosi również wątek do kolejki gotowości, pomijając inne wątki przed nim w kolejce oczekiwania, dzięki czemu może on ponownie uzyskać blokadę. Wątek może testować wartość <xref:System.Threading.Monitor.Wait%2A> zwracaną metody, aby określić, czy odzyskuje blokadę przed upływem limitu czasu. Wątek może oszacować warunki, które spowodowały wprowadzenie oczekiwania, i w razie potrzeby ponownie wywołać <xref:System.Threading.Monitor.Wait%2A> metodę.  
   
- Kiedy wątek wywołuje `Wait`, zwalnia blokadę na obiekcie i wprowadza kolejce oczekiwania obiektu. Następny wątek w kolejce gotowe obiektu (jeśli istnieje) uzyskuje blokadę, a ma wyłącznego użytku obiektu. Wątek, który jest wywoływany `Wait` pozostaje w kolejce oczekiwania, aż do wątku, który posiada blokadę wywołuje <xref:System.Threading.Monitor.PulseAll%2A>, lub jest dalej w kolejce, i wywołuje wątku, który posiada blokadę <xref:System.Threading.Monitor.Pulse%2A>. Jednak jeśli `timeout` musi upłynąć, zanim inny wątek wywołuje ten obiekt <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody, oryginalnym wątku została przeniesiona do kolejki gotowe w celu odzyskania blokady.  
-  
-> [!NOTE]
->  Jeśli <xref:System.TimeSpan> reprezentujący milisekund wartości-1 jest określona dla `timeout` parametru tej metody na czas nieokreślony blokuje, chyba że właściciel blokady wywołuje <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `timeout` wynosi 0 milisekund, wątek, który wywołuje `Wait` zwalnia blokadę, a następnie od razu wchodzi gotowe kolejki w celu odzyskania blokady.  
-  
- Element wywołujący wykonuje `Wait` raz, niezależnie od tego, ile razy <xref:System.Threading.Monitor.Enter%2A> zostało wywołane dla określonego obiektu. Model `Wait` metoda przechowuje liczbę wywołany obiekt wywołujący <xref:System.Threading.Monitor.Enter%2A> w obiekcie, a następnie wywołuje <xref:System.Threading.Monitor.Exit%2A> tyle razy, aby całkowicie zwolnić zablokowany obiekt. Obiekt wywołujący blokuje wtedy dane podczas oczekiwania na ponownie pobrać obiekt. Gdy obiekt wywołujący reacquires blokady, system wywołuje <xref:System.Threading.Monitor.Enter%2A> tyle razy, aby przywrócić zapisane <xref:System.Threading.Monitor.Enter%2A> liczba do obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę dla określonego obiektu Jeśli element wywołujący jest właściciel blokady na inne obiekty, blokadami tymi nie zostaną zwolnione.  
+ Gdy wątek wywołuje `Wait`, zwalnia blokadę obiektu i przechodzi do oczekującej kolejki obiektu. Następny wątek w kolejce gotowości obiektu (jeśli istnieje) uzyskuje blokadę i ma wyłączny dostęp do obiektu. Wywoływany `Wait` wątek pozostaje w kolejce oczekiwania do momentu, aż wątek, który przechowuje <xref:System.Threading.Monitor.PulseAll%2A>blokadę, lub jest następnym w kolejce i wątek <xref:System.Threading.Monitor.Pulse%2A>, który przechowuje blokadę. Jeśli `timeout` jednak upłynie, zanim inny wątek wywoła ten <xref:System.Threading.Monitor.Pulse%2A> obiekt lub <xref:System.Threading.Monitor.PulseAll%2A> metodę, oryginalny wątek zostanie przeniesiony do kolejki gotowości w celu odzyskania blokady.  
   
 > [!NOTE]
->  Synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątki, które oczekują na powiadomienia o zmianie stanu obiektu.  
+>  Jeśli <xref:System.TimeSpan> <xref:System.Threading.Monitor.Pulse%2A> dla parametru określono wartość-1 milisekunda, ta metoda blokuje się w nieskończoność, chyba że jest on posiadaczem wywołań <xref:System.Threading.Monitor.PulseAll%2A>blokady lub. `timeout` Jeśli `timeout` wartość wynosi 0 milisekund, wątek wywołujący `Wait` uwalnianie blokady, a następnie natychmiast wprowadza gotową kolejkę do odzyskania blokady.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A>, I `Wait` metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Obiekt wywołujący `Wait` jest wykonywany jednokrotnie, niezależnie od tego <xref:System.Threading.Monitor.Enter%2A> , ile razy został wywołany dla określonego obiektu. Koncepcyjnie <xref:System.Threading.Monitor.Enter%2A> <xref:System.Threading.Monitor.Exit%2A> metoda przechowuje liczbę wywołanych przez obiekt wywołujący w obiekcie i wywołuje tyle razy, ile jest to konieczne, aby w pełni zwolnić zablokowany obiekt. `Wait` Obiekt wywołujący jest następnie blokowany podczas oczekiwania na ponowne uzyskanie obiektu. Gdy obiekt wywołujący ponownie uzyska blokadę, system wywoła <xref:System.Threading.Monitor.Enter%2A> tyle razy, ile jest to konieczne, aby przywrócić zapisaną <xref:System.Threading.Monitor.Enter%2A> liczbę dla obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę tylko dla określonego obiektu; Jeśli obiekt wywołujący jest właścicielem blokad dla innych obiektów, te blokady nie są zwalniane.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+> [!NOTE]
+>  Zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości, która zawiera wątki gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki, które oczekują na powiadomienie o zmianie stanu obiektu.  
+  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A> i`Wait` muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
+  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie posiada blokady dla określonego obiektu.</exception>
-        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> później zostanie przerwany ze stanu oczekiwania. Tak się stanie, gdy inny wątek wywołuje ten wątek <see cref="M:System.Threading.Thread.Interrupt" /> metody.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> parametru w milisekundach jest ujemna, a nie reprezentuje <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekundy), lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException">Wątek wywołujący nie jest obiektem blokady określonego obiektu.</exception>
+        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> , został później przerwany ze stanu oczekiwania. Dzieje się tak, gdy inny wątek wywołuje <see cref="M:System.Threading.Thread.Interrupt" /> metodę tego wątku.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="timeout" /> parametru w milisekundach jest ujemna i nie reprezentuje <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekund) lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -1311,48 +1311,48 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="exitContext" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <param name="millisecondsTimeout">Liczba milisekund oczekiwania przed wątku przechodzi gotowe kolejki.</param>
-        <param name="exitContext"><see langword="true" /> Aby zamknąć i ponownie pobrać domeny synchronizacji dla kontekstu (Jeśli w kontekście zsynchronizowane) przed oczekiwaniem; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady. Jeżeli określony limit czasu upłynie, wątku przechodzi gotowe kolejki. Ta metoda określa również, czy domeny synchronizacji dla kontekstu (jeśli są w synchronizowane context) jest zakończony przed czas oczekiwania i reacquired później.</summary>
-        <returns><see langword="true" /> Jeśli blokada została reacquired przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została reacquired po upływie określonego czasu. Metoda nie zwraca, dopóki blokada jest reacquired.</returns>
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania przed przejściem wątku do kolejki gotowości.</param>
+        <param name="exitContext"><see langword="true" />Aby wyjść i ponownie uzyskać domenę synchronizacji dla kontekstu (jeśli znajduje się w synchronizowanym kontekście) przed oczekiwaniem; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady. Jeśli upłynie określony interwał limitu czasu, wątek przechodzi do kolejki gotowości. Ta metoda określa również, czy domena synchronizacji kontekstu (Jeśli w synchronizowanym kontekście) zostanie zakończona przed zaczekaniem i ponownym pozyskaniem.</summary>
+        <returns><see langword="true" />Jeśli blokada została odbrana przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została odzyskania po upływie określonego czasu. Metoda nie zwraca do momentu odzyskania blokady.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda nie zwraca do momentu jej reacquires blokady na wyłączność w `obj` parametru.  
+ Ta metoda nie zwraca do momentu odzyskania blokady wyłącznej na `obj` parametrze.  
   
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę, aby zwolnić obiekt, dzięki czemu można do niego dostęp inny wątek. Obiekt wywołujący jest blokowane podczas oczekiwania na ponownie pobrać blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmiany stanu, które będzie wysyłane w wyniku operacji inny wątek.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę w celu zwolnienia obiektu, tak aby inny wątek mógł uzyskać do niego dostęp. Obiekt wywołujący jest zablokowany podczas oczekiwania na odzyskanie blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmianę stanu, która zostanie wykonana w wyniku operacji innego wątku.  
   
- Limit czasu zapewnia, że bieżący wątek nie blokuje przez czas nieokreślony Jeśli inny wątek zwalnia blokadę bez wywoływania pierwszy <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody. Przesuwa się również wątek do kolejki gotowe, tak, aby je można ponownie pobrać blokady wcześniej z pominięciem innych wątków w przód od jej w kolejce oczekiwania. Wątek można sprawdzić wartość zwracaną przez <xref:System.Threading.Monitor.Wait%2A> metodę pozwala ustalić, czy jego reacquired blokady przed limit czasu. Wątek może służyć do oceny warunków, które spowodowało wprowadzenie czas oczekiwania, czas i, jeśli konieczne wywołanie <xref:System.Threading.Monitor.Wait%2A> ponownie metodą.  
+ Limit czasu zapewnia, że bieżący wątek nie blokuje się w nieskończoność, jeśli inny wątek zwolni blokadę bez uprzedniego wywołania <xref:System.Threading.Monitor.Pulse%2A> metody <xref:System.Threading.Monitor.PulseAll%2A> lub. Przenosi również wątek do kolejki gotowości, pomijając inne wątki przed nim w kolejce oczekiwania, dzięki czemu może on ponownie uzyskać blokadę. Wątek może testować wartość <xref:System.Threading.Monitor.Wait%2A> zwracaną metody, aby określić, czy odzyskuje blokadę przed upływem limitu czasu. Wątek może oszacować warunki, które spowodowały wprowadzenie oczekiwania, i w razie potrzeby ponownie wywołać <xref:System.Threading.Monitor.Wait%2A> metodę.  
   
- Kiedy wątek wywołuje `Wait`, zwalnia blokadę, a przechodzi w kolejce oczekiwania. W tym momencie następny wątek w kolejce gotowy (jeśli istnieje) może przejąć kontrolę nad blokady. Wątek, który jest wywoływany `Wait` pozostaje w kolejce oczekiwania, aż do wątku, który posiada blokadę wywołuje <xref:System.Threading.Monitor.PulseAll%2A>, lub jest dalej w kolejce, i wywołuje wątku, który posiada blokadę <xref:System.Threading.Monitor.Pulse%2A>. Jednak jeśli `millisecondsTimeout` musi upłynąć, zanim inny wątek wywołuje ten obiekt <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody, oryginalnym wątku została przeniesiona do kolejki gotowe w celu odzyskania blokady.  
-  
-> [!NOTE]
->  Jeśli <xref:System.Threading.Timeout.Infinite> jest określona dla `millisecondsTimeout` parametru tej metody na czas nieokreślony blokuje, chyba że właściciel blokady wywołuje <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `millisecondsTimeout` jest równa 0, wątek, który wywołuje `Wait` zwalnia blokadę, a następnie od razu wchodzi gotowe kolejki w celu odzyskania blokady.  
-  
- Element wywołujący wykonuje `Wait` raz, niezależnie od tego, ile razy <xref:System.Threading.Monitor.Enter%2A> zostało wywołane dla określonego obiektu. Model `Wait` metoda przechowuje liczbę wywołany obiekt wywołujący <xref:System.Threading.Monitor.Enter%2A> w obiekcie, a następnie wywołuje <xref:System.Threading.Monitor.Exit%2A> tyle razy, aby całkowicie zwolnić zablokowany obiekt. Obiekt wywołujący blokuje wtedy dane podczas oczekiwania na ponownie pobrać obiekt. Gdy obiekt wywołujący reacquires blokady, system wywołuje <xref:System.Threading.Monitor.Enter%2A> tyle razy, aby przywrócić zapisane <xref:System.Threading.Monitor.Enter%2A> liczba do obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę dla określonego obiektu Jeśli element wywołujący jest właściciel blokady na inne obiekty, blokadami tymi nie zostaną zwolnione.  
+ Gdy wątek wywołuje `Wait`, zwalnia blokadę i przechodzi do oczekującej kolejki. W tym momencie następnym wątkiem w kolejce gotowości (jeśli istnieje) można przejąć kontrolę nad blokadą. Wywoływany `Wait` wątek pozostaje w kolejce oczekiwania do momentu, aż wątek, który przechowuje <xref:System.Threading.Monitor.PulseAll%2A>blokadę, lub jest następnym w kolejce i wątek <xref:System.Threading.Monitor.Pulse%2A>, który przechowuje blokadę. Jeśli `millisecondsTimeout` jednak upłynie, zanim inny wątek wywoła ten <xref:System.Threading.Monitor.Pulse%2A> obiekt lub <xref:System.Threading.Monitor.PulseAll%2A> metodę, oryginalny wątek zostanie przeniesiony do kolejki gotowości w celu odzyskania blokady.  
   
 > [!NOTE]
->  Synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątki, które oczekują na powiadomienia o zmianie stanu obiektu.  
+>  Jeśli <xref:System.Threading.Timeout.Infinite> jest określony `millisecondsTimeout` dla parametru, ta metoda blokuje się w nieskończoność, chyba że posiadacz wywołań <xref:System.Threading.Monitor.Pulse%2A> Lock lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `millisecondsTimeout` wartość jest równa 0, wątek `Wait` , który wywołuje zwalnia blokadę, a następnie natychmiast wprowadza gotową kolejkę do odzyskania blokady.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A>, I `Wait` metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Obiekt wywołujący `Wait` jest wykonywany jednokrotnie, niezależnie od tego <xref:System.Threading.Monitor.Enter%2A> , ile razy został wywołany dla określonego obiektu. Koncepcyjnie <xref:System.Threading.Monitor.Enter%2A> <xref:System.Threading.Monitor.Exit%2A> metoda przechowuje liczbę wywołanych przez obiekt wywołujący w obiekcie i wywołuje tyle razy, ile jest to konieczne, aby w pełni zwolnić zablokowany obiekt. `Wait` Obiekt wywołujący jest następnie blokowany podczas oczekiwania na ponowne uzyskanie obiektu. Gdy obiekt wywołujący ponownie uzyska blokadę, system wywoła <xref:System.Threading.Monitor.Enter%2A> tyle razy, ile jest to konieczne, aby przywrócić zapisaną <xref:System.Threading.Monitor.Enter%2A> liczbę dla obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę tylko dla określonego obiektu; Jeśli obiekt wywołujący jest właścicielem blokad dla innych obiektów, te blokady nie są zwalniane.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+> [!NOTE]
+>  Zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości, która zawiera wątki gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki, które oczekują na powiadomienie o zmianie stanu obiektu.  
+  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A> i`Wait` muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
+  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
 ## <a name="notes-on-exiting-the-context"></a>Uwagi dotyczące zamykania kontekstu  
- `exitContext` Parametr jest ignorowany, chyba że <xref:System.Threading.Monitor.Wait%2A> metoda jest wywoływana z wewnątrz inny niż domyślny kontekst zarządzanych. Może się to zdarzyć, jeśli wątek znajduje się wewnątrz wywołania do wystąpienia klasy pochodzącej od <xref:System.ContextBoundObject>. Nawet wtedy, gdy są aktualnie wykonuje metodę w klasie, która nie pochodzi od <xref:System.ContextBoundObject>, takiej jak <xref:System.String>, może być w kontekście innej niż domyślna Jeśli <xref:System.ContextBoundObject> znajduje się na stosie w bieżącej domenie aplikacji.  
+ Parametr nie działa, <xref:System.Threading.Monitor.Wait%2A> chyba że metoda jest wywołana z wnętrza niedomyślnego kontekstu zarządzanego.`exitContext` Taka sytuacja może wystąpić, jeśli wątek jest wewnątrz wywołania do wystąpienia klasy pochodzącej od <xref:System.ContextBoundObject>. Nawet jeśli obecnie wykonujesz metodę na klasie, która nie pochodzi od <xref:System.ContextBoundObject>elementu <xref:System.String>, na przykład, możesz być w niedomyślnym kontekście, jeśli <xref:System.ContextBoundObject> znajduje się na stosie w bieżącej domenie aplikacji.  
   
- Gdy kod jest wykonywany w kontekście innej niż domyślna, określając `true` dla `exitContext` powoduje, że wątku zamknąć kontekstu zarządzanych inną niż domyślna (oznacza to, do którego nastąpi przejście do domyślnego kontekstu) przed wykonaniem <xref:System.Threading.Monitor.Wait%2A> metody. Zwraca do oryginalnego kontekstu niedomyślną po wywołaniu <xref:System.Threading.Monitor.Wait%2A> ukończeniu metody.  
+ Gdy kod jest wykonywany w kontekście niedomyślnym, określenie `true` dla `exitContext` powoduje, że wątek zamyka niedomyślny kontekst zarządzany (czyli przejście do domyślnego <xref:System.Threading.Monitor.Wait%2A> kontekstu) przed wykonaniem metody. Powraca do oryginalnego niedomyślnego kontekstu po zakończeniu wywołania <xref:System.Threading.Monitor.Wait%2A> metody.  
   
- Może to być przydatne, gdy zawiera klasy powiązane z kontekstu <xref:System.Runtime.Remoting.Contexts.SynchronizationAttribute> zastosowany. W takim przypadku wszystkie wywołania do elementów członkowskich klasy są automatycznie synchronizowane i domena synchronizacji jest cały kod dla tej klasy. Jeśli kod w stosie wywołań elementu członkowskiego wywołuje <xref:System.Threading.Monitor.Wait%2A> metody i określa `true` dla `exitContext`, wątek kończy działanie synchronizacji domeny, dzięki czemu wątek, który jest zablokowany w wywołaniu do wszystkich elementów członkowskich obiektu, aby kontynuować. Gdy <xref:System.Threading.Monitor.Wait%2A> metoda zwróci wartość, wątku, który zgłosił wywołanie musi czekać ponownie domeny synchronizacji.  
+ Może to być przydatne, gdy klasa związana z kontekstem ma <xref:System.Runtime.Remoting.Contexts.SynchronizationAttribute> zastosowany atrybut. W takim przypadku wszystkie wywołania elementów członkowskich klasy są synchronizowane automatycznie, a domena synchronizacji to cała treść kodu dla klasy. Jeśli kod w stosie wywołań elementu członkowskiego wywołuje <xref:System.Threading.Monitor.Wait%2A> metodę i określa `true` dla `exitContext`, wątek opuszcza domenę synchronizacji, zezwalając na wątek, który jest blokowany w wywołaniu dowolnego elementu członkowskiego obiektu, aby wykonać operację. <xref:System.Threading.Monitor.Wait%2A> Gdy metoda zwraca, wątek, który wykonał wywołanie, musi czekać na ponowne wprowadzenie domeny synchronizacji.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException"><see langword="Wait" /> w ramach zsynchronizowane bloku kodu nie jest wywoływany z.</exception>
-        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> później zostanie przerwany ze stanu oczekiwania. Tak się stanie, gdy inny wątek wywołuje ten wątek <see cref="M:System.Threading.Thread.Interrupt" /> metody.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="millisecondsTimeout" /> parametr ma wartość ujemną, a nie jest równa <see cref="F:System.Threading.Timeout.Infinite" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException"><see langword="Wait" />nie jest wywoływany z poziomu synchronizowanego bloku kodu.</exception>
+        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje <see langword="Wait" /> , został później przerwany ze stanu oczekiwania. Dzieje się tak, gdy inny wątek wywołuje <see cref="M:System.Threading.Thread.Interrupt" /> metodę tego wątku.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wartość <paramref name="millisecondsTimeout" /> parametru jest ujemna i nie jest <see cref="F:System.Threading.Timeout.Infinite" />równa.</exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>
@@ -1392,48 +1392,48 @@ Należy zwrócić uwagę, jeśli nie wystąpi wyjątek, dane wyjściowe tej meto
         <Parameter Name="exitContext" Type="System.Boolean" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-1.1;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0;netstandard-2.1" />
       </Parameters>
       <Docs>
-        <param name="obj">Obiekt, na którym oczekiwania.</param>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący ilość czasu oczekiwania na wątku przechodzi gotowe kolejki.</param>
-        <param name="exitContext"><see langword="true" /> Aby zamknąć i ponownie pobrać domeny synchronizacji dla kontekstu (Jeśli w kontekście zsynchronizowane) przed oczekiwaniem; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Zwalnia blokadę na obiekcie i blokują bieżący wątek, do momentu jej reacquires blokady. Jeżeli określony limit czasu upłynie, wątku przechodzi gotowe kolejki. Opcjonalnie zamyka domeny synchronizacji dla kontekstu zsynchronizowane przed czas oczekiwania i później reacquires domeny.</summary>
-        <returns><see langword="true" /> Jeśli blokada została reacquired przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została reacquired po upływie określonego czasu. Metoda nie zwraca, dopóki blokada jest reacquired.</returns>
+        <param name="obj">Obiekt, na którym należy czekać.</param>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Reprezentująca ilość czasu oczekiwania przed przejściem wątku do kolejki gotowości.</param>
+        <param name="exitContext"><see langword="true" />Aby wyjść i ponownie uzyskać domenę synchronizacji dla kontekstu (jeśli znajduje się w synchronizowanym kontekście) przed oczekiwaniem; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Zwalnia blokadę obiektu i blokuje bieżący wątek do momentu odzyskania blokady. Jeśli upłynie określony interwał limitu czasu, wątek przechodzi do kolejki gotowości. Opcjonalnie zamyka domenę synchronizacji dla kontekstu synchronizowanego przed oczekiwaniem i ponownie uzyskuje domenę.</summary>
+        <returns><see langword="true" />Jeśli blokada została odbrana przed upływem określonego czasu; <see langword="false" /> Jeśli blokada została odzyskania po upływie określonego czasu. Metoda nie zwraca do momentu odzyskania blokady.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda nie zwraca do momentu jej reacquires blokady na wyłączność w `obj` parametru.  
+ Ta metoda nie zwraca do momentu odzyskania blokady wyłącznej na `obj` parametrze.  
   
- Wątek, który jest bieżącym właścicielem blokady na określony obiekt wywołuje tę metodę, aby zwolnić obiekt, dzięki czemu można do niego dostęp inny wątek. Obiekt wywołujący jest blokowane podczas oczekiwania na ponownie pobrać blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmiany stanu, które będzie wysyłane w wyniku operacji inny wątek.  
+ Wątek, który jest aktualnie właścicielem blokady określonego obiektu wywołuje tę metodę w celu zwolnienia obiektu, tak aby inny wątek mógł uzyskać do niego dostęp. Obiekt wywołujący jest zablokowany podczas oczekiwania na odzyskanie blokady. Ta metoda jest wywoływana, gdy obiekt wywołujący musi czekać na zmianę stanu, która zostanie wykonana w wyniku operacji innego wątku.  
   
- Limit czasu zapewnia, że bieżący wątek nie blokuje przez czas nieokreślony Jeśli inny wątek zwalnia blokadę bez wywoływania pierwszy <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody. Przesuwa się również wątek do kolejki gotowe, tak, aby je można ponownie pobrać blokady wcześniej z pominięciem innych wątków w przód od jej w kolejce oczekiwania. Wątek można sprawdzić wartość zwracaną przez <xref:System.Threading.Monitor.Wait%2A> metodę pozwala ustalić, czy jego reacquired blokady przed limit czasu. Wątek może służyć do oceny warunków, które spowodowało wprowadzenie czas oczekiwania, czas i, jeśli konieczne wywołanie <xref:System.Threading.Monitor.Wait%2A> ponownie metodą.  
+ Limit czasu zapewnia, że bieżący wątek nie blokuje się w nieskończoność, jeśli inny wątek zwolni blokadę bez uprzedniego wywołania <xref:System.Threading.Monitor.Pulse%2A> metody <xref:System.Threading.Monitor.PulseAll%2A> lub. Przenosi również wątek do kolejki gotowości, pomijając inne wątki przed nim w kolejce oczekiwania, dzięki czemu może on ponownie uzyskać blokadę. Wątek może testować wartość <xref:System.Threading.Monitor.Wait%2A> zwracaną metody, aby określić, czy odzyskuje blokadę przed upływem limitu czasu. Wątek może oszacować warunki, które spowodowały wprowadzenie oczekiwania, i w razie potrzeby ponownie wywołać <xref:System.Threading.Monitor.Wait%2A> metodę.  
   
- Kiedy wątek wywołuje `Wait`, zwalnia blokadę, a przechodzi w kolejce oczekiwania. W tym momencie następny wątek w kolejce gotowy (jeśli istnieje) może przejąć kontrolę nad blokady. Wątek, który jest wywoływany `Wait` pozostaje w kolejce oczekiwania, aż do wątku, który posiada blokadę wywołuje <xref:System.Threading.Monitor.PulseAll%2A>, lub jest dalej w kolejce, i wywołuje wątku, który posiada blokadę <xref:System.Threading.Monitor.Pulse%2A>. Jednak jeśli `timeout` milisekund oczekiwania przed inny wątek wywołuje ten obiekt <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A> metody, oryginalnym wątku została przeniesiona do kolejki gotowe w celu odzyskania blokady.  
-  
-> [!NOTE]
->  Jeśli <xref:System.TimeSpan> reprezentujący milisekund wartości-1 jest określona dla `timeout` parametru tej metody na czas nieokreślony blokuje, chyba że właściciel blokady wywołuje <xref:System.Threading.Monitor.Pulse%2A> lub <xref:System.Threading.Monitor.PulseAll%2A>. Jeśli `timeout` wynosi 0 milisekund, wątek, który wywołuje `Wait` zwalnia blokadę, a następnie od razu wchodzi gotowe kolejki w celu odzyskania blokady.  
-  
- Element wywołujący wykonuje `Wait` raz, niezależnie od tego, ile razy <xref:System.Threading.Monitor.Enter%2A> zostało wywołane dla określonego obiektu. Model `Wait` metoda przechowuje liczbę wywołany obiekt wywołujący <xref:System.Threading.Monitor.Enter%2A> w obiekcie, a następnie wywołuje <xref:System.Threading.Monitor.Exit%2A> tyle razy, aby całkowicie zwolnić zablokowany obiekt. Obiekt wywołujący blokuje wtedy dane podczas oczekiwania na ponownie pobrać obiekt. Gdy obiekt wywołujący reacquires blokady, system wywołuje <xref:System.Threading.Monitor.Enter%2A> tyle razy, aby przywrócić zapisane <xref:System.Threading.Monitor.Enter%2A> liczba do obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę dla określonego obiektu Jeśli element wywołujący jest właściciel blokady na inne obiekty, blokadami tymi nie zostaną zwolnione.  
+ Gdy wątek wywołuje `Wait`, zwalnia blokadę i przechodzi do oczekującej kolejki. W tym momencie następnym wątkiem w kolejce gotowości (jeśli istnieje) można przejąć kontrolę nad blokadą. Wywoływany `Wait` wątek pozostaje w kolejce oczekiwania do momentu, aż wątek, który przechowuje <xref:System.Threading.Monitor.PulseAll%2A>blokadę, lub jest następnym w kolejce i wątek <xref:System.Threading.Monitor.Pulse%2A>, który przechowuje blokadę. Jeśli `timeout` jednak milisekundy upłynie, zanim inny wątek wywoła ten <xref:System.Threading.Monitor.Pulse%2A> obiekt lub <xref:System.Threading.Monitor.PulseAll%2A> metodę, oryginalny wątek zostanie przeniesiony do kolejki gotowości w celu odzyskania blokady.  
   
 > [!NOTE]
->  Synchronizowany obiekt posiada kilka odwołań, łącznie z odwołaniem do wątku, który obecnie posiada blokadę, odwołanie do kolejki gotowe, zawierającą wątki, które są gotowe do uzyskania blokady i odwołania do kolejki oczekiwania, który zawiera wątki, które oczekują na powiadomienia o zmianie stanu obiektu.  
+>  Jeśli <xref:System.TimeSpan> <xref:System.Threading.Monitor.Pulse%2A> dla parametru określono wartość-1 milisekunda, ta metoda blokuje się w nieskończoność, chyba że jest on posiadaczem wywołań <xref:System.Threading.Monitor.PulseAll%2A>blokady lub. `timeout` Jeśli `timeout` wartość wynosi 0 milisekund, wątek wywołujący `Wait` uwalnianie blokady, a następnie natychmiast wprowadza gotową kolejkę do odzyskania blokady.  
   
- <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A>, I `Wait` metody musi być wywoływane z w ramach zsynchronizowane bloku kodu.  
+ Obiekt wywołujący `Wait` jest wykonywany jednokrotnie, niezależnie od tego <xref:System.Threading.Monitor.Enter%2A> , ile razy został wywołany dla określonego obiektu. Koncepcyjnie <xref:System.Threading.Monitor.Enter%2A> <xref:System.Threading.Monitor.Exit%2A> metoda przechowuje liczbę wywołanych przez obiekt wywołujący w obiekcie i wywołuje tyle razy, ile jest to konieczne, aby w pełni zwolnić zablokowany obiekt. `Wait` Obiekt wywołujący jest następnie blokowany podczas oczekiwania na ponowne uzyskanie obiektu. Gdy obiekt wywołujący ponownie uzyska blokadę, system wywoła <xref:System.Threading.Monitor.Enter%2A> tyle razy, ile jest to konieczne, aby przywrócić zapisaną <xref:System.Threading.Monitor.Enter%2A> liczbę dla obiektu wywołującego. Wywoływanie `Wait` zwalnia blokadę tylko dla określonego obiektu; Jeśli obiekt wywołujący jest właścicielem blokad dla innych obiektów, te blokady nie są zwalniane.  
   
- Uwagi dla <xref:System.Threading.Monitor.Pulse%2A> metoda wyjaśnić, co się stanie, jeśli <xref:System.Threading.Monitor.Pulse%2A> jest wywoływana, gdy nie ma wątków oczekujących.  
+> [!NOTE]
+>  Zsynchronizowany obiekt zawiera kilka odwołań, w tym odwołanie do wątku, w którym aktualnie znajduje się blokada, odwołanie do kolejki gotowości, która zawiera wątki gotowe do uzyskania blokady, oraz odwołanie do oczekującej kolejki, która zawiera wątki, które oczekują na powiadomienie o zmianie stanu obiektu.  
+  
+ Metody <xref:System.Threading.Monitor.Pulse%2A>, <xref:System.Threading.Monitor.PulseAll%2A> i`Wait` muszą być wywoływane z poziomu synchronizowanego bloku kodu.  
+  
+ Uwagi dla metody wyjaśniają, co się dzieje <xref:System.Threading.Monitor.Pulse%2A> , <xref:System.Threading.Monitor.Pulse%2A> jeśli jest wywoływana, gdy nie oczekuje żadnych wątków.  
   
 ## <a name="notes-on-exiting-the-context"></a>Uwagi dotyczące zamykania kontekstu  
- `exitContext` Parametr jest ignorowany, chyba że <xref:System.Threading.Monitor.Wait%2A> metoda jest wywoływana z wewnątrz inny niż domyślny kontekst zarządzanych. Może się to zdarzyć, jeśli wątek znajduje się wewnątrz wywołania do wystąpienia klasy pochodzącej od <xref:System.ContextBoundObject>. Nawet wtedy, gdy są aktualnie wykonuje metodę w klasie, która nie pochodzi od <xref:System.ContextBoundObject>, takiej jak <xref:System.String>, może być w kontekście innej niż domyślna Jeśli <xref:System.ContextBoundObject> znajduje się na stosie w bieżącej domenie aplikacji.  
+ Parametr nie działa, <xref:System.Threading.Monitor.Wait%2A> chyba że metoda jest wywołana z wnętrza niedomyślnego kontekstu zarządzanego.`exitContext` Taka sytuacja może wystąpić, jeśli wątek jest wewnątrz wywołania do wystąpienia klasy pochodzącej od <xref:System.ContextBoundObject>. Nawet jeśli obecnie wykonujesz metodę na klasie, która nie pochodzi od <xref:System.ContextBoundObject>elementu <xref:System.String>, na przykład, możesz być w niedomyślnym kontekście, jeśli <xref:System.ContextBoundObject> znajduje się na stosie w bieżącej domenie aplikacji.  
   
- Gdy kod jest wykonywany w kontekście innej niż domyślna, określając `true` dla `exitContext` powoduje, że wątku zamknąć kontekstu zarządzanych inną niż domyślna (oznacza to, do którego nastąpi przejście do domyślnego kontekstu) przed wykonaniem <xref:System.Threading.Monitor.Wait%2A> metody. Zwraca do oryginalnego kontekstu niedomyślną po wywołaniu <xref:System.Threading.Monitor.Wait%2A> ukończeniu metody.  
+ Gdy kod jest wykonywany w kontekście niedomyślnym, określenie `true` dla `exitContext` powoduje, że wątek zamyka niedomyślny kontekst zarządzany (czyli przejście do domyślnego <xref:System.Threading.Monitor.Wait%2A> kontekstu) przed wykonaniem metody. Powraca do oryginalnego niedomyślnego kontekstu po zakończeniu wywołania <xref:System.Threading.Monitor.Wait%2A> metody.  
   
- Może to być przydatne, gdy zawiera klasy powiązane z kontekstu <xref:System.Runtime.Remoting.Contexts.SynchronizationAttribute> zastosowany. W takim przypadku wszystkie wywołania do elementów członkowskich klasy są automatycznie synchronizowane i domena synchronizacji jest cały kod dla tej klasy. Jeśli kod w stosie wywołań elementu członkowskiego wywołuje <xref:System.Threading.Monitor.Wait%2A> metody i określa `true` dla `exitContext`, wątek kończy działanie synchronizacji domeny, dzięki czemu wątek, który jest zablokowany w wywołaniu do wszystkich elementów członkowskich obiektu, aby kontynuować. Gdy <xref:System.Threading.Monitor.Wait%2A> metoda zwróci wartość, wątku, który zgłosił wywołanie musi czekać ponownie domeny synchronizacji.  
+ Może to być przydatne, gdy klasa związana z kontekstem ma <xref:System.Runtime.Remoting.Contexts.SynchronizationAttribute> zastosowany atrybut. W takim przypadku wszystkie wywołania elementów członkowskich klasy są synchronizowane automatycznie, a domena synchronizacji to cała treść kodu dla klasy. Jeśli kod w stosie wywołań elementu członkowskiego wywołuje <xref:System.Threading.Monitor.Wait%2A> metodę i określa `true` dla `exitContext`, wątek opuszcza domenę synchronizacji, zezwalając na wątek, który jest blokowany w wywołaniu dowolnego elementu członkowskiego obiektu, aby wykonać operację. <xref:System.Threading.Monitor.Wait%2A> Gdy metoda zwraca, wątek, który wykonał wywołanie, musi czekać na ponowne wprowadzenie domeny synchronizacji.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Threading.SynchronizationLockException"><see langword="Wait" /> w ramach zsynchronizowane bloku kodu nie jest wywoływany z.</exception>
-        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek, który wywołuje oczekiwania później zostało przerwane ze stanu oczekiwania. Tak się stanie, gdy inny wątek wywołuje ten wątek <see cref="M:System.Threading.Thread.Interrupt" /> metody.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> Parametru jest ujemna, a nie reprezentuje <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekundy), lub jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.Threading.SynchronizationLockException"><see langword="Wait" />nie jest wywoływany z poziomu synchronizowanego bloku kodu.</exception>
+        <exception cref="T:System.Threading.ThreadInterruptedException">Wątek wywołujący oczekiwania został później przerwany ze stanu oczekiwania. Dzieje się tak, gdy inny wątek wywołuje <see cref="M:System.Threading.Thread.Interrupt" /> metodę tego wątku.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Parametr jest ujemny i nie reprezentuje <see cref="F:System.Threading.Timeout.Infinite" /> (-1 milisekund) lub jest większy niż <see cref="F:System.Int32.MaxValue" />. <paramref name="timeout" /></exception>
         <altmember cref="T:System.Threading.Thread" />
         <altmember cref="T:System.Threading.Monitor" />
         <related type="Article" href="~/docs/standard/threading/index.md">Zarządzana wątkowość</related>

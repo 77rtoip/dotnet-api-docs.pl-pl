@@ -1,5 +1,5 @@
 <Type Name="DiagnosticSource" FullName="System.Diagnostics.DiagnosticSource">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d79c7605daf68e0c4169c32fac48c2c1ac277dad" /><Meta Name="ms.sourcegitcommit" Value="cfc0e4215fd0d259582ada2141878befd7c3c8c6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/12/2019" /><Meta Name="ms.locfileid" Value="67854885" /></Metadata><TypeSignature Language="C#" Value="public abstract class DiagnosticSource" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e4e02866434c5d718f1e5b5791fa4eb7fa1c5428" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68540881" /></Metadata><TypeSignature Language="C#" Value="public abstract class DiagnosticSource" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit DiagnosticSource extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Diagnostics.DiagnosticSource" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class DiagnosticSource" />
@@ -19,7 +19,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Klasa abstrakcyjna, która umożliwia rejestrowanie czas produkcji ładunków zaawansowanych danych do użycia w ramach procesu, którego dokonano kod instrumentacji.</summary>
+    <summary>Klasa abstrakcyjna, która pozwala na instrumentację kodu na potrzeby rejestrowania w czasie produkcyjnym bogatych ładunków danych do użycia w ramach procesu, który został objęty Instrumentacją.</summary>
     <remarks>Aby uzyskać więcej informacji, zobacz [Podręcznik użytkownika DiagnosticSource](https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.DiagnosticSource/src/DiagnosticSourceUsersGuide.md).</remarks>
   </Docs>
   <Members>
@@ -69,13 +69,13 @@
         <Parameter Name="name" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="name">Nazwa zdarzenia zapisywane.</param>
-        <summary>Sprawdza, czy włączono zdarzenie powiadomienia.</summary>
-        <returns><see langword="true" /> Jeśli zdarzenie powiadomienia jest włączona, <see langword="false" /> inaczej.</returns>
+        <param name="name">Nazwa zapisywanego zdarzenia.</param>
+        <summary>Sprawdza, czy zdarzenie powiadomienia jest włączone.</summary>
+        <returns><see langword="true" />Jeśli zdarzenie powiadomienia jest włączone, <see langword="false" /> w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
-W przypadku drogich Instalatora w celu powiadomienia, możesz wywołać IsEnabled, przed wykonaniem tej konfiguracji. Konsumentów nie należy zakładać, że pobierają tylko powiadomienia, dla których IsEnabled ma wartość true. Jednak jest to opcjonalne dla producentów wywołać ten interfejs API. Nazwa powinna być taka sama jak przekazany do <see cref="M:System.Diagnostics.DiagnosticSource.Write(System.String,System.Object)" />.
+W przypadku kosztownej konfiguracji powiadomienia można wywołać IsEnabled przed wykonaniem tej konfiguracji. Konsumenci nie powinni założyć, że otrzymują tylko powiadomienia, dla których IsEnabled ma wartość true. Niemniej jednak jest opcjonalne dla producentów wywołujących ten interfejs API. Nazwa powinna być taka sama, jak ta, która <see cref="M:System.Diagnostics.DiagnosticSource.Write(System.String,System.Object)" />została przeniesiona do.
 
            ]]></format>
         </remarks>
@@ -104,15 +104,15 @@ W przypadku drogich Instalatora w celu powiadomienia, możesz wywołać IsEnable
         <Parameter Name="arg2" Type="System.Object" Index="2" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="name">Nazwa zdarzenia zapisywane.</param>
-        <param name="arg1">Obiekt, który reprezentuje dodatkowy kontekst dla IsEnabled. Konsumenci należy się spodziewać otrzymać <see langword="null" /> który może wskazywać, że producentów o nazwie czystego IsEnabled(string), aby sprawdzić, jeśli konsument chce uzyskać powiadomienia o takich zdarzeniach na wszystkich. Oparte na tym, producent może wywołać IsEnabled (string, object, obiekt) ponownie z inną niż<see langword="null" /> kontekstu.</param>
-        <param name="arg2">Opcjonalny. Obiekt, który reprezentuje dodatkowy kontekst dla IsEnabled. <see langword="null" /> Domyślnie. Konsumenci należy się spodziewać otrzymać <see langword="null" /> który może wskazywać, że producentów o nazwie czystego IsEnabled(string) lub producent przekazywane wszystkie niezbędne kontekstu w <paramref name="arg1" />.</param>
-        <summary>Sprawdza on zdarzenie powiadomienia jest włączona.</summary>
-        <returns><see langword="true" /> Jeśli zdarzenie powiadomienia jest włączona, <see langword="false" /> inaczej.</returns>
+        <param name="name">Nazwa zapisywanego zdarzenia.</param>
+        <param name="arg1">Obiekt, który reprezentuje dodatkowy kontekst dla IsEnabled. Odbiorcy powinni oczekiwać <see langword="null" /> , że może to wskazywać, że producent wezwał czysty IsEnabled (ciąg), aby sprawdzić, czy konsument chce otrzymywać powiadomienia dla takich zdarzeń. W zależności od tego producent może ponownie wywołać IsEnabled (ciąg, obiekt, obiekt) z<see langword="null" /> niekontekstem.</param>
+        <param name="arg2">Opcjonalny. Obiekt, który reprezentuje dodatkowy kontekst dla IsEnabled. <see langword="null" />Domyślnie. Odbiorcy powinni oczekiwać <see langword="null" /> , że może to wskazywać, że producent o nazwie czysty IsEnabled (ciąg) lub producent przeszedł <paramref name="arg1" />wszystkie niezbędne kontekstu w.</param>
+        <summary>Weryfikuje, czy zdarzenie powiadomienia jest włączone.</summary>
+        <returns><see langword="true" />Jeśli zdarzenie powiadomienia jest włączone, <see langword="false" /> w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
           
-W przypadku drogich Instalatora w celu powiadomienia, możesz wywołać tę metodę i zapewnić kontekst przed przystąpieniem do wykonywania instalacji.
+W przypadku kosztownej konfiguracji powiadomienia można wywołać tę metodę i podać kontekst przed przeprowadzeniem instalacji.
           
            ]]></format>
         </remarks>
@@ -139,23 +139,23 @@ W przypadku drogich Instalatora w celu powiadomienia, możesz wywołać tę meto
       <Docs>
         <param name="activity">To be added.</param>
         <param name="payload">To be added.</param>
-        <summary>Transfery stanu działania niektórych zdarzeń lub operacji, takich jak wychodzące żądanie HTTP, które będzie wysyłane poza procesem.</summary>
-        <remarks>  
+        <summary>Przenosi stan z działania do pewnego zdarzenia lub operacji, takich jak wychodzące żądanie HTTP, które nastąpi poza procesem.</summary>
+        <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Jeśli lokacja instumentation znajduje się w lokalizacji, w których działania pozostaw procesu (na przykład wychodzące żądania HTTP), tej lokacji będzie chciał przenieść stan działania na wychodzące żądanie.
+Jeśli lokacja instumentation znajduje się w lokalizacji, w której działania opuszczają proces (na przykład wychodzące żądania HTTP), ta lokacja będzie mogła przenieść stan z działania do żądania wychodzącego.
 
-W miarę możliwości należy to zrobić przez lokację instrumenation, ponieważ kontrakt między <xref:System.Diagnostics.Activity> i logiki żądania ougoing lokacji instrumentacji.   Jednak lokacji instrumenation nie może obsługiwać zasady (na przykład, czy informacje o aktywności powinna można wyłączone lub napisany w starszym formacie, ze względu na zgodność).
-W tym celu lokacji Instrumentacji musi wywołania zwrotnego do systemu rejestrowania i poproś go do rozwiązania zasad. To jest celem `OnActivityExport` metody.
+W miarę możliwości należy to zrobić w witrynie instrumenation, ponieważ istnieje kontrakt między <xref:System.Diagnostics.Activity> logiką żądania a ougoing w lokacji Instrumentacji.   Jednak lokacja instrumenation nie może obsłużyć zasad (na przykład, czy informacje o działaniu powinny być wyłączone czy zapisywane w starszym formacie ze względu na zgodność).
+W tym celu lokacja Instrumentacji musi wywoływać się z powrotem do systemu rejestrowania i poprosiła o rozwiązaniu zasad. Jest to cel `OnActivityExport` metody.
 
-`OnActivityExport` Podana metoda <xref:System.Diagnostics.Activity> oraz obiekt ładunku, który reprezentuje żądania wychodzącego. A <xref:System.Diagnostics.DiagnosticSource> subskrybenta to znaczy, ma możliwość aktualizacji żądania wychodzącego przed wysłaniem.
+`OnActivityExport` Metoda ma<xref:System.Diagnostics.Activity> również obiekt ładunku, który reprezentuje żądanie wychodzące. <xref:System.Diagnostics.DiagnosticSource> Subskrybent ma możliwość aktualizowania żądania wychodzącego przed jego wysłaniem.
  
-Należy pamiętać, że ta metoda jest rzadko używana w lokacjach Instrumentacji (tylko tych witryn, które znajdują się na granicy wychodzących procesu).   Ponadto zazwyczaj domyślne zasady, że lokacja instrumenation wykonuje (na przykład, aby przenieść wszystkie stan działania, w szczególności Konwencji wychodzące) prawdopodobnie będzie poprawnie. Ta metoda jest tylko w przypadkach, gdzie oznacza to problem. W związku z tym, ta metoda powinna być bardzo rzadko używane i jest przede wszystkim dla symetry za pomocą `OnActivityImport` i testowanie w przyszłości.
+Należy pamiętać, że ta metoda jest rzadko używana w lokacjach Instrumentacji (tylko te lokacje, które znajdują się na granicy wychodzącej procesu).   Ponadto zazwyczaj zasady domyślne wykonywane przez witrynę instrumenation (na przykład w celu przetransferowania wszystkich stanów aktywności w określonej konwencji wychodzącej) mogą być odpowiednie. Ta metoda jest tylko w przypadku, gdy jest to problem. Dlatego ta metoda powinna być używana bardzo rzadko i jest w większości w tym miejscu do `OnActivityImport` symetry z i w przyszłości.
 
-Należy pamiętać, że `payload` jest <xref:System.Object> tutaj, ale dowolnego określonego Instrumentacja witryny i subskrybent powinien jest znany typ ładunku rzutowanie w związku z tym i dekodować go, jeśli to konieczne.
+Należy pamiętać `payload` , że jest to <xref:System.Object> tutaj wpisane, ale każda konkretna lokacja i subskrybent powinien znać typ ładunku, a tym samym rzutować i zdekodować je w razie potrzeby.
 
          ]]></format>
-         </remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="OnActivityImport">
@@ -177,22 +177,22 @@ Należy pamiętać, że `payload` jest <xref:System.Object> tutaj, ale dowolnego
         <Parameter Name="payload" Type="System.Object" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="activity">Działanie na zdarzenie zewnętrzne.</param>
-        <param name="payload">Ładunek, który reprezentuje żądania przychodzącego.</param>
-        <summary>Stan transferu do działania z niektórych zdarzeń lub operacji, takich jak żądania przychodzącego, które wystąpiło poza procesem.</summary>
-        <remarks>  
+        <param name="activity">Działanie, na które ma wpływ zdarzenie zewnętrzne.</param>
+        <param name="payload">Ładunek reprezentujący żądanie przychodzące.</param>
+        <summary>Przenosi stan do działania z pewnego zdarzenia lub operacji, takich jak żądanie przychodzące, które wystąpiło poza procesem.</summary>
+        <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Jeśli lokacja instumentation tworzy nowe działanie w odpowiedzi na niektóre zdarzenia poza procesem, takie jak przychodzącymi HTTP request), `OnActivityImport` metoda umożliwia tej lokacji zostanie ma zostać utworzony nowy stan działania i przesyłanie z żądania przychodzącego, aby działanie. 
+Jeśli lokacja instumentation tworzy nowe działanie w odpowiedzi na zdarzenie poza procesem, takie jak przesyłane żądanie `OnActivityImport` http, Metoda pozwala tej lokacji utworzyć nowe działanie i przetransferować stan z przychodzącego żądania do interakcyjn. 
 
-W miarę możliwości należy to zrobić przez lokację instrumentacji, ponieważ kontrakt między <xref:System.Diagnostics.Activity> i logiki żądania przychodzącymi lokacji instrumentacji.   Jednak lokacji Instrumentacji nie może obsłużyć zasad. (Na przykład, jeśli próbkowania jest wykonywane, dokładnie żądań, które powinny być pobrane?) W takich przypadkach lokacji Instrumentacji musi wywołania zwrotnego do systemu rejestrowania i poproś go do rozwiązania zasady (na przykład zdecydować, jeśli powinien być ustawiony bit "próbkowania" działania). To jest celem `OnActivityImport` metody. Jest on podawany działania, a także obiekt ładunku, który reprezentuje żądanie przychodzącymi. Abonentów <xref:System.Diagnostics.DiagnosticSource> miał możliwość aktualizacji tego działania zgodnie z potrzebami. 
+W miarę możliwości należy to zrobić przez lokację instrumentacji, ponieważ między <xref:System.Diagnostics.Activity> usługą i logiką żądania komunikacji w lokacji Instrumentacji istnieje kontrakt.   Jednak lokacja instrumentacji nie może obsłużyć zasad. (Na przykład jeśli jest wykonywane próbkowanie, dokładnie te, które żądania powinny być próbkowane?) W takich przypadkach lokacja Instrumentacji musi wywoływać z powrotem do systemu rejestrowania i poprosiła o rozpoznanie zasad (na przykład w celu podjęcia decyzji o tym, czy ma być ustawiona bit "próbkowanie" działania. Jest to cel `OnActivityImport` metody. Ma ona charakter działania, a także obiekt ładunku, który reprezentuje żądanie komunikacji. Subskrybenci z tym, <xref:System.Diagnostics.DiagnosticSource> którzy mają możliwość aktualizowania tego działania zgodnie z potrzebami. 
 
-Ta metoda jest rzadko używana w lokacjach Instrumentacji (tylko tych witryn, które znajdują się na granicy proces) i witrynę oprzyrządowania Instrumentacji implementuje pewne domyślne zasady (ustawia działanie *niektóre* sposób), a zatem nie jest to konieczne przesłania tę metodę, jeśli te zasady domyślne jest w dobrym stanie. Innymi słowy ta metoda powinna zostać zastąpiona w przypadku bardzo rzadko (ale często ważne).
+Ta metoda jest rzadko używana w lokacjach Instrumentacji (tylko te lokacje, które znajdują się na granicy procesu), a lokacja instrumetation implementuje niektóre zasady domyślne (ustawia działanie w *jakiś* sposób) i dlatego nie jest konieczne przesłonięcie tej metody, jeśli Ta zasada domyślna jest dobra. Innymi słowy, ta metoda powinna być zastąpiona bardzo rzadkimi (ale często ważnymi) przypadkami.
 
-Należy pamiętać, że `payload` jest <xref:System.Object> tutaj, ale dowolnego określonego Instrumentacja witryny i subskrybent będzie znany typ ładunku rzutowanie w związku z tym i dekodować go, jeśli to konieczne.
+Należy pamiętać `payload` , że wpisano <xref:System.Object> ją w tym miejscu, ale każda konkretna lokacja i abonent będą znać typ ładunku, a tym samym je rzutować i zdekodować w razie potrzeby.
 
          ]]></format>
-         </remarks>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="StartActivity">
@@ -217,18 +217,18 @@ Należy pamiętać, że `payload` jest <xref:System.Object> tutaj, ale dowolnego
         <Parameter Name="args" Type="System.Object" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="activity"><see cref="T:System.Diagnostics.Activity" /> Ma zostać uruchomiony.</param>
-        <param name="args">Obiekt, który reprezentuje wartość przekazywana jako ładunek zdarzenia.</param>
-        <summary>Uruchamia <see cref="T:System.Diagnostics.Activity" /> i zapisuje zdarzenie rozpoczęcia.</summary>
-        <returns>Uruchomiono działanie wygodne łańcucha.</returns>
+        <param name="activity"><see cref="T:System.Diagnostics.Activity" /> Do uruchomienia.</param>
+        <param name="args">Obiekt reprezentujący wartość, która jest przesyłana jako ładunek dla zdarzenia.</param>
+        <summary><see cref="T:System.Diagnostics.Activity" /> Uruchamia i zapisuje zdarzenie uruchomienia.</summary>
+        <returns>Uruchomione działanie dla wygodnego łańcucha.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
            
-<xref:System.Diagnostics.Activity> Opis operacji logicznej, jego kontekstu i relacji nadrzędnej; bieżący <xref:System.Diagnostics.Activity> odbywa się za pośrednictwem operacji przetwarzania danych.
+Opisuje operację logiczną, jej kontekst i relację nadrzędną; bieżące <xref:System.Diagnostics.Activity> przepływy przez przetwarzanie operacji. <xref:System.Diagnostics.Activity>
 
-Ta metoda rozpoczyna danego <xref:System.Diagnostics.Activity>, przechowuje globalną <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> i <xref:System.Diagnostics.Activity.Parent?displayProperty=nameWithType> działania dla danego <xref:System.Diagnostics.Activity>i powiadamia klientów, nowy <xref:System.Diagnostics.Activity> została uruchomiona. Użytkownicy mogą uzyskiwać dostęp do <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> dodać kontekstowego i/lub rozszerzyć telemetrii.
+Ta metoda <xref:System.Diagnostics.Activity>rozpoczyna daną, utrzymuje globalną <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> aktywność i <xref:System.Diagnostics.Activity.Parent?displayProperty=nameWithType> dla danego <xref:System.Diagnostics.Activity>użytkownika, a następnie powiadamia odbiorców o tym, że <xref:System.Diagnostics.Activity> Nowa została uruchomiona. Konsumenci mogą uzyskać <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> dostęp do dodawania danych telemetrycznych kontekstu i/lub rozszerzania.
 
-Producenci mogą przekazać dodatkowe szczegóły użytkownika w ładunku.
+Producenci mogą przekazać dodatkowe informacje do konsumenta w ładunku.
 
            ]]></format>
         </remarks>
@@ -256,15 +256,15 @@ Producenci mogą przekazać dodatkowe szczegóły użytkownika w ładunku.
         <Parameter Name="args" Type="System.Object" Index="1" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="activity">Działanie, aby zostać zatrzymane.</param>
-        <param name="args">Obiekt, który reprezentuje wartość są przekazywane jako ładunek zdarzenia.</param>
-        <summary>Zatrzymuje danego <see cref="T:System.Diagnostics.Activity" />, przechowuje globalną <see cref="P:System.Diagnostics.Activity.Current" /> działania i powiadamia klientów, <see cref="T:System.Diagnostics.Activity" /> została zatrzymana.</summary>
+        <param name="activity">Działanie, które ma zostać zatrzymane.</param>
+        <param name="args">Obiekt, który reprezentuje wartość przekazaną jako ładunek dla zdarzenia.</param>
+        <summary>Zatrzymuje daną <see cref="T:System.Diagnostics.Activity" />, utrzymuje działanie globalne <see cref="P:System.Diagnostics.Activity.Current" /> i <see cref="T:System.Diagnostics.Activity" /> powiadamia klientów, że został zatrzymany.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Producenci mogą przekazać dodatkowe szczegóły użytkownika w ładunku.
+Producenci mogą przekazać dodatkowe informacje do konsumenta w ładunku.
 
-Użytkownicy mogą uzyskiwać dostęp do <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> dodać kontekstowego i/lub rozszerzyć telemetrii.
+Konsumenci mogą uzyskać <xref:System.Diagnostics.Activity.Current?displayProperty=nameWithType> dostęp do dodawania danych telemetrycznych kontekstu i/lub rozszerzania.
 
 
          ]]></format>
@@ -296,19 +296,19 @@ Użytkownicy mogą uzyskiwać dostęp do <xref:System.Diagnostics.Activity.Curre
         <Parameter Name="value" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="name">Nazwa zdarzenia zapisywane.</param>
-        <param name="value">Obiekt, który reprezentuje wartość przekazywana jako ładunek zdarzenia. Często jest to typ anonimowy, który zawiera kilka wartości podrzędnych.</param>
+        <param name="name">Nazwa zapisywanego zdarzenia.</param>
+        <param name="value">Obiekt, który reprezentuje wartość, która jest przesyłana jako ładunek dla zdarzenia. Jest to często anonimowy typ, który zawiera kilka wartości podrzędnych.</param>
         <summary>Zapewnia ogólny sposób rejestrowania złożonych ładunków.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Każde powiadomienie otrzymuje nazwę, która identyfikuje go, a także obiektu (zazwyczaj typu anonimowego), który zawiera dowolne informacje do przekazania do powiadomienia.  
+Każde powiadomienie otrzymuje nazwę, która go identyfikuje, a także obiekt (zazwyczaj typu anonimowego), który zawiera dowolne informacje do przekazania do powiadomienia.  
 
-`name` powinien być krótki. Nie używaj w pełni kwalifikowana nazwa, chyba że masz do uniknąć niejednoznaczności, ponieważ `name` musi być globalnie unikatowa. Zazwyczaj *componentName.eventName*, gdzie *componentName* i *eventName* są ciągami znaków mniej niż 10, są dobre naruszenia zabezpieczeń.
+`name`powinien być krótki. Nie należy używać w pełni kwalifikowanej nazwy, chyba że trzeba uniknąć niejednoznaczności, `name` ponieważ musi być globalnie unikatowa. Zazwyczaj wartość *ComponentName. EventName*, gdzie *ComponentName* i *EventName* są ciągami krótszymi niż 10 znaków, jest dobrym kompromisem.
 
-Nie powinny mieć nazwy powiadomień `.` w nich ponieważ nazw składników ma kropki, a ich obu mieć kropki prowadzi do niejednoznaczności. Sugerujemy, że używasz `_` zamiast tego.
+Nazwy powiadomień nie powinny znajdować `.` się w nich, ponieważ nazwy składników mają kropki, a dla nich oba muszą mieć kropki do niejednoznaczności. Zalecamy użycie `_` zamiast tego.
 
-Przyjęto założenie, że odbiorniki będzie używać ciągu poprzedzania ich do filtrowania grup. W związku z tym zawierające hierarchię nazw składników jest dobrym rozwiązaniem.
+Załóżmy, że odbiorniki będą używać prefiksu ciągu do filtrowania grup. W związku z tym, posiadanie hierarchii nazw składników jest dobrym sposobem.
 
          ]]></format>
         </remarks>

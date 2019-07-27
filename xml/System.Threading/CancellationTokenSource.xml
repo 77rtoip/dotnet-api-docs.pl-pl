@@ -1,5 +1,5 @@
 <Type Name="CancellationTokenSource" FullName="System.Threading.CancellationTokenSource">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="2f931644632aee8098a42a234dd589783505b890" /><Meta Name="ms.sourcegitcommit" Value="690605a2d62010b93e13edf329aafe2bdc57423a" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/11/2019" /><Meta Name="ms.locfileid" Value="67801631" /></Metadata><TypeSignature Language="C#" Value="public class CancellationTokenSource : IDisposable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="509f734265234b6b9cc1e250226f10c318bb1629" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68541277" /></Metadata><TypeSignature Language="C#" Value="public class CancellationTokenSource : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit CancellationTokenSource extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Threading.CancellationTokenSource" />
   <TypeSignature Language="VB.NET" Value="Public Class CancellationTokenSource&#xA;Implements IDisposable" />
@@ -36,47 +36,47 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Sygnalizuje <see cref="T:System.Threading.CancellationToken" /> który powinna zostać anulowana.</summary>
+    <summary>Informuje o tym, że powinno być anulowane. <see cref="T:System.Threading.CancellationToken" /></summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Począwszy od [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], .NET Framework przy użyciu ujednoliconego modelu kooperatywne anulowanie asynchronicznego lub długotrwałe operacje synchroniczne, które obejmuje dwa obiekty:  
+ Począwszy od, .NET Framework korzysta z ujednoliconego modelu do korzystania z operacji synchronicznych w ramach komunikacji asynchronicznej lub długotrwałej, która obejmuje dwa obiekty: [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)]  
   
--   A <xref:System.Threading.CancellationTokenSource> obiektu, który zawiera token anulowania, za pośrednictwem jego <xref:System.Threading.CancellationTokenSource.Token%2A> właściwość i wysyła anulowania komunikatu przez wywołanie jego <xref:System.Threading.CancellationTokenSource.Cancel%2A> lub <xref:System.Threading.CancellationTokenSource.CancelAfter%2A> metody.  
+-   Obiekt, który dostarcza token anulowania za pomocą jego <xref:System.Threading.CancellationTokenSource.Token%2A> właściwości i wysyła komunikat o anulowaniu, wywołując jego <xref:System.Threading.CancellationTokenSource.Cancel%2A> metodę <xref:System.Threading.CancellationTokenSource.CancelAfter%2A>or. <xref:System.Threading.CancellationTokenSource>  
   
--   Element <xref:System.Threading.CancellationToken> obiektu, który wskazuje, czy zażądano anulowania.  
+-   <xref:System.Threading.CancellationToken> Obiekt, który wskazuje, czy zażądano anulowania.  
   
- Ogólny schemat implementowania modelu kooperatywne anulowanie jest:  
+ Ogólny wzorzec dla implementacji spółdzielczego modelu anulowania to:  
   
--   Utwórz wystąpienie <xref:System.Threading.CancellationTokenSource> obiektu, który zarządza i wysyła powiadomienie odwołania do tokenów anulowania indywidualnych.  
+-   Utworzenie wystąpienia <xref:System.Threading.CancellationTokenSource> obiektu, który zarządza i wysyła powiadomienie o anulowaniu do poszczególnych tokenów anulowania.  
   
--   Przekaż token zwrócony przez <xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType> właściwość do każdego zadania lub wątkiem, który będzie nasłuchiwać pod kątem anulowania.  
+-   Przekaż token zwracany przez <xref:System.Threading.CancellationTokenSource.Token%2A?displayProperty=nameWithType> właściwość do każdego zadania lub wątku, który nasłuchuje do anulowania.  
   
--   Wywołaj <xref:System.Threading.CancellationToken.IsCancellationRequested%2A?displayProperty=nameWithType> metody z operacji, które odbierają token anulowania. Mechanizm dla każdego zadania lub wątku na odpowiedź na żądanie anulowania. Czy chcesz anulować operację i dokładnie tak jak to zrobić, zależy od logiki aplikacji.  
+-   Wywołaj <xref:System.Threading.CancellationToken.IsCancellationRequested%2A?displayProperty=nameWithType> metodę z operacji, które odbierają token anulowania. Udostępnij mechanizm dla każdego zadania lub wątku, aby odpowiedzieć na żądanie anulowania. Bez względu na to, czy użytkownik zdecyduje się anulować operację i jak to zrobić, zależy od logiki aplikacji.  
   
--   Wywołaj <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType> metodę w celu udostępnienia powiadomienia o anulowaniu. To ustawienie <xref:System.Threading.CancellationToken.IsCancellationRequested%2A?displayProperty=nameWithType> właściwości dla każdej kopii token anulowania na potrzeby `true`.  
+-   Wywołaj <xref:System.Threading.CancellationTokenSource.Cancel%2A?displayProperty=nameWithType> metodę, aby powiadomić o anulowaniu. Ustawia <xref:System.Threading.CancellationToken.IsCancellationRequested%2A?displayProperty=nameWithType> właściwość dla każdej kopii tokenu anulowania na `true`.  
   
--   Wywołaj <xref:System.Threading.CancellationTokenSource.Dispose%2A> metody po zakończeniu <xref:System.Threading.CancellationTokenSource> obiektu.  
+-   <xref:System.Threading.CancellationTokenSource> Wywołaj <xref:System.Threading.CancellationTokenSource.Dispose%2A> metodę po zakończeniu pracy z obiektem.  
   
- Aby uzyskać więcej informacji, zobacz [anulowanie w zarządzanych wątkach](~/docs/standard/threading/cancellation-in-managed-threads.md).  
+ Aby uzyskać więcej informacji, zobacz [Anulowanie w zarządzanych wątkach](~/docs/standard/threading/cancellation-in-managed-threads.md).  
   
 > [!IMPORTANT]
->  Ten typ implementuje <xref:System.IDisposable> interfejsu. Po zakończeniu używania wystąpienia typu, należy usunąć ją bezpośrednio lub pośrednio. Do usuwania tego typu, należy wywołać jej <xref:System.IDisposable.Dispose%2A> method in Class metoda `try` / `catch` bloku. Aby usunąć ją pośrednio, użyj konstrukcją języka pierwszej klasy takiej jak `using` (w języku C#) lub `Using` (w języku Visual Basic). Aby uzyskać więcej informacji, zobacz sekcję "Przy użyciu obiektu który implementuje interfejs IDisposable" w <xref:System.IDisposable> interfejsu.  
+>  Ten typ implementuje <xref:System.IDisposable> interfejs. Po zakończeniu korzystania z wystąpienia typu należy usunąć jego wartość bezpośrednio lub pośrednio. Aby usunąć typ bezpośrednio <xref:System.IDisposable.Dispose%2A> , wywołaj jego metodę `try` / `catch` w bloku. Aby usunąć go pośrednio, użyj konstrukcji języka, takiej jak `using` (in C#) lub `Using` (w Visual Basic). Aby uzyskać więcej informacji, zobacz sekcję "Używanie obiektu implementującego <xref:System.IDisposable> interfejs IDisposable" w temacie dotyczącym interfejsu.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto generator liczb losowych do emulowania aplikacji zbierania danych, odczytująca jedenaście instrumencie 10 wartości całkowitych. Wartość zero wskazuje, że pomiar nie powiodło się dla jednego dokumentu, obliczona w takim przypadku można anulować operację i nie oznacza ogólne.  
+ Poniższy przykład używa generatora liczb losowych do emulowania aplikacji do zbierania danych, która odczytuje 10 wartości całkowitych z jedenastu różnych instrumentów. Wartość zero wskazuje, że pomiar nie powiódł się dla jednego instrumentu, w tym przypadku operacja powinna zostać anulowana i nie ma potrzeby obliczenia całkowitego średniego.  
   
- Aby obsłużyć możliwe anulowanie operacji, przykład tworzy <xref:System.Threading.CancellationTokenSource> obiektu, która generuje token anulowania, który jest przekazywany do <xref:System.Threading.Tasks.TaskFactory> obiektu. <xref:System.Threading.Tasks.TaskFactory> Obiektu z kolei przekazuje token anulowania do poszczególnych zadań odpowiedzialny za zbieranie odczyty dla określonego dokumentu. <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> Metoda jest wywoływana, aby upewnić się, że średnia jest obliczana tylko wtedy, gdy wszystkie odczyty zebrano zostały pomyślnie. Jeśli zadanie ma nie, ponieważ zostało anulowane, wywołanie <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> metoda zgłasza wyjątek.  
+ Aby obsłużyć możliwe anulowanie operacji, przykład tworzy <xref:System.Threading.CancellationTokenSource> obiekt generujący token anulowania, który jest przesyłany <xref:System.Threading.Tasks.TaskFactory> do obiektu. <xref:System.Threading.Tasks.TaskFactory> Obiekt z kolei przekazuje token anulowania do każdego zadania odpowiedzialnego za zbieranie odczytów dla określonego instrumentu. <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> Metoda jest wywoływana, aby upewnić się, że średni jest obliczany dopiero po pomyślnym zebraniu wszystkich odczytów. Jeśli zadanie nie zostało anulowane, wywołanie <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> metody zgłasza wyjątek.  
   
  [!code-csharp[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/cs/cancel1.cs#1)]
  [!code-vb[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/vb/cancel1.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>Wszystkie publiczne i chronione elementy członkowskie <see cref="T:System.Threading.CancellationTokenSource" /> są odporne na wątki i mogą być używane jednocześnie z wielu wątków, z wyjątkiem produktów <see cref="M:System.Threading.CancellationTokenSource.Dispose" />, który może być używana tylko podczas wszystkich operacji na <see cref="T:System.Threading.CancellationTokenSource" /> obiektu została ukończona.</threadsafe>
+    <threadsafe>Wszystkie publiczne i chronione elementy członkowskie <see cref="T:System.Threading.CancellationTokenSource" /> są bezpieczne dla wątków i mogą być używane jednocześnie z wielu wątków, z <see cref="M:System.Threading.CancellationTokenSource.Dispose" />wyjątkiem, które muszą być używane tylko wtedy, gdy <see cref="T:System.Threading.CancellationTokenSource" /> wszystkie inne operacje na obiekcie zostały ukończone.</threadsafe>
     <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
     <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
   </Docs>
@@ -89,7 +89,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Inicjuje <see cref="T:System.Threading.CancellationTokenSource" />.</summary>
+        <summary><see cref="T:System.Threading.CancellationTokenSource" />Inicjuje.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName=".ctor">
@@ -158,19 +158,19 @@
         <Parameter Name="millisecondsDelay" Type="System.Int32" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="millisecondsDelay">Interwał czasu w milisekundach czas oczekiwania przed anulowaniem to <see cref="T:System.Threading.CancellationTokenSource" />.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Threading.CancellationTokenSource" /> klasę, która zostanie anulowane po określonym czasie opóźnienia w milisekundach.</summary>
+        <param name="millisecondsDelay">Przedział czasu (w milisekundach) oczekiwania przed anulowaniem tego <see cref="T:System.Threading.CancellationTokenSource" />działania.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy, które zostanie anulowane po określonym opóźnieniu (w milisekundach).</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Odlicza czas do `millisecondsDelay` rozpoczyna się podczas wywołania konstruktora.  Gdy `millisecondsDelay` wygaśnie, stworzonego elementu <xref:System.Threading.CancellationTokenSource> zostało anulowane (Jeśli nie zostało anulowane już).  
+ Odliczanie dla `millisecondsDelay` uruchomienia w trakcie wywołania konstruktora.  Gdy wygaśnie, konstruowana <xref:System.Threading.CancellationTokenSource> zostanie anulowany (jeśli nie został jeszcze anulowany). `millisecondsDelay`  
   
- Kolejne wywołania <xref:System.Threading.CancellationTokenSource.CancelAfter%2A> spowoduje zresetowanie `millisecondsDelay` do stworzonego elementu <xref:System.Threading.CancellationTokenSource>, jeśli nie zostało już anulowane.  
+ Kolejne wywołania <xref:System.Threading.CancellationTokenSource.CancelAfter%2A> spowodują `millisecondsDelay` zresetowanie dla skonstruowanego <xref:System.Threading.CancellationTokenSource>elementu, jeśli nie zostało to jeszcze anulowane.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsDelay" /> jest mniejsza niż -1.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsDelay" />jest mniejsza niż-1.</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -202,19 +202,19 @@
         <Parameter Name="delay" Type="System.TimeSpan" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="delay">Interwał czasu oczekiwania przed anulowaniem to <see cref="T:System.Threading.CancellationTokenSource" />.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Threading.CancellationTokenSource" /> klasę, która zostanie anulowane po określonym czasie span.</summary>
+        <param name="delay">Przedział czasu oczekiwania przed anulowaniem tego <see cref="T:System.Threading.CancellationTokenSource" />działania.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy, które zostanie anulowane po określonym przedziale czasu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Rozpoczyna odliczania opóźnienia podczas wywołania konstruktora. Po upływie opóźnienie, stworzonego elementu <xref:System.Threading.CancellationTokenSource> została anulowana, jeśli nie zostało już anulowane.  
+ Odliczanie dla opóźnienia zaczyna się w trakcie wywołania konstruktora. Gdy opóźnienie wygaśnie, konstruowana <xref:System.Threading.CancellationTokenSource> została anulowana, jeśli nie została już anulowana.  
   
- Kolejne wywołania <xref:System.Threading.CancellationTokenSource.CancelAfter%2A> spowoduje zresetowanie opóźnienie stworzonego elementu <xref:System.Threading.CancellationTokenSource>, jeśli nie zostało już anulowane.  
+ Kolejne wywołania <xref:System.Threading.CancellationTokenSource.CancelAfter%2A> spowodują zresetowanie opóźnienia dla konstruowanego <xref:System.Threading.CancellationTokenSource>, jeśli nie zostało to jeszcze anulowane.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="delay" />.<see cref="P:System.TimeSpan.TotalMilliseconds" /> jest mniejsza niż -1 lub większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="delay" />.<see cref="P:System.TimeSpan.TotalMilliseconds" /> jest mniejsza niż-1 lub większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="Cancel">
@@ -225,7 +225,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Komunikuje się żądanie anulowania.</summary>
+        <summary>Komunikuje żądanie anulowania.</summary>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
       </Docs>
@@ -260,32 +260,32 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Komunikuje się żądanie anulowania.</summary>
+        <summary>Komunikuje żądanie anulowania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Skojarzone <xref:System.Threading.CancellationToken> zostanie powiadomiony o anulowania i przechodzi do stanu gdzie <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> zwraca wartość true.  
+ Skojarzenie <xref:System.Threading.CancellationToken> zostanie powiadomione o anulowaniu i przejdzie do stanu, w <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> którym zwraca wartość true.  
   
- Wszystkie operacje można anulować lub wywołania zwrotne zarejestrowane w usłudze <xref:System.Threading.CancellationToken> zostaną wykonane.  
+ Wszystkie wywołania zwrotne lub operacje anulowania zarejestrowane w ramach <xref:System.Threading.CancellationToken> zostaną wykonane.  
   
- Zaleca się, że można anulować operacji i wywołania zwrotne zarejestrowane w usłudze <xref:System.Threading.CancellationToken> nie zgłasza wyjątków. 
+ Zalecamy, aby operacje anulowania i wywołania zwrotne zarejestrowane z <xref:System.Threading.CancellationToken> niezgłaszanymi wyjątkami. 
  
- To przeciążenie Anuluj będzie używana do agregowania wyjątki zgłaszane w <xref:System.AggregateException>, w taki sposób, że jeden wywołania zwrotnego, zostanie zgłoszony wyjątek nie uniemożliwi inne zarejestrowanego wywołania zwrotne wykonywane. 
+ To Przeciążenie anulowania spowoduje zagregowanie wszelkich wyjątków zgłoszonych do <xref:System.AggregateException>, takich jak jedno wywołanie zwrotne, które zgłasza wyjątek, nie uniemożliwi wykonywania innych zarejestrowanych wywołań zwrotnych. 
    
   
 ## Examples  
- W poniższym przykładzie użyto generator liczb losowych do emulowania aplikacji zbierania danych, odczytująca jedenaście instrumencie 10 wartości całkowitych. Wartość zero wskazuje, że pomiar nie powiodło się dla jednego dokumentu, obliczona w takim przypadku można anulować operację i nie oznacza ogólne.  
+ Poniższy przykład używa generatora liczb losowych do emulowania aplikacji do zbierania danych, która odczytuje 10 wartości całkowitych z jedenastu różnych instrumentów. Wartość zero wskazuje, że pomiar nie powiódł się dla jednego instrumentu, w tym przypadku operacja powinna zostać anulowana i nie ma potrzeby obliczenia całkowitego średniego.  
   
- Aby obsłużyć możliwe anulowanie operacji, przykład tworzy <xref:System.Threading.CancellationTokenSource> obiektu, która generuje token anulowania, który jest przekazywany do <xref:System.Threading.Tasks.TaskFactory> obiektu. <xref:System.Threading.Tasks.TaskFactory> Obiektu z kolei przekazuje token anulowania do poszczególnych zadań odpowiedzialny za zbieranie odczyty dla określonego dokumentu. <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> Metoda jest wywoływana, aby upewnić się, że średnia jest obliczana tylko wtedy, gdy wszystkie odczyty zebrano zostały pomyślnie. Jeśli zadanie ma nie, ponieważ zostało anulowane, wywołanie <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> metoda zgłasza wyjątek.  
+ Aby obsłużyć możliwe anulowanie operacji, przykład tworzy <xref:System.Threading.CancellationTokenSource> obiekt generujący token anulowania, który jest przesyłany <xref:System.Threading.Tasks.TaskFactory> do obiektu. <xref:System.Threading.Tasks.TaskFactory> Obiekt z kolei przekazuje token anulowania do każdego zadania odpowiedzialnego za zbieranie odczytów dla określonego instrumentu. <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%60%602%28System.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2CSystem.Func%7BSystem.Threading.Tasks.Task%7B%60%600%7D%5B%5D%2C%60%601%7D%2CSystem.Threading.CancellationToken%29?displayProperty=nameWithType> Metoda jest wywoływana, aby upewnić się, że średni jest obliczany dopiero po pomyślnym zebraniu wszystkich odczytów. Jeśli zadanie nie zostało anulowane, wywołanie <xref:System.Threading.Tasks.TaskFactory.ContinueWhenAll%2A?displayProperty=nameWithType> metody zgłasza wyjątek.  
   
  [!code-csharp[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/cs/cancel1.cs#1)]
  [!code-vb[System.Threading.CancellationTokenSource.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.cancellationtokensource.class/vb/cancel1.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">To <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
-        <exception cref="T:System.AggregateException">Łączny wyjątek zawierającą wszystkie wyjątki generowane przez zarejestrowanego wywołania zwrotne dla powiązanego <see cref="T:System.Threading.CancellationToken" />.</exception>
+        <exception cref="T:System.ObjectDisposedException">To <see cref="T:System.Threading.CancellationTokenSource" /> zostało usunięte.</exception>
+        <exception cref="T:System.AggregateException">Wyjątek agregujący zawierający wszystkie wyjątki zgłoszone przez zarejestrowane wywołania zwrotne w skojarzonym <see cref="T:System.Threading.CancellationToken" />.</exception>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
       </Docs>
@@ -322,26 +322,26 @@
         <Parameter Name="throwOnFirstException" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="throwOnFirstException"><see langword="true" /> Jeśli wyjątki należy natychmiast propagowane; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Komunikuje się żądanie anulowania i określa, czy można anulować operacji i pozostałe wywołania zwrotne mają być przetwarzane, jeśli wystąpi wyjątek.</summary>
+        <param name="throwOnFirstException"><see langword="true" />Jeśli wyjątki powinny być natychmiast propagowane; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Komunikuje żądanie anulowania i określa, czy pozostałe wywołania zwrotne i operacje anulowania powinny być przetwarzane, jeśli wystąpi wyjątek.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Skojarzone <xref:System.Threading.CancellationToken> zostanie powiadomiony o anulowania i przechodzi do stanu gdzie <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> zwraca `true`.  
+ Skojarzone <xref:System.Threading.CancellationToken> powiadomienie zostanie powiadomione o anulowaniu i przejdzie do stanu, w <xref:System.Threading.CancellationToken.IsCancellationRequested%2A> którym `true`zwraca wartość.  
   
- Wszystkie operacje można anulować lub wywołania zwrotne zarejestrowane w usłudze <xref:System.Threading.CancellationToken> zostaną wykonane. Wywołania zwrotne będą wykonywane synchronicznie, w kolejności LIFO. 
+ Wszystkie wywołania zwrotne lub operacje anulowania zarejestrowane w ramach <xref:System.Threading.CancellationToken> zostaną wykonane. Wywołania zwrotne będą wykonywane synchronicznie w kolejności kolejki LIFO. 
   
- Zaleca się, że można anulować operacji i wywołania zwrotne zarejestrowane w usłudze <xref:System.Threading.CancellationToken> nie zgłasza wyjątków. 
+ Zalecamy, aby operacje anulowania i wywołania zwrotne zarejestrowane z <xref:System.Threading.CancellationToken> niezgłaszanymi wyjątkami. 
   
- Jeśli `throwOnFirstException` jest `true`, wyjątek od razu będzie propagowany poza wywołanie <xref:System.Threading.CancellationTokenSource.Cancel%2A>, zapobieganie pozostałe wywołania zwrotne i można anulować operacji przetwarzania.  
+ Jeśli `throwOnFirstException` <xref:System.Threading.CancellationTokenSource.Cancel%2A>jest `true`, wyjątek zostanie natychmiast rozpropagowany z wywołania do, co uniemożliwia przetworzenie pozostałych operacji wywołania zwrotnego i anulowanie.  
   
- Jeśli `throwOnFirstException` jest `false`, to przeciążenie będzie używana do agregowania wyjątki zgłaszane w <xref:System.AggregateException>, w taki sposób, że jeden wywołania zwrotnego, zostanie zgłoszony wyjątek nie uniemożliwi inne zarejestrowanego wywołania zwrotne wykonywane.  
+ Jeśli `throwOnFirstException` <xref:System.AggregateException>jest `false`, to Przeciążenie spowoduje zagregowanie wszelkich wyjątków zgłoszonych do, takich jak jedno wywołanie zwrotne, które zgłasza wyjątek, nie uniemożliwi wykonywania innych zarejestrowanych wywołań zwrotnych.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">To <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
-        <exception cref="T:System.AggregateException">Łączny wyjątek zawierającą wszystkie wyjątki generowane przez zarejestrowanego wywołania zwrotne dla powiązanego <see cref="T:System.Threading.CancellationToken" />.</exception>
+        <exception cref="T:System.ObjectDisposedException">To <see cref="T:System.Threading.CancellationTokenSource" /> zostało usunięte.</exception>
+        <exception cref="T:System.AggregateException">Wyjątek agregujący zawierający wszystkie wyjątki zgłoszone przez zarejestrowane wywołania zwrotne w skojarzonym <see cref="T:System.Threading.CancellationToken" />.</exception>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
       </Docs>
@@ -354,7 +354,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Planuje operacji anulowania, w tym <see cref="T:System.Threading.CancellationTokenSource" />.</summary>
+        <summary>Planuje operację anulowania na tym <see cref="T:System.Threading.CancellationTokenSource" />.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CancelAfter">
@@ -389,20 +389,20 @@
         <Parameter Name="millisecondsDelay" Type="System.Int32" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="millisecondsDelay">Przedział czasu oczekiwania przed anulowaniem to <see cref="T:System.Threading.CancellationTokenSource" />.</param>
-        <summary>Planuje operacji anulowania, w tym <see cref="T:System.Threading.CancellationTokenSource" /> po określonej liczbie milisekund.</summary>
+        <param name="millisecondsDelay">Przedział czasu oczekiwania przed anulowaniem tego <see cref="T:System.Threading.CancellationTokenSource" />działania.</param>
+        <summary>Planuje operację <see cref="T:System.Threading.CancellationTokenSource" /> anulowania po określonej liczbie milisekund.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Odlicza czas do `millisecondsDelay` rozpoczyna się podczas tego wywołania. Gdy `millisecondsDelay` wygaśnie, to <xref:System.Threading.CancellationTokenSource> została anulowana, jeśli nie zostało już anulowane.  
+ Odliczanie dla `millisecondsDelay` uruchomienia w trakcie tego wywołania. Po wygaśnięciu ta <xref:System.Threading.CancellationTokenSource> wartość zostanie anulowana, jeśli nie została już anulowana. `millisecondsDelay`  
   
- Spowoduje to zresetowanie kolejnych wywołań CancelAfter `millisecondsDelay` tego <xref:System.Threading.CancellationTokenSource>, jeśli nie zostało już anulowane.  
+ Kolejne wywołania do CancelAfter spowodują zresetowanie `millisecondsDelay` dla tego <xref:System.Threading.CancellationTokenSource>elementu, jeśli nie zostało to jeszcze anulowane.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Wyjątek generowany, gdy to <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wyjątek generowany, gdy <paramref name="millisecondsDelay" /> jest mniejsza niż -1.</exception>
+        <exception cref="T:System.ObjectDisposedException">Wyjątek zgłoszony, gdy <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wyjątek zgłoszony, gdy <paramref name="millisecondsDelay" /> jest mniejszy niż-1.</exception>
       </Docs>
     </Member>
     <Member MemberName="CancelAfter">
@@ -437,8 +437,8 @@
         <Parameter Name="delay" Type="System.TimeSpan" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="delay">Przedział czasu oczekiwania przed anulowaniem to <see cref="T:System.Threading.CancellationTokenSource" />.</param>
-        <summary>Planuje operacji anulowania, w tym <see cref="T:System.Threading.CancellationTokenSource" /> rozciągać się po określonym czasie.</summary>
+        <param name="delay">Przedział czasu oczekiwania przed anulowaniem tego <see cref="T:System.Threading.CancellationTokenSource" />działania.</param>
+        <summary>Planuje operację <see cref="T:System.Threading.CancellationTokenSource" /> anulowania po określonym przedziale czasu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[
             The countdown for the delay starts during this call.  When the delay expires, 
@@ -449,8 +449,8 @@
 
             ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Wyjątek generowany, gdy to <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Wyjątek, który jest generowany, gdy <paramref name="delay" /> jest mniejsza niż -1 lub większa niż wartość parametru Int32.MaxValue.</exception>
+        <exception cref="T:System.ObjectDisposedException">Wyjątek zgłoszony, gdy <see cref="T:System.Threading.CancellationTokenSource" /> został usunięty.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Wyjątek, który jest generowany, <paramref name="delay" /> gdy jest mniejsza niż-1 lub większa niż Int32. MaxValue.</exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="CreateLinkedTokenSource">
@@ -461,7 +461,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Tworzy <see cref="T:System.Threading.CancellationTokenSource" /> się ze stanem anulowane dowolne tokeny źródła w przypadku ze stanem anulowane.</summary>
+        <summary>Tworzy element <see cref="T:System.Threading.CancellationTokenSource" /> , który będzie w stanie anulowany, gdy którykolwiek z tokenów źródłowych jest w stanie anulowany.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CreateLinkedTokenSource">
@@ -502,13 +502,13 @@
         </Parameter>
       </Parameters>
       <Docs>
-        <param name="tokens">Tablica, która zawiera wystąpienia token anulowania do obserwowania.</param>
-        <summary>Tworzy <see cref="T:System.Threading.CancellationTokenSource" /> się ze stanem anulowane dowolne tokeny źródła w wybranej tablicy w przypadku ze stanem anulowane.</summary>
-        <returns>A <see cref="T:System.Threading.CancellationTokenSource" /> połączonego tokenów źródła.</returns>
+        <param name="tokens">Tablica zawierająca wystąpienia tokenu anulowania do obserwowania.</param>
+        <summary>Tworzy element <see cref="T:System.Threading.CancellationTokenSource" /> , który będzie w stanie anulowany, gdy którykolwiek z tokenów źródłowych w określonej tablicy jest w stanie anulowany.</summary>
+        <returns>A <see cref="T:System.Threading.CancellationTokenSource" /> który jest połączony z tokenami źródłowymi.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">A <see cref="T:System.Threading.CancellationTokenSource" /> skojarzonych z jednym źródłem byla zahozena tokenów.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="tokens" /> jest <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException"><paramref name="tokens" /> jest pusty.</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.CancellationTokenSource" /> Skojarzenie skojarzone z jednym z tokenów źródłowych zostało usunięte.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="tokens" />jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="tokens" />jest puste.</exception>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
         <related type="Article" href="https://msdn.microsoft.com/library/6f4f3804-2ed7-41b4-a97a-6e32b93f6e05">Instrukcje: Nasłuchiwanie wielu żądań anulowania</related>
@@ -549,10 +549,10 @@
       <Docs>
         <param name="token1">Pierwszy token anulowania do obserwowania.</param>
         <param name="token2">Drugi token anulowania do obserwowania.</param>
-        <summary>Tworzy <see cref="T:System.Threading.CancellationTokenSource" /> się ze stanem anulowane dowolne tokeny źródła w przypadku ze stanem anulowane.</summary>
-        <returns>A <see cref="T:System.Threading.CancellationTokenSource" /> połączonego tokenów źródła.</returns>
+        <summary>Tworzy element <see cref="T:System.Threading.CancellationTokenSource" /> , który będzie w stanie anulowany, gdy którykolwiek z tokenów źródłowych jest w stanie anulowany.</summary>
+        <returns>A <see cref="T:System.Threading.CancellationTokenSource" /> który jest połączony z tokenami źródłowymi.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">A <see cref="T:System.Threading.CancellationTokenSource" /> skojarzonych z jednym źródłem byla zahozena tokenów.</exception>
+        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.CancellationTokenSource" /> Skojarzenie skojarzone z jednym z tokenów źródłowych zostało usunięte.</exception>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
         <related type="Article" href="https://msdn.microsoft.com/library/6f4f3804-2ed7-41b4-a97a-6e32b93f6e05">Instrukcje: Nasłuchiwanie wielu żądań anulowania</related>
@@ -566,7 +566,7 @@
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Zwalnia wszelkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy.</summary>
+        <summary>Zwalnia wszystkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Dispose">
@@ -602,17 +602,17 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwalnia wszelkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy.</summary>
+        <summary>Zwalnia wszystkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.CancellationTokenSource" /> klasy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołaj `Dispose` po zakończeniu przy użyciu <xref:System.Threading.CancellationTokenSource>. `Dispose` Pozostawia metoda <xref:System.Threading.CancellationTokenSource> w stanie uniemożliwiającym jego używanie. Po wywołaniu `Dispose`, trzeba zwolnić wszystkie odwołania do <xref:System.Threading.CancellationTokenSource> , moduł zbierający elementy bezużyteczne mógł odzyskać pamięć, <xref:System.Threading.CancellationTokenSource> zajmowaną przez wystąpienie.  
+ Wywołaj `Dispose` po zakończeniu korzystania z <xref:System.Threading.CancellationTokenSource>. `Dispose` Metoda<xref:System.Threading.CancellationTokenSource> pozostawia w stanie niezdatnym do użytku. Po wywołaniu `Dispose`należy wydać wszystkie odwołania <xref:System.Threading.CancellationTokenSource> do, aby moduł wyrzucania elementów bezużytecznych mógł odwoływać pamięć <xref:System.Threading.CancellationTokenSource> , którą zajmował.  
   
- Aby uzyskać więcej informacji, zobacz [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) i [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+ Aby uzyskać więcej informacji, zobacz [Oczyszczanie zasobów niezarządzanych](~/docs/standard/garbage-collection/unmanaged.md) i implementowanie [metody Dispose](~/docs/standard/garbage-collection/implementing-dispose.md).  
   
 > [!NOTE]
->  Zawsze wywołuj `Dispose` przed publikacją swoje ostatnie odwołanie do <xref:System.Threading.CancellationTokenSource>. W przeciwnym razie zasobów jest przy użyciu nie zostanie zwolniona, dopóki moduł odśmiecania pamięci wywołuje <xref:System.Threading.CancellationTokenSource> obiektu `Finalize` metody.  
+>  Zawsze wywołuj `Dispose` przed wydaniem ostatniego odwołania <xref:System.Threading.CancellationTokenSource>do. W przeciwnym razie używane zasoby nie zostaną zwolnione do momentu wywołania <xref:System.Threading.CancellationTokenSource> `Finalize` metody obiektu przez moduł zbierający elementy bezużyteczne.  
   
  ]]></format>
         </remarks>
@@ -650,8 +650,8 @@
         <Parameter Name="disposing" Type="System.Boolean" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="disposing"><see langword="true" /> Aby zwolnić zasoby zarządzane i niezarządzane; <see langword="false" /> aby zwolnić tylko niezarządzane zasoby.</param>
-        <summary>Zwalnia zasoby niezarządzane używane przez <see cref="T:System.Threading.CancellationTokenSource" /> klasy i opcjonalnie zwalnia zasoby zarządzane.</summary>
+        <param name="disposing"><see langword="true" />Aby zwolnić zasoby zarządzane i niezarządzane; <see langword="false" /> do zwolnienia tylko zasobów niezarządzanych.</param>
+        <summary>Zwalnia niezarządzane zasoby używane przez <see cref="T:System.Threading.CancellationTokenSource" /> klasę i opcjonalnie zwalnia zarządzane zasoby.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -689,15 +689,15 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera informację, czy zażądano anulowania, w tym <see cref="T:System.Threading.CancellationTokenSource" />.</summary>
-        <value><see langword="true" /> Jeśli zażądano anulowania, w tym <see cref="T:System.Threading.CancellationTokenSource" />; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pozwala uzyskać żądanie anulowania dla tego <see cref="T:System.Threading.CancellationTokenSource" />elementu.</summary>
+        <value><see langword="true" />Jeśli dla tego <see cref="T:System.Threading.CancellationTokenSource" />żądania zażądano anulowania, <see langword="false" />w przeciwnym razie.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta właściwość wskazuje, czy anulowania wysłano żądanie dla tego tokenu źródła, takich jak ze względu na wywołanie w celu jego <xref:System.Threading.CancellationTokenSource.Cancel%2A> metody.  
+ Ta właściwość wskazuje, czy dla tego źródła tokenu zażądano anulowania, na przykład z powodu wywołania <xref:System.Threading.CancellationTokenSource.Cancel%2A> metody.  
   
- Jeśli ta właściwość zwraca `true`, tylko gwarantuje, że zażądano anulowania. Nie gwarantuje każdy program obsługi zarejestrowanych za pomocą odpowiedniego tokenu zakończenie wykonywania ani żądań anulowania została zakończona, propagowanie do całej obsługi zarejestrowane. Dodatkowe synchronizacji mogą być wymagane, szczególnie w sytuacjach, gdzie obiekty powiązane są anulowane, jednocześnie.  
+ Ta właściwość zwraca `true`tylko gwarancję, że zażądano anulowania. Nie gwarantuje to, że każdy program obsługi zarejestrowany z odpowiednim tokenem zakończył wykonywanie lub że żądania anulowania nie zakończyły propagowania do wszystkich zarejestrowanych programów obsługi. Może być wymagana dodatkowa synchronizacja, szczególnie w sytuacjach, w których obiekty pokrewne są anulowane współbieżnie.  
   
  ]]></format>
         </remarks>
@@ -739,10 +739,10 @@
         <ReturnType>System.Threading.CancellationToken</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Threading.CancellationToken" /> skojarzony z tym <see cref="T:System.Threading.CancellationTokenSource" />.</summary>
-        <value><see cref="T:System.Threading.CancellationToken" /> Skojarzony z tym <see cref="T:System.Threading.CancellationTokenSource" />.</value>
+        <summary>Pobiera skojarzoną z tym <see cref="T:System.Threading.CancellationTokenSource" />elementem. <see cref="T:System.Threading.CancellationToken" /></summary>
+        <value>Skojarzone z tym <see cref="T:System.Threading.CancellationTokenSource" />elementem. <see cref="T:System.Threading.CancellationToken" /></value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">Źródło tokenu został usunięty.</exception>
+        <exception cref="T:System.ObjectDisposedException">Źródło tokenu zostało usunięte.</exception>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
         <related type="Article" href="~/docs/standard/parallel-programming/task-cancellation.md">Anulowanie zadania</related>
       </Docs>

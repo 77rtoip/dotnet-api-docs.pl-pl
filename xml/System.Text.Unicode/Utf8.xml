@@ -1,5 +1,5 @@
 <Type Name="Utf8" FullName="System.Text.Unicode.Utf8">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="33237e25e2292e543bc5e780f50fecc9883cb67e" /><Meta Name="ms.sourcegitcommit" Value="cfc0e4215fd0d259582ada2141878befd7c3c8c6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/12/2019" /><Meta Name="ms.locfileid" Value="67855502" /></Metadata><TypeSignature Language="C#" Value="public static class Utf8" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6be64e4d5286564bebfb594348d1b904f5a3a3bd" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68542967" /></Metadata><TypeSignature Language="C#" Value="public static class Utf8" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit Utf8 extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Text.Unicode.Utf8" />
   <TypeSignature Language="VB.NET" Value="Public Class Utf8" />
@@ -14,7 +14,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Udostępnia metody statyczne, które konwertują dane podzielony między kodowania UTF-8 i UTF-16.</summary>
+    <summary>Zawiera metody statyczne, które konwertują dane fragmentaryczne między kodowaniem UTF-8 i UTF-16.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -41,26 +41,26 @@
         <Parameter Name="isFinalBlock" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="source">Zakres znaków tylko do odczytu kodowany w formacie UTF-16.</param>
-        <param name="destination">UTF-8 zakodowany zakresu bajtów.</param>
-        <param name="charsRead">Gdy metoda zwraca, liczbę znaków czytanych od <paramref name="source" />.</param>
-        <param name="bytesWritten">Gdy metoda zwraca, liczbę znaków napisanych do <paramref name="destination" />.</param>
-        <param name="replaceInvalidSequences"><see langword="true" /> Aby zamienić nieprawidłowe sekwencje UTF-16 w <paramref name="source" /> z U + FFFD; <see langword="false" /> do zwrócenia <see cref="F:System.Buffers.OperationStatus.InvalidData" /> Jeśli znaleziono nieprawidłowe znaki w <paramref name="source" />.</param>
-        <param name="isFinalBlock"><see langword="true" /> Jeśli metoda nie powinna zwracać <see cref="F:System.Buffers.OperationStatus.InvalidData" />; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Konwertuje zakres znaków UTF-16 zakresu zakodowane bajtów UTF-8.</summary>
-        <returns>Wartość, która wskazuje, że stan konwersji.</returns>
+        <param name="source">Zakodowany w formacie UTF-16 znak zakresu znaków.</param>
+        <param name="destination">Zakodowany zakres bajtów w formacie UTF-8.</param>
+        <param name="charsRead">Gdy metoda zwraca, liczba znaków, z <paramref name="source" />których odczytano.</param>
+        <param name="bytesWritten">Gdy metoda zwraca, liczba znaków zapisanych do <paramref name="destination" />.</param>
+        <param name="replaceInvalidSequences"><see langword="true" />Aby zastąpić nieprawidłowe sekwencje UTF-16 <paramref name="source" /> w języku U + FFFD; , aby <see cref="F:System.Buffers.OperationStatus.InvalidData" /> zwrócić w przypadku znalezienia nieprawidłowych znaków w <paramref name="source" />. <see langword="false" /></param>
+        <param name="isFinalBlock"><see langword="true" />Jeśli metoda nie powinna zwracać <see cref="F:System.Buffers.OperationStatus.InvalidData" />; w przeciwnym razie,. <see langword="false" /></param>
+        <summary>Konwertuje zakres znaków UTF-16 na zakodowany zakres bajtów w formacie UTF-8.</summary>
+        <returns>Wartość wskazująca, że stan konwersji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
 ### Remarks
 
-Ta metoda odnosi się do [UTFEncoding.GetBytes](xref:System.Text.UTF8Encoding.GetBytes%2A) metody, z wyjątkiem, że ma inną Konwencją wywoływania, mechanizmy obsługi różnych błędów i różną charakterystykę wydajności. 
+Ta metoda odpowiada metodzie [UTFEncoding. GetByte](xref:System.Text.UTF8Encoding.GetBytes%2A) , z tą różnicą, że ma inną konwencję wywoływania, różne mechanizmy obsługi błędów i różne charakterystyki wydajności. 
 
-Jeśli jest "replaceInvalidSequences" `true`, metoda zastępuje wszelkie źle sformułowane podciągów w `source` z U + FFFD w `destination` i kontynuuje przetwarzanie, pozostała część buforu. W przeciwnym razie metoda zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType> jeśli wykryje nieważną istnienie sekwencji źle sformułowane.
+Jeśli "replaceInvalidSequences" to `true`, metoda zastępuje wszystkie źle sformułowane podsekwencje w `source` za pomocą u + FFFD w `destination` i kontynuuje przetwarzanie reszty buforu. W przeciwnym razie metoda zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType> , jeśli napotka wszystkie źle sformułowane sekwencje.
 
-Jeśli metoda zwraca kod błędu, parametry wyjściowe wskazują, ile danych zostało pomyślnie transkodowane i lokalizację podsekwencję źle sformułowane można określić na podstawie tych wartości.
+Jeśli metoda zwraca kod błędu, parametry out wskazują, jaka część danych została prawidłowo przeprowadzona, a lokalizacja niewłaściwie sformułowanej podsekwencji można wywnioskować z tych wartości.
 
-Jeśli jest "replaceInvalidSequences" `true`, metoda nigdy nie zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>. Jeśli jest "isFinalBlock" `true`, Metoda ta nie jest nigdy nie zwraca <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>.
+Jeśli "replaceInvalidSequences" to `true`, Metoda nigdy nie zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>. Jeśli "isFinalBlock" to `true`, Metoda nigdy nie zwraca. <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>
 
           ]]></format>
         </remarks>
@@ -89,26 +89,26 @@ Jeśli jest "replaceInvalidSequences" `true`, metoda nigdy nie zwraca <xref:Syst
         <Parameter Name="isFinalBlock" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="source">Zakres zakodowany tylko do odczytu znaków UTF-8.</param>
-        <param name="destination">Zakres bajtów zakodowany UTF-8...</param>
-        <param name="bytesRead">Gdy metoda zwraca, liczba bajtów odczytanych z <paramref name="source" />.</param>
-        <param name="charsWritten">Gdy metoda zwraca, liczbę znaków napisanych do <paramref name="destination" />.</param>
-        <param name="replaceInvalidSequences"><see langword="true" /> Aby zamienić nieprawidłowe sekwencje UTF-8 w <paramref name="source" /> z U + FFFD; <see langword="false" /> do zwrócenia <see cref="F:System.Buffers.OperationStatus.InvalidData" /> Jeśli znaleziono nieprawidłowe znaki w <paramref name="source" />.</param>
-        <param name="isFinalBlock"><see langword="true" /> Jeśli metoda nie powinna zwracać <see cref="F:System.Buffers.OperationStatus.InvalidData" />; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Konwertuje zakresu zakodowane jako tylko do odczytu bajtów UTF-8 zakres znaków UTF-16 zakodowany.</summary>
+        <param name="source">Zakodowany w formacie UTF-8 znak zakresu znaków tylko do odczytu.</param>
+        <param name="destination">Zakodowany zakres bajtów w formacie UTF-8..</param>
+        <param name="bytesRead">Gdy metoda zwraca, liczba bajtów odczytywanych z <paramref name="source" />.</param>
+        <param name="charsWritten">Gdy metoda zwraca, liczba znaków zapisanych do <paramref name="destination" />.</param>
+        <param name="replaceInvalidSequences"><see langword="true" />Aby zastąpić nieprawidłowe sekwencje UTF-8 <paramref name="source" /> w języku U + FFFD; , aby <see cref="F:System.Buffers.OperationStatus.InvalidData" /> zwrócić w przypadku znalezienia nieprawidłowych znaków w <paramref name="source" />. <see langword="false" /></param>
+        <param name="isFinalBlock"><see langword="true" />Jeśli metoda nie powinna zwracać <see cref="F:System.Buffers.OperationStatus.InvalidData" />; w przeciwnym razie,. <see langword="false" /></param>
+        <summary>Konwertuje zakodowany w formacie UTF-8 zakres bajtów tylko do odczytu do zakresu znaków zakodowanych w formacie UTF-16.</summary>
         <returns>Wartość, która wskazuje stan konwersji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
 ### Remarks
 
-Ta metoda odnosi się do [UTFEncoding.GetChars](xref:System.Text.UTF8Encoding.GetChars%2A) metody, z wyjątkiem, że ma inną Konwencją wywoływania, mechanizmy obsługi różnych błędów i różną charakterystykę wydajności. 
+Ta metoda odpowiada metodzie [UTFEncoding.](xref:System.Text.UTF8Encoding.GetChars%2A) GetChars, z tą różnicą, że ma inną konwencję wywoływania, różne mechanizmy obsługi błędów i różne charakterystyki wydajności. 
 
-Jeśli jest "replaceInvalidSequences" `true`, metoda zastępuje wszelkie źle sformułowane podciągów w `source` z U + FFFD w `destination` i kontynuuje przetwarzanie, pozostała część buforu. W przeciwnym razie metoda zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType> jeśli wykryje nieważną istnienie sekwencji źle sformułowane.
+Jeśli "replaceInvalidSequences" to `true`, metoda zastępuje wszystkie źle sformułowane podsekwencje w `source` za pomocą u + FFFD w `destination` i kontynuuje przetwarzanie reszty buforu. W przeciwnym razie metoda zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType> , jeśli napotka wszystkie źle sformułowane sekwencje.
 
-Jeśli metoda zwraca kod błędu, parametry wyjściowe wskazują, ile danych zostało pomyślnie transkodowane i lokalizację podsekwencję źle sformułowane można określić na podstawie tych wartości.
+Jeśli metoda zwraca kod błędu, parametry out wskazują, jaka część danych została prawidłowo przeprowadzona, a lokalizacja niewłaściwie sformułowanej podsekwencji można wywnioskować z tych wartości.
 
-Jeśli jest "replaceInvalidSequences" `true`, metoda nigdy nie zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>. Jeśli jest "isFinalBlock" `true`, Metoda ta nie jest nigdy nie zwraca <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>.
+Jeśli "replaceInvalidSequences" to `true`, Metoda nigdy nie zwraca <xref:System.Buffers.OperationStatus.InvalidData?displayProperty=nameWithType>. Jeśli "isFinalBlock" to `true`, Metoda nigdy nie zwraca. <xref:System.Buffers.OperationStatus.NeedMoreData?displayProperty=nameWithType>
 
           ]]></format>
         </remarks>

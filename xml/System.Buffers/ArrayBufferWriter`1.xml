@@ -1,5 +1,5 @@
 <Type Name="ArrayBufferWriter&lt;T&gt;" FullName="System.Buffers.ArrayBufferWriter&lt;T&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d33d28edbdcd5aad316f65f5c6a2e29a179bcb32" /><Meta Name="ms.sourcegitcommit" Value="727af77f0b7ae2636efa3bc47000697540084461" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/15/2019" /><Meta Name="ms.locfileid" Value="67877026" /></Metadata><TypeSignature Language="C#" Value="public sealed class ArrayBufferWriter&lt;T&gt; : System.Buffers.IBufferWriter&lt;T&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="52c165af07af5cb9af5489cbb7ce751d5164be0a" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68542821" /></Metadata><TypeSignature Language="C#" Value="public sealed class ArrayBufferWriter&lt;T&gt; : System.Buffers.IBufferWriter&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ArrayBufferWriter`1&lt;T&gt; extends System.Object implements class System.Buffers.IBufferWriter`1&lt;!T&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Buffers.ArrayBufferWriter`1" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ArrayBufferWriter(Of T)&#xA;Implements IBufferWriter(Of T)" />
@@ -21,8 +21,8 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <typeparam name="T">Typ elementów w tym <see cref="T:System.Buffers.ArrayBufferWriter`1" /> wystąpienia.</typeparam>
-    <summary>Reprezentuje obiekt sink danych wyjściowych opartej na stosie, opartych na tablicy, do którego <typeparam name="T" /> dane mogą być zapisywane.</summary>
+    <typeparam name="T">Typ elementów w tym <see cref="T:System.Buffers.ArrayBufferWriter`1" /> wystąpieniu.</typeparam>
+    <summary>Reprezentuje ujścia oparty na stercie, do którego <typeparam name="T" /> można napisać dane.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -39,7 +39,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Tworzy wystąpienie <see cref="T:System.Buffers.ArrayBufferWriter`1" /> do danych, które mogą być zapisywane z pojemność domyślna.</summary>
+        <summary>Tworzy wystąpienie <see cref="T:System.Buffers.ArrayBufferWriter`1" /> , do którego można pisać dane, z domyślną początkową pojemnością.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -59,10 +59,10 @@
         <Parameter Name="initialCapacity" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="initialCapacity">Minimalna wydajność za pomocą którego można zainicjować podstawowego buforu.</param>
-        <summary>Tworzy wystąpienie <see cref="T:System.Buffers.ArrayBufferWriter`1" /> do danych, które mogą być zapisywane z określoną pojemność.</summary>
+        <param name="initialCapacity">Minimalna pojemność, w której ma zostać zainicjowany odpowiedni bufor.</param>
+        <summary>Tworzy wystąpienie <see cref="T:System.Buffers.ArrayBufferWriter`1" /> , do którego można napisać dane, z określoną pojemnością początkową.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="initialCapacity" /> jest mniejsza niż lub równa 0.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="initialCapacity" />jest mniejsze lub równe 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="Advance">
@@ -87,16 +87,16 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="count">Liczba elementów zapisywane.</param>
-        <summary>Powiadamia <see cref="T:System.Buffers.IBufferWriter`1" /> , <paramref name="count" /> elementy zostały napisane w danych wyjściowych <see cref="T:System.Span`1" />/<see cref="T:System.Memory`1" /></summary>
+        <param name="count">Liczba zapisanych elementów.</param>
+        <summary>Powiadamia, że <paramref name="count" /> elementy zostały zapisaną w danych wyjściowych <see cref="T:System.Buffers.IBufferWriter`1" /><see cref="T:System.Span`1" />/<see cref="T:System.Memory`1" /></summary>
         <remarks>
           <format type="text/markdown"><![CDATA[
-Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisywanie większej ilości danych i nie można zapisać w buforze wcześniej uzyskana.
+Musisz zażądać nowego buforu po wywołaniu `Advance` , aby kontynuować zapisywanie większej ilości danych i nie można zapisać w wcześniej pobranym buforze.
 
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="count" /> ma wartość ujemną.</exception>
-        <exception cref="T:System.InvalidOperationException">Wywołanie metody polegające na wcześniejszym poza końcem bufor bazowego.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="count" />jest wartością ujemną.</exception>
+        <exception cref="T:System.InvalidOperationException">Wywołanie metody próbuje wykonać naliczanie dalej poza końcem źródłowego buforu.</exception>
       </Docs>
     </Member>
     <Member MemberName="Capacity">
@@ -115,8 +115,8 @@ Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisyw
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera całkowitą ilość miejsca w ramach podstawowego buforu.</summary>
-        <value>Całkowita pojemność podstawowego buforu.</value>
+        <summary>Pobiera łączną ilość miejsca w źródłowym buforze.</summary>
+        <value>Całkowita pojemność buforu bazowego.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -137,10 +137,10 @@ Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisyw
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Czyści zapisanych w buforze podstawowych danych.</summary>
+        <summary>Czyści dane zapisywane w źródłowym buforze.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[
-Należy wyczyścić <xref:System.Buffers.ArrayBufferWriter`1> przed podjęciem próby ponownego użycia.
+<xref:System.Buffers.ArrayBufferWriter`1> Przed próbą ponownego użycia należy usunąć zaznaczenie.
           ]]></format>
         </remarks>
       </Docs>
@@ -161,8 +161,8 @@ Należy wyczyścić <xref:System.Buffers.ArrayBufferWriter`1> przed podjęciem p
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera ilość dostępnego miejsca, które mogą być zapisywane bez wymuszania podstawowego buforu rośnie.</summary>
-        <value>Miejsce dostępne do zapisu bez wymuszania podstawowego buforu rośnie.</value>
+        <summary>Pobiera ilość dostępnego miejsca, w którym można pisać bez wymuszania wzrostu bazowego buforu.</summary>
+        <value>Miejsce dostępne do zapisu bez wymuszania wzrostu bazowego buforu.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -188,14 +188,14 @@ Należy wyczyścić <xref:System.Buffers.ArrayBufferWriter`1> przed podjęciem p
       </Parameters>
       <Docs>
         <param name="sizeHint">Minimalna Żądana długość <see cref="T:System.Memory`1" />.</param>
-        <summary>Zwraca <see cref="T:System.Memory`1" /> do zapisu jest co najmniej długości określonej przez <paramref name="sizeHint" />.</summary> 
-        <returns>A <see cref="T:System.Memory`1" /> którego długość jest co najmniej <paramref name="sizeHint" />.  Jeśli <paramref name="sizeHint" /> nie zostanie podany lub jest zwracany jest równa 0, w niektórych buforu niepusta.</returns>
+        <summary>Zwraca do zapisu, który ma co najmniej długość określoną przez <paramref name="sizeHint" />. <see cref="T:System.Memory`1" /></summary>
+        <returns>, <see cref="T:System.Memory`1" /> Którego długość jest równa <paramref name="sizeHint" />co najmniej.  Jeśli <paramref name="sizeHint" /> parametr nie jest podany lub jest równy 0, zwracany jest jakiś niepusty bufor.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
-Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>.
+Ta metoda nigdy nie <xref:System.Memory%601.Empty?displayProperty=nameWithType>zwraca.
           ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="sizeHint" /> ma wartość ujemną.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="sizeHint" />jest wartością ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetSpan">
@@ -220,14 +220,14 @@ Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>
       </Parameters>
       <Docs>
         <param name="sizeHint">To be added.</param>
-        <summary>Zwraca <see cref="T:System.Span`1" /> zapisu, który jest co najmniej określonej długości.</summary>
-        <returns>Element span z co najmniej <paramref name="sizeHint" /> długości. Jeśli <paramref name="sizeHint" /> nie zostanie podany lub jest zwracany jest równa 0, w niektórych buforu niepusta.</returns>
+        <summary><see cref="T:System.Span`1" /> Zwraca do zapisu, który ma co najmniej określoną długość.</summary>
+        <returns>Zakres o długości co najmniej <paramref name="sizeHint" /> . Jeśli <paramref name="sizeHint" /> parametr nie jest podany lub jest równy 0, zwracany jest jakiś niepusty bufor.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
-Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>.
+Ta metoda nigdy nie <xref:System.Memory%601.Empty?displayProperty=nameWithType>zwraca.
           ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="sizeHint" /> ma wartość ujemną.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="sizeHint" />jest wartością ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName="WrittenCount">
@@ -246,8 +246,8 @@ Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera ilość danych zapisanych w buforze bazowego.</summary>
-        <value>Ilość danych zapisanych w buforze bazowego.</value>
+        <summary>Pobiera ilość danych zapisywana w źródłowym buforze.</summary>
+        <value>Ilość danych zapisywana w źródłowym buforze.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -267,8 +267,8 @@ Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>
         <ReturnType>System.ReadOnlyMemory&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.ReadOnlyMemory`1" /> zawierający dane zapisane w buforze podstawowego do tej pory.</summary>
-        <value>Dane zapisane w buforze bazowego.</value>
+        <summary><see cref="T:System.ReadOnlyMemory`1" /> Pobiera, który zawiera dane zapisywane do buforu bazowego do tej pory.</summary>
+        <value>Dane zapisywane w źródłowym buforze.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -288,7 +288,7 @@ Ta metoda nie zwraca <xref:System.Memory%601.Empty?displayProperty=nameWithType>
         <ReturnType>System.ReadOnlySpan&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.ReadOnlySpan`1" /> zawierający dane zapisane w buforze podstawowego do tej pory.</summary>
+        <summary><see cref="T:System.ReadOnlySpan`1" /> Pobiera, który zawiera dane zapisywane do buforu bazowego do tej pory.</summary>
         <value>To be added.</value>
         <remarks>To be added.</remarks>
       </Docs>
