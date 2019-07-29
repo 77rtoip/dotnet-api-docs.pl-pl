@@ -1,5 +1,5 @@
 <Type Name="Span&lt;T&gt;" FullName="System.Span&lt;T&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="803bd441bc38213f4fa96e5e062b6bb6e5453f5c" /><Meta Name="ms.sourcegitcommit" Value="61757d0366a172cdbc11436deb1c1ffa49d97238" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/28/2019" /><Meta Name="ms.locfileid" Value="67458073" /></Metadata><TypeSignature Language="C#" Value="public struct Span&lt;T&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="bbe79321078d9fe5fd4845ab3d65cddae17fb6dd" /><Meta Name="ms.sourcegitcommit" Value="24f564114ee2fa9c63dbac1b25b82826cc4e320f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/25/2019" /><Meta Name="ms.locfileid" Value="68488587" /></Metadata><TypeSignature Language="C#" Value="public struct Span&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Span`1&lt;T&gt; extends System.ValueType" />
   <TypeSignature Language="DocId" Value="T:System.Span`1" />
   <TypeSignature Language="VB.NET" Value="Public Structure Span(Of T)" />
@@ -34,52 +34,52 @@
   </Attributes>
   <Docs>
     <typeparam name="T">Typ elementów w <see cref="System.Span`1" />.</typeparam>
-    <summary>Udostępnia reprezentację bezpiecznego typu i pamięci dla niego ciągły region dowolnego pamięci.</summary>
+    <summary>Udostępnia bezpieczną reprezentację typu i pamięci dla ciągłego regionu dowolnej pamięci.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
 
-`Span<T>` jest [ref struct](~/docs/csharp/language-reference/keywords/ref.md#ref-struct-types) który jest przydzielony na stosie, a nie na stosie zarządzanym. Typy struktury REF mają kilku ograniczeniom, aby upewnić się, że nie można awansować do zarządzanej sterty, w tym, że ich nie może być zapakowany, nie można przypisać do zmiennych typu <xref:System.Object>, `dynamic` lub dowolny typ interfejsu nie mogą być polami Typ odwołania, dlatego nie można użyć poza `await` i `yield` granic. Dodatkowo, wywołania dwóch metod <xref:System.Span%601.Equals(System.Object)> i <xref:System.Span%601.GetHashCode%2A>, throw <xref:System.NotSupportedException>. 
+`Span<T>`jest [strukturą ref](~/docs/csharp/language-reference/keywords/ref.md#ref-struct-types) przydzieloną na stosie, a nie na stosie zarządzanym. Typy struktur ref mają wiele ograniczeń, aby upewnić się, że nie można ich podwyższyć do zarządzanej sterty, w tym, że nie można ich przetworzyć <xref:System.Object>, `dynamic` nie można ich przypisać do zmiennych typu, lub do żadnego typu interfejsu, nie mogą być polami w typ referencyjny i nie mogą być używane między `await` ani `yield` granicami. Dodatkowo wywołania do dwóch metod <xref:System.Span%601.Equals(System.Object)> i <xref:System.Span%601.GetHashCode%2A>, throw a <xref:System.NotSupportedException>. 
 
 > [!IMPORTANT]
-> Ponieważ jest on tylko do stosu typem `Span<T>` nie nadaje się do wielu scenariuszy, które wymagają przechowywania odwołań do buforów na stosie. Dotyczy to, na przykład procedur, które będą wykonywać wywołania metody asynchronicznej. W przypadku takich scenariuszy można użyć uzupełniające <xref:System.Memory%601?displayProperty=nameWithType> i <xref:System.ReadOnlyMemory%601?displayProperty=nameWithType> typów.
+> Ponieważ jest to typ tylko stosu, `Span<T>` jest nieodpowiedni dla wielu scenariuszy, które wymagają zapisywania odwołań do buforów na stercie. Dotyczy to na przykład procedur, które powodują wywołania metod asynchronicznych. W takich scenariuszach można używać uzupełniania <xref:System.Memory%601?displayProperty=nameWithType> i <xref:System.ReadOnlyMemory%601?displayProperty=nameWithType> typów.
 
-Zakresy, które reprezentują struktur niezmienne lub tylko do odczytu, można użyć <xref:System.ReadOnlySpan%601?displayProperty=nameWithType>.
+Dla zakresów, które reprezentują niezmienne lub tylko do odczytu struktury, <xref:System.ReadOnlySpan%601?displayProperty=nameWithType>Użyj.
 
-## <a name="spant-and-memory"></a>Zakres\<T > i pamięci
+## <a name="spant-and-memory"></a>Zakres\<T > i pamięć
 
-A `Span<T>` reprezentuje dla niego ciągły region dowolnego pamięci. A `Span<T>` wystąpienia jest często używana do przechowywania elementów tablicy lub część tablicy. W przeciwieństwie do tablicy, jednak `Span<T>` pamięci zarządzanej, natywnej pamięci może wskazywać wystąpienie lub zarządzanych pamięci stosu. Poniższy przykład tworzy `Span<Byte>` z tablicy:
+`Span<T>` Reprezentuje ciągły region wolnej pamięci. `Span<T>` Wystąpienie jest często używane do przechowywania elementów tablicy lub fragmentu tablicy. W przeciwieństwie do tablicy, `Span<T>` wystąpienie może wskazywać na pamięć zarządzaną, pamięć natywną lub pamięć zarządzaną na stosie. Poniższy przykład tworzy obiekt `Span<Byte>` z tablicy:
 
 [!code-csharp[Creating a Span\<Byte> from an array](~/samples/snippets/csharp/api/system/span/program.cs#1)]
      
-Poniższy przykład tworzy `Span<Byte>` ze 100 bajtów pamięci natywnej:
+Poniższy przykład tworzy `Span<Byte>` z 100 bajtów pamięci natywnej:
 
 [!code-csharp[Creating a Span\<Byte> from native memory](~/samples/snippets/csharp/api/system/span/program.cs#2)]
 
-W poniższym przykładzie użyto C# [stackalloc](~/docs/csharp/language-reference/keywords/stackalloc.md) — słowo kluczowe przydzielić pamięci na stosie 100 bajtów:
+W poniższym przykładzie za pomocą C# słowa kluczowego [stackalloc](~/docs/csharp/language-reference/keywords/stackalloc.md) można przydzielić 100 bajtów pamięci na stosie:
 
 [!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#3)]
 
-Ponieważ `Span<T>` to Abstrakcja za pośrednictwem dowolnego bloku pamięci, metody `Span<T>` klasy i metody o `Span<T>` parametry działać na dowolnym `Span<T>` obiektu, niezależnie od rodzaju hermetyzuje pamięci. Na przykład każda z oddzielnymi sekcjami kodu, które zainicjować zakresu i obliczania sumy jej elementów można zmienić w jednym inicjowania i metody obliczeń w poniższym przykładzie przedstawiono:
+Ponieważ `Span<T>` jest abstrakcją dla dowolnego bloku pamięci, metody `Span<T>` klasy i metody z `Span<T>` parametrami działają na dowolnym `Span<T>` obiekcie niezależnie od rodzaju pamięci, która jest hermetyzowana. Na przykład każdą z oddzielnych sekcji kodu, które inicjują zakres i obliczania sumy jego elementów, można zmienić na pojedyncze metody inicjacji i obliczeń, jak pokazano w poniższym przykładzie:
 
 [!code-csharp[Creating a Span\<Byte> from stack-allocated memory](~/samples/snippets/csharp/api/system/span/program.cs#4)]
 
-## <a name="spant-and-arrays"></a>Zakres\<T > i tablice
+## <a name="spant-and-arrays"></a>Zakres\<T > i tablic
 
-Gdy otacza tablicę, `Span<T>` można opakować całej tablicy, tak jak w przykładach w [zakres\<T > i pamięci](#spant-and-memory) sekcji. Ponieważ obsługa tworzenia wycinków, `Span<T>` może też wskazywać dowolny zakres sąsiadujących w tablicy.  
+Gdy otacza tablicę, `Span<T>` może zawijać całą tablicę, tak jak w przykładach w sekcji [span\<T > i pamięć](#spant-and-memory) . Ponieważ obsługuje ona dzielenie, `Span<T>` może także wskazywać dowolny zakres ciągły w tablicy.  
 
-Poniższy przykład tworzy wycinek środkowej pięć elementów tablicy 10-elementowej liczby całkowitej. Należy pamiętać, że kod rozwiązanie quorum zwiększa dwukrotnie wartości Każda liczba całkowita w wycinku. Dane wyjściowe pokazują, zmiany wprowadzone przez zakres są odzwierciedlane w wartości tablicy.
+Poniższy przykład powoduje utworzenie wycinka 5 elementów w pionie 10-elementowej tablicy całkowitej. Należy zauważyć, że kod podwaja wartości każdej liczby całkowitej w wycinku. W miarę wyświetlania danych wyjściowych zmiany wprowadzone przez zakres są uwzględniane w wartościach tablicy.
 
 [!code-csharp[Creating a slice from a portion of a span](~/samples/snippets/csharp/api/system/span/slice/program.cs)]
 
 ## <a name="spant-and-slices"></a>Zakres\<T > i wycinków
 
-`Span<T>` obejmuje dwa przeciążenia metody <xref:System.Span%601.Slice%2A> metodę, która tworzą wycinek z bieżącego zakresu, który rozpoczyna się od określonego indeksu. Dzięki temu można traktować dane w `Span<T>` jako zbiór logiczne fragmentów, które mogą być przetwarzane odpowiednio do potrzeb części potok przetwarzania danych, z niewielkimi wpływu. Na przykład ponieważ serwer nowoczesnych protokołów są często oparte na tekście, manipulowania ciągami znaków i podciągów jest szczególnie ważne. W <xref:System.String> klasy głównej metody wyodrębnianie podciągów jest <xref:System.String.Substring%2A>. W przypadku potoki danych, które polegają na manipulowanie ciągami rozbudowane jego użycie oferuje niektóre spadku wydajności, ponieważ:
+`Span<T>`obejmuje dwa przeciążenia <xref:System.Span%601.Slice%2A> metody, które tworzą wycink z bieżącego zakresu, który zaczyna się od określonego indeksu. Umożliwia to traktowanie danych w `Span<T>` postaci jako zestawu fragmentów logicznych, które mogą być przetwarzane w razie potrzeby przez fragmenty potoku przetwarzania danych z minimalnym wpływem na wydajność. Na przykład, ponieważ nowoczesne protokoły serwera często są oparte na tekście, manipulowanie ciągami i podciągami jest szczególnie ważne. W klasie główna Metoda wyodrębniania podciągów ma <xref:System.String.Substring%2A>wartość. <xref:System.String> W przypadku potoków danych, które opierają się na rozdzielnym manipulowaniu ciągami, jego użycie zapewnia pewne kary wydajnościowe, ponieważ:
 
-1. Tworzy nowy ciąg, aby pomieścić podciąg.
+1. Tworzy nowy ciąg do przechowywania podciągu.
 
-2. Kopiuje podciąg znaków z oryginalnego ciągu do nowego ciągu znaków.
+2. Kopiuje podzestaw znaków z oryginalnego ciągu do nowego ciągu.
 
-Ta operacja alokacji i skopiuj mogą zostać usunięte przy użyciu `Span<T>` lub <xref:System.ReadOnlySpan%601>, jak pokazano w poniższym przykładzie:
+Tę operację alokacji i kopiowania można wyeliminować przy użyciu jednego `Span<T>` lub <xref:System.ReadOnlySpan%601>, jak pokazano na poniższym przykładzie:
 
 [!code-csharp[Creating a slice from a substring](~/samples/snippets/csharp/api/system/span/slice2/program.cs)]
 
@@ -112,16 +112,16 @@ Ta operacja alokacji i skopiuj mogą zostać usunięte przy użyciu `Span<T>` lu
         <Parameter Name="array" Type="T[]" />
       </Parameters>
       <Docs>
-        <param name="array">Tablica, z której ma zostać utworzona <see cref="T:System.Span`1" /> obiektu.</param>
-        <summary>Tworzy nową <see cref="T:System.Span`1" /> obiektu względem całej określonej tablicy.</summary>
+        <param name="array">Tablica, z której ma zostać utworzony <see cref="T:System.Span`1" /> obiekt.</param>
+        <summary>Tworzy nowy <see cref="T:System.Span`1" /> obiekt w całości dla określonej tablicy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
+Jeśli `array` jest `null` ,`null`ten Konstruktor`Span<T>`zwraca.
 
       ]]></format>
         </remarks>
-        <exception cref="T:System.ArrayTypeMismatchException"><paramref name="T" /> jest typem odwołania i <paramref name="array" /> nie jest tablicą typu <paramref name="T" />.</exception>
+        <exception cref="T:System.ArrayTypeMismatchException"><paramref name="T" />jest typem referencyjnym i <paramref name="array" /> nie jest tablicą typu. <paramref name="T" /></exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -153,9 +153,9 @@ Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="pointer">Wskaźnik do ciągu określonej liczby adres początkowy <typeparamref name="T" /> elementów w pamięci.</param>
-        <param name="length">Liczba <typeparamref name="T" /> elementy, które mają zostać uwzględnione w <see cref="T:System.Span`1" />.</param>
-        <summary>Tworzy nową <see cref="T:System.Span`1" /> obiektu z określonej liczby <typeparamref name="T" /> elementy, zaczynając od adresu określonego pamięci.</summary>
+        <param name="pointer">Wskaźnik na adres początkowy określonej liczby <typeparamref name="T" /> elementów w pamięci.</param>
+        <param name="length">Liczba <typeparamref name="T" /> elementów, które mają być zawarte <see cref="T:System.Span`1" />w.</param>
+        <summary>Tworzy nowy <see cref="T:System.Span`1" /> obiekt z określonej <typeparamref name="T" /> liczby elementów, rozpoczynając od określonego adresu pamięci.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
@@ -163,8 +163,8 @@ Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
 
       ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="T" /> jest typem referencyjnym lub zawiera wskaźniki i nie mogą być przechowywane w pamięci niezarządzanej.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="length" /> ma wartość ujemną.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="T" />jest typem referencyjnym lub zawiera wskaźniki i dlatego nie można go przechowywać w pamięci niezarządzanej.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="length" />jest wartością ujemną.</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -194,20 +194,29 @@ Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
       </Parameters>
       <Docs>
         <param name="array">Tablica źródłowa.</param>
-        <param name="start">Indeks pierwszego elementu w celu uwzględnienia w nowym <see cref="T:System.Span`1" />.</param>
+        <param name="start">Indeks pierwszego elementu do uwzględnienia w nowym <see cref="T:System.Span`1" />.</param>
         <param name="length">Liczba elementów do uwzględnienia w nowym <see cref="T:System.Span`1" />.</param>
-        <summary>Tworzy nową <see cref="T:System.Span`1" /> obiekt, który obejmuje określoną liczbę elementów tablicy, zaczynając od określonego indeksu.</summary>
-        <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="array" /> jest <see langword="null" />, ale <paramref name="start" /> lub <paramref name="length" /> jest różna od zera.
+        <summary>Tworzy nowy <see cref="T:System.Span`1" /> obiekt, który zawiera określoną liczbę elementów tablicy, rozpoczynając od określonego indeksu.</summary>
+        <remarks>
+          <format type="text/markdown">
+        
+
+### Remarks
+
+Ta metoda zwraca `default` Kiedy `array` is `null`.
+
+               </format>
+        </remarks>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="array" />is <see langword="null" />, ale <paramref name="start" /> lub <paramref name="length" /> jest różna od zera.
 
 —lub—
 
-<paramref name="start" /> wykracza poza granice tablicy.
+<paramref name="start" />wykracza poza granice tablicy.
 
 —lub—
 
-<paramref name="start" /> i <paramref name="length" /> przekracza liczbę elementów w tablicy.</exception>
-        <exception cref="T:System.ArrayTypeMismatchException"><paramref name="T" /> jest typem odwołania i <paramref name="array" /> nie jest tablicą typu <paramref name="T" />.</exception>
+<paramref name="start" />i <paramref name="length" /> przekracza liczbę elementów w tablicy.</exception>
+        <exception cref="T:System.ArrayTypeMismatchException"><paramref name="T" />jest typem referencyjnym i <paramref name="array" /> nie jest tablicą typu. <paramref name="T" /></exception>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -235,11 +244,11 @@ Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Czyści zawartość to <see cref="T:System.Span`1" /> obiektu.</summary>
+        <summary>Czyści zawartość tego <see cref="T:System.Span`1" /> obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-`Clear` Metody Ustawia elementy <xref:System.Span%601> obiektu do wartości domyślnych. Nie usuwa elementy z <xref:System.Span%601>.  
+Metoda ustawia elementy <xref:System.Span%601> w obiekcie na ich wartości domyślne. `Clear` Nie usuwa elementów z <xref:System.Span%601>.  
 
          ]]></format>
         </remarks>
@@ -272,16 +281,16 @@ Jeśli `array` jest `null`, zwraca ten konstruktor `null` `Span<T>`.
         <Parameter Name="destination" Type="System.Span&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="destination">Miejsce docelowe <see cref="System.Span`1" /> obiektu.</param>
-        <summary>Kopiuje zawartość to <see cref="System.Span`1" /> do miejsca docelowego <see cref="System.Span`1" />.</summary>
+        <param name="destination">Obiekt docelowy <see cref="System.Span`1" /> .</param>
+        <summary>Kopiuje zawartość tego <see cref="System.Span`1" /> elementu do lokalizacji docelowej <see cref="System.Span`1" />.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Ta metoda kopiuje wszystkie `source` do `destination` nawet wtedy, gdy `source` i `destination` nakładają się na siebie.
+Ta metoda `source` kopiuje wszystkie do nawet wtedy, gdy `destination` `source` i nakładają się `destination` .
 
          ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="destination" /> jest krótszy niż źródłowy <see cref="System.Span`1" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="destination" />jest krótszy niż źródło <see cref="System.Span`1" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Empty">
@@ -308,8 +317,8 @@ Ta metoda kopiuje wszystkie `source` do `destination` nawet wtedy, gdy `source` 
         <ReturnType>System.Span&lt;T&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zwraca pustą <see cref="T:System.Span`1" /> obiektu.</summary>
-        <value>Pusta <see cref="T:System.Span`1" /> obiektu.</value>
+        <summary>Zwraca pusty <see cref="T:System.Span`1" /> obiekt.</summary>
+        <value>Pusty <see cref="T:System.Span`1" /> obiekt.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -353,13 +362,13 @@ Ta metoda kopiuje wszystkie `source` do `destination` nawet wtedy, gdy `source` 
         <returns>Wywołania tej metody nie są obsługiwane.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
-Wywołania <xref:System.Span%601.Equals%2A> metody nie są obsługiwane. Wywołania <xref:System.Span%601.Equals%2A> metod dać albo dwóch wyników:
+<xref:System.Span%601.Equals%2A> Wywołania metody nie są obsługiwane. <xref:System.Span%601.Equals%2A> Wywołania metod tworzą jeden z dwóch wyników:
 
-- Jeśli `obj` jest <xref:System.Span%601>, wywołania metody które generuje błąd kompilatora CS1503: "nie można konwertować z"System.Span"na"object"." Jest to spowodowane <xref:System.Span%601> jest [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) , nie może być zapakowany i nie można przekonwertować na <xref:System.Object>.
+- `obj` Jeśli<xref:System.Span%601>jest, wywołanie metody generuje błąd kompilatora CS1503: "nie można skonwertować z" System. span "na" Object ". Jest to spowodowane <xref:System.Span%601> tym, że jest [strukturą ref](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) , która nie może być opakowana i <xref:System.Object>dlatego nie można jej przekonwertować na obiekt.
 
-- Jeśli typ `obj` nie <xref:System.Span%601>, wywołanie metody zgłasza <xref:System.NotSupportedException>. 
+- Jeśli typ `obj` <xref:System.Span%601>nie jest, wywołanie metody zgłosi. <xref:System.NotSupportedException> 
 
-Do porównywania dwóch <xref:System.Span%601> obiekty pod kątem równości, używają <xref:System.Span%601.op_Equality%2A> operator porównania.
+Aby porównać dwa <xref:System.Span%601> obiekty pod kątem równości, <xref:System.Span%601.op_Equality%2A> Użyj operatora porównania.
 
         ]]></format>
         </remarks>
@@ -393,8 +402,8 @@ Do porównywania dwóch <xref:System.Span%601> obiekty pod kątem równości, u�
         <Parameter Name="value" Type="T" />
       </Parameters>
       <Docs>
-        <param name="value">Wartość do przypisania do każdego elementu obiektu zakresu.</param>
-        <summary>Wstawia elementy ten zakres określonej wartości.</summary>
+        <param name="value">Wartość, która ma zostać przypisana do każdego elementu zakresu.</param>
+        <summary>Wypełnia elementy tego zakresu przy użyciu określonej wartości.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -422,11 +431,11 @@ Do porównywania dwóch <xref:System.Span%601> obiekty pod kątem równości, u�
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca moduł wyliczający dla tego <see cref="T:System.Span`1" />.</summary>
+        <summary>Zwraca moduł wyliczający dla <see cref="T:System.Span`1" />tego elementu.</summary>
         <returns>Moduł wyliczający dla tego zakresu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
-Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpośrednio, można użyć C# `foreach` instrukcji i Visual Basic `For Each`... `Next` konstrukcji wyliczyć <xref:System.Span%601>.
+Zamiast bezpośrednio wywołać <xref:System.Span%601.GetEnumerator%2A> metodę, można C# `foreach` użyć instrukcji i Visual Basic `For Each`... konstrukcja umożliwiająca Wyliczenie <xref:System.Span%601>. `Next`
 
        ]]></format>
         </remarks>
@@ -465,8 +474,8 @@ Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpo
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zgłasza <see cref="T:System.NotSupportedException" />.</summary>
-        <returns>Wywołania tej metody zawsze zgłaszał <see cref="T:System.NotSupportedException" />.</returns>
+        <summary><see cref="T:System.NotSupportedException" />Zgłasza.</summary>
+        <returns>Wywołania tej metody zawsze generują <see cref="T:System.NotSupportedException" />.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.NotSupportedException">Wywołania tej metody nie są obsługiwane.</exception>
       </Docs>
@@ -493,12 +502,12 @@ Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpo
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca odwołanie do elementu <see cref="T:System.Span`1" /> o indeksie zero.</summary>
-        <returns>Odwołanie do elementu <see cref="T:System.Span`1" /> o indeksie zero, lub <see langword="null" /> Jeśli <see cref="M:System.Span`1.IsEmpty" /> jest <see langword="true" />.</returns>
+        <summary>Zwraca odwołanie do elementu <see cref="T:System.Span`1" /> o indeksie równym zero.</summary>
+        <returns>Odwołanie do elementu <see cref="T:System.Span`1" /> o indeksie równym zero lub <see langword="null" /> if <see cref="M:System.Span`1.IsEmpty" /> <see langword="true" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-`GetPinnableReference` Metoda zwraca [ref struct](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type). Może służyć do przypinania <xref:System.Span%601> w pamięci. Jest wymagany do obsługi użytkowania <xref:System.Span%601> w ramach [stałej](~/docs/csharp/language-reference/keywords/fixed-statement.md) instrukcji.
+Metoda zwraca [strukturę ref.](~/docs/csharp/reference-semantics-with-value-types.md#ref-struct-type) `GetPinnableReference` Może służyć do przypinania <xref:System.Span%601> w pamięci. Jest to wymagane do obsługi użycia a <xref:System.Span%601> wewnątrz [ustalonej](~/docs/csharp/language-reference/keywords/fixed-statement.md) instrukcji.
 
        ]]></format>
         </remarks>
@@ -528,8 +537,8 @@ Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpo
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zwraca wartość wskazującą, czy bieżący <see cref="T:System.Span`1" /> jest pusty.</summary>
-        <value><see langword="true" /> Jeśli bieżącego zakresu jest pusta. w przeciwnym razie <see langword="false" />.</value>
+        <summary>Zwraca wartość wskazującą, czy bieżąca <see cref="T:System.Span`1" /> jest pusta.</summary>
+        <value><see langword="true" />Jeśli bieżący zakres jest pusty; w przeciwnym razie. <see langword="false" /></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -592,11 +601,11 @@ Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpo
         <Parameter Name="index" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="index">Liczony od zera indeks elementu.</param>
-        <summary>Pobiera element wskazywany przez określony indeks zaczynający się od zera.</summary>
+        <param name="index">Indeks (liczony od zera) elementu.</param>
+        <summary>Pobiera element w określonym indeksie liczonym od zera.</summary>
         <value>Element pod określonym indeksem.</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.IndexOutOfRangeException"><paramref name="index" /> jest mniejsze zero lub większa niż lub równa <see cref="P:System.Span`1.Length" />.</exception>
+        <exception cref="T:System.IndexOutOfRangeException"><paramref name="index" />jest mniejsza od zera lub większa lub równa <see cref="P:System.Span`1.Length" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -690,12 +699,12 @@ Zamiast wywoływać metodę <xref:System.Span%601.GetEnumerator%2A> metoda bezpo
       <Docs>
         <param name="left">Pierwszy zakres do porównania.</param>
         <param name="right">Drugi zakres do porównania.</param>
-        <summary>Zwraca wartość wskazującą, czy dwa <see cref="T:System.Span`1" /> obiekty są sobie równe.</summary>
-        <returns><see langword="true" /> Jeśli dwa <see cref="T:System.Span`1" /> obiekty są równe; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Zwraca wartość wskazującą, czy dwa <see cref="T:System.Span`1" /> obiekty są równe.</summary>
+        <returns><see langword="true" />Jeśli dwa <see cref="T:System.Span`1" /> obiekty są równe; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Dwa <xref:System.Span%601> obiekty są równe, gdy mają tę samą długość oraz odpowiadające elementy `left` i `right` wskaż tej samej pamięci. Należy pamiętać, który wykonuje test pod kątem równości *nie* podjąć próbę określenia, czy są równe.
+Dwa <xref:System.Span%601> obiekty są równe, jeśli mają taką samą długość i odpowiadające im `left` elementy i `right` wskazują tę samą pamięć. Należy zauważyć, że test pod kątem równości *nie próbuje* określić, czy zawartość jest równa.
 
          ]]></format>
         </remarks>
@@ -732,9 +741,9 @@ Dwa <xref:System.Span%601> obiekty są równe, gdy mają tę samą długość or
         <Parameter Name="segment" Type="System.ArraySegment&lt;T&gt;" />
       </Parameters>
       <Docs>
-        <param name="segment">Segment macierzy, który ma zostać przekonwertowane na <see cref="T:System.Span`1" />.</param>
-        <summary>Definiuje niejawną konwersję <see cref="T:System.ArraySegment`1" /> do <see cref="T:System.Span`1" />.</summary>
-        <returns>Obszaru, który odnosi się do segmentu tablicy.</returns>
+        <param name="segment">Segment tablicy, który ma zostać przekonwertowany <see cref="T:System.Span`1" />na.</param>
+        <summary>Definiuje niejawną konwersję <see cref="T:System.ArraySegment`1" /> <see cref="T:System.Span`1" />do.</summary>
+        <returns>Zakres, który odnosi się do segmentu tablicy.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -766,8 +775,8 @@ Dwa <xref:System.Span%601> obiekty są równe, gdy mają tę samą długość or
       </Parameters>
       <Docs>
         <param name="span">Obiekt do przekonwertowania na <see cref="T:System.ReadOnlySpan`1" />.</param>
-        <summary>Definiuje niejawną konwersję <see cref="T:System.Span`1" /> do <see cref="T:System.ReadOnlySpan`1" />.</summary>
-        <returns>Zakres tylko do odczytu, która odnosi się do bieżącego wystąpienia.</returns>
+        <summary>Definiuje niejawną konwersję <see cref="T:System.Span`1" /> <see cref="T:System.ReadOnlySpan`1" />do.</summary>
+        <returns>Zakres tylko do odczytu, który odpowiada bieżącemu wystąpieniu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -799,8 +808,8 @@ Dwa <xref:System.Span%601> obiekty są równe, gdy mają tę samą długość or
       </Parameters>
       <Docs>
         <param name="array">Tablica do przekonwertowania na <see cref="T:System.Span`1" />.</param>
-        <summary>Definiuje niejawna konwersja tablicy na <see cref="T:System.Span`1" />.</summary>
-        <returns>Zakres, który odpowiada <paramref name="array" />.</returns>
+        <summary>Definiuje niejawną konwersję tablicy na <see cref="T:System.Span`1" />.</summary>
+        <returns>Zakres, który odnosi się <paramref name="array" />do.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -835,11 +844,11 @@ Dwa <xref:System.Span%601> obiekty są równe, gdy mają tę samą długość or
         <param name="left">Pierwszy zakres do porównania.</param>
         <param name="right">Drugi zakres do porównania.</param>
         <summary>Zwraca wartość wskazującą, czy dwa <see cref="T:System.Span`1" /> obiekty nie są równe.</summary>
-        <returns><see langword="true" /> Jeśli dwa <see cref="T:System.Span`1" /> obiekty nie są równe; w przeciwnym razie <see langword="false" />.</returns>
+        <returns><see langword="true" />Jeśli dwa <see cref="T:System.Span`1" /> obiekty nie są równe; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Dwa <xref:System.Span%601> obiekty są takie same, jeśli mają one różne długości lub odpowiadające elementy `left` i `right` nie wskazują na tej samej pamięci. 
+Dwa <xref:System.Span%601> obiekty są równe, jeśli mają różne długości lub jeśli odpowiadające im `left` elementy i `right` nie wskazują tej samej pamięci. 
 
          ]]></format>
         </remarks>
@@ -904,11 +913,11 @@ Dwa <xref:System.Span%601> obiekty są takie same, jeśli mają one różne dłu
         <Parameter Name="start" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">Indeks, od którego należy rozpocząć wycinka.</param>
-        <summary>Formularze wycinek z bieżącego zakresu, który rozpoczyna się od określonego indeksu.</summary>
-        <returns>Zakres, który składa się z wszystkich elementów bieżącego zakresu z <paramref name="start" /> na koniec zakresu.</returns>
+        <param name="start">Indeks, w którym ma zostać umieszczony plasterek.</param>
+        <summary>Tworzy wycink poza bieżącym zakresem, który rozpoczyna się od określonego indeksu.</summary>
+        <returns>Zakres, który składa się z wszystkich elementów bieżącego zakresu od <paramref name="start" /> do końca zakresu.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="start" /> jest mniejsza od zera lub większa niż <see cref="T:System.Span`1.Length" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="start" />jest mniejsza od zera lub większa niż <see cref="T:System.Span`1.Length" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Slice">
@@ -970,12 +979,12 @@ Dwa <xref:System.Span%601> obiekty są takie same, jeśli mają one różne dłu
         <Parameter Name="length" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="start">Indeks, od którego należy rozpocząć tego wycinka.</param>
-        <param name="length">Żądany długość dla wycinka.</param>
-        <summary>Formularze wycinek z bieżącego zakresu, począwszy od określonego indeksu dla określonej długości.</summary>
-        <returns>Zakres, który składa się z <paramref name="length" /> elementy z bieżącego span, zaczynając od <paramref name="start" />.</returns>
+        <param name="start">Indeks, w którym ma zostać umieszczony ten plasterek.</param>
+        <param name="length">Wymagana długość wycinka.</param>
+        <summary>Tworzy wycink poza bieżącym zakresem, rozpoczynając od określonego indeksu przez określoną długość.</summary>
+        <returns>Zakres, który składa <paramref name="length" /> się z elementów z bieżącego zakresu, <paramref name="start" />rozpoczynając od.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="start" /> lub <paramref name="start" />  +  <paramref name="length" /> jest mniejsza od zera lub większa niż <see cref="T:System.Span`1.Length" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="start" />lub <paramref name="start" /> jestmniejszaod +  zera lub większa niż <see cref="T:System.Span`1.Length" />. <paramref name="length" /></exception>
       </Docs>
     </Member>
     <Member MemberName="ToArray">
@@ -1004,11 +1013,11 @@ Dwa <xref:System.Span%601> obiekty są takie same, jeśli mają one różne dłu
       <Parameters />
       <Docs>
         <summary>Kopiuje zawartość tego zakresu do nowej tablicy.</summary>
-        <returns>Tablica zawierająca dane bieżącego zakresu.</returns>
+        <returns>Tablica zawierająca dane z bieżącego zakresu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Ta metoda wykonuje alokacji stosu i w związku z tym należy unikać, jeśli jest to możliwe. Jego go, które są czasem niezbędne, gdy interfejsy API, które obsługują <xref:System.Span%601> obiekty nie są dostępne, ale są interfejsy API, które działają z tablicami.
+Ta metoda wykonuje alokację sterty i dlatego należy ją unikać, jeśli jest to możliwe. Czasami jest to konieczne, gdy interfejsy API <xref:System.Span%601> obsługujące obiekty są niedostępne, ale interfejsy API, które współpracują z tablicami, to.
 
          ]]></format>
         </remarks>
@@ -1038,11 +1047,11 @@ Ta metoda wykonuje alokacji stosu i w związku z tym należy unikać, jeśli jes
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca reprezentację ciągu tego <see cref="T:System.Span`1" /> obiektu.</summary>
-        <returns>Reprezentacja ciągu <see cref="T:System.Span`1" /> obiektu.</returns>
+        <summary>Zwraca ciąg reprezentujący ten <see cref="T:System.Span`1" /> obiekt.</summary>
+        <returns>Ciąg reprezentujący ten <see cref="T:System.Span`1" /> obiekt.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
-Aby uzyskać `Span<Char>`, `ToString` metoda zwraca <xref:System.String> zawierający znaki, wskazywana przez <xref:System.Span%601>. W przeciwnym razie zwraca <xref:System.String> o nazwie typu i liczby elementów, <xref:System.Span%601> zawiera.
+Dla `Span<Char>` <xref:System.String> , metoda zwraca obiekt ,<xref:System.Span%601>który zawiera znaki wskazywane przez. `ToString` W przeciwnym razie zwraca <xref:System.String> wartość z nazwą typu i liczbą elementów <xref:System.Span%601> , które zawiera.
 
        ]]></format>
         </remarks>
@@ -1076,14 +1085,14 @@ Aby uzyskać `Span<Char>`, `ToString` metoda zwraca <xref:System.String> zawiera
       </Parameters>
       <Docs>
         <param name="destination">Obiekt docelowy operacji kopiowania.</param>
-        <summary>Próbuje skopiować bieżący <see cref="T:System.Span`1" /> do miejsca docelowego <see cref="T:System.Span`1" /> i zwraca wartość wskazującą, czy operacja kopiowania zakończyła się pomyślnie.</summary>
-        <returns><see langword="true" /> Jeśli operacja kopiowania zakończyła się pomyślnie; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Próbuje skopiować bieżącą <see cref="T:System.Span`1" /> do lokalizacji docelowej <see cref="T:System.Span`1" /> i zwraca wartość wskazującą, czy operacja kopiowania zakończyła się pomyślnie.</summary>
+        <returns><see langword="true" />Jeśli operacja kopiowania zakończyła się pomyślnie; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Ta metoda kopiuje wszystkie `source` do `destination` nawet wtedy, gdy `source` i `destination` nakładają się na siebie.
+Ta metoda `source` kopiuje wszystkie do nawet wtedy, gdy `destination` `source` i nakładają się `destination` .
 
-Jeśli `destination` jest krótszy niż źródłowy <xref:System.Span%601>, Metoda ta zwraca `false`, i są zapisywane żadne dane `destination`.
+Jeśli `destination` jest krótszy niż źródło <xref:System.Span%601>, ta metoda zwraca `false`i nie są zapisywane `destination`żadne dane.
 
          ]]></format>
         </remarks>
