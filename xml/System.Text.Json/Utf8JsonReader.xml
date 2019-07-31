@@ -1,5 +1,5 @@
 <Type Name="Utf8JsonReader" FullName="System.Text.Json.Utf8JsonReader">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d819d79b85a5451effbb779c90de4a7d1fa77343" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68434922" /></Metadata><TypeSignature Language="C#" Value="public struct Utf8JsonReader" />
+  <TypeSignature Language="C#" Value="public struct Utf8JsonReader" />
   <TypeSignature Language="ILAsm" Value=".class public sequential ansi sealed beforefieldinit Utf8JsonReader extends System.ValueType" />
   <TypeSignature Language="DocId" Value="T:System.Text.Json.Utf8JsonReader" />
   <TypeSignature Language="VB.NET" Value="Public Structure Utf8JsonReader" />
@@ -21,13 +21,14 @@
   <Docs>
     <summary>Zapewnia interfejs API o wysokiej wydajności tylko do odczytu w przypadku tekstu JSON zakodowanego w formacie UTF-8.</summary>
     <remarks>
-      <format type="text/markdown"><![CDATA[  
+      <format type="text/markdown">
+        
 
 ## Remarks
 
 `Utf8JsonReader`przetwarza tekst sekwencyjnie bez buforowania i domyślnie jest zgodny ze [specyfikacją RFC JSON](https://tools.ietf.org/html/rfc8259).
 
-Gdy `Utf8JsonReader` napotka nieprawidłowy kod JSON, <xref:System.Text.Json.JsonReaderException> generuje on podstawowe informacje o błędzie, np. numer wiersza i położenie bajtów w wierszu.
+Gdy `Utf8JsonReader` napotka nieprawidłowy kod JSON, <xref:System.Text.Json.JsonException> generuje on podstawowe informacje o błędzie, np. numer wiersza i położenie bajtów w wierszu.
 
 Ponieważ ten typ jest strukturą ref, nie obsługuje bezpośrednio asynchronicznej. Jednak zapewnia obsługę współużytkowania wątkowości, aby odczytywać niekompletne dane i kontynuować odczytywanie po przedstawieniu większej ilości danych.
 
@@ -99,11 +100,21 @@ Aby można było ustawić maksymalną głębokość podczas odczytywania lub zez
         <Parameter Name="state" Type="System.Text.Json.JsonReaderState" />
       </Parameters>
       <Docs>
-        <param name="jsonData">To be added.</param>
-        <param name="isFinalBlock">To be added.</param>
-        <param name="state">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="jsonData">Zakodowany tekst JSON w formacie UTF-8.</param>
+        <param name="isFinalBlock"><see langword="true" />gdy sekwencja wejściowa zawiera wszystkie dane do przetworzenia. <see langword="false" />tylko wtedy, gdy wiadomo, że zakres wejściowy zawiera dane częściowe zawierające więcej danych do wykonania.</param>
+        <param name="state">Jeśli jest to pierwsze wywołanie konstruktora, należy przekazać stan domyślny. W przeciwnym razie Przechwyć stan z poprzedniego wystąpienia <see cref="T:System.Text.Json.Utf8JsonReader" /> i przekaż go ponownie.</param>
+        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Text.Json.Utf8JsonReader" /> klasy.</summary>
+        <remarks>
+          <format type="text/markdown">
+        
+
+## Remarks
+
+Ponieważ ten typ jest strukturą ref, jest to typ tylko stosu, a wszystkie ograniczenia dotyczące struktur ref mają zastosowanie.
+Jest to powód, dla którego Konstruktor akceptuje <xref:System.Text.Json.JsonReaderState>.
+
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -129,7 +140,8 @@ Aby można było ustawić maksymalną głębokość podczas odczytywania lub zez
         <param name="state">Struktura, która zawiera stan czytnika. Przy pierwszym wywołaniu konstruktora należy odzwierciedlić stan domyślny; w przeciwnym razie należy przechwycić stan z poprzedniego wystąpienia <see cref="T:System.Text.Json.Utf8JsonReader" /> wystąpienia i przekazać go ponownie.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Text.Json.Utf8JsonReader" /> klasy.</summary>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown">
+        
 
 ## Remarks
 
@@ -180,7 +192,8 @@ Jest to powód, dla którego Konstruktor akceptuje <xref:System.Text.Json.JsonRe
         <summary>Pobiera głębokość bieżącego tokenu.</summary>
         <value>Głębokość bieżącego tokenu.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown">
+        
 
 ## Remarks
 
@@ -209,7 +222,8 @@ Jest to powód, dla którego Konstruktor akceptuje <xref:System.Text.Json.JsonRe
         <summary>Pobiera bieżącą migawkę <see cref="T:System.Text.Json.Utf8JsonReader" /> stanu, która musi zostać przechwycona przez obiekt wywołujący i przeszedł ponownie <see cref="T:System.Text.Json.Utf8JsonReader" /> do konstruktora o większej ilości danych.</summary>
         <value>To be added.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown">
+        
 
 ## Remarks
 
@@ -282,9 +296,11 @@ W przeciwieństwie <xref:System.Text.Json.Utf8JsonReader>do, który jest struktu
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Analizuje bieżącą wartość tokenu JSON ze źródła i Dekoduje ciąg JSON w podstawowej 64 zakodowany jako tablicę bajtów.</summary>
+        <returns>Tablica bajtów reprezentująca bieżącą wartość tokenu JSON.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">Typ tokenu JSON nie <see cref="F:System.Text.Json.JsonTokenType.String" />jest.</exception>
+        <exception cref="T:System.FormatException">Wartość nie jest zakodowana jako podstawowy tekst 64 i dlatego nie może być zdekodowana do bajtów.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetComment">
@@ -304,9 +320,10 @@ W przeciwieństwie <xref:System.Text.Json.Utf8JsonReader>do, który jest struktu
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Analizuje bieżącą wartość tokenu JSON ze źródła jako komentarz, transkodowanego jako <see cref="T:System.String" />.</summary>
+        <returns>Komentarz reprezentujący bieżącą wartość tokenu JSON.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">Token JSON nie jest komentarzem.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetDateTime">
@@ -377,7 +394,7 @@ W przeciwieństwie <xref:System.Text.Json.Utf8JsonReader>do, który jest struktu
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją w <see cref="T:System.Decimal" />.</summary>
         <returns>Wartość tokenu zakodowanego UTF-8 przeanalizowana na <see cref="T:System.Decimal" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -410,7 +427,7 @@ Metoda zgłasza wyjątek, jeśli cała nie można wartość tokenu zakodowana w 
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją w <see cref="T:System.Double" />.</summary>
         <returns>Wartość tokenu zakodowanego UTF-8 przeanalizowana na <see cref="T:System.Double" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -489,7 +506,7 @@ Metoda zgłasza wyjątek, jeśli cała nie można wartość tokenu zakodowana w 
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją do <see cref="T:System.Int32" />.</summary>
         <returns>Wartość tokenu zakodowanego UTF-8 przeanalizowana na <see cref="T:System.Int32" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -526,7 +543,7 @@ Wartość tokenu JSON reprezentuje liczbę mniejszą <see cref="F:System.Int32.M
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją do <see cref="T:System.Int64" />.</summary>
         <returns>Wartość tokenu zakodowanego UTF-8 przeanalizowana na <see cref="T:System.Int64" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -590,7 +607,7 @@ Wartość tokenu JSON reprezentuje liczbę mniejszą <see cref="F:System.Int64.M
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją w <see cref="T:System.Single" />.</summary>
         <returns>Wartość tokenu zakodowanego UTF-8 przeanalizowana na <see cref="T:System.Single" />.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -750,7 +767,7 @@ Wartość tokenu JSON reprezentuje liczbę mniejszą <see cref="F:System.UInt64.
         <summary>Pobiera wartość wskazującą Właściwość <c>Value</c> , która ma zostać użyta do pobrania wartości tokenu.</summary>
         <value><see langword="true" />Jeśli <see cref="P:System.Text.Json.Utf8JsonReader.ValueSequence" /> należy użyć, aby pobrać wartość tokenu. <see langword="false" />Jeśli <see cref="P:System.Text.Json.Utf8JsonReader.ValueSpan" /> zamiast tego należy użyć.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
@@ -778,8 +795,8 @@ W przypadku danych wejściowych w `ReadOnlySpan<byte>`, to zawsze zwraca `false`
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Pobiera tryb tego wystąpienia, <see cref="T:System.Text.Json.Utf8JsonReader" /> który wskazuje, czy zostały dostarczone wszystkie dane JSON, czy też jest więcej danych.</summary>
+        <value><see langword="true" />Jeśli czytelnik został skonstruowany z zakresem wejściowym lub sekwencją zawierającą całe dane JSON do przetworzenia. <see langword="false" />Jeśli czytelnik został skonstruowany z zakresem wejściowym lub sekwencją, która może zawierać częściowe dane JSON zawierające więcej danych do wykonania.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -848,8 +865,27 @@ Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną 
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <summary>Pomija elementy podrzędne bieżącego tokenu JSON.</summary>
+        <remarks>
+          <format type="text/markdown">
+        
+
+## Remarks
+
+Gdy <xref:System.Text.Json.Utf8JsonReader.TokenType> jest<xref:System.Text.Json.JsonTokenType.PropertyName?displayProperty=nameWithType>, czytnik najpierw przenosi do wartości właściwości.
+
+Gdy <xref:System.Text.Json.Utf8JsonReader.TokenType> (pierwotnie lub po przejściu) to <xref:System.Text.Json.JsonTokenType.StartObject?displayProperty=nameWithtype> lub <xref:System.Text.Json.JsonTokenType.StartArray?displayProperty=nameWithType>, czytnik postępuje do dopasowania <xref:System.Text.Json.JsonTokenType.EndObject?displayProperty=nameWithType> lub <xref:System.Text.Json.JsonTokenType.EndArray?displayProperty=nameWithType>.
+            
+Dla wszystkich innych typów tokenów czytnik nie jest przenoszony. Po następnym wywołaniu <xref:System.Text.Json.Utf8JsonReader.Read>, czytnik będzie miał następną wartość (gdy w tablicy), następną nazwę właściwości (w obiekcie) lub końcowym tokenem tablicy/obiektu.
+
+               </format>
+        </remarks>
+        <exception cref="T:System.InvalidOperationException">Czytelnik otrzymał dane częściowe z większą ilością danych, które należy wykonać (oznacza <see cref="P:System.Text.Json.Utf8JsonReader.IsFinalBlock" /> to <see langword="false" />, czy).</exception>
+        <exception cref="T:System.Text.Json.JsonException">Podczas pomijania napotkano nieprawidłowy token JSON, zgodnie z dokumentem RFC JSON.
+
+oraz
+
+Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną głębokość.</exception>
       </Docs>
     </Member>
     <Member MemberName="TokenStartIndex">
@@ -873,9 +909,20 @@ Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną 
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera indeks, który zaczyna się od ostatniego przetworzonego tokenu JSON (w ramach danego tekstu wejściowego w formacie UTF-8), pomijając wszystkie białe znaki.</summary>
+        <value>Początkowy indeks ostatniego przetworzonego tokenu JSON w ramach danego tekstu wejściowego w formacie UTF-8.</value>
+        <remarks>
+          <format type="text/markdown">
+        
+
+## Remarks
+
+W przypadku ciągów JSON (w tym nazw właściwości) ta wartość wskazuje przed cudzysłowem początkowym.
+
+W przypadku komentarzy ta wartość wskazuje przed pierwszym ogranicznikiem komentarza (czyli "/").
+
+               </format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="TokenType">
@@ -943,10 +990,11 @@ Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną 
         <Parameter Name="value" Type="System.Byte[]" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="value">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="value">Jeśli metoda się powiedzie, zawiera zdekodowaną reprezentację binarną podstawowego tekstu 64.</param>
+        <summary>Próbuje analizować bieżącą wartość tokenu JSON ze źródła i Dekoduje ciąg JSON w podstawowej 64 zakodowany jako tablicę bajtów.</summary>
+        <returns><see langword="true" />Jeśli cała wartość tokenu jest zakodowana jako prawidłowy tekst podstawowy 64 i można go pomyślnie zdekodować do bajtów; <see langword="false" /> w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.InvalidOperationException">Token JSON nie <see cref="F:System.Text.Json.JsonTokenType.String" />jest.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryGetDateTime">
@@ -1078,7 +1126,9 @@ Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną 
         <summary>Odczytuje następną wartość tokenu JSON ze źródła i analizuje ją w <see cref="T:System.Guid" />.</summary>
         <returns><see langword="true" />Jeśli cała wartość tokenu zakodowanego w formacie UTF-8 może zostać pomyślnie przeanalizowana <see cref="T:System.Guid" /> na wartość; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
 
 Ta metoda analizuje <xref:System.Guid> tylko wartości z łącznikami i bez otaczających ich Dekoracj. 
 
@@ -1334,9 +1384,29 @@ Ta metoda analizuje <xref:System.Guid> tylko wartości z łącznikami i bez otac
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Próbuje pominąć elementy podrzędne bieżącego tokenu JSON.</summary>
+        <returns><see langword="true" />Jeśli wystąpiły wystarczające dane dla elementów podrzędnych, które mają zostać pominięte pomyślnie; w przeciwnym razie. <see langword="false" /></returns>
+        <remarks>
+          <format type="text/markdown">
+        
+
+## Remarks
+
+Jeśli czytnik nie ma wystarczającej ilości danych, aby całkowicie pominąć elementy podrzędne bieżącego tokenu, zostanie zresetowany do stanu, w którym był on przed wywołaniem metody.
+              
+Gdy <xref:System.Text.Json.Utf8JsonReader.TokenType> jest<xref:System.Text.Json.JsonTokenType.PropertyName?displayProperty=nameWithType>, czytnik najpierw przenosi do wartości właściwości.
+
+Gdy <xref:System.Text.Json.Utf8JsonReader.TokenType> (pierwotnie lub po przejściu) to <xref:System.Text.Json.JsonTokenType.StartObject?displayProperty=nameWithType> lub <xref:System.Text.Json.JsonTokenType.StartArray?displayProperty=nameWithType>, czytnik postępuje do dopasowania <xref:System.Text.Json.JsonTokenType.EndObject?displayProperty=nameWithType> lub <xref:System.Text.Json.JsonTokenType.EndArray?displayProperty=nameWithType>.
+            
+Dla wszystkich innych typów tokenów czytnik nie jest przenoszony. Po następnym wywołaniu <xref:System.Text.Json.Utf8JsonReader.Read>, czytnik będzie miał następną wartość (gdy w tablicy), następną nazwę właściwości (w obiekcie) lub końcowym tokenem tablicy/obiektu.
+
+          ]]></format>
+        </remarks>
+        <exception cref="T:System.Text.Json.JsonException">Podczas pomijania napotkano nieprawidłowy token JSON, zgodnie z dokumentem RFC JSON.
+          
+oraz
+
+Bieżąca głębokość przekracza limit cykliczny określony przez maksymalną głębokość.</exception>
       </Docs>
     </Member>
     <Member MemberName="ValueSequence">
@@ -1364,7 +1434,8 @@ Ta metoda analizuje <xref:System.Guid> tylko wartości z łącznikami i bez otac
 W przeciwnym razie zawiera wartość tokenu. <see cref="P:System.Text.Json.Utf8JsonReader.ValueSequence" /></summary>
         <value>To be added.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown">
+        
 
 ## Remarks
 
@@ -1401,7 +1472,7 @@ W przeciwnym razie do wartości tokenu należy uzyskać dostęp <xref:System.Tex
 W przeciwnym razie zawiera wartość tokenu. <see cref="P:System.Text.Json.Utf8JsonReader.ValueSequence" /></summary>
         <value>To be added.</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
+          <format type="text/markdown"><![CDATA[
 
 ## Remarks
 
