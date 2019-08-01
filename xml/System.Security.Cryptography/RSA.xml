@@ -1,5 +1,5 @@
 <Type Name="RSA" FullName="System.Security.Cryptography.RSA">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="44a5294842cfe8afb60a640b4a27f42122169f08" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68435977" /></Metadata><TypeSignature Language="C#" Value="public abstract class RSA : System.Security.Cryptography.AsymmetricAlgorithm" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="6c590f7f7c1e42758652df886a88691a4ffe3233" /><Meta Name="ms.sourcegitcommit" Value="406d23aba879fbb482c6da0f64c8ef9494f6a944" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/31/2019" /><Meta Name="ms.locfileid" Value="68686251" /></Metadata><TypeSignature Language="C#" Value="public abstract class RSA : System.Security.Cryptography.AsymmetricAlgorithm" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit RSA extends System.Security.Cryptography.AsymmetricAlgorithm" />
   <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.RSA" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class RSA&#xA;Inherits AsymmetricAlgorithm" />
@@ -504,9 +504,14 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Eksportuje bieżący klucz w formacie RSAPrivateKey PKCS # 1.</summary>
+        <returns>Tablica bajtowa zawierająca RSAPrivateKey reprezentację tego klucza w formacie PKCS # 1.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="Overload:System.Security.Cryptography.AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKey" />
+        <altmember cref="M:System.Security.Cryptography.AsymmetricAlgorithm.ExportPkcs8PrivateKey()" />
+        <altmember cref="M:System.Security.Cryptography.RSA.ExportRSAPublicKey()" />
+        <altmember cref="Overload:System.Security.Cryptography.RSA.TryExportRSAPrivateKey" />
       </Docs>
     </Member>
     <Member MemberName="ExportRSAPublicKey">
@@ -532,9 +537,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Eksportuje część klucza publicznego bieżącego klucza w formacie RSAPublicKey PKCS # 1.</summary>
+        <returns>Tablica bajtowa zawierająca RSAPublicKey reprezentację tego klucza w formacie PKCS # 1.</returns>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Security.Cryptography.AsymmetricAlgorithm.ExportSubjectPublicKeyInfo()" />
+        <altmember cref="M:System.Security.Cryptography.RSA.ExportRSAPrivateKey()" />
+        <altmember cref="Overload:System.Security.Cryptography.RSA.TryExportRSAPublicKey" />
       </Docs>
     </Member>
     <Member MemberName="FromXmlString">
@@ -718,11 +726,42 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="2" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="passwordBytes">To be added.</param>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="passwordBytes">Bajty, które mają być używane jako hasło podczas odszyfrowywania materiału klucza.</param>
+        <param name="source">Bajty struktury EncryptedPrivateKeyInfo PKCS # 8 w kodowaniu ASN. 1-w.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje parę kluczy publiczny/prywatny ze struktury EncryptedPrivateKeyInfo PKCS # 8 Po odszyfrowaniu przy użyciu hasła opartego na bajtach, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Bajty hasła są przesyłane bezpośrednio do funkcji wyprowadzania klucza (KDF) używanej przez algorytm wskazywany przez zawartość EncryptedPrivateKeyInfo.
+Dzięki temu można zapewnić zgodność z innymi systemami, które używają kodowania tekstu innego niż UTF-8 podczas przetwarzania haseł z PBKDF2 (klucz oparty na haśle funkcja 2).
+
+ Ta metoda obsługuje tylko kodowanie binarne (//CER/DER) EncryptedPrivateKeyInfo.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Hasło jest niepoprawne.
+
+—lub—
+
+Zawartość <paramref name="source" /> wskaż funkcję wyprowadzania klucza (KDF), która ma zostać zastosowana, jest starszą wersją PKCS # 12 <see cref="T:System.Char" />KDF, która wymaga haseł opartych na plikach.
+
+—lub—
+
+Zawartość <paramref name="source" /> nie reprezentuje struktury EncryptedPrivateKeyInfo PKCS # 8 w formacie ASN. 1.
+
+—lub—
+
+Zawartość <paramref name="source" /> wskazuje, że klucz jest dla algorytmu innego niż algorytm reprezentowany przez to wystąpienie.
+
+—lub—
+
+Zawartość <paramref name="source" /> reprezentująca klucz w formacie, który nie jest obsługiwany.
+
+—lub—
+
+Importowanie klucza specyficznego dla algorytmu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ImportEncryptedPkcs8PrivateKey">
@@ -752,11 +791,37 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="2" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="password">To be added.</param>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="password">Hasło używane do odszyfrowywania materiału klucza.</param>
+        <param name="source">Bajty struktury EncryptedPrivateKeyInfo PKCS # 8 w kodowaniu ASN. 1-w.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje parę kluczy publiczny/prywatny ze struktury EncryptedPrivateKeyInfo PKCS # 8 Po odszyfrowaniu przy użyciu hasła opartego na znakach, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Gdy zawartość `source` wskazuje algorytm używający funkcji PBKDF1 (klucza opartego na hasłach) lub PBKDF2 (klucz oparty na hasłach, funkcja 2), hasło jest konwertowane na bajty przy użyciu kodowania UTF-8.
+
+ Ta metoda obsługuje tylko kodowanie binarne (//CER/DER) EncryptedPrivateKeyInfo.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Hasło jest niepoprawne.
+
+—lub—
+
+Zawartość <paramref name="source" /> nie reprezentuje struktury EncryptedPrivateKeyInfo PKCS # 8 w formacie ASN. 1.
+
+—lub—
+
+Zawartość <paramref name="source" /> wskazuje, że klucz jest dla algorytmu innego niż algorytm reprezentowany przez to wystąpienie.
+
+—lub—
+
+Zawartość <paramref name="source" /> reprezentująca klucz w formacie, który nie jest obsługiwany.
+
+—lub—
+
+Importowanie klucza specyficznego dla algorytmu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ImportParameters">
@@ -826,10 +891,30 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source">Bajty struktury PrivateKeyInfo PKCS # 8 w kodowaniu ASN. 1-w.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje parę kluczy publiczny/prywatny ze struktury PrivateKeyInfo PKCS # 8 Po odszyfrowaniu, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ta metoda obsługuje tylko kodowanie binarne (//CER/DER) PrivateKeyInfo.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Zawartość <paramref name="source" /> nie reprezentuje struktury PrivateKeyInfo PKCS # 8 w formacie ASN. 1.
+
+—lub—
+
+Zawartość <paramref name="source" /> wskazuje, że klucz jest dla algorytmu innego niż algorytm reprezentowany przez to wystąpienie.
+
+—lub—
+
+Zawartość <paramref name="source" /> reprezentująca klucz w formacie, który nie jest obsługiwany.
+
+—lub—
+
+Importowanie klucza specyficznego dla algorytmu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ImportRSAPrivateKey">
@@ -858,10 +943,22 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source">Bajty struktury RSAPrivateKey PKCS # 1 w kodowaniu ASN. 1-w.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje parę kluczy publiczny/prywatny ze struktury RSAPrivateKey PKCS # 1 Po odszyfrowaniu, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ta metoda obsługuje tylko kodowanie binarne (//CER/DER) RSAPrivateKey.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Zawartość <paramref name="source" /> nie reprezentuje struktury RSAPrivateKey PKCS # 1 w formacie ASN. 1.
+
+—lub—
+
+Importowanie klucza nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ImportRSAPublicKey">
@@ -890,10 +987,22 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source">Bajty struktury RSAPublicKey PKCS # 1 w kodowaniu ASN. 1-w.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje klucz publiczny ze struktury RSAPublicKey PKCS # 1 Po odszyfrowaniu, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ta metoda obsługuje tylko kodowanie binarne (//CER/DER) RSAPrivateKey.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Zawartość <paramref name="source" /> nie reprezentuje struktury RSAPublicKey PKCS # 1 w formacie ASN. 1.
+
+—lub—
+
+Importowanie klucza nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="ImportSubjectPublicKeyInfo">
@@ -922,10 +1031,30 @@
         <Parameter Name="bytesRead" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="source">To be added.</param>
-        <param name="bytesRead">To be added.</param>
-        <summary>To be added.</summary>
-        <remarks>To be added.</remarks>
+        <param name="source">Bajty struktury SubjectPublicKeyInfo X. 509 w kodowaniu ASN. 1-DER.</param>
+        <param name="bytesRead">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów odczytywanych z <paramref name="source" />. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Importuje klucz publiczny z struktury SubjectPublicKeyInfo X. 509 po odszyfrowaniu, zastępując klucze dla tego obiektu.</summary>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Ta metoda obsługuje tylko kodowanie binarne (DER) SubjectPublicKeyInfo.
+Jeśli wartość jest zakodowana algorytmem Base64 lub w formacie tekstowym PEM, wywołujący musi zdekodować zawartość przed wywołaniem tej metody.
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Zawartość <paramref name="source" /> nie reprezentuje struktury SubjectPublicKeyInfo X. 509 w formacie ASN. 1-der.
+
+—lub—
+
+Zawartość <paramref name="source" /> wskazuje, że klucz jest dla algorytmu innego niż algorytm reprezentowany przez to wystąpienie.
+
+—lub—
+
+Zawartość <paramref name="source" /> reprezentująca klucz w formacie, który nie jest obsługiwany.
+
+—lub—
+
+Importowanie klucza specyficznego dla algorytmu nie powiodło się.</exception>
       </Docs>
     </Member>
     <Member MemberName="KeyExchangeAlgorithm">
@@ -1383,13 +1512,27 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="passwordBytes">To be added.</param>
-        <param name="pbeParameters">To be added.</param>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="passwordBytes">Bajty, które mają być używane jako hasło podczas szyfrowania materiału klucza.</param>
+        <param name="pbeParameters">Parametry szyfrowania opartego na hasłach (PBE), które mają być używane podczas szyfrowania materiału klucza.</param>
+        <param name="destination">Zakres bajtów do odbierania danych EncryptedPrivateKeyInfo PKCS # 8.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie EncryptedPrivateKeyInfo PKCS # 8 do podanego buforu przy użyciu hasła opartego na bajtach.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Bajty hasła są przesyłane bezpośrednio do funkcji wyprowadzania klucza (KDF) używanej przez algorytm wskazywany `pbeParameters`przez.
+Dzięki temu można zapewnić zgodność z innymi systemami, które używają kodowania tekstu innego niż UTF-8 podczas przetwarzania haseł z PBKDF2 (klucz oparty na haśle funkcja 2).
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.
+
+—lub—
+
+<paramref name="pbeParameters" />wskazuje, <see cref="F:System.Security.Cryptography.PbeEncryptionAlgorithm.TripleDes3KeyPkcs12" /> że powinny być używane, które <see cref="T:System.Char" />wymaga haseł opartych na.</exception>
+        <altmember cref="Overload:System.Security.Cryptography.AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKey" />
       </Docs>
     </Member>
     <Member MemberName="TryExportEncryptedPkcs8PrivateKey">
@@ -1419,13 +1562,22 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="3" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="password">To be added.</param>
-        <param name="pbeParameters">To be added.</param>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="password">Hasło, które ma być używane podczas szyfrowania materiału klucza.</param>
+        <param name="pbeParameters">Parametry szyfrowania opartego na hasłach (PBE), które mają być używane podczas szyfrowania materiału klucza.</param>
+        <param name="destination">Zakres bajtów do odbierania danych EncryptedPrivateKeyInfo PKCS # 8.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie EncryptedPrivateKeyInfo PKCS # 8 do podanego buforu przy użyciu hasła opartego na znakach.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Gdy `pbeParameters` wskazuje algorytm korzystający z PBKDF2 (klucz oparty na hasłach funkcja 2), hasło jest konwertowane na bajty przy użyciu kodowania UTF-8.
+
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="Overload:System.Security.Cryptography.AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKey" />
       </Docs>
     </Member>
     <Member MemberName="TryExportPkcs8PrivateKey">
@@ -1454,11 +1606,13 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="destination">Zakres bajtów do odbierania danych PrivateKeyInfo PKCS # 8.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie PrivateKeyInfo PKCS # 8 do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="Overload:System.Security.Cryptography.AsymmetricAlgorithm.ExportPkcs8PrivateKey" />
       </Docs>
     </Member>
     <Member MemberName="TryExportRSAPrivateKey">
@@ -1487,11 +1641,13 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="destination">Zakres bajtów do odbierania danych RSAPrivateKey PKCS # 1.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie RSAPrivateKey PKCS # 1 do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="M:System.Security.Cryptography.RSA.ExportRSAPrivateKey()" />
       </Docs>
     </Member>
     <Member MemberName="TryExportRSAPublicKey">
@@ -1520,11 +1676,13 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="destination">Zakres bajtów do odbierania danych RSAPublicKey PKCS # 1.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie RSAPublicKey PKCS # 1 do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="M:System.Security.Cryptography.RSA.ExportRSAPublicKey()" />
       </Docs>
     </Member>
     <Member MemberName="TryExportSubjectPublicKeyInfo">
@@ -1553,11 +1711,13 @@
         <Parameter Name="bytesWritten" Type="System.Int32" RefType="out" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="destination">To be added.</param>
-        <param name="bytesWritten">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <param name="destination">Zakres bajtów do odbierania danych SubjectPublicKeyInfo X. 509.</param>
+        <param name="bytesWritten">Gdy ta metoda zwraca, zawiera wartość wskazującą liczbę bajtów, do <paramref name="destination" />których zapisano. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <summary>Próbuje wyeksportować bieżący klucz w formacie X. 509 SubjectPublicKeyInfo do podanego buforu.</summary>
+        <returns><see langword="true" />Jeśli <paramref name="destination" /> jest wystarczająco duży, <see langword="false" />Aby uzyskać dane wyjściowe; w przeciwnym razie.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Nie można wyeksportować klucza.</exception>
+        <altmember cref="Overload:System.Security.Cryptography.AsymmetricAlgorithm.ExportSubjectPublicKeyInfo" />
       </Docs>
     </Member>
     <Member MemberName="TryHashData">
