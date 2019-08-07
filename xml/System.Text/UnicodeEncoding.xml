@@ -1,5 +1,5 @@
 <Type Name="UnicodeEncoding" FullName="System.Text.UnicodeEncoding">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="7fa0095e2b87ad54c8fa9c769e28a678a69cf69c" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68438703" /></Metadata><TypeSignature Language="C#" Value="public class UnicodeEncoding : System.Text.Encoding" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0560812bba18045e55e3058f869e952c326d83bf" /><Meta Name="ms.sourcegitcommit" Value="37f75368be2e569ad59341f3fc6261b76b89db9d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/07/2019" /><Meta Name="ms.locfileid" Value="68819225" /></Metadata><TypeSignature Language="C#" Value="public class UnicodeEncoding : System.Text.Encoding" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit UnicodeEncoding extends System.Text.Encoding" />
   <TypeSignature Language="DocId" Value="T:System.Text.UnicodeEncoding" />
   <TypeSignature Language="VB.NET" Value="Public Class UnicodeEncoding&#xA;Inherits Encoding" />
@@ -75,7 +75,7 @@
 |------------|----------------|---------|---------------------|  
 |<xref:System.Text.Encoding.BigEndianUnicode%2A>|Big-endian|Tak|Nie (alternatywa zamienna)|  
 |<xref:System.Text.Encoding.Unicode%2A?displayProperty=nameWithType>|Little-endian|Tak|Nie (alternatywa zamienna)|  
-|<xref:System.Text.UnicodeEncoding.%23ctor?displayProperty=nameWithType>|Little-endian|Yes|Nie (alternatywa zamienna)|  
+|<xref:System.Text.UnicodeEncoding.%23ctor?displayProperty=nameWithType>|Little-endian|Tak|Nie (alternatywa zamienna)|  
 |<xref:System.Text.UnicodeEncoding.%23ctor%28System.Boolean%2CSystem.Boolean%29>|Możliwość konfiguracji|Możliwość konfiguracji|Nie (alternatywa zamienna)|  
 |<xref:System.Text.UnicodeEncoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29?displayProperty=nameWithType>|Możliwość konfiguracji|Możliwość konfiguracji|Możliwość konfiguracji|  
   
@@ -1823,9 +1823,37 @@ Wynikowa liczba bajtów jest większa niż maksymalna liczba, która może zosta
         <ReturnType>System.ReadOnlySpan&lt;System.Byte&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera znacznik kolejności bajtów Unicode zakodowany w formacie UTF-16, jeśli ten obiekt jest skonfigurowany do jego dostarczania.</summary>
+        <value>Zakres bajtów zawierający znacznik kolejności bajtów Unicode, jeśli ten obiekt jest skonfigurowany do jego dostarczania; w przeciwnym razie domyślnym zakresem.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Text.UnicodeEncoding> Obiekt może dostarczyć preambuły, który jest zakresem bajtów, który można dołączać do sekwencji bajtów wynikających z procesu kodowania. Poprzednia sekwencja zakodowanych bajtów ze znacznikiem kolejności bajtów (punkt `U+FEFF`kodowy) pomaga dekoderowi określić kolejność bajtów i format transformacji lub UTF. Znacznik kolejności bajtów (BOM) Unicode jest serializowany w następujący sposób (w formacie szesnastkowym):  
+  
+-   Kolejność bajtów big endian:`FE FF`  
+  
+-   Mała kolejność bajtów endian:`FF FE`  
+  
+ Można utworzyć wystąpienie <xref:System.Text.UnicodeEncoding> obiektu, którego <xref:System.Text.UnicodeEncoding.Preamble> jest prawidłowym BOM w następujący sposób:  
+  
+-   Pobierając <xref:System.Text.UnicodeEncoding> obiekt zwrócony <xref:System.Text.Encoding.Unicode%2A?displayProperty=nameWithType> przez lub <xref:System.Text.Encoding.BigEndianUnicode%2A?displayProperty=nameWithType> właściwość.  
+  
+-   Wywołując <xref:System.Text.UnicodeEncoding.%23ctor> Konstruktor bez parametrów, aby <xref:System.Text.UnicodeEncoding> utworzyć wystąpienie obiektu.  
+  
+-   Dostarczając `true` jako wartość `byteOrderMark` argumentu <xref:System.Text.UnicodeEncoding.%23ctor%28System.Boolean%2CSystem.Boolean%29> lub konstruktorów.<xref:System.Text.UnicodeEncoding.%23ctor%28System.Boolean%2CSystem.Boolean%2CSystem.Boolean%29>  
+  
+ Zalecamy korzystanie z BOM, ponieważ zapewnia niemal pewne identyfikatory kodowania dla plików, które w przeciwnym razie utraciły odwołanie do kodowania, takie jak nieoznakowane lub niewłaściwie oznakowane dane sieci Web lub losowe pliki tekstowe przechowywane, gdy firma nie miała zagadnienia międzynarodowe. Często można uniknąć problemów z użytkownikami, jeśli dane są spójne i poprawnie oznakowane.  
+  
+ W przypadku standardów, które zapewniają typ kodowania, BOM jest nieco nadmiarowy. Można go jednak użyć, aby ułatwić serwerowi wysyłanie poprawnego nagłówka kodowania. Alternatywnie, może być używany jako rezerwa w przypadku, gdy kodowanie jest tracone.  
+  
+ Istnieją pewne wady dotyczące korzystania z BOM. Na przykład poznanie sposobu ograniczania pól bazy danych, które używają BOM, może być trudne. Łączenie plików może być również problemem, na przykład podczas scalania plików w taki sposób, że niezbędny znak może kończyć się w danych. Pomimo tego, że użycie BOM jest zdecydowanie zalecane.  
+  
+> [!IMPORTANT]
+>  Aby upewnić się, że zakodowane bajty są zdekodowane prawidłowo, należy prefiksować początek strumienia zakodowanych bajtów z preambuły. Należy zauważyć, <xref:System.Text.UnicodeEncoding.GetBytes%2A> że metoda nie dołącza BOM do sekwencji zakodowanych bajtów; dostarczenie BOM na początku odpowiedniego strumienia bajtów jest odpowiedzialnością dla deweloperów.  
+  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

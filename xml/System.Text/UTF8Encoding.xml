@@ -1,5 +1,5 @@
 <Type Name="UTF8Encoding" FullName="System.Text.UTF8Encoding">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="567bccf4e3679939d5849b3e1088df8da667065d" /><Meta Name="ms.sourcegitcommit" Value="74239f3977d28923e5020663db2c4e91601bea79" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/24/2019" /><Meta Name="ms.locfileid" Value="68438741" /></Metadata><TypeSignature Language="C#" Value="public class UTF8Encoding : System.Text.Encoding" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="7088d553aa894e006add89f8658de26841fe5002" /><Meta Name="ms.sourcegitcommit" Value="37f75368be2e569ad59341f3fc6261b76b89db9d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/07/2019" /><Meta Name="ms.locfileid" Value="68819245" /></Metadata><TypeSignature Language="C#" Value="public class UTF8Encoding : System.Text.Encoding" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit UTF8Encoding extends System.Text.Encoding" />
   <TypeSignature Language="DocId" Value="T:System.Text.UTF8Encoding" />
   <TypeSignature Language="VB.NET" Value="Public Class UTF8Encoding&#xA;Inherits Encoding" />
@@ -50,7 +50,7 @@
   
 |Element członkowski|BOM|Wykrywanie błędów|  
 |------------|---------|---------------------|  
-|<xref:System.Text.Encoding.UTF8%2A?displayProperty=nameWithType>|Yes|Nie (alternatywa zamienna)|  
+|<xref:System.Text.Encoding.UTF8%2A?displayProperty=nameWithType>|Tak|Nie (alternatywa zamienna)|  
 |<xref:System.Text.UTF8Encoding.%23ctor?displayProperty=nameWithType>|Nie|Nie (alternatywa zamienna)|  
 |<xref:System.Text.UTF8Encoding.%23ctor%28System.Boolean%29?displayProperty=nameWithType>|Możliwość konfiguracji|Nie (alternatywa zamienna)|  
 |<xref:System.Text.UTF8Encoding.%23ctor%28System.Boolean%2CSystem.Boolean%29?displayProperty=nameWithType>|Możliwość konfiguracji|Możliwość konfiguracji|  
@@ -373,10 +373,25 @@
         <Parameter Name="chars" Type="System.ReadOnlySpan&lt;System.Char&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="chars">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="chars">Zakres, który zawiera zestaw znaków do kodowania.</param>
+        <summary>Oblicza liczbę bajtów generowanych przez kodowanie określonego zakresu znaków.</summary>
+        <returns>Liczba bajtów wygenerowanych przez kodowanie określonego zakresu znaków.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Aby obliczyć dokładny rozmiar wymagany przez <xref:System.Text.UTF8Encoding.GetBytes%2A> program do przechowywania powstających bajtów, należy <xref:System.Text.UTF8Encoding.GetByteCount%2A> wywołać metodę. Aby obliczyć maksymalny rozmiar, należy wywołać <xref:System.Text.UTF8Encoding.GetMaxByteCount%2A> metodę. Metoda ogólnie przydziela mniejszą ilość pamięci, podczas gdy metoda <xref:System.Text.UTF8Encoding.GetMaxByteCount%2A> zazwyczaj wykonuje się szybciej. <xref:System.Text.UTF8Encoding.GetByteCount%2A>  
+  
+ W przypadku wykrywania błędów Nieprawidłowa sekwencja powoduje zgłoszenie wyjątku przez <xref:System.ArgumentException> tę metodę. Bez wykrywania błędów nieprawidłowe sekwencje są ignorowane i nie jest zgłaszany żaden wyjątek.  
+  
+ Aby upewnić się, że zakodowane bajty są zdekodowane prawidłowo, gdy są zapisywane jako plik lub jako strumień, można prefiksować strumień zakodowanych bajtów z preambułą. Wstawianie preambuły na początku strumienia bajtów (na przykład na początku serii bajtów, które mają być zapisywane do pliku) jest odpowiedzialnością dla deweloperów, a liczba bajtów w preambule nie jest odzwierciedlana w wartości zwracanej przez <xref:System.Text.UTF8Encoding.GetByteCount%2A> metodę.  
+  
+ ]]></format>
+        </remarks>
+        <exception cref="T:System.ArgumentException">Wykrywanie błędów jest włączone i <paramref name="chars" /> zawiera nieprawidłową sekwencję znaków.</exception>
+        <exception cref="T:System.Text.EncoderFallbackException">Wystąpiła rezerwa (zobacz [kodowanie znaków w .NET Framework,](~/docs/standard/base-types/character-encoding.md) Aby uzyskać pełne wyjaśnienie) 
+- i - 
+ <see cref="P:System.Text.Encoding.EncoderFallback" />jest ustawiony na <see cref="T:System.Text.EncoderExceptionFallback" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetByteCount">
@@ -676,11 +691,24 @@ Właściwość jest ustawiona na <see cref="T:System.Text.EncoderExceptionFallba
         <Parameter Name="bytes" Type="System.Span&lt;System.Byte&gt;" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="chars">To be added.</param>
-        <param name="bytes">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="chars">Zakres znaków do kodowania.</param>
+        <param name="bytes">Zakres, który zawiera zestaw bajtów.</param>
+        <summary>Koduje określony zakres znaków do określonego zakresu bajtów.</summary>
+        <returns>Rzeczywista liczba bajtów do <paramref name="bytes" />zapisania.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Aby obliczyć dokładny rozmiar wymagany przez <xref:System.Text.UTF8Encoding.GetBytes%2A> program do przechowywania powstających bajtów, należy <xref:System.Text.UTF8Encoding.GetByteCount%2A> wywołać metodę. Aby obliczyć maksymalny rozmiar, należy wywołać <xref:System.Text.UTF8Encoding.GetMaxByteCount%2A> metodę. Metoda ogólnie przydziela mniejszą ilość pamięci, podczas gdy metoda <xref:System.Text.UTF8Encoding.GetMaxByteCount%2A> zazwyczaj wykonuje się szybciej. <xref:System.Text.UTF8Encoding.GetByteCount%2A>  
+  
+ W przypadku wykrywania błędów Nieprawidłowa sekwencja powoduje zgłoszenie wyjątku przez <xref:System.ArgumentException> tę metodę. Bez wykrywania błędów nieprawidłowe sekwencje są ignorowane i nie jest zgłaszany żaden wyjątek.  
+  
+ Dane do przekonwertowania, takie jak dane odczytane ze strumienia, mogą być dostępne tylko w blokach sekwencyjnych. W tym przypadku lub, jeśli ilość danych jest tak duża, że musi <xref:System.Text.Decoder> być podzielona na mniejsze bloki, należy użyć <xref:System.Text.Encoder> lub odpowiednio zwracany <xref:System.Text.UTF8Encoding.GetEncoder%2A> przez <xref:System.Text.UTF8Encoding.GetDecoder%2A> metodę lub metodę.  
+  
+ Aby upewnić się, że zakodowane bajty są zdekodowane prawidłowo, gdy są zapisywane jako plik lub jako strumień, można prefiksować strumień zakodowanych bajtów z preambułą. Wstawianie preambuły na początku strumienia bajtów (na przykład na początku serii bajtów, które mają być zapisywane do pliku) jest odpowiedzialnością dla deweloperów. <xref:System.Text.UTF8Encoding.GetBytes%2A> Metoda nie dołącza preambuły do początku sekwencji zakodowanych bajtów.  
+  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetBytes">
@@ -993,10 +1021,19 @@ Właściwość jest ustawiona na <see cref="T:System.Text.EncoderExceptionFallba
         <Parameter Name="bytes" Type="System.ReadOnlySpan&lt;System.Byte&gt;" Index="0" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="bytes">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="bytes">Zakres zawierający zestaw bajtów do zdekodowania.</param>
+        <summary>Oblicza liczbę znaków wytworzonych przez dekodowanie określonego zakresu bajtów.</summary>
+        <returns>Liczba znaków wytworzonych przez dekodowanie określonego zakresu bajtów.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Aby obliczyć dokładny rozmiar wymagany przez <xref:System.Text.UTF8Encoding.GetChars%2A> program do przechowywania wyników, <xref:System.Text.UTF8Encoding.GetCharCount%2A> Wywołaj metodę. Aby obliczyć maksymalny rozmiar, wywołaj <xref:System.Text.UTF8Encoding.GetMaxCharCount%2A> metodę. Metoda ogólnie przydziela mniejszą ilość pamięci, podczas gdy metoda <xref:System.Text.UTF8Encoding.GetMaxCharCount%2A> zazwyczaj wykonuje się szybciej. <xref:System.Text.UTF8Encoding.GetCharCount%2A>  
+  
+ W przypadku wykrywania błędów Nieprawidłowa sekwencja powoduje zgłoszenie wyjątku przez <xref:System.ArgumentException> tę metodę. Bez wykrywania błędów nieprawidłowe sekwencje są ignorowane i nie jest zgłaszany żaden wyjątek.  
+  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetCharCount">
@@ -1189,11 +1226,24 @@ Wynikowa liczba bajtów jest większa niż maksymalna liczba, która może zosta
         <Parameter Name="chars" Type="System.Span&lt;System.Char&gt;" Index="1" FrameworkAlternate="netcore-3.0" />
       </Parameters>
       <Docs>
-        <param name="bytes">To be added.</param>
-        <param name="chars">To be added.</param>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <param name="bytes">Zakres zawierający bajty do zdekodowania.</param>
+        <param name="chars">Zakres, który zawiera zestaw znaków.</param>
+        <summary>Dekoduje określony zakres bajtów do określonego zakresu znaków.</summary>
+        <returns>Rzeczywista liczba znaków do <paramref name="chars" />zapisania.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Aby obliczyć dokładny rozmiar wymagany przez <xref:System.Text.UTF8Encoding.GetChars%2A> program do przechowywania wyników, <xref:System.Text.UTF8Encoding.GetCharCount%2A> Wywołaj metodę. Aby obliczyć maksymalny rozmiar, wywołaj <xref:System.Text.UTF8Encoding.GetMaxCharCount%2A> metodę. Metoda ogólnie przydziela mniejszą ilość pamięci, podczas gdy metoda <xref:System.Text.UTF8Encoding.GetMaxCharCount%2A> zazwyczaj wykonuje się szybciej. <xref:System.Text.UTF8Encoding.GetCharCount%2A>  
+  
+ W przypadku wykrywania błędów Nieprawidłowa sekwencja powoduje zgłoszenie wyjątku przez <xref:System.ArgumentException> tę metodę. Bez wykrywania błędów nieprawidłowe sekwencje są ignorowane i nie jest zgłaszany żaden wyjątek.  
+  
+ Jeśli zestaw bajtów do zdekodowania zawiera znacznik kolejności bajtów (BOM) i zakres bajtów zwrócony przez metodę typu nieopartego na BOM, znak `U+FFFE` jest uwzględniany w zakresie znaków zwracanych przez tę metodę. Można go usunąć, wywołując <xref:System.String.TrimStart%2A?displayProperty=nameWithType> metodę.  
+  
+ Dane do przekonwertowania, takie jak dane odczytane ze strumienia, mogą być dostępne tylko w blokach sekwencyjnych. W tym przypadku lub, jeśli ilość danych jest tak duża, że musi <xref:System.Text.Decoder> zostać podzielona na mniejsze bloki, użyj <xref:System.Text.Encoder> lub obiektu dostarczonego odpowiednio <xref:System.Text.UTF8Encoding.GetEncoder%2A> przez <xref:System.Text.UTF8Encoding.GetDecoder%2A> metodę lub metodę.  
+  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="GetChars">
@@ -1882,9 +1932,35 @@ Wynikowa liczba bajtów jest większa niż maksymalna liczba, która może zosta
         <ReturnType>System.ReadOnlySpan&lt;System.Byte&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera znacznik kolejności bajtów Unicode zakodowany w formacie UTF-8, jeśli ten obiekt jest skonfigurowany do jego dostarczania.</summary>
+        <value>Zakres bajtów zawierający znacznik kolejności bajtów Unicode, jeśli ten obiekt jest skonfigurowany do jego dostarczania; w przeciwnym razie domyślnym zakresem.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ <xref:System.Text.UTF8Encoding> Obiekt może dostarczyć preambuły, który jest zakresem bajtów, które mogą być poprzedzone sekwencją bajtów, które wynikają z procesu kodowania. Poprzednia sekwencja zakodowanych bajtów ze znacznikiem kolejności bajtów (punkt `U+FEFF`kodowy) pomaga dekoderowi określić kolejność bajtów i format transformacji lub UTF. Znacznik kolejności bajtów (BOM) Unicode jest serializowany jako 0xEF 0xBB 0xBF. Należy pamiętać, że standard Unicode nie wymaga ani nie zaleca użycia BOM dla strumieni zakodowanych w formacie UTF-8.  
+  
+ Można utworzyć wystąpienie <xref:System.Text.UTF8Encoding> obiektu, którego `Preamble` jest prawidłowym BOM w następujący sposób:  
+  
+-   Pobierając <xref:System.Text.UTF8Encoding> obiekt zwrócony <xref:System.Text.Encoding.UTF8%2A?displayProperty=nameWithType> przez właściwość.  
+  
+-   Przez wywołanie <xref:System.Text.UTF8Encoding> konstruktora `encoderShouldEmitUTF8Identifier` z parametrem i ustawienie jego wartości ustawionej na `true`.  
+  
+ Wszystkie inne <xref:System.Text.UTF8Encoding> obiekty są skonfigurowane tak, aby zwracały zakres domyślny, a nie prawidłowy BOM.  
+  
+ Ten BOM oferuje niemal pewne identyfikatory kodowania plików, które w przeciwnym razie utraciły odwołanie do kodowania, takie jak nieoznakowane lub niewłaściwie oznakowane dane sieci Web lub losowe pliki tekstowe przechowywane, gdy firma nie ma obaw międzynarodowych. Często można uniknąć problemów z użytkownikami, jeśli dane są spójne i poprawnie oznakowane.  
+  
+ W przypadku standardów, które zapewniają typ kodowania, BOM jest nieco nadmiarowy. Można go jednak użyć, aby ułatwić serwerowi wysyłanie poprawnego nagłówka kodowania. Alternatywnie, może być używany jako rezerwa w przypadku, gdy kodowanie jest tracone.  
+  
+ Istnieją pewne wady dotyczące korzystania z BOM. Na przykład poznanie sposobu ograniczania pól bazy danych, które używają BOM, może być trudne. Łączenie plików może być również problemem, na przykład podczas scalania plików w taki sposób, że niezbędny znak może kończyć się w danych. Pomimo tego, że użycie BOM jest zdecydowanie zalecane.  
+  
+ Aby uzyskać więcej informacji na temat kolejności bajtów i znacznika kolejności bajtów, zobacz Standard Unicode na [stronie głównej Unicode](https://go.microsoft.com/fwlink/?LinkId=37123).  
+  
+> [!IMPORTANT]
+>  Aby upewnić się, że zakodowane bajty są zdekodowane prawidłowo, gdy są zapisywane jako plik lub jako strumień, można prefiksować początek strumienia zakodowanych bajtów z preambułą. Należy zauważyć, <xref:System.Text.UTF8Encoding.GetBytes%2A> że metoda nie dołącza BOM do sekwencji zakodowanych bajtów; dostarczenie BOM na początku odpowiedniego strumienia bajtów jest odpowiedzialnością dla deweloperów.
+  
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
   </Members>

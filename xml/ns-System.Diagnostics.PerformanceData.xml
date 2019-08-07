@@ -1,56 +1,56 @@
 <Namespace Name="System.Diagnostics.PerformanceData">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="b1c5ad58fc8cb70eeab256e01ab98bfc4478c7cb" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58559351" /></Metadata><Docs>
-    <summary>Użyj klasy w tej przestrzeni nazw, aby dostarczyć dane liczników. Liczniki są używane do udostępnienia metryki wydajności dla konsumentów, takich jak okna monitora wydajności. Przestrzeń nazw zawiera klasy, co umożliwia korzystanie z danych licznika. Aby uzyskać pełny opis architektury liczniki wydajności, zobacz <see href="https://msdn.microsoft.com/library/windows/desktop/aa373083\(v=vs.85\">liczniki wydajności</see>.aspx).</summary>
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b1c5ad58fc8cb70eeab256e01ab98bfc4478c7cb" /><Meta Name="ms.sourcegitcommit" Value="37f75368be2e569ad59341f3fc6261b76b89db9d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/07/2019" /><Meta Name="ms.locfileid" Value="58559351" /></Metadata><Docs>
+    <summary>Użyj klas znajdujących się w tej przestrzeni nazw, aby zapewnić dane liczników. Liczniki są używane do ujawniania metryk wydajności klientom, takim jak Monitor wydajności. Przestrzeń nazw nie zawiera klas do konsumowania danych licznika. Pełny opis architektury liczników wydajności można znaleźć w temacie Performance <see href="https://msdn.microsoft.com/library/windows/desktop/aa373083\(v=vs.85\">Counters</see>. aspx).</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klasy w tej przestrzeni nazw obsługę nowej architektury (w wersji 2.0) liczniki wydajności, które wprowadzono w programie Windows Vista. W nowej architektury dostawcy nie odpowiada na żądania klientów bezpośrednio, ale zamiast tego po prostu przechowuje dane liczników. System wprowadza wątek w procesie dostawcy podczas tworzenia wystąpienia zbiór liczników; przez dostawcę Ten wątek jest odpowiedzialny za obsługę żądań klientów.  
+ Klasy w tej przestrzeni nazw obsługują nową architekturę (w wersji 2,0) dla liczników wydajności wprowadzonych w systemie Windows Vista. W nowej architekturze dostawca przestaje nie reagować na żądania klientów bezpośrednio, ale zamiast tego po prostu przechowuje dane liczników. System wprowadza wątek do procesu dostawcy, gdy dostawca tworzy wystąpienie zestawu liczników; wątek jest odpowiedzialny za obsługę żądań klientów.  
   
- Poniższe kroki pokazują również proces pisania dostawca liczników.  
+ Poniższe kroki pokazują proces pisania dostawcy liczników.  
   
-1.  Liczniki, które zapewnia dostawcy jest zdefiniowany w manifest opartych na języku XML. Liczniki są logicznie pogrupowane w zbiorów liczników. Liczniki w ramach zestawu liczników są identyfikowane przez identyfikator numeryczny, który jest unikatowy w obrębie zbiór liczników. Dostawcę można zdefiniować jeden lub więcej zestawów liczników. Zestaw liczników jest identyfikowana przez identyfikator Guid, który jest unikatowy dla dostawcy. Należy pamiętać, że jeśli używasz tych klas do pisania dostawcy:  
+1.  Liczniki udostępniane przez dostawcę są zdefiniowane w manifeście opartym na języku XML. Liczniki są logicznie pogrupowane w zestawy liczników. Liczniki w zestawie liczników są identyfikowane przez liczbowy identyfikator, który jest unikatowy w ramach zestawu liczników. Dostawca może zdefiniować jeden lub więcej zestawów liczników. Zestaw liczników jest identyfikowany przez identyfikator GUID, który jest unikatowy dla dostawcy. Należy pamiętać, że jeśli używasz tych klas do zapisania dostawcy:  
   
-    -   Atrybut wywołania zwrotnego elementu dostawcy jest ignorowany.  
+    -   Atrybut wywołania zwrotnego elementu Provider jest ignorowany.  
   
-    -   Wartość odwołanie do atrybutu nazwy elementu counterAttribute jest ignorowana.  
+    -   Wartość odwołania dla atrybutu name elementu counterAttribute jest ignorowana.  
   
-     Szczegółowe informacje na temat zapisywania manifestu, [schematu liczniki wydajności](https://msdn.microsoft.com/library/windows/desktop/aa373092\(v=vs.85\).aspx).  
+     Aby uzyskać szczegółowe informacje na temat pisania manifestu, zobacz [liczniki wydajności schemat](https://msdn.microsoft.com/library/windows/desktop/aa373092\(v=vs.85\).aspx).  
   
-2.  Po zapisaniu manifeście, należy użyć [CTRPP](https://msdn.microsoft.com/library/windows/desktop/aa372128\(v=vs.85\).aspx) narzędzia do kompilowania manifestu (ctrpp provider.man). Narzędzie generuje cztery pliki: .h, .c, .rc, i * _r.h. Pliki .h i .c można zignorować. Plik .rc zawiera zlokalizowane ciągi, które są zdefiniowane w manifeście. Pliki .rc i *_r.h umożliwia tworzenie pliku skompilowanych zasobów (.res), zawierających w projekcie. Poniższe wywołanie pokazuje, jak skompilować plik zasobów:  
+2.  Po zapisaniu manifestu Użyj narzędzia [ctrpp](https://msdn.microsoft.com/library/windows/desktop/aa372128\(v=vs.85\).aspx) , aby skompilować manifest (ctrpp provider. Man). Narzędzie generuje cztery pliki:. h,. c,. RC i * _r. h. Można zignorować pliki. h i. c. Plik. RC zawiera zlokalizowane ciągi zdefiniowane w manifeście. Pliki. RC i * _r. h są używane do tworzenia skompilowanego pliku zasobów (. res), który jest dołączany do projektu. Następujące wywołanie pokazuje, jak skompilować plik zasobu:  
   
     ```console  
     rc /r /i "c:\Program Files\Microsoft SDKs\Windows\v6.0\Include" provider.rc  
     ```  
   
-     Jeśli wystąpi błąd, który odwołuje się do sal.h, skopiuj plik sal.h z programu Microsoft Visual Studio, Visual C zawierał katalog do katalogu, w którym należy określić dla przełącznika/i.  
+     Jeśli wystąpi błąd, który odwołuje się do sal. h, skopiuj plik sal. h z Microsoft Visual Studio, Visual C zawiera katalog do katalogu określonego dla przełącznika/i.  
   
-     Dodaj ścieżkę do pliku skompilowanych zasobów (.res) do strony właściwości aplikacji projektu.  
+     Dodaj ścieżkę do skompilowanego pliku zasobów (. res) na stronie właściwości aplikacji projektu.  
   
-3.  Zapis dostawcy. Poniższe kroki pokazują wywołania wykonywane przez dostawcę:  
+3.  Napisz dostawcę. Poniższe kroki pokazują wywołania wykonywane przez dostawcę:  
   
-    1.  Wywołaj <xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=nameWithType> konstruktora, aby zdefiniować zestaw liczników. Wywołaj tę metodę dla każdego licznika Ustaw zdefiniowany w manifeście.  
+    1.  Wywołaj <xref:System.Diagnostics.PerformanceData.CounterSet.%23ctor%2A?displayProperty=nameWithType> konstruktora, aby zdefiniować zestaw liczników. Wywołaj tę metodę dla każdego zestawu liczników zdefiniowanego w manifeście.  
   
-    2.  Dla każdego zestawu liczników wywołaj jedną z <xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=nameWithType> metody, aby dodać liczniki do zestawu. Wywołaj tę metodę dla każdego licznika zdefiniowane w zestawie liczników.  
+    2.  Dla każdego zestawu liczników Wywołaj jedną z <xref:System.Diagnostics.PerformanceData.CounterSet.AddCounter%2A?displayProperty=nameWithType> metod, aby dodać liczniki do zestawu. Wywołaj tę metodę dla każdego licznika zdefiniowanego w zestawie liczników.  
   
-    3.  Wywołaj <xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=nameWithType> metodę, aby utworzyć wystąpienie zbiór liczników (wystąpienie zawiera dane licznika). Dla pojedynczego wystąpienia zbiory liczników należy wywołać tę metodę jeden raz. Dla wielu wystąpień zbiory liczników należy wywołać tej metody dla każdego wystąpienia, dla którego należy podać dane liczników (Użyj unikatowej nazwy dla każdego wystąpienia).  
+    3.  Wywołaj <xref:System.Diagnostics.PerformanceData.CounterSet.CreateCounterSetInstance%2A?displayProperty=nameWithType> metodę, aby utworzyć wystąpienie zestawu liczników (wystąpienie zawiera dane licznika). W przypadku zestawów liczników pojedynczego wystąpienia Wywołaj tę metodę jeden raz. W przypadku zestawów liczników wielu wystąpień Wywołaj tę metodę dla każdego wystąpienia, dla którego należy podać dane licznika (Użyj unikatowej nazwy dla każdego wystąpienia).  
   
-    4.  Użyj <xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=nameWithType> właściwość dostęp i ustawanie dane liczników dla licznika.  
+    4.  <xref:System.Diagnostics.PerformanceData.CounterSetInstance.Counters%2A?displayProperty=nameWithType> Użyj właściwości, aby uzyskać dostęp i ustawić dane licznika dla licznika.  
   
-4.  Po zakończeniu dostawcy, użyj [LodCtr](https://docs.microsoft.com/windows/desktop/perfctrs/adding-counter-names-and-descriptions-to-the-registry#running-the-lodctr-tool) narzędzie, aby zarejestrować liczniki na komputerze. Na przykład  
+4.  Po zakończeniu działania dostawcy Użyj narzędzia [lodctr](https://docs.microsoft.com/windows/desktop/perfctrs/adding-counter-names-and-descriptions-to-the-registry#running-the-lodctr-tool) , aby zarejestrować liczniki na komputerze. Na przykład  
   
     ```console  
     lodctr /m:provider.man  
     ```  
   
-     W przykładzie założono, manifest i plik wykonywalny znajdują się w bieżącym katalogu.  
+     W przykładzie przyjęto założenie, że manifest i plik wykonywalny znajdują się w bieżącym katalogu.  
   
- W tej przestrzeni nazw na komputerach z systemem Windows Vista i nowszych systemów operacyjnych można używać klas.  
+ Klas znajdujących się w tej przestrzeni nazw można użyć na komputerach z systemem operacyjnym Windows Vista lub nowszym.  
   
    
   
 ## Examples  
- Poniżej przedstawiono prosty manifestu:  
+ Poniżej przedstawiono prosty manifest:  
   
 ```xml  
 <!-- <?xml version="1.0" encoding="UTF-16"?> -->  
@@ -152,7 +152,7 @@
 </instrumentationManifest>  
 ```  
   
- Na poniższym obrazie przedstawiono implementację prostego dostawcy, manifest:  
+ Poniżej przedstawiono prostą implementację dostawcy dla manifestu:  
   
 ```cs  
 using System.Diagnostics.PerformanceData;  

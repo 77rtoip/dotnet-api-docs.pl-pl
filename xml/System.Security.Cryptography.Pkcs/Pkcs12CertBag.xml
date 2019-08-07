@@ -1,5 +1,5 @@
 <Type Name="Pkcs12CertBag" FullName="System.Security.Cryptography.Pkcs.Pkcs12CertBag">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="8e67171bcb6867e3d0c4bcf5ec2f48ea650da677" /><Meta Name="ms.sourcegitcommit" Value="bc24a3ba616ee1df8b858f9400cae4f058ea3a7e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/19/2019" /><Meta Name="ms.locfileid" Value="67247168" /></Metadata><TypeSignature Language="C#" Value="public sealed class Pkcs12CertBag : System.Security.Cryptography.Pkcs.Pkcs12SafeBag" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3acb9c5e2e4fcc8cfb7600792777514885258724" /><Meta Name="ms.sourcegitcommit" Value="37f75368be2e569ad59341f3fc6261b76b89db9d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/07/2019" /><Meta Name="ms.locfileid" Value="68819168" /></Metadata><TypeSignature Language="C#" Value="public sealed class Pkcs12CertBag : System.Security.Cryptography.Pkcs.Pkcs12SafeBag" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit Pkcs12CertBag extends System.Security.Cryptography.Pkcs.Pkcs12SafeBag" />
   <TypeSignature Language="DocId" Value="T:System.Security.Cryptography.Pkcs.Pkcs12CertBag" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class Pkcs12CertBag&#xA;Inherits Pkcs12SafeBag" />
@@ -15,7 +15,7 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>To be added.</summary>
+    <summary>Reprezentuje CertBag PKCS # 12. Klasa ta nie może być dziedziczona.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -37,18 +37,22 @@
         <Parameter Name="encodedCertificate" Type="System.ReadOnlyMemory&lt;System.Byte&gt;" />
       </Parameters>
       <Docs>
-        <param name="certificateType">Identyfikatora obiektu (OID) dla typu certyfikatu.</param>
-        <param name="encodedCertificate">Wartość zakodowanego certyfikatu.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Security.Cryptography.Pkcs.Pkcs12CertBag" /> klasy przy użyciu typu określonego certyfikatu i kodowania.</summary>
+        <param name="certificateType">Identyfikator obiektu (OID) dla typu certyfikatu.</param>
+        <param name="encodedCertificate">Zakodowana wartość certyfikatu.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Security.Cryptography.Pkcs.Pkcs12CertBag" /> klasy przy użyciu określonego typu i kodowania certyfikatu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[
 
-Aby upewnić się, że jest wykonywana żadna Weryfikacja `encodedCertificate` wartość jest poprawna dla wskazany `certificateType`.
+## Remarks 
 
-Należy pamiętać, że w przypadku certyfikatów kluczy publicznych X.509 prawidłowe kodowanie dla wartości CertBag opakowywać certyfikat zakodowany w formacie DER w postaci ciągu OCTET.
+Sprawdzanie poprawności nie jest wykonywane, aby upewnić się, że `encodedCertificate` wartość jest poprawna dla wskazanego. `certificateType`
+
+Należy pamiętać, że w przypadku certyfikatów klucza publicznego X. 509, prawidłowe kodowanie wartości CertBag jest Zawijanie certyfikatu szyfrowanego algorytmem DER w ciągu OKTETu.
 
           ]]></format>
         </remarks>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="certificateType" /></exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException"><paramref name="encodedCertificate" /> Parametr nie reprezentuje jednej wartości zakodowanej ASN. 1.</exception>
       </Docs>
     </Member>
     <Member MemberName="EncodedCertificate">
@@ -68,9 +72,18 @@ Należy pamiętać, że w przypadku certyfikatów kluczy publicznych X.509 prawi
         <ReturnType>System.ReadOnlyMemory&lt;System.Byte&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera nieinterpretowaną zawartość certyfikatu CertSafeBag.</summary>
+        <value>Nieinterpretowana zawartość certyfikatu CertSafeBag.</value>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+W przypadku certyfikatów klucza publicznego X. 509 wartość tej właściwości jest zakodowana przy użyciu wartości ciągu OKTETowego, która obejmuje wartość zakodowaną w formacie DER.
+
+          ]]></format>
+        </remarks>
+        <altmember cref="M:System.Security.Cryptography.Pkcs.Pkcs12CertBag.GetCertificate" />
       </Docs>
     </Member>
     <Member MemberName="GetCertificate">
@@ -91,9 +104,12 @@ Należy pamiętać, że w przypadku certyfikatów kluczy publicznych X.509 prawi
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Pobiera zawartość CertBag interpretowanego jako certyfikat klucza publicznego X. 509.</summary>
+        <returns>Certyfikat zdekodowany z zawartości CertBag.</returns>
         <remarks>To be added.</remarks>
+        <exception cref="T:System.InalidOperationException">Typ zawartości nie jest typem zawartości certyfikatu klucza publicznego X. 509.</exception>
+        <exception cref="T:System.Security.Cryptography.CryptographicException">Zawartość jest nieprawidłowa dla typu zawartości certyfikatu X. 509.</exception>
+        <altmember cref="P:System.Security.Cryptography.Pkcs.Pkcs12CertBag.IsX509Certificate" />
       </Docs>
     </Member>
     <Member MemberName="GetCertificateType">
@@ -114,9 +130,18 @@ Należy pamiętać, że w przypadku certyfikatów kluczy publicznych X.509 prawi
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Pobiera identyfikator obiektu (OID), który identyfikuje typ zawartości zakodowanej wartości certificte.</summary>
+        <returns>Identyfikator obiektu (OID), który identyfikuje typ zawartości zakodowanej wartości certyfikatu.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks 
+
+Grupa robocza IETF RFC 7292 definiuje dwa typy zawartości dla CertBag: Certyfikat klucza publicznego X. 509 (1.2.840.113549.1.9.22.1) i certyfikat SDSI (1.2.840.113549.1.9.22.2), a także wskazujący, że inne typy mogą zostać dodane w przyszłości. Ten typ ma specjalne wsparcie dla certyfikatów kluczy publicznych X. 509, które są reprezentowane w programie .NET przez <xref:System.Security.Cryptography.X509Certificates.X509Certificate2> klasę <xref:System.Security.Cryptography.Pkcs.Pkcs12CertBag.IsX509Certificate> i <xref:System.Security.Cryptography.Pkcs.Pkcs12CertBag.GetCertificate> składowe. Ten typ nie ma specjalnej obsługi certyfikatów SDSI, ale obiekty wywołujące oczekują certyfikatu SDSI (lub typu certyfikatu zdefiniowanego po IETF RFC 7292) mogą przetwarzać wartość bezpośrednio za pośrednictwem <xref:System.Security.Cryptography.Pkcs.Pkcs12CertBag.EncodedCertificate> właściwości.
+
+          ]]></format>
+        </remarks>
+        <altmember cref="P:System.Security.Cryptography.Pkcs.Pkcs12CertBag.IsX509Certificate" />
       </Docs>
     </Member>
     <Member MemberName="IsX509Certificate">
@@ -136,9 +161,10 @@ Należy pamiętać, że w przypadku certyfikatów kluczy publicznych X.509 prawi
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>To be added.</summary>
-        <value>To be added.</value>
+        <summary>Pobiera wartość wskazującą, czy typem zawartości zakodowanej wartości certyfikatu jest typ zawartości certyfikatu klucza publicznego X. 509.</summary>
+        <value><see langword="true" />Jeśli typ zawartości to typ zawartości certyfikatu klucza publicznego X. 509 (1.2.840.113549.1.9.22.1); w przeciwnym razie. <see langword="false" /></value>
         <remarks>To be added.</remarks>
+        <altmember cref="M:System.Security.Cryptography.Pkcs.Pkcs12CertBag.GetCertificateType" />
       </Docs>
     </Member>
   </Members>
