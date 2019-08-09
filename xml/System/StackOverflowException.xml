@@ -1,5 +1,5 @@
 <Type Name="StackOverflowException" FullName="System.StackOverflowException">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="660b017e3d3b3250c419111e5ff3713c5b94dcc9" /><Meta Name="ms.sourcegitcommit" Value="0de246131f8a87c71d008d055adec7bf72470c4f" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/29/2019" /><Meta Name="ms.locfileid" Value="66301904" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3c4b86691f921eeef9df21ff5f13ba1ffbf84293" /><Meta Name="ms.sourcegitcommit" Value="08fc3691deb7adaf0dfd751b9d9d0b23a3d3a7b8" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/09/2019" /><Meta Name="ms.locfileid" Value="68901000" /></Metadata><TypeSignature Language="C#" Value="public sealed class StackOverflowException : SystemException" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit StackOverflowException extends System.SystemException" />
   <TypeSignature Language="DocId" Value="T:System.StackOverflowException" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class StackOverflowException&#xA;Inherits SystemException" />
@@ -35,26 +35,26 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Wyjątek, który jest zgłaszany, gdy przepełnienia stosu wykonywania, ponieważ zawiera zbyt wiele zagnieżdżonych wywołań metody. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Wyjątek, który jest generowany w przypadku przepełnienia stosu wykonywania, ponieważ zawiera zbyt wiele wywołań metod zagnieżdżonych. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `StackOverflowException` jest generowany dla wykonywania błędy przepełnienia stosu, zwykle w przypadku rekursji bardzo szczegółowe lub niepowiązane. Dlatego upewnij się, że Twój kod nie ma w nieskończonej pętli lub nieskończoną rekursję.
+ `StackOverflowException`jest generowany dla błędów przepełnienia stosu wykonywania, zwykle w przypadku bardzo głębokiej lub nieograniczonej rekursji. Upewnij się, że kod nie ma pętli nieskończonej lub nieskończonej rekursji.
   
- `StackOverflowException` używa COR_E_STACKOVERFLOW HRESULT, która ma wartość 0x800703E9. <xref:System.Reflection.Emit.OpCodes.Localloc> Instrukcji języka pośredniego (IL) zgłasza `StackOverflowException`. Aby uzyskać listę początkowe wartości właściwości `StackOverflowException` obiektu, zobacz <xref:System.StackOverflowException.%23ctor%2A> konstruktorów.  
+ `StackOverflowException`używa HRESULT COR_E_STACKOVERFLOW o wartości 0x800703E9. Instrukcja języka `StackOverflowException`pośredniego (IL) zgłasza. <xref:System.Reflection.Emit.OpCodes.Localloc> Aby uzyskać listę początkowych wartości właściwości dla `StackOverflowException` obiektu, <xref:System.StackOverflowException.%23ctor%2A> Zobacz konstruktory.  
   
- Począwszy od programu .NET Framework 2.0, nie może przechwytywać `StackOverflowException` obiekt z `try` / `catch` bloku, a odpowiedni proces zostanie zakończony domyślnie. W związku z tym należy napisać kod do wykrywania i zapobiegania przepełnienia stosu. Na przykład jeśli aplikacja jest zależna od rekursji, umożliwia licznik lub warunek stanu zakończenia pętli cykliczne.
-Zobacz [przykłady](#examples) sekcji ilustrację tej techniki.
+ Począwszy od .NET Framework 2,0, `StackOverflowException` nie można przechwycić obiektu `try` / `catch` z blokiem, a odpowiadający proces jest domyślnie zakończony. W związku z tym należy napisać kod w celu wykrywania i zapobiegania przepełnieniu stosu. Na przykład jeśli aplikacja zależy od rekursji, użyj licznika lub warunku stanu, aby przerwać pętlę cykliczną.
+Zapoznaj się z sekcją [przykładów](#examples) , aby zapoznać się z ilustracją tej techniki.
  
 > [!NOTE]
->  Stosowanie <xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute> atrybutu do metody, która zgłasza `StackOverflowException` nie ma wpływu. Nadal nie może obsłużyć wyjątek z kodu użytkownika.
+>  Zastosowanie atrybutu do metody, która zwraca wartość `StackOverflowException` , nie ma żadnego wpływu. <xref:System.Runtime.ExceptionServices.HandleProcessCorruptedStateExceptionsAttribute> Nadal nie można obsłużyć wyjątku z kodu użytkownika.
 
- Jeśli aplikacja hostuje środowisko uruchomieniowe języka wspólnego (CLR), można określić, że środowisko CLR powinien zwolnienie domeny aplikacji, w którym wyjątek przepełnienia stosu występuje i pozwól na kontynuowanie procesu odpowiednie. Aby uzyskać więcej informacji, zobacz [iclrpolicymanager — interfejs](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md).
+ Jeśli aplikacja obsługuje środowisko uruchomieniowe języka wspólnego (CLR), może określić, że środowisko CLR ma zwolnić domenę aplikacji, w której występuje wyjątek przepełnienia stosu, i pozwolić na kontynuowanie odpowiedniego procesu. Aby uzyskać więcej informacji, zobacz [ICLRPolicyManager Interface](~/docs/framework/unmanaged-api/hosting/iclrpolicymanager-interface.md).
 
 ## Examples
 
- W poniższym przykładzie użyto licznika, aby upewnić się, czy liczba cyklicznego wywołań `Execute` metody nie przekroczyć zdefiniowane przez stałą MAX_RECURSIVE_CALLS.
+ Poniższy przykład używa licznika, aby upewnić się, że liczba wywołań cyklicznych do `Execute` metody nie przekracza maksymalnej wartości zdefiniowanej przez stałą MAX_RECURSIVE_CALLS.
   
  [!code-csharp[System.StackOverflowException.Class#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.stackoverflowexception.class/cs/example1a.cs#1)]
  [!code-vb[System.StackOverflowException.Class#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.stackoverflowexception.class/vb/example1a.vb#1)]  
@@ -101,7 +101,7 @@ Zobacz [przykłady](#examples) sekcji ilustrację tej techniki.
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.StackOverflowException" /> klasy, ustawienie <see cref="P:System.Exception.Message" /> właściwości nowego wystąpienia dostarczane przez system komunikat, który opisuje błąd, takie jak "Żądana operacja spowodowała przepełnienie stosu." Ten komunikat uwzględnia bieżącą kulturę systemu.</summary>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.StackOverflowException" /> klasy, <see cref="P:System.Exception.Message" /> ustawiając właściwość nowego wystąpienia na komunikat dostarczony przez system, który opisuje błąd, na przykład "żądana operacja spowodowała przepełnienie stosu". Ten komunikat uwzględnia bieżącą kulturę systemu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -146,7 +146,7 @@ Zobacz [przykłady](#examples) sekcji ilustrację tej techniki.
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">Element <see cref="T:System.String" /> , który opisuje błąd. Zawartość komunikatu ma być zrozumiała dla ludzi. Obiekt wywołujący tego konstruktora jest wymagany w celu zagwarantowania, że ten ciąg został zlokalizowany w bieżącej kulturze systemu.</param>
+        <param name="message">A <see cref="T:System.String" /> , który opisuje błąd. Zawartość wiadomości ma być zrozumiała dla ludzi. Obiekt wywołujący tego konstruktora jest wymagany w celu zagwarantowania, że ten ciąg został zlokalizowany w bieżącej kulturze systemu.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.StackOverflowException" /> klasy przy użyciu określonego komunikatu o błędzie.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -194,13 +194,13 @@ Zobacz [przykłady](#examples) sekcji ilustrację tej techniki.
       </Parameters>
       <Docs>
         <param name="message">Komunikat o błędzie wyjaśniający przyczynę wyjątku.</param>
-        <param name="innerException">Wyjątek, który jest przyczyną bieżącego wyjątku. Jeśli <paramref name="innerException" /> parametr nie jest odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic), bieżący wyjątek jest zgłaszany w <see langword="catch" /> blok, który obsługuje wyjątek wewnętrzny.</param>
+        <param name="innerException">Wyjątek, który jest przyczyną bieżącego wyjątku. Jeśli parametr nie jest odwołaniem null (<see langword="Nothing" /> w Visual Basic), bieżący <see langword="catch" /> wyjątek jest wywoływany w bloku, który obsługuje wyjątek wewnętrzny. <paramref name="innerException" /></param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.StackOverflowException" /> klasy przy użyciu określonego komunikatu o błędzie i odwołania do wewnętrznego wyjątku, który jest przyczyną tego wyjątku.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wyjątek generowany jako bezpośredni wynik poprzedniego wyjątku może zawierać odwołanie do poprzedniego wyjątku we <xref:System.Exception.InnerException%2A> właściwości. <xref:System.Exception.InnerException%2A> Właściwość zwraca taką samą wartość, która jest przekazywana do konstruktora, lub odwołanie o wartości null (`Nothing` w języku Visual Basic) jeżeli <xref:System.Exception.InnerException%2A> nie dostarcza wartości wewnętrznego wyjątku do konstruktora.  
+ Wyjątek, który jest generowany jako bezpośredni wynik poprzedniego wyjątku może zawierać odwołanie do poprzedniego wyjątku we <xref:System.Exception.InnerException%2A> właściwości. Właściwość zwraca tę samą wartość, która jest przenoszona do konstruktora lub odwołanie o wartości null (`Nothing` <xref:System.Exception.InnerException%2A> w Visual Basic), jeśli właściwość nie poda wewnętrznej wartości wyjątku do konstruktora. <xref:System.Exception.InnerException%2A>  
   
  W poniższej tabeli przedstawiono początkowe wartości właściwości dla wystąpienia <xref:System.StackOverflowException>.  
   
