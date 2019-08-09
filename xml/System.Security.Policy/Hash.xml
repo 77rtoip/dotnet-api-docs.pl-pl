@@ -1,5 +1,5 @@
 <Type Name="Hash" FullName="System.Security.Policy.Hash">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="224c66d93d18b83f7dc711f1234a8a448ef9e038" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56773684" /></Metadata><TypeSignature Language="C#" Value="public sealed class Hash : System.Security.Policy.EvidenceBase, System.Runtime.Serialization.ISerializable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="01bb9512e6888fb24b0b8425a487ad462a3e0852" /><Meta Name="ms.sourcegitcommit" Value="43c8e74d92c78325492baf27e41b400443f0dfbf" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/08/2019" /><Meta Name="ms.locfileid" Value="68858339" /></Metadata><TypeSignature Language="C#" Value="public sealed class Hash : System.Security.Policy.EvidenceBase, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit Hash extends System.Security.Policy.EvidenceBase implements class System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="DocId" Value="T:System.Security.Policy.Hash" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class Hash&#xA;Inherits EvidenceBase&#xA;Implements ISerializable" />
@@ -36,15 +36,17 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Zawiera temat wartość skrótu dla zestawu. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Zawiera dowody dotyczące wartości skrótu dla zestawu. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wartość skrótu reprezentuje unikatową wartość, która odnosi się do określonego zestawu bajtów. Zamiast odwoływać się do zestawu według nazwy, wersji lub innymi oznaczeniami, wartość skrótu określa zestaw bez niejednoznaczności. Nazwy podlegają kolizji w rzadkich przypadkach, gdzie takiej samej nazwie jest podawana w zupełnie inny kod. Różne odmiany kodu przypadkowo może być oznaczony za pomocą tej samej wersji. Jednak nawet zmiana pojedynczy bit wynikiem jest wartość bardzo różne wartości skrótów.  
+ Wartość skrótu reprezentuje unikatową wartość, która odnosi się do określonego zestawu bajtów. Zamiast odwoływania się do zestawu według nazwy, wersji lub innego oznaczenia, wartość skrótu wyznacza zestaw bez niejednoznaczności. Nazwy są uzależnione od kolizji w rzadkich przypadkach, gdy ta sama nazwa jest podano w zupełnie innym kodzie. Różne odmiany kodu mogą przypadkowo być oznaczone przy użyciu tej samej wersji. Jednak nawet zmiana pojedynczego bitu powoduje bardzo inną wartość skrótu.  
   
- Wartości skrótu jest kryptograficznie bezpieczny sposób do odwoływania się do określonych zestawów w zasadach bez użycia podpisów cyfrowych. Algorytm skrótu secure hash zaprojektowano tak, aby go jest praktycznie niemożliwe do konstruowania innego zestawu z wartością skrótu identyczne przez zostanie podjęta próba przypadkowego lub celowego. Domyślnie, dowód z <xref:System.Security.Cryptography.SHA1> i <xref:System.Security.Cryptography.MD5> obsługiwane algorytmy wyznaczania wartości skrótu, chociaż można użyć dowolnego algorytmu wyznaczania wartości skrótu za pomocą <xref:System.Security.Policy.Hash.GenerateHash%2A>.  
-  
+ Wartości skrótu są kryptograficznie zabezpieczonym sposobem odwoływania się do określonych zestawów w zasadach bez używania podpisów cyfrowych. Algorytm bezpiecznego wyznaczania wartości skrótu został zaprojektowany tak, aby nie było możliwe obliczenie innego zestawu o identycznej wartości skrótu przez przypadkową lub złośliwą próbę. Domyślnie są obsługiwane dowody z <xref:System.Security.Cryptography.SHA1> algorytmów i <xref:System.Security.Cryptography.MD5> wyznaczania wartości skrótu, chociaż dowolny algorytm skrótu może być <xref:System.Security.Policy.Hash.GenerateHash%2A>używany w programie.  
+
+ Ze względu na kolizje problemów z algorytmem MD5 i algorytmem SHA1 firma Microsoft zaleca model zabezpieczeń oparty na SHA256 lub lepszy.
+
  ]]></format>
     </remarks>
   </Docs>
@@ -73,18 +75,18 @@
         <Parameter Name="assembly" Type="System.Reflection.Assembly" />
       </Parameters>
       <Docs>
-        <param name="assembly">Zestaw, do których chcesz obliczyć wartość skrótu.</param>
+        <param name="assembly">Zestaw, dla którego ma zostać obliczona wartość skrótu.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Security.Policy.Hash" /> klasy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Obliczenia wartości skrótu nie jest wykonywane, dopóki nosi nazwę jednej z właściwości lub metody.  
+ Obliczanie wartości skrótu nie jest wykonywane do momentu wywołania jednej z właściwości lub metod.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="assembly" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException"><paramref name="assembly" /> nie jest środowiska wykonawczego <see cref="T:System.Reflection.Assembly" /> obiektu.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="assembly" /></exception>
+        <exception cref="T:System.ArgumentException"><paramref name="assembly" />nie jest obiektem czasu <see cref="T:System.Reflection.Assembly" /> wykonywania.</exception>
       </Docs>
     </Member>
     <Member MemberName="Clone">
@@ -139,18 +141,20 @@
         <Parameter Name="md5" Type="System.Byte[]" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="md5">Tablica bajtów, która zawiera <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu.</param>
-        <summary>Tworzy <see cref="T:System.Security.Policy.Hash" /> obiekt, który zawiera <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu.</summary>
-        <returns>Obiekt, który zawiera wartość skrótu, dostarczone przez <paramref name="md5" /> parametru.</returns>
+        <param name="md5">Tablica bajtowa zawierająca <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu.</param>
+        <summary>Tworzy obiekt, który zawiera wartość <see cref="T:System.Security.Cryptography.MD5" />skrótu. <see cref="T:System.Security.Policy.Hash" /></summary>
+        <returns>Obiekt, który zawiera wartość skrótu dostarczoną przez <paramref name="md5" /> parametr.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera tylko <xref:System.Security.Policy.Hash.MD5%2A> właściwości.  
-  
+ Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera <xref:System.Security.Policy.Hash.MD5%2A> tylko właściwość.  
+
+ Ze względu na kolizje problemów z algorytmem MD5 firma Microsoft zaleca model zabezpieczeń oparty na SHA256 lub lepszy.
+
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="md5" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="md5" /></exception>
       </Docs>
     </Member>
     <Member MemberName="CreateSHA1">
@@ -180,18 +184,20 @@
         <Parameter Name="sha1" Type="System.Byte[]" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="sha1">Tablica bajtów, która zawiera <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu.</param>
-        <summary>Tworzy <see cref="T:System.Security.Policy.Hash" /> obiekt, który zawiera <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu.</summary>
-        <returns>Obiekt, który zawiera wartość skrótu, dostarczone przez <paramref name="sha1" /> parametru.</returns>
+        <param name="sha1">Tablica bajtowa zawierająca <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu.</param>
+        <summary>Tworzy obiekt, który zawiera wartość <see cref="T:System.Security.Cryptography.SHA1" />skrótu. <see cref="T:System.Security.Policy.Hash" /></summary>
+        <returns>Obiekt, który zawiera wartość skrótu dostarczoną przez <paramref name="sha1" /> parametr.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera tylko <xref:System.Security.Policy.Hash.SHA1%2A> właściwości.  
-  
+ Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera <xref:System.Security.Policy.Hash.SHA1%2A> tylko właściwość.  
+
+ Ze względu na kolizje problemów z algorytmem SHA1 firma Microsoft zaleca model zabezpieczeń oparty na SHA256 lub lepszy.
+
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="sha1" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="sha1" /></exception>
       </Docs>
     </Member>
     <Member MemberName="CreateSHA256">
@@ -219,18 +225,18 @@
         <Parameter Name="sha256" Type="System.Byte[]" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8" />
       </Parameters>
       <Docs>
-        <param name="sha256">Tablica bajtów, która zawiera <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu.</param>
-        <summary>Tworzy <see cref="T:System.Security.Policy.Hash" /> obiekt, który zawiera <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu.</summary>
-        <returns>Obiekt wyznaczania wartości skrótu, który zawiera wartość skrótu, dostarczone przez <paramref name="sha256" /> parametru.</returns>
+        <param name="sha256">Tablica bajtowa zawierająca <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu.</param>
+        <summary>Tworzy obiekt, który zawiera wartość <see cref="T:System.Security.Cryptography.SHA256" />skrótu. <see cref="T:System.Security.Policy.Hash" /></summary>
+        <returns>Obiekt skrótu, który zawiera wartość skrótu dostarczoną przez <paramref name="sha256" /> parametr.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera tylko <xref:System.Security.Policy.Hash.SHA256%2A> właściwości.  
+ Zwrócony <xref:System.Security.Policy.Hash> obiekt zawiera <xref:System.Security.Policy.Hash.SHA256%2A> tylko właściwość.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="sha256" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="sha256" /></exception>
       </Docs>
     </Member>
     <Member MemberName="GenerateHash">
@@ -261,19 +267,19 @@
         <Parameter Name="hashAlg" Type="System.Security.Cryptography.HashAlgorithm" />
       </Parameters>
       <Docs>
-        <param name="hashAlg">Algorytm wyznaczania wartości skrótu do użycia w celu obliczenia wartości skrótu dla zestawu.</param>
-        <summary>Oblicza wartość skrótu dla zestawu przy użyciu określonego algorytmu skrótu.</summary>
-        <returns>Tablica bajtów, która reprezentuje wartość skrótu dla zestawu.</returns>
+        <param name="hashAlg">Algorytm skrótu używany do obliczania wartości skrótu dla zestawu.</param>
+        <summary>Oblicza wartość skrótu dla zestawu przy użyciu określonego algorytmu wyznaczania wartości skrótu.</summary>
+        <returns>Tablica bajtów reprezentująca wartość skrótu dla zestawu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zestaw określony w konstruktorze klasy zawiera bajty do obliczeń wartość skrótu. `hashAlg` Parametru jest obiektem pochodzącym z konkretnym <xref:System.Security.Cryptography.HashAlgorithm>. Wartość skrótu zwróconego jest identyfikowane za pomocą typu `hashAlg`.  
+ Zestaw określony w konstruktorze klasy zawiera bajty do obliczania wartości skrótu. Parametr jest obiektem pochodnym określonego <xref:System.Security.Cryptography.HashAlgorithm>elementu. `hashAlg` Zwracana wartość skrótu jest typu identyfikowanego przez `hashAlg`.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="hashAlg" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Security.SecurityException">Nie można wygenerować wartość skrótu dla zestawu.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="hashAlg" /></exception>
+        <exception cref="T:System.Security.SecurityException">Nie można wygenerować wartości skrótu dla zestawu.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetObjectData">
@@ -315,12 +321,12 @@
       <Docs>
         <param name="info">Obiekt zawierający dane serializowanego obiektu.</param>
         <param name="context">Informacje kontekstowe o źródłowego lub miejscu docelowym.</param>
-        <summary>Pobiera <see cref="T:System.Runtime.Serialization.SerializationInfo" /> obiektu o nazwie parametru i dodatkowe informacje o wyjątku.</summary>
+        <summary><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Pobiera obiekt z nazwą parametru i dodatkowymi informacjami o wyjątku.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest udostępniane na obsługuje dziedziczenie <xref:System.Runtime.Serialization.ISerializable> interfejsu.  
+ Ta metoda zapewnia obsługę dziedziczenia <xref:System.Runtime.Serialization.ISerializable> interfejsu.  
   
  ]]></format>
         </remarks>
@@ -352,18 +358,18 @@
         <ReturnType>System.Byte[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu dla zestawu.</summary>
-        <value>Tablica bajtów, która reprezentuje <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu dla zestawu.</value>
+        <summary>Pobiera wartość <see cref="T:System.Security.Cryptography.MD5" /> skrótu dla zestawu.</summary>
+        <value>Tablica bajtów reprezentująca <see cref="T:System.Security.Cryptography.MD5" /> wartość skrótu dla zestawu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zestaw określony w konstruktorze klasy zawiera bajty obliczenia skrótu.  
+ Zestaw określony w konstruktorze klasy zawiera bajty dla obliczeń skrótu.  
   
-   
+ Ze względu na kolizje problemów z algorytmem MD5 firma Microsoft zaleca SHA256. 
   
 ## Examples  
- Poniższy przykład oblicza <xref:System.Security.Cryptography.MD5> wyznaczania wartości skrótu dla `myAssembly` i zapisuje go w `hashcode`.  
+ Poniższy przykład oblicza <xref:System.Security.Cryptography.MD5> skrót dla `myAssembly` i zapisuje go w `hashcode`.  
   
  [!code-cpp[Classic Hash.MD5 Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic Hash.MD5 Example/CPP/source.cpp#1)]
  [!code-csharp[Classic Hash.MD5 Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic Hash.MD5 Example/CS/source.cs#1)]
@@ -398,18 +404,18 @@
         <ReturnType>System.Byte[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu dla zestawu.</summary>
-        <value>Tablica bajtów, która reprezentuje <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu dla zestawu.</value>
+        <summary>Pobiera wartość <see cref="T:System.Security.Cryptography.SHA1" /> skrótu dla zestawu.</summary>
+        <value>Tablica bajtów reprezentująca <see cref="T:System.Security.Cryptography.SHA1" /> wartość skrótu dla zestawu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zestaw określony w Konstruktorze zapewnia bajtów obliczenia skrótu.  
+ Zestaw określony w konstruktorze udostępnia bajty dla obliczeń skrótu.  
   
-   
+ Ze względu na kolizje problemów z algorytmem SHA1 firma Microsoft zaleca SHA256.  
   
 ## Examples  
- Poniższy przykład oblicza <xref:System.Security.Cryptography.SHA1> wyznaczania wartości skrótu dla `myAssembly` i zapisuje go w `hashcode`.  
+ Poniższy przykład oblicza <xref:System.Security.Cryptography.SHA1> skrót dla `myAssembly` i zapisuje go w `hashcode`.  
   
  [!code-cpp[Classic Hash.SHA1 Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic Hash.SHA1 Example/CPP/source.cpp#1)]
  [!code-csharp[Classic Hash.SHA1 Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic Hash.SHA1 Example/CS/source.cs#1)]
@@ -441,13 +447,13 @@
         <ReturnType>System.Byte[]</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu dla zestawu.</summary>
-        <value>Tablica bajtów, która reprezentuje <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu dla zestawu.</value>
+        <summary>Pobiera wartość <see cref="T:System.Security.Cryptography.SHA256" /> skrótu dla zestawu.</summary>
+        <value>Tablica bajtów reprezentująca <see cref="T:System.Security.Cryptography.SHA256" /> wartość skrótu dla zestawu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zestaw, który jest określony w <xref:System.Security.Policy.Hash.%23ctor%2A> Konstruktor zapewnia bajtów do obliczeń wyznaczania wartości skrótu.  
+ Zestaw, który jest określony w <xref:System.Security.Policy.Hash.%23ctor%2A> konstruktorze, zawiera bajty dla obliczeń skrótu.  
   
  ]]></format>
         </remarks>
@@ -480,12 +486,12 @@
       <Parameters />
       <Docs>
         <summary>Zwraca reprezentację ciągu bieżącego <see cref="T:System.Security.Policy.Hash" />.</summary>
-        <returns>Reprezentacja bieżącego <see cref="T:System.Security.Policy.Hash" />.</returns>
+        <returns>Reprezentacja bieżącego <see cref="T:System.Security.Policy.Hash" />elementu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest przydatna podczas debugowania, aby uzyskać łatwy w odczycie reprezentację obiektu.  
+ Ta metoda jest przydatna podczas debugowania, aby uzyskać łatwą do odczytu reprezentację obiektu.  
   
  ]]></format>
         </remarks>
