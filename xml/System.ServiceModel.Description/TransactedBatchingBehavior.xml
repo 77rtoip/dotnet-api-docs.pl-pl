@@ -1,5 +1,5 @@
 <Type Name="TransactedBatchingBehavior" FullName="System.ServiceModel.Description.TransactedBatchingBehavior">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="b24b487cb17c9bbc06a1c7cc9b3089b8151b04b5" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64033825" /></Metadata><TypeSignature Language="C#" Value="public class TransactedBatchingBehavior : System.ServiceModel.Description.IEndpointBehavior" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="adc32dbfd3cd07e01fbc1d693f27f7ec02786b23" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69151380" /></Metadata><TypeSignature Language="C#" Value="public class TransactedBatchingBehavior : System.ServiceModel.Description.IEndpointBehavior" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit TransactedBatchingBehavior extends System.Object implements class System.ServiceModel.Description.IEndpointBehavior" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Description.TransactedBatchingBehavior" />
   <TypeSignature Language="VB.NET" Value="Public Class TransactedBatchingBehavior&#xA;Implements IEndpointBehavior" />
@@ -19,21 +19,21 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Reprezentuje zachowanie, które optymalizuje operacje odbierania dla transportu, które odbiera transakcyjnych pomocy technicznej.</summary>
+    <summary>Reprezentuje zachowanie, które optymalizuje operacje odbierania dla transportów obsługujących odbieranie transakcyjne.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Transport, który jest skonfigurowany z tym działaniem próbuje batch kilka operacji w jedną transakcję odbioru. W ten sposób stosunkowo wysokie koszty tworzenia transakcji i zatwierdzania w każdej odbierania jest unikać operacji.  
+ Transport skonfigurowany przy użyciu tego zachowania podejmuje próbę wykonania wsadowych operacji na partiach w jednej transakcji. Dzięki temu można uniknąć stosunkowo wysokiego kosztu tworzenia transakcji i zatwierdzania jej w każdej operacji odbierania.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak dodanie transakcyjne zachowania łączenia we wsady do usługi w pliku konfiguracji.  
+ Poniższy przykład pokazuje, jak dodać działanie transakcyjnego przetwarzania wsadowego do usługi w pliku konfiguracji.  
   
  [!code-xml[UETransactedBatchingConfig#0](~/samples/snippets/csharp/VS_Snippets_CFX/uetransactedbatchingcode/common/serviceapp.config#0)] 
   
- Poniższy przykład pokazuje, jak dodać transakcyjne zachowania łączenia we wsady do usługi w kodzie.  
+ Poniższy przykład pokazuje, jak dodać działanie transakcyjnego przetwarzania wsadowego do usługi w kodzie.  
   
  [!code-csharp[UETransactedBatchingCode#0](~/samples/snippets/csharp/VS_Snippets_CFX/uetransactedbatchingcode/cs/service.cs#0)]  
   
@@ -58,24 +58,24 @@
         <Parameter Name="maxBatchSize" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="maxBatchSize">Maksymalna liczba operacji pobrania, które można zebrać razem.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.ServiceModel.Description.TransactedBatchingBehavior" /> klasy przy użyciu określony rozmiar wsadu.</summary>
+        <param name="maxBatchSize">Maksymalna liczba operacji odbioru, które mogą być połączone wsadowo.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.ServiceModel.Description.TransactedBatchingBehavior" /> klasy z określonym rozmiarem partii.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `maxBatchSize` Wartość przekazany do konstruktora jest tylko wskazówką. Istnieje możliwość, że wszystkie komunikaty są odbierane przed osiągnięciem `maxBatchSize`. Jeśli ma to miejsce, nie trzeba czekać w nieskończoność na inny komunikat do odebrania. Aby temu zapobiec, zatwierdzeń WCF partii wcześnie, a następnie otwórz nową partię odbierać dodatkowe komunikaty. Partii jest zatwierdzone, jeśli nie ma żadnych komunikatów do odbioru upłynął 20 procent wartości limitu czasu transakcji.  
+ `maxBatchSize` Wartość przeniesiona do konstruktora jest tylko wskazówką. Jest możliwe, że wszystkie komunikaty są odbierane przed osiągnięciem `maxBatchSize`. W takim przypadku nie trzeba czekać w nieskończoność, aby można było odebrać inny komunikat. Aby temu zapobiec, usługa WCF wczesnie zatwierdza partie i otwiera nową partię do odbierania dodatkowych komunikatów. Zadanie wsadowe jest zatwierdzane, jeśli nie ma żadnych komunikatów do odebrania i upłynie 20% wartości limitu czasu transakcji.  
   
    
   
 ## Examples  
- Poniższy kod przedstawia sposób tworzenia nowego wystąpienia <xref:System.ServiceModel.Description.TransactedBatchingBehavior> określający maksymalną liczbę komunikatów do przetworzenia w zadaniu wsadowym.  
+ Poniższy kod przedstawia sposób tworzenia nowego wystąpienia <xref:System.ServiceModel.Description.TransactedBatchingBehavior> określającego maksymalną liczbę komunikatów do przetworzenia w partii.  
   
  [!code-csharp[UETransactedBatchingCode#1](~/samples/snippets/csharp/VS_Snippets_CFX/uetransactedbatchingcode/cs/service.cs#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="MaxBatchSize" /> jest mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="MaxBatchSize" />jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="MaxBatchSize">
@@ -100,13 +100,13 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia maksymalną liczbę operacji pobrania, które można zebrać razem w jednej transakcji.</summary>
-        <value>Maksymalna liczba operacji pobrania, które można zebrać razem w jednej transakcji.</value>
+        <summary>Pobiera lub ustawia maksymalną liczbę operacji odbioru, które mogą być przetwarzane wsadowo w jednej transakcji.</summary>
+        <value>Maksymalna liczba operacji odbioru, które mogą być przetwarzane wsadowo w jednej transakcji.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `maxBatchSize` Wartość jest tylko wskazówką. Istnieje możliwość, że wszystkie komunikaty są odbierane przed osiągnięciem `maxBatchSize`. Jeśli ma to miejsce, nie trzeba czekać w nieskończoność na inny komunikat do odebrania. Aby temu zapobiec, zatwierdzeń WCF partii wcześnie, a następnie otwórz nową partię odbierać dodatkowe komunikaty. Partii jest zatwierdzone, jeśli nie ma żadnych komunikatów do odbioru upłynął 20 procent wartości limitu czasu transakcji.  
+ `maxBatchSize` Wartość jest tylko wskazówką. Jest możliwe, że wszystkie komunikaty są odbierane przed osiągnięciem `maxBatchSize`. W takim przypadku nie trzeba czekać w nieskończoność, aby można było odebrać inny komunikat. Aby temu zapobiec, usługa WCF wczesnie zatwierdza partie i otwiera nową partię do odbierania dodatkowych komunikatów. Zadanie wsadowe jest zatwierdzane, jeśli nie ma żadnych komunikatów do odebrania i upłynie 20% wartości limitu czasu transakcji.  
   
    
   
@@ -117,7 +117,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="MaxBatchSize" /> jest mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="MaxBatchSize" />jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="System.ServiceModel.Description.IEndpointBehavior.AddBindingParameters">
@@ -142,14 +142,14 @@
         <Parameter Name="bindingParameters" Type="System.ServiceModel.Channels.BindingParameterCollection" />
       </Parameters>
       <Docs>
-        <param name="serviceEndpoint">Punkt końcowy usługi, których są stosowane ustawienia zachowania.</param>
-        <param name="bindingParameters">Kolekcja wiązania parametrów, które przechowują informacje używane przez powiązanie elementy, aby tworzyć fabryki.</param>
-        <summary>Stosuje ustawienia powiązania do endpoint określonej usługi. Ta metoda nie może być dziedziczona.</summary>
+        <param name="serviceEndpoint">Punkt końcowy usługi, w którym są stosowane ustawienia zachowania.</param>
+        <param name="bindingParameters">Kolekcja parametrów powiązania, które przechowują informacje używane przez elementy powiązania do kompilowania fabryk.</param>
+        <summary>Stosuje ustawienia powiązań do określonego punktu końcowego usługi. Ta metoda nie może być dziedziczona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Umożliwia dodawanie powiązania dodatkowych parametrów do punktu końcowego określonej usługi. Służy to zwykle podczas pracy z niestandardowego powiązania.  
+ Umożliwia dodanie dodatkowych parametrów powiązania do określonego punktu końcowego usługi. Jest to zwykle używane podczas pracy z powiązaniem niestandardowym.  
   
  ]]></format>
         </remarks>
@@ -177,9 +177,9 @@
         <Parameter Name="behavior" Type="System.ServiceModel.Dispatcher.ClientRuntime" />
       </Parameters>
       <Docs>
-        <param name="serviceEndpoint">Punkt końcowy usługi, których są stosowane ustawienia zachowania.</param>
-        <param name="behavior">Zawiera transakcji, przetwarzanie wsadowe zachowanie.</param>
-        <summary>Stosuje ustawienia zachowania do endpoint określonej usługi dzielenia na partie transakcji. Ta metoda nie może być dziedziczona.</summary>
+        <param name="serviceEndpoint">Punkt końcowy usługi, w którym są stosowane ustawienia zachowania.</param>
+        <param name="behavior">Zawiera działanie związane z przetwarzaniem wsadowym transakcji.</param>
+        <summary>Stosuje ustawienia zachowań wsadowych transakcji do określonego punktu końcowego usługi. Ta metoda nie może być dziedziczona.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -205,14 +205,14 @@
         <Parameter Name="endpointDispatcher" Type="System.ServiceModel.Dispatcher.EndpointDispatcher" />
       </Parameters>
       <Docs>
-        <param name="serviceEndpoint">Punkt końcowy usługi, których są stosowane ustawienia zachowania.</param>
-        <param name="endpointDispatcher">Wywoływanie punktu końcowego dla podczas wysyłania wiadomości</param>
-        <summary>Kojarzy dyspozytora punktu końcowego z określonego punktu końcowego. Ta metoda nie może być dziedziczona.</summary>
+        <param name="serviceEndpoint">Punkt końcowy usługi, w którym są stosowane ustawienia zachowania.</param>
+        <param name="endpointDispatcher">Wysyłanie punktów końcowych w celu wysyłania komunikatów</param>
+        <summary>Kojarzy dyspozytora punktu końcowego z określonym punktem końcowym usługi. Ta metoda nie może być dziedziczona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana przez architekturę WCF do skojarzenia punktu końcowego usługi ze wysyłający punktu końcowego.  
+ Ta metoda jest wywoływana przez funkcję WCF w celu skojarzenia punktu końcowego usługi z dyspozytorem punktu końcowego.  
   
  ]]></format>
         </remarks>
@@ -239,13 +239,13 @@
         <Parameter Name="serviceEndpoint" Type="System.ServiceModel.Description.ServiceEndpoint" />
       </Parameters>
       <Docs>
-        <param name="serviceEndpoint">Punkt końcowy usługi, dla której przetwarzanie wsadowe zachowanie jest weryfikowana.</param>
-        <summary>Gwarantuje, że transakcyjnego przetwarzania wsadowego dotyczy to tylko powiązania operacji odbioru pomocy technicznej, dokonana transakcja. Ta metoda nie może być dziedziczona.</summary>
+        <param name="serviceEndpoint">Punkt końcowy usługi, dla którego sprawdzane jest działanie związane z przetwarzaniem wsadowym.</param>
+        <summary>Zapewnia, że transakcyjne przetwarzanie wsadowe ma zastosowanie tylko do powiązań, które obsługują transakcję odbierania transakcji. Ta metoda nie może być dziedziczona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana przez architekturę WCF, aby upewnić się, że przetwarzanie wsadowe jest dostępna tylko dla operacji odbioru pomocy technicznej, dokonana transakcja powiązania.  
+ Ta metoda jest wywoływana przez funkcję WCF, aby upewnić się, że funkcja tworzenia pakietów wsadowych jest dostępna tylko dla powiązań obsługujących transakcyjne operacje odbierania.  
   
  ]]></format>
         </remarks>

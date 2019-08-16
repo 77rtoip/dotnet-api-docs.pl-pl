@@ -1,5 +1,5 @@
 <Type Name="PreparingEnlistment" FullName="System.Transactions.PreparingEnlistment">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="f52559e4c3e60d1ca9918a90b0d3db2f75df73c0" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="64996615" /></Metadata><TypeSignature Language="C#" Value="public class PreparingEnlistment : System.Transactions.Enlistment" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4cb8db962f7ab7b369e5ab728fdd4b04dc0560b7" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69143223" /></Metadata><TypeSignature Language="C#" Value="public class PreparingEnlistment : System.Transactions.Enlistment" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit PreparingEnlistment extends System.Transactions.Enlistment" />
   <TypeSignature Language="DocId" Value="T:System.Transactions.PreparingEnlistment" />
   <TypeSignature Language="VB.NET" Value="Public Class PreparingEnlistment&#xA;Inherits Enlistment" />
@@ -26,16 +26,16 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Usprawnia komunikację między uczestnika zobowiązaniom transakcji i transakcji Menedżera transakcji w fazie przygotowania.</summary>
+    <summary>Ułatwia komunikację między Uczestnikiem transakcji zarejestrowanymi a menedżerem transakcji w fazie przygotowywania transakcji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas początkowego (przygotowanie) fazy transakcji, Menedżer transakcji przekazuje tego typu do Menedżera zasobów przez wywołanie metody <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metodę, aby można było uzyskać głos zasobu w transakcji. W zależności od tego, czy głosów przekazać ani wycofać, powinny wywoływać Twojego wdrożenia usługi resource manager <xref:System.Transactions.PreparingEnlistment.Prepared%2A> lub <xref:System.Transactions.PreparingEnlistment.ForceRollback%2A> metody tego typu.  
+ W fazie początkowej (Prepare) transakcji Menedżer transakcji przekazuje ten typ do Menedżera zasobów przez wywołanie <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metody w celu uzyskania głosu zasobu na transakcję. W zależności od tego, czy odczekają na zatwierdzenie lub wycofanie, implementacja Menedżera zasobów powinna wywołać <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metody <xref:System.Transactions.PreparingEnlistment.ForceRollback%2A> lub tego typu.  
   
- Menedżer zasobów można również wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed została wywołana <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metody. W ten sposób rejestracji jest rzutowanie odczytu tylko prawo głosu, co oznacza, że głosów zatwierdzania w transakcji, ale nie wymaga uzyskania końcowego wyniku.  
+ Menedżer zasobów może również wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym czasie przed <xref:System.Transactions.PreparingEnlistment.Prepared%2A> wywołaniem metody. Dzięki temu Funkcja rejestracji powoduje odrzucanie głosu tylko do odczytu, co oznacza, że odbierze zatwierdzenie transakcji, ale nie musi otrzymywać końcowego wyniku.  
   
- Menedżerów zasobów trwałego można pobrać informacji, które jest wymagane przez Menedżera transakcji dla ponownej rejestracji z <xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A> właściwości. Aby uzyskać więcej informacji na temat odzyskiwania, zobacz [przeprowadzania odzyskiwania](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
+ Menedżerowie zasobów trwałych mogą pobrać informacje, które są zbędne przez Menedżera transakcji do ponownej rejestracji z <xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A> właściwości. Aby uzyskać więcej informacji o odzyskiwaniu, zobacz [odzyskiwanie](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
   
    
   
@@ -46,7 +46,7 @@
  ]]></format>
     </remarks>
     <threadsafe>Ten typ jest bezpieczny wątkowo.</threadsafe>
-    <related type="Article" href="https://msdn.microsoft.com/library/74b3cfe1-d33a-45b8-91f4-dfd6f6598c4d">Zatwierdzanie transakcji jednofazowe i wielofazowe</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/74b3cfe1-d33a-45b8-91f4-dfd6f6598c4d">Zatwierdzanie transakcji w ramach jednej fazy i wielofazowej</related>
   </Docs>
   <Members>
     <MemberGroup MemberName="ForceRollback">
@@ -56,7 +56,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wskazuje, czy transakcja powinna wycofana.</summary>
+        <summary>Wskazuje, że transakcja powinna zostać wycofana.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="ForceRollback">
@@ -88,12 +88,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wskazuje, czy transakcja powinna wycofana.</summary>
+        <summary>Wskazuje, że transakcja powinna zostać wycofana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Implementacja <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metody <xref:System.Transactions.IEnlistmentNotification> interfejsu wywołuje tę metodę, aby wskazać, że transakcji będą muszą zostać wycofane.  
+ Implementacja <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metody<xref:System.Transactions.IEnlistmentNotification> interfejsu wywołuje tę metodę, aby wskazać, że transakcja musi zostać wycofana.  
   
    
   
@@ -143,9 +143,9 @@
         <Parameter Name="ex" Type="System.Exception" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="e">Wyjaśnienie, dlaczego jest wyzwalana wycofywania.</param>
-        <param name="ex">Wyjaśnienie, dlaczego jest wyzwalana wycofywania.</param>
-        <summary>Wskazuje, czy transakcja powinna wycofana.</summary>
+        <param name="e">Wyjaśnienie przyczyny wyzwolenia wycofywania.</param>
+        <param name="ex">Wyjaśnienie przyczyny wyzwolenia wycofywania.</param>
+        <summary>Wskazuje, że transakcja powinna zostać wycofana.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -178,16 +178,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wskazuje, że można można zatwierdzić transakcji.</summary>
+        <summary>Wskazuje, że transakcja może zostać zatwierdzona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W pierwszym (przygotowanie) faza fazy dwa zatwierdzenia, implementowania Menedżera zasobów <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metody <xref:System.Transactions.IEnlistmentNotification> interfejsu, wywołuje tę metodę, aby wskazać, że można można zatwierdzić transakcji.  
+ W pierwszej fazie (przygotowanie) fazy dwuetapowej zatwierdzania Menedżer zasobów implementujący <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> metodę <xref:System.Transactions.IEnlistmentNotification> interfejsu wywołuje tę metodę, aby wskazać, że transakcja może zostać zatwierdzona.  
   
- Menedżer zasobów można wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed wywołał tej metody.  W ten sposób rejestracji jest rzutowanie odczytu tylko prawo głosu, co oznacza, że głosów zatwierdzania w transakcji, ale nie wymaga uzyskania końcowego wyniku.  
+ Menedżer zasobów może wywoływać <xref:System.Transactions.Enlistment.Done%2A> metodę w dowolnym momencie przed wywołaniem tej metody.  Dzięki temu Funkcja rejestracji powoduje odrzucanie głosu tylko do odczytu, co oznacza, że odbierze zatwierdzenie transakcji, ale nie musi otrzymywać końcowego wyniku.  
   
- Gdy ta metoda jest wywoływana przez rejestracji i przed zwróceniem, możliwe jest inny wątek lub tego samego wątku może spowodować, że wywołanie tej samej metody rejestracji takich jak <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> przeprowadzić wycofanie. Może to spowodować sytuację zakleszczenia jeśli implementacja Menedżera zasobów nie spowoduje zwolnienia blokad zasobów do czasu, po powrocie z tej metody.  
+ Gdy ta metoda jest wywoływana przez rejestrację i przed zwróceniem, istnieje możliwość, że inny wątek lub ten sam wątek mogą wykonać wywołanie do tej samej metody <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> rejestracji, na przykład w celu wykonania wycofywania. Może to skutkować sytuacją zakleszczenia, jeśli implementacja Menedżera zasobów nie zwolni zablokowania zasobów do momentu, gdy ta metoda nie zostanie zwrócona.  
   
    
   
@@ -228,10 +228,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera informacje odzyskiwania rejestracji.</summary>
-        <returns>Informacje odzyskiwania rejestracji.</returns>
+        <summary>Pobiera informacje o odzyskiwaniu rejestracji.</summary>
+        <returns>Informacje o odzyskiwaniu rejestracji.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Próba pobrania informacji o odzyskiwaniu wewnątrz lotnych rejestracji, który nie generuje żadnych informacji odzyskiwania.</exception>
+        <exception cref="T:System.InvalidOperationException">Próba pobrania informacji o odzyskiwaniu wewnątrz nietrwałej rejestracji, która nie generuje żadnych informacji odzyskiwania.</exception>
       </Docs>
     </Member>
   </Members>

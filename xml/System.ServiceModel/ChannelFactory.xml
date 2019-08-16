@@ -1,5 +1,5 @@
 <Type Name="ChannelFactory" FullName="System.ServiceModel.ChannelFactory">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="24374ed8b995a97ed0c2f873d8a27bf7f51c94a5" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="64997102" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChannelFactory : System.ServiceModel.Channels.CommunicationObject, IDisposable, System.ServiceModel.Channels.IChannelFactory" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="398ea0b9d21c2e1c1c2c51960fe7a6598f88c85d" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69147868" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChannelFactory : System.ServiceModel.Channels.CommunicationObject, IDisposable, System.ServiceModel.Channels.IChannelFactory" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChannelFactory extends System.ServiceModel.Channels.CommunicationObject implements class System.IDisposable, class System.ServiceModel.Channels.IChannelFactory, class System.ServiceModel.ICommunicationObject" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.ChannelFactory" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChannelFactory&#xA;Inherits CommunicationObject&#xA;Implements IChannelFactory, IDisposable" />
@@ -35,34 +35,34 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Tworzy i zarządza kanałów, które są używane przez klientów do wysyłania wiadomości do punktów końcowych usługi.</summary>
+    <summary>Tworzy kanały używane przez klientów i zarządza nimi do wysyłania komunikatów do punktów końcowych usługi.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Kanał fabryki, które implementują <xref:System.ServiceModel.Channels.IChannelFactory> interfejsu i ich skojarzone kanały są zazwyczaj używane przez inicjatory wzorzec komunikacji. Fabryki odbiornika, które implementują <xref:System.ServiceModel.Channels.IChannelListener> interfejsu i ich skojarzone odbiorniki zapewniają mechanizmy, z którymi są akceptowane kanałów komunikacji.  
+ Fabryki kanałów implementujące <xref:System.ServiceModel.Channels.IChannelFactory> interfejs i powiązane z nimi kanały są zwykle używane przez inicjatory wzorca komunikacji. Fabryki odbiornika implementujące <xref:System.ServiceModel.Channels.IChannelListener> interfejs i powiązane z nimi detektory zapewniają mechanizmy, za pomocą których kanały są akceptowane do komunikacji.  
   
- Ta klasa nie jest częścią modelu kanału, ale modelu usługi. <xref:System.ServiceModel.ChannelFactory.CreateFactory%2A> Metoda umożliwia tworzenie <xref:System.ServiceModel.Channels.IChannelFactory> dla punktu końcowego usługi. Służy do konstruowania punkty zaczepienia kontrakt interfejsu usługi bez korzystania z metadanych lub zasad klienta.  
+ Ta klasa nie jest częścią modelu kanału, ale jest modelem usługi. Metoda zapewnia metodę <xref:System.ServiceModel.Channels.IChannelFactory> tworzenia dla punktu końcowego usługi. <xref:System.ServiceModel.ChannelFactory.CreateFactory%2A> Służy do konstruowania klienta, który przechwytuje do kontraktu interfejsu w usłudze bez użycia metadanych lub zasad.  
   
 > [!NOTE]
->  Ustawienie `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel` do `TokenImpersonationLevel.Anonymous` zawsze skutkuje Logowanie anonimowe, niezależnie od tego, poziom personifikacji.  
+>  Ustawienie `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel` na`TokenImpersonationLevel.Anonymous` zawsze powoduje Logowanie anonimowe niezależnie od poziomu personifikacji.  
   
- Ważne dla użytkowników zarządzanych C++ pochodząca z tej klasy:  
+ Specjalna Uwaga dla zarządzanych C++ użytkowników pochodnych z tej klasy:  
   
--   Umieść swoje oczyszczania kodu w (funkcja włączona) (Rozpocznij) Zamknij (i/lub OnAbort), nie znajduje się w destruktora.  
+-   Umieść kod czyszczący w (włączona) (Rozpocznij) Zamknij (i/lub OnAbort), a nie w destruktorze.  
   
--   Należy unikać destruktory; powodują one kompilator, aby automatycznie wygenerować <xref:System.IDisposable>.  
+-   Unikaj destruktorów; powoduje to automatyczne wygenerowanie <xref:System.IDisposable>kompilatora.  
   
--   Unikaj składowych niebędący odniesieniem; może spowodować, że kompilator, aby automatycznie wygenerować <xref:System.IDisposable>.  
+-   Unikaj członków niebędących odniesieniami; mogą spowodować automatyczne wygenerowanie <xref:System.IDisposable>kompilatora.  
   
--   Należy unikać finalizatorów; ale po wstawieniu, należy pominąć ostrzeżenia kompilacji i wywołanie <xref:System.GC.SuppressFinalize%28System.Object%29> i finalizator gwarantować (funkcja włączona) (Rozpocznij) Zamknij (i/lub OnAbort) w celu emulacji, jaki byłby generowanych automatycznie <xref:System.IDisposable> zachowanie.  
+-   Unikaj korzystania z finalizatora; ale jeśli dołączysz go, należy pominąć ostrzeżenie i wywołanie <xref:System.GC.SuppressFinalize%28System.Object%29> kompilacji oraz finalizatora z (włączona) (Rozpocznij) Zamknij (i/lub OnAbort), aby emulować to, co miałoby być generowane <xref:System.IDisposable> automatycznie.  
   
- Podczas dodawania zachowania programowo, zachowanie jest dodawany do odpowiedniego `Behaviors` właściwość <xref:System.ServiceModel.ChannelFactory> przed utworzenia dowolnego kanału. W sekcji przykład przykładowego kodu.  
+ W przypadku programistycznego dodawania zachowań zachowanie jest dodawane do odpowiedniej `Behaviors` właściwości <xref:System.ServiceModel.ChannelFactory> w przed utworzeniem dowolnego kanału. Zapoznaj się z przykładową sekcją dla przykładu kodu.  
   
    
   
 ## Examples  
- Poniższy przykład kodu pokazuje sposób wstawiania programowo zachowanie klienta przed utworzenia obiektu kanału fabryka.  
+ Poniższy przykład kodu pokazuje, jak wstawić programowo zachowanie klienta przed utworzeniem obiektu kanału przez fabrykę.  
   
  [!code-csharp[ChannelFactoryBehaviors#10](~/samples/snippets/csharp/VS_Snippets_CFX/channelfactorybehaviors/cs/client.cs#10)]
  [!code-vb[ChannelFactoryBehaviors#10](~/samples/snippets/visualbasic/VS_Snippets_CFX/channelfactorybehaviors/vb/client.vb#10)]  
@@ -135,16 +135,16 @@
       </Parameters>
       <Docs>
         <param name="configurationName">Nazwa pliku konfiguracji.</param>
-        <summary>Fabryka kanałów jest inicjowana za pomocą zachowań, dostarczone przez określonego pliku konfiguracji i z programami znajdującymi się na punkt końcowy usługi fabryki kanału.</summary>
+        <summary>Inicjuje fabrykę kanałów przy użyciu zachowań dostarczonych przez określony plik konfiguracji i z tymi w punkcie końcowym usługi fabryki kanałów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `configurationName` jest `null`, są ładowane tylko zachowania, które są określone w punktu końcowego usługi. Jeśli symbol wieloznaczny, "*", jest używany, żadnej konfiguracji punktu końcowego w pliku konfiguracji klienta jest używany, ale tylko wtedy, gdy jest dokładnie jeden. W przeciwnym razie jest zgłaszany wyjątek. Dowolna inna wartość, aby uzyskać `configurationName`, łącznie z pustym ciągiem "", odpowiada konfiguracji punktu końcowego o takiej samej nazwie. Zobacz [Konfiguracja klienta programu WCF](~/docs/framework/wcf/feature-details/client-configuration.md) tematu, aby uzyskać informacje dotyczące konfiguracji klienta.  
+ Jeśli `configurationName` ma `null`wartość, są ładowane tylko zachowania określone w punkcie końcowym usługi. Jeśli jest używany symbol wieloznaczny "*", używana jest jakakolwiek Konfiguracja punktu końcowego w pliku konfiguracyjnym klienta, ale tylko wtedy, gdy istnieje dokładnie jeden. W przeciwnym razie zgłaszany jest wyjątek. Wszystkie inne wartości dla `configurationName`, łącznie z pustym ciągiem "", są zgodne z konfiguracją punktu końcowego o tej samej nazwie. Zapoznaj się z omówieniem konfiguracji klienta w temacie [Konfiguracja klienta programu WCF](~/docs/framework/wcf/feature-details/client-configuration.md) .  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException">Punkt końcowy usługi fabryki kanału jest <see langword="null" />.</exception>
+        <exception cref="T:System.InvalidOperationException">Punkt końcowy usługi fabryki kanałów to <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="CreateDescription">
@@ -175,8 +175,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Po zaimplementowaniu w klasie pochodnej tworzy opis punktu końcowego usługi skojarzone z fabryki kanałów.</summary>
-        <returns><see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> Skojarzone z fabryki kanałów.</returns>
+        <summary>W przypadku wdrożenia w klasie pochodnej program tworzy opis punktu końcowego usługi skojarzonego z fabryką kanałów.</summary>
+        <returns><see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> Skojarzona z fabryką kanałów.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -208,10 +208,10 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy fabryki kanałów, aby uzyskać bieżący punkt końcowy fabryki.</summary>
-        <returns><see cref="T:System.ServiceModel.Channels.IChannelFactory" /> Dla punktu końcowego bieżącego fabryki.</returns>
+        <summary>Kompiluje fabrykę kanałów dla bieżącego punktu końcowego fabryki.</summary>
+        <returns><see cref="T:System.ServiceModel.Channels.IChannelFactory" /> Punkt końcowy bieżącej fabryki.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Punkt końcowy usługi, którą połączyć się z kanałami fabryki jest <see langword="null" /> lub powiązania punktu końcowego <see langword="null" /> lub nie zawiera elementu o podanej nazwie konfiguracji.</exception>
+        <exception cref="T:System.InvalidOperationException">Punkt końcowy usługi, z którą łączy się kanały fabryki, jest <see langword="null" /> lub powiązanie punktu końcowego to <see langword="null" /> lub brakuje elementu z określoną nazwą konfiguracji.</exception>
       </Docs>
     </Member>
     <Member MemberName="Credentials">
@@ -241,20 +241,20 @@
         <ReturnType>System.ServiceModel.Description.ClientCredentials</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera poświadczenia używane przez klientów do komunikacji z punktu końcowego usługi za pośrednictwem kanałów produkowane przez fabrykę.</summary>
-        <value><see cref="T:System.ServiceModel.Description.ClientCredentials" /> Używane przez klientów, jeżeli zostały skonfigurowane dla fabryki, lub jeśli punkt końcowy ma wartość inną niż<see langword="null" /> i znajduje się w obu stanie utworzone lub otwierając komunikacji; w przeciwnym razie <see langword="null" />.</value>
+        <summary>Pobiera poświadczenia używane przez klientów do komunikacji z punktem końcowym usługi za pośrednictwem kanałów wytwarzanych przez fabrykę.</summary>
+        <value>Używane przez klientów, jeśli są skonfigurowane dla fabryki lub jeśli punkt końcowy nie jest<see langword="null" /> i znajduje się w stanie komunikacji utworzony lub otwarty; w przeciwnym razie <see langword="null" />. <see cref="T:System.ServiceModel.Description.ClientCredentials" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.ServiceModel.Description.ClientCredentials> Obiekt jest przechowywany jako typ zachowanie punktu końcowego i jest możliwy za pośrednictwem <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> właściwości.  
+ Obiekt jest przechowywany jako zachowanie typu punktu końcowego i można do niego uzyskać dostęp <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> za pomocą właściwości. <xref:System.ServiceModel.Description.ClientCredentials>  
   
- <xref:System.ServiceModel.ChannelFactory.OnOpened%2A> Metoda inicjuje kopię tylko do odczytu do <xref:System.ServiceModel.Description.ClientCredentials> obiekt fabryki.  
+ Metoda inicjuje kopię <xref:System.ServiceModel.Description.ClientCredentials> obiektu tylko do odczytu dla fabryki. <xref:System.ServiceModel.ChannelFactory.OnOpened%2A>  
   
- <xref:System.ServiceModel.Description.ClientCredentials> Obiekt jest używany przez <xref:System.ServiceModel.ClientBase%601> klasy (lub klasy, która pochodzi z tej klasy) do tworzenia obiektów serwera proxy, wywołujących usługi. <xref:System.ServiceModel.Description.ClientCredentials> Obiektu jest również dostępny za pośrednictwem <xref:System.ServiceModel.ClientBase%601.ClientCredentials%2A> właściwości.  
+ Obiekt jest używany <xref:System.ServiceModel.ClientBase%601> przez klasę (lub klasę, która dziedziczy z tej klasy) do tworzenia obiektów proxy, które mogą wywoływać usługi. <xref:System.ServiceModel.Description.ClientCredentials> Obiekt jest również dostępny <xref:System.ServiceModel.ClientBase%601.ClientCredentials%2A> za pomocą właściwości. <xref:System.ServiceModel.Description.ClientCredentials>  
   
 > [!NOTE]
->  Ustawienie `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel` do `TokenImpersonationLevel.Anonymous` zawsze skutkuje Logowanie anonimowe, niezależnie od tego, poziom personifikacji.  
+>  Ustawienie `ChannelFactory.Credentials.Windows.AllowedImpersonationLevel` na`TokenImpersonationLevel.Anonymous` zawsze powoduje Logowanie anonimowe niezależnie od poziomu personifikacji.  
   
  ]]></format>
         </remarks>
@@ -287,13 +287,13 @@
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera domyślny interwał czasu przewidzianego na zakończenie operacji zamknięcia.</summary>
-        <value>Wartość domyślna <see cref="T:System.TimeSpan" /> określający, jak długo operację zamknięcia musi ukończyć przed przekroczeniem limitu czasu.</value>
+        <summary>Pobiera domyślny interwał czasu podanego do ukończenia operacji zamknięcia.</summary>
+        <value>Wartość domyślna <see cref="T:System.TimeSpan" /> określająca czas trwania operacji zamykania przed upływem limitu czasu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Pobiera domyślny service model Zamknij limit czasu, jeśli obie <xref:System.ServiceModel.Description.ServiceEndpoint> i <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> są `null`. Domyślna wartość limitu czasu Zamknij modelu usługi to 1 minuta. W przeciwnym razie wartość jest równa <xref:System.ServiceModel.Channels.Binding.CloseTimeout%2A> wartość skojarzoną z <xref:System.ServiceModel.Description.ServiceEndpoint>.  
+ Pobiera domyślny limit czasu zamykania modelu usługi, jeśli oba <xref:System.ServiceModel.Description.ServiceEndpoint> i <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> są `null`. Wartość domyślna limitu czasu zamknięcia modelu usługi wynosi 1 minutę. W przeciwnym razie wartość jest ustawiana na <xref:System.ServiceModel.Channels.Binding.CloseTimeout%2A> wartość skojarzoną <xref:System.ServiceModel.Description.ServiceEndpoint>z.  
   
  ]]></format>
         </remarks>
@@ -326,13 +326,13 @@
         <ReturnType>System.TimeSpan</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera domyślny interwał czasu przewidzianego na zakończenie operacji Otwórz.</summary>
-        <value>Wartość domyślna <see cref="T:System.TimeSpan" /> określający, ile operacji otwierania musi ukończyć przed przekroczeniem limitu czasu.</value>
+        <summary>Pobiera domyślny interwał czasu podanego dla operacji otwierania.</summary>
+        <value>Wartość domyślna <see cref="T:System.TimeSpan" /> określająca czas trwania operacji otwierania przed upływem limitu czasu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Pobiera domyślny service model open limit czasu, jeśli obie <xref:System.ServiceModel.Description.ServiceEndpoint> i <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> są `null`. Wartość domyślna dla czasu Otwórz modelu usługi to 1 minuta. W przeciwnym razie wartość jest równa <xref:System.ServiceModel.Channels.Binding.OpenTimeout%2A> wartość skojarzoną z <xref:System.ServiceModel.Description.ServiceEndpoint>.  
+ Pobiera domyślny limit czasu otwierania modelu usługi, jeśli oba <xref:System.ServiceModel.Description.ServiceEndpoint> i <xref:System.ServiceModel.Description.ServiceEndpoint.Binding%2A> są `null`. Wartość domyślna limitu czasu otwarcia modelu usługi wynosi 1 minutę. W przeciwnym razie wartość jest ustawiana na <xref:System.ServiceModel.Channels.Binding.OpenTimeout%2A> wartość skojarzoną <xref:System.ServiceModel.Description.ServiceEndpoint>z.  
   
  ]]></format>
         </remarks>
@@ -370,8 +370,8 @@
         <ReturnType>System.ServiceModel.Description.ServiceEndpoint</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera punktu końcowego usługi, z którą połączone kanały tworzone przez fabrykę.</summary>
-        <value><see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> Połączyć który kanały tworzone przez fabrykę.</value>
+        <summary>Pobiera punkt końcowy usługi, do której kanały wytwarzane przez fabrykę nawiązują połączenie.</summary>
+        <value>, <see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> Do której kanały wytwarzane przez fabrykę nawiązują połączenie.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -403,16 +403,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Otwiera bieżące fabryki kanałów, jeśli nie jest jeszcze otwarty.</summary>
+        <summary>Otwiera bieżącą fabrykę kanałów, jeśli nie została jeszcze otwarta.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Przed otwarciem fabryki kanałów, sprawdza, czy nie jest <xref:System.ServiceModel.CommunicationState.Closed>, <xref:System.ServiceModel.CommunicationState.Closing>, lub <xref:System.ServiceModel.CommunicationState.Opened>.  
+ Przed otwarciem fabryki kanałów Sprawdź, czy nie <xref:System.ServiceModel.CommunicationState.Closed>jest, <xref:System.ServiceModel.CommunicationState.Closing>lub <xref:System.ServiceModel.CommunicationState.Opened>.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżący fabryka jest zamykanie lub zamkniętych i dlatego nie może zostać otwarty.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżąca fabryka jest zamykana lub ZAMKNIĘTA i dlatego nie można jej otworzyć.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetProperty&lt;T&gt;">
@@ -453,16 +453,16 @@
       </TypeParameters>
       <Parameters />
       <Docs>
-        <typeparam name="T">Typizowany obiekt, dla której metodę wykonywania zapytań.</typeparam>
-        <summary>Zwraca typizowany obiekt wymagane, jeśli jest obecny, z odpowiednią warstwę stosu kanału lub <see langword="null" /> Jeśli nie występuje.</summary>
-        <returns>Typizowany obiekt <paramref name="T" /> wymagane, jeśli jest obecny lub <see langword="null" /> Jeśli tak nie jest.</returns>
+        <typeparam name="T">Typ obiektu, dla którego Metoda wykonuje zapytanie.</typeparam>
+        <summary>Zwraca żądany obiekt typu, jeśli jest obecny, z odpowiedniej warstwy w stosie kanału lub <see langword="null" /> , jeśli nie istnieje.</summary>
+        <returns>Obiekt <paramref name="T" /> typu, którego zażądano, jeśli <see langword="null" /> jest obecny lub nie jest.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Służy do pobrania ze stosu kanał funkcji, wymagań i parametry. Jeśli fabryka kanałów obsługuje zwraca żądany obiekt, zwraca go. W przeciwnym razie deleguje ona wywołania do następnego poziomu w stosie. Jeśli otrzymuje na dole stosu i nie fabryki kanałów obsługiwane żądany obiekt, a następnie metoda zwraca `null`.  
+ Służy do pobierania możliwości, wymagań i parametrów ze stosu kanału. Jeśli Fabryka kanałów obsługuje zwracanie żądanego obiektu, zwraca go. W przeciwnym razie deleguje wywołanie do następnego poziomu w stosie. Jeśli zostanie umieszczony na końcu stosu i żadna Fabryka kanałów nie obsługuje żądanego obiektu, metoda zwraca `null`.  
   
- `T` jest zwykle niektóre interfejsem kanału, który może obsługiwać fabryki kanałów. Jeśli na przykład `GetProperty<IChannelListener>` nazywa się w fabryce Kanał dupleksowy, zwraca podstawowego odbiornika.  
+ `T`jest zazwyczaj interfejsem kanału obsługiwanym przez fabrykę kanałów. Jeśli na przykład `GetProperty<IChannelListener>` jest wywoływana w fabryce kanału dupleksowego, zwraca odpowiedni odbiornik.  
   
  ]]></format>
         </remarks>
@@ -475,12 +475,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Inicjuje punkt końcowy usługi fabryki kanału.</summary>
+        <summary>Inicjuje punkt końcowy usługi fabryki kanałów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Musi mieć adres zainicjować punktu końcowego, ale może zawierać tylko powiązania lub konfiguracji zamiast pełnego punktu końcowego.  
+ Musisz mieć adres, aby zainicjować punkt końcowy, ale może mieć tylko powiązanie lub konfigurację, a nie pełny punkt końcowy.  
   
  ]]></format>
         </remarks>
@@ -516,17 +516,17 @@
         <Parameter Name="endpoint" Type="System.ServiceModel.Description.ServiceEndpoint" />
       </Parameters>
       <Docs>
-        <param name="endpoint"><see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> Zainicjować fabryki kanałów za pomocą.</param>
-        <summary>Inicjuje punkt końcowy usługi fabryki kanału z określonym punktem końcowym.</summary>
+        <param name="endpoint">W <see cref="T:System.ServiceModel.Description.ServiceEndpoint" /> celu zainicjowania fabryki kanałów przy użyciu.</param>
+        <summary>Inicjuje punkt końcowy usługi fabryki kanałów z określonym punktem końcowym.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29> Jeśli masz tylko powiązania. Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29> w przypadku konfiguracji.  
+ Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29> , jeśli masz tylko powiązanie. Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29> , jeśli masz konfigurację.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="endpoint" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="endpoint" />jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="InitializeEndpoint">
@@ -559,14 +559,14 @@
         <Parameter Name="address" Type="System.ServiceModel.EndpointAddress" />
       </Parameters>
       <Docs>
-        <param name="binding"><see cref="T:System.ServiceModel.Channels.Binding" /> Za pomocą którego można zainicjować fabryki kanałów.</param>
-        <param name="address"><see cref="T:System.ServiceModel.EndpointAddress" /> Za pomocą którego można zainicjować fabryki kanałów.</param>
-        <summary>Inicjuje punkt końcowy usługi fabryki kanału przy użyciu określonego powiązania i adresu.</summary>
+        <param name="binding">, <see cref="T:System.ServiceModel.Channels.Binding" /> Za pomocą którego ma zostać zainicjowana Fabryka kanałów.</param>
+        <param name="address">, <see cref="T:System.ServiceModel.EndpointAddress" /> Za pomocą którego ma zostać zainicjowana Fabryka kanałów.</param>
+        <summary>Inicjuje punkt końcowy usługi fabryki kanałów z określonym powiązaniem i adresem.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29> w przypadku konfiguracji.  
+ Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.String%2CSystem.ServiceModel.EndpointAddress%29> , jeśli masz konfigurację.  
   
  ]]></format>
         </remarks>
@@ -582,8 +582,8 @@
       <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.String,System.ServiceModel.EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       <MemberSignature Language="VB.NET" Value="Protected Sub InitializeEndpoint (configurationName As String, remoteAddress As EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       <MemberSignature Language="C++ CLI" Value="protected:&#xA; void InitializeEndpoint(System::String ^ configurationName, System::ServiceModel::EndpointAddress ^ remoteAddress);" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
-      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, address)" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2" />
-      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, remoteAddress)" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, address)" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;netcore-1.0;netcore-1.1;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinios-10.8;xamarinmac-3.0" />
+      <MemberSignature Language="F#" Value="member this.InitializeEndpoint : string * System.ServiceModel.EndpointAddress -&gt; unit" Usage="channelFactory.InitializeEndpoint (configurationName, remoteAddress)" FrameworkAlternate="xamarinandroid-7.1" />
       <MemberSignature Language="DocId" Value="M:System.ServiceModel.ChannelFactory.InitializeEndpoint(System.String,System.ServiceModel.EndpointAddress)" FrameworkAlternate="xamarinandroid-7.1;dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;dotnet-uwp-10.0" />
       <MemberType>Method</MemberType>
       <AssemblyInfo>
@@ -610,15 +610,15 @@
         <Parameter Name="remoteAddress" Type="System.ServiceModel.EndpointAddress" Index="1" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="configurationName">Nazwa pliku konfiguracji używane do zainicjowania fabryki kanałów.</param>
-        <param name="address"><see cref="T:System.ServiceModel.EndpointAddress" /> Za pomocą którego można zainicjować fabryki kanałów.</param>
+        <param name="configurationName">Nazwa pliku konfiguracji używanego do inicjowania fabryki kanałów.</param>
+        <param name="address">, <see cref="T:System.ServiceModel.EndpointAddress" /> Za pomocą którego ma zostać zainicjowana Fabryka kanałów.</param>
         <param name="remoteAddress">To be added.</param>
-        <summary>Inicjuje punkt końcowy usługi fabryki kanału z określonego adresu i konfiguracji.</summary>
+        <summary>Inicjuje punkt końcowy usługi fabryki kanałów z określonym adresem i konfiguracją.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29> Jeśli masz tylko powiązania.  
+ Użyj <xref:System.ServiceModel.ChannelFactory.InitializeEndpoint%28System.ServiceModel.Channels.Binding%2CSystem.ServiceModel.EndpointAddress%29> , jeśli masz tylko powiązanie.  
   
  ]]></format>
         </remarks>
@@ -652,12 +652,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Kończy wewnętrzna fabryka kanałów bieżącego fabryki kanału.</summary>
+        <summary>Kończy wewnętrzną fabrykę kanałów bieżącej fabryki kanałów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.ServiceModel.ChannelFactory.OnAbort%2A> Metoda jest wywoływana dla fabryki, po przechodzi do stanu zamknięcia, jeśli <xref:System.ServiceModel.Channels.CommunicationObject.Abort%2A> metoda jest wywoływana.  
+ Metoda jest wywoływana w fabryce po przejścia do stanu zamknięcia, <xref:System.ServiceModel.Channels.CommunicationObject.Abort%2A> Jeśli metoda jest wywoływana. <xref:System.ServiceModel.ChannelFactory.OnAbort%2A>  
   
  ]]></format>
         </remarks>
@@ -695,16 +695,16 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, jak długo ma operacji do wykonania przed przekroczeniem limitu czasu.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną Zamknij na wewnętrzna fabryka kanałów bieżącego fabryki kanału, która ma obiekt stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchroniczna.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa czas zakończenia operacji przed upływem limitu czasu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna asynchroniczne operacje zamykania w wewnętrznej fabryce kanału bieżącej fabryki kanałów, z którym jest skojarzony obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda otrzymuje powiadomienia, za pośrednictwem wywołania zwrotnego, tożsamość programu obsługi zdarzeń dla tej operacji. Operacja nie została zakończona, dopóki nie zwraca asynchroniczne Zamknij na wewnętrzna fabryka kanałów lub przekroczenia limitu czasu.  
+ Ta metoda odbiera powiadomienie przez wywołanie zwrotne tożsamości programu obsługi zdarzeń dla operacji. Operacja nie zostanie ukończona, dopóki asynchroniczne zamknięcie wewnętrznej fabryki kanałów nie zwróci lub upłynie limit czasu.  
   
  ]]></format>
         </remarks>
@@ -742,16 +742,16 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, jak długo ma operacji do wykonania przed przekroczeniem limitu czasu.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną otwarte na wewnętrzna fabryka kanałów bieżącego fabryki kanału, która ma obiekt stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchroniczna.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa czas zakończenia operacji przed upływem limitu czasu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna asynchroniczne operacje otwierania w wewnętrznej fabryce kanału bieżącej fabryki kanałów, z którym jest skojarzony obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda otrzymuje powiadomienia, za pośrednictwem wywołania zwrotnego, tożsamość programu obsługi zdarzeń dla tej operacji. Operacja nie została zakończona, dopóki nie zwraca asynchroniczne open na wewnętrzna fabryka kanałów lub przekroczenia limitu czasu.  
+ Ta metoda odbiera powiadomienie przez wywołanie zwrotne tożsamości programu obsługi zdarzeń dla operacji. Operacja nie zostanie zakończona do momentu, gdy asynchroniczny element nie zostanie otwarty w wewnętrznej fabryce kanału lub upłynie limit czasu.  
   
  ]]></format>
         </remarks>
@@ -787,8 +787,8 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, jak długo ma operacji do wykonania przed przekroczeniem limitu czasu.</param>
-        <summary>Połączenia zamknięte wewnętrzna fabryka kanałów z określonym limicie czasu na ukończenie operacji.</summary>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa czas zakończenia operacji przed upływem limitu czasu.</param>
+        <summary>Wywołania blisko wewnętrznej fabryki kanałów z określonym limitem czasu na zakończenie operacji.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -822,8 +822,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.ChannelFactory.OnBeginClose(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>Kończy operację asynchroniczną Zamknij na wewnętrzna fabryka kanałów bieżącego fabryki kanału.</summary>
+        <param name="result">Zwracany przez wywołanie <see cref="M:System.ServiceModel.ChannelFactory.OnBeginClose(System.TimeSpan,System.AsyncCallback,System.Object)" />metody. <see cref="T:System.IAsyncResult" /></param>
+        <summary>Kończy asynchroniczne operacje zamykania w wewnętrznej fabryce kanału bieżącej fabryki kanałów.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -857,8 +857,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.ChannelFactory.OnBeginOpen(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>Kończy operację asynchroniczną otwarte na wewnętrzna fabryka kanałów bieżącego fabryki kanału.</summary>
+        <param name="result">Zwracany przez wywołanie <see cref="M:System.ServiceModel.ChannelFactory.OnBeginOpen(System.TimeSpan,System.AsyncCallback,System.Object)" />metody. <see cref="T:System.IAsyncResult" /></param>
+        <summary>Kończy asynchroniczne operacje otwierania w wewnętrznej fabryce kanału bieżącej fabryki kanałów.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -892,10 +892,10 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, ile operacji otwierania musi ukończyć przed przekroczeniem limitu czasu.</param>
-        <summary>Otwórz wywołań na wewnętrzna fabryka kanałów bieżącego fabryki kanału z określonym limicie czasu na ukończenie operacji.</summary>
+        <param name="timeout">Określa <see cref="T:System.TimeSpan" /> , jak długo operacja otwierania musi zostać ukończona przed upływem limitu czasu.</param>
+        <summary>Wywołania otwarte w wewnętrznej fabryce kanału bieżącej fabryki kanałów z określonym limitem czasu na zakończenie operacji.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Wewnętrzny kanał kanał bieżący <see langword="null" />.</exception>
+        <exception cref="T:System.InvalidOperationException">Wewnętrzny kanał bieżącego kanału to <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="OnOpened">
@@ -926,12 +926,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Inicjuje kopię tylko do odczytu do <see cref="T:System.ServiceModel.Description.ClientCredentials" /> obiekt fabryki kanałów.</summary>
+        <summary>Inicjuje kopię <see cref="T:System.ServiceModel.Description.ClientCredentials" /> obiektu tylko do odczytu dla fabryki kanałów.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zastąpienia, a następnie wywołuje <xref:System.ServiceModel.Channels.CommunicationObject.OnOpened%2A> metody, która jest wywoływana podczas przejścia obiektu w stanie otwartym. <xref:System.ServiceModel.Description.ClientCredentials> Obiekt jest przechowywany jako typ zachowanie punktu końcowego i jest możliwy za pośrednictwem <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> właściwości.  
+ Przesłania i wywołuje <xref:System.ServiceModel.Channels.CommunicationObject.OnOpened%2A> metodę, która jest wywoływana podczas przejścia obiektu w stan otwarty. Obiekt jest przechowywany jako zachowanie typu punktu końcowego i można do niego uzyskać dostęp <xref:System.ServiceModel.Description.ServiceEndpoint.Behaviors%2A> za pomocą właściwości. <xref:System.ServiceModel.Description.ClientCredentials>  
   
  ]]></format>
         </remarks>
@@ -965,9 +965,9 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy wewnętrzna fabryka kanałów dla bieżącego kanału.</summary>
+        <summary>Kompiluje wewnętrzną fabrykę kanałów dla bieżącego kanału.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Jest wewnętrzna fabryka kanałów fabryki kanałów <see langword="null" />.</exception>
+        <exception cref="T:System.InvalidOperationException">Wewnętrzna fabryka kanałów dla fabryki kanałów to <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="System.IDisposable.Dispose">
@@ -1000,7 +1000,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zamyka bieżący fabryki kanałów.</summary>
+        <summary>Zamyka bieżącą fabrykę kanałów.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

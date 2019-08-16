@@ -1,5 +1,5 @@
 <Type Name="AppDomainManager" FullName="System.AppDomainManager">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="24a805a0b0915703f76ce18aa4357573e7e7239c" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64238257" /></Metadata><TypeSignature Language="C#" Value="public class AppDomainManager : MarshalByRefObject" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3660a95f090568736272c604496a87dbf44df3dd" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69439263" /></Metadata><TypeSignature Language="C#" Value="public class AppDomainManager : MarshalByRefObject" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit AppDomainManager extends System.MarshalByRefObject" />
   <TypeSignature Language="DocId" Value="T:System.AppDomainManager" />
   <TypeSignature Language="VB.NET" Value="Public Class AppDomainManager&#xA;Inherits MarshalByRefObject" />
@@ -24,45 +24,45 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Oferuje zarządzane równowartość niezarządzany host.</summary>
+    <summary>Zapewnia zarządzany odpowiednik niezarządzanego hosta.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
 > [!IMPORTANT]
->  Nie używaj <xref:System.AppDomainManager> skonfigurować domenę aplikacji w programie ASP.NET. W programie ASP.NET: konfiguracji muszą być obsługiwane przez hosta.  
+>  Nie należy używać <xref:System.AppDomainManager> do konfigurowania domeny aplikacji w ASP.NET. W programie ASP.NET konfiguracja musi być obsługiwana przez hosta.  
   
- Implementowanie <xref:System.AppDomainManager> klasa umożliwia aplikacji macierzystej do wzięcia udziału w przypadku tworzenia nowych domen aplikacji. Aby zastąpić domyślną <xref:System.AppDomainManager>, identyfikowanie zestawu i typu zastąpienia <xref:System.AppDomainManager> w zmiennych środowiskowych APPDOMAIN_MANAGER_ASM i APPDOMAIN_MANAGER_TYPE lub użyj [ \<appdomainmanagerassembly — >](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagerassembly-element.md) i [ \<appdomainmanagertype — >](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagertype-element.md) elementy w pliku konfiguracji. Zestaw musi być całkowicie zaufanym i znajdować się w globalnej pamięci podręcznej lub katalog początkowy aplikacji. Typ i zestaw nazw musi być w pełni kwalifikowana w zmiennych środowiskowych. Na przykład:  
+ <xref:System.AppDomainManager> Implementacja klasy umożliwia aplikacji hostingowej uczestnictwo w tworzeniu nowych domen aplikacji. Aby zastąpić wartość domyślną <xref:System.AppDomainManager>, zidentyfikuj zestaw i typ zastąpienia <xref:System.AppDomainManager> w [ \<](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagerassembly-element.md) zmiennych środowiskowych APPDOMAIN_MANAGER_ASM i APPDOMAIN_MANAGER_TYPE lub użyj appDomainManagerAssembly > i appDomainManagerType > elementów w pliku konfiguracji. [ \<](~/docs/framework/configure-apps/file-schema/runtime/appdomainmanagertype-element.md) Zestaw musi być w pełni zaufany i znajdować się w globalnej pamięci podręcznej zestawów lub w katalogu aplikacji startowej. Nazwy typów i zestawów muszą być w pełni kwalifikowane w zmiennych środowiskowych. Na przykład:  
   
  `set APPDOMAIN_MANAGER_TYPE=MyNamespace.TestAppDomainManager`  
   
  `set APPDOMAIN_MANAGER_ASM=customappDomainmanager, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f1368f7b12a08d72`  
   
 > [!IMPORTANT]
->  Jeśli zestaw zawierający swoje podklasą <xref:System.AppDomainManager> zależy od zestawów, które są oznaczone za pomocą zasad dostępu <xref:System.Security.AllowPartiallyTrustedCallersAttribute> atrybutu (APTCA), musi zawierać te zestawy na liście, który jest przekazywany do <xref:System.AppDomainSetup.PartialTrustVisibleAssemblies%2A> właściwość <xref:System.AppDomainSetup>służy do tworzenia domen aplikacji. W przeciwnym razie, zestawy, które są oznaczone atrybutem APTCA warunkowego zostaną wyłączone.  
+>  Jeśli zestaw, który zawiera podklasę <xref:System.AppDomainManager> , zależy od zestawów, które są oznaczone atrybutem <xref:System.Security.AllowPartiallyTrustedCallersAttribute> Conditional (APTCA), należy dołączyć te zestawy do listy, <xref:System.AppDomainSetup.PartialTrustVisibleAssemblies%2A> które są przekazywane do właściwości <xref:System.AppDomainSetup>służy do tworzenia domen aplikacji. W przeciwnym razie zestawy, które są oznaczone za pomocą warunkowego atrybutu APTCA, zostaną wyłączone.  
   
- <xref:System.AppDomainManager> Zarządzanych odpowiada niezarządzany host. <xref:System.AppDomainManager> Obiekt uczestniczy w przypadku tworzenia nowych domen aplikacji w ramach procesu i dostosować nowy <xref:System.AppDomain> przed uruchomieniem innego kodu zarządzanego. <xref:System.AppDomainManager> Może też podawać menedżerów hosta, które uczestniczą w innych aspektów common language runtime wykonanie. Na przykład <xref:System.AppDomainManager> można zidentyfikować <xref:System.Security.HostSecurityManager> obiektu, który uczestniczy w decyzji dotyczących zabezpieczeń domeny aplikacji.  
-  
-> [!NOTE]
->  Tylko zestawy przyznane `FullTrust`, takich jak zestawy w globalnej pamięci podręcznej lub wskazany jako `fullTrustAssemblies` w <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> metoda może zostać załadowana w <xref:System.AppDomainManager.%23ctor%2A> Konstruktor i <xref:System.AppDomainManager.InitializeNewDomain%2A> metody.  
+ <xref:System.AppDomainManager> Jest to zarządzany odpowiednik niezarządzanego hosta. Obiekt uczestniczy w tworzeniu nowych domen aplikacji w procesie i może dostosować nowe <xref:System.AppDomain> przed uruchomieniem innego kodu zarządzanego. <xref:System.AppDomainManager> <xref:System.AppDomainManager> Może również dostarczyć menedżerów hosta, którzy uczestniczą w innych aspektach wykonywania środowiska uruchomieniowego języka wspólnego. Na przykład <xref:System.AppDomainManager> może <xref:System.Security.HostSecurityManager> identyfikować obiekt, który uczestniczy w podejmowaniu decyzji dotyczących zabezpieczeń domeny aplikacji.  
   
 > [!NOTE]
->  Ta klasa zawiera żądanie łącza i dziedziczenia na poziomie klasy. Element <xref:System.Security.SecurityException> jest zgłaszany, gdy bezpośredniego obiektu wywołującego lub Klasa pochodna nie ma uprawnień infrastruktury. Aby uzyskać szczegółowe informacje na temat wymaganych zabezpieczeń, zobacz [zapotrzebowania na łącza](~/docs/framework/misc/link-demands.md) i [Inheritancedemand](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/x4yx82e6(v=vs.100)).  
+>  Tylko `FullTrust`przyznanych zestawów, takich jak zestawy w globalnej pamięci podręcznej `fullTrustAssemblies` zestawów lub <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> zidentyfikowane jako w metodzie, <xref:System.AppDomainManager.%23ctor%2A> <xref:System.AppDomainManager.InitializeNewDomain%2A> można załadować w konstruktorze i metodzie.  
+  
+> [!NOTE]
+>  Ta klasa zawiera żądanie linku i żądanie dziedziczenia na poziomie klasy. Występuje <xref:System.Security.SecurityException> , gdy bezpośredni obiekt wywołujący lub Klasa pochodna nie ma uprawnienia do infrastruktury. Aby uzyskać szczegółowe informacje o wymaganiach dotyczących zabezpieczeń, zobacz Wymagania dotyczące [powiązań](~/docs/framework/misc/link-demands.md) i [wymagania](https://docs.microsoft.com/previous-versions/dotnet/netframework-4.0/x4yx82e6(v=vs.100))dotyczące dziedziczenia.  
   
    
   
 ## Examples  
- W poniższym przykładzie przedstawiono bardzo prosta implementacja <xref:System.AppDomainManager>.  
+ W poniższym przykładzie przedstawiono bardzo prostą implementację <xref:System.AppDomainManager>programu.  
   
  [!code-csharp[System.AppDomainManager#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#1)]
  [!code-vb[System.AppDomainManager#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#1)]  
   
  ]]></format>
     </remarks>
-    <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie ma odpowiednich uprawnień. Zobacz sekcję wymagania.</exception>
+    <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie ma odpowiednich uprawnień. Zapoznaj się z sekcją wymagania.</exception>
     <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ten element członkowski nie może być używany przez częściowo zaufany lub przejrzysty kod.</permission>
-    <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">zapoznać się z pochodnymi klasy, aby podłączyć kod wykonywalny do środowiska uruchomieniowego języka wspólnego infrastruktury hostingu. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" />.</permission>
+    <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">w przypadku klas pochodnych aby podłączyć kod wykonywalny do infrastruktury hostingu środowiska uruchomieniowego języka wspólnego. Powiązane wartość typu wyliczeniowego: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.Infrastructure" />.</permission>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -87,7 +87,7 @@
 ## Remarks  
   
 > [!NOTE]
->  Tylko zestawy przyznane `FullTrust`, takich jak zestawy w globalnej pamięci podręcznej lub wskazany jako `fullTrustAssemblies` w <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> metoda może zostać załadowana w <xref:System.AppDomainManager.%23ctor%2A> Konstruktor i <xref:System.AppDomainManager.InitializeNewDomain%2A> metody.  
+>  Tylko `FullTrust`przyznanych zestawów, takich jak zestawy w globalnej pamięci podręcznej `fullTrustAssemblies` zestawów lub <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> zidentyfikowane jako w metodzie, <xref:System.AppDomainManager.%23ctor%2A> <xref:System.AppDomainManager.InitializeNewDomain%2A> można załadować w konstruktorze i metodzie.  
   
  ]]></format>
         </remarks>
@@ -112,13 +112,13 @@
         <ReturnType>System.Runtime.Hosting.ApplicationActivator</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera aktywator aplikacji obsługującej aktywacji dodatki i aplikacje oparte na manifeście dla domeny.</summary>
+        <summary>Pobiera aktywator aplikacji, który obsługuje aktywację dodatków i aplikacji opartych na manifeście dla domeny.</summary>
         <value>Aktywator aplikacji.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Istnieje jedno wystąpienie wyznaczonym <xref:System.Runtime.Hosting.ApplicationActivator> klasy w każdym <xref:System.AppDomain> do której wszystkie dodatek i oparte na manifeście aplikacji są kierowane wywołania aktywacji. <xref:System.AppDomainManager> Dla bieżącego <xref:System.AppDomain> podać swój własny niestandardowy <xref:System.Runtime.Hosting.ApplicationActivator>, lub wystąpienie domyślne <xref:System.Runtime.Hosting.ApplicationActivator> zostanie utworzony.  
+ Istnieje pojedyncze wyznaczone wystąpienie <xref:System.Runtime.Hosting.ApplicationActivator> klasy w każdym <xref:System.AppDomain> z nich, do którego są kierowane wszystkie wywołania aktywacji aplikacji opartej na manifeście. Dla bieżącego <xref:System.AppDomain> elementu można podać własne niestandardowe <xref:System.Runtime.Hosting.ApplicationActivator>lub tworzone jest wystąpienie wartości domyślnej <xref:System.Runtime.Hosting.ApplicationActivator>. <xref:System.AppDomainManager>  
   
  ]]></format>
         </remarks>
@@ -145,16 +145,16 @@
         <Parameter Name="state" Type="System.Security.SecurityState" />
       </Parameters>
       <Docs>
-        <param name="state">Podklasa klasy <see cref="T:System.Security.SecurityState" /> określający, którego stan zabezpieczeń jest żądanej operacji.</param>
+        <param name="state">Podklasa <see cref="T:System.Security.SecurityState" /> , która identyfikuje operację, której stan zabezpieczeń jest żądany.</param>
         <summary>Wskazuje, czy określona operacja jest dozwolona w domenie aplikacji.</summary>
-        <returns><see langword="true" /> Jeśli host zezwala na operację określoną przez <paramref name="state" /> być wykonywane w domenie aplikacji; w przeciwnym razie <see langword="false" />.</returns>
+        <returns><see langword="true" />Jeśli host zezwala na wykonanie operacji określonej przez <paramref name="state" /> program w domenie aplikacji; w przeciwnym razie,. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Domyślna implementacja tej metody zwraca `false`.  
   
- Ta metoda jest wywoływana, gdy <xref:System.IO.IsolatedStorage.IsolatedStorageFile.IncreaseQuotaTo%2A?displayProperty=nameWithType> Aby zwiększyć limit przydziału wydzielona pamięć masowa została wywołana metoda. Można zastąpić aplikacji, która hostuje środowisko uruchomieniowe języka wspólnego (CLR) <xref:System.AppDomainManager.CheckSecuritySettings%2A> metodę w celu decyzji dotyczących zasad na podstawie <xref:System.IO.IsolatedStorage.IsolatedStorageSecurityState> obiektu (który dziedziczy <xref:System.Security.SecurityState>), a następnie można umożliwić lub uniemożliwić wzrost. Na przykład host może monitować użytkownika końcowego, aby zatwierdzić lub odrzucić żądanie, aby zwiększyć limit przydziału. Implementacja hosta <xref:System.AppDomainManager.CheckSecuritySettings%2A> należy wziąć pod uwagę możliwości ataków typu "odmowa usługi". Na przykład jego powinien zostać wyświetlony monit użytkownika tylko wtedy, gdy metoda jest wywoływana ze zdarzenia zainicjowane przez użytkownika, takie jak kliknięcie przycisku.  
+ Ta metoda jest wywoływana w przypadku <xref:System.IO.IsolatedStorage.IsolatedStorageFile.IncreaseQuotaTo%2A?displayProperty=nameWithType> wywołania metody w celu zwiększenia limitu przydziału magazynu izolowanego. Aplikacja, która hostuje środowisko uruchomieniowe języka wspólnego (CLR), <xref:System.AppDomainManager.CheckSecuritySettings%2A> może przesłonić metodę, aby wykonać <xref:System.IO.IsolatedStorage.IsolatedStorageSecurityState> decyzje dotyczące zasad na <xref:System.Security.SecurityState>podstawie obiektu (który dziedziczy), a następnie zezwolić na zwiększenie lub go zapobiec. Na przykład host może monitować użytkownika końcowego o zatwierdzenie lub odrzucenie żądania zwiększenia limitu przydziału. Implementacja <xref:System.AppDomainManager.CheckSecuritySettings%2A> hosta powinna wziąć pod uwagę możliwość ataków typu "odmowa usługi". Na przykład powinien monitować użytkownika tylko wtedy, gdy metoda jest wywoływana z zdarzenia zainicjowanego przez użytkownika, takiego jak kliknięcie przycisku.  
   
  ]]></format>
         </remarks>
@@ -189,21 +189,21 @@
       </Parameters>
       <Docs>
         <param name="friendlyName">Przyjazna nazwa domeny.</param>
-        <param name="securityInfo">Ustaw obiekt, który zawiera dowód mapowany za pomocą zasad zabezpieczeń można ustanowić uprawnień najwyższego elementu stosu.</param>
+        <param name="securityInfo">Obiekt, który zawiera dowody zamapowane za pomocą zasad zabezpieczeń w celu ustanowienia zestawu uprawnień dla górnego stosu.</param>
         <param name="appDomainInfo">Obiekt, który zawiera informacje o inicjalizacji domeny aplikacji.</param>
-        <summary>Zwraca domeny nowej lub istniejącej aplikacji.</summary>
-        <returns>Domena nowej lub istniejącej aplikacji.</returns>
+        <summary>Zwraca nową lub istniejącą domenę aplikacji.</summary>
+        <returns>Nowa lub Istniejąca domena aplikacji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Przyjazna nazwa, określony przez `friendlyName` parametru może być wyświetlany w interfejsie użytkownika do identyfikowania domeny. Aby uzyskać więcej informacji, zobacz <xref:System.AppDomain.FriendlyName%2A> właściwości.  
+ Przyjazna nazwa określona przez `friendlyName` parametr może być wyświetlana w interfejsie użytkownika w celu identyfikowania domeny. Aby uzyskać więcej informacji, zobacz <xref:System.AppDomain.FriendlyName%2A> właściwość.  
   
- Wartość domyślna <xref:System.AppDomainManager.CreateDomain%2A> metoda wywołuje chronionej <xref:System.AppDomainManager.CreateDomainHelper%2A> metodę w celu utworzenia <xref:System.AppDomain>. Przesłonięcia tej metody nie trzeba wywoływać <xref:System.AppDomainManager.CreateDomainHelper%2A> metody, ale może zwrócić istniejącej domeny.  
+ Metoda Domyślna <xref:System.AppDomainManager.CreateDomain%2A> wywołuje metodę chronioną <xref:System.AppDomainManager.CreateDomainHelper%2A> w celu utworzenia <xref:System.AppDomain>. Zastąpienia tej metody nie muszą wywoływać metody, <xref:System.AppDomainManager.CreateDomainHelper%2A> ale mogą zwracać istniejącą domenę.  
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Przy dziedziczeniu z <see cref="T:System.AppDomainManager" /> klasy, a także Przesłoń <see cref="M:System.AppDomainManager.CreateDomain(System.String,System.Security.Policy.Evidence,System.AppDomainSetup)" /> metody, można wykonywać aplikacji niestandardowej domeny inicjowania działania przed wywołaniem <see cref="M:System.AppDomainManager.CreateDomainHelper(System.String,System.Security.Policy.Evidence,System.AppDomainSetup)" /> metody lub wywołania metody pomocniczej w ogóle.  Na przykład, można zmodyfikować dowód przekazany jako <paramref name="securityInfo" />, zaktualizuj pola skojarzonego <see cref="T:System.AppDomainSetup" />, ani nie używaj ponownie istniejącej domeny.</para></block>
+        <block subset="none" type="overrides"><para>Gdy dziedziczysz z <see cref="T:System.AppDomainManager" /> klasy i <see cref="M:System.AppDomainManager.CreateDomain(System.String,System.Security.Policy.Evidence,System.AppDomainSetup)" /> zastąpisz metodę, możesz wykonać niestandardowe działania <see cref="M:System.AppDomainManager.CreateDomainHelper(System.String,System.Security.Policy.Evidence,System.AppDomainSetup)" /> inicjowania domeny aplikacji przed wywołaniem metody lub w ogóle nie wywoływać metody pomocnika.  Na przykład można zmodyfikować dowody przesłane w ramach <paramref name="securityInfo" />programu, zaktualizować pola skojarzone <see cref="T:System.AppDomainSetup" />lub ponownie użyć domeny wyjściowej.</para></block>
       </Docs>
     </Member>
     <Member MemberName="CreateDomainHelper">
@@ -235,22 +235,22 @@
       </Parameters>
       <Docs>
         <param name="friendlyName">Przyjazna nazwa domeny.</param>
-        <param name="securityInfo">Ustaw obiekt, który zawiera dowód mapowany za pomocą zasad zabezpieczeń można ustanowić uprawnień najwyższego elementu stosu.</param>
+        <param name="securityInfo">Obiekt, który zawiera dowody zamapowane za pomocą zasad zabezpieczeń w celu ustanowienia zestawu uprawnień dla górnego stosu.</param>
         <param name="appDomainInfo">Obiekt, który zawiera informacje o inicjalizacji domeny aplikacji.</param>
-        <summary>Udostępnia metodę pomocnika, aby utworzyć domenę aplikacji.</summary>
+        <summary>Udostępnia metodę pomocnika do tworzenia domeny aplikacji.</summary>
         <returns>Nowo utworzona domena aplikacji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda pomocnika chronionych obsługuje tworzenie nowej domeny aplikacji.  
+ Ta zabezpieczona Metoda pomagająca obsługuje tworzenie nowej domeny aplikacji.  
   
- Ta przyjazna nazwa, określony przez `friendlyName` parametru może być wyświetlany w interfejsie użytkownika do identyfikowania domeny. Aby uzyskać więcej informacji, zobacz <xref:System.AppDomain.FriendlyName%2A> właściwości.  
+ Ta przyjazna nazwa określona przez `friendlyName` parametr może być wyświetlana w interfejsie użytkownika w celu identyfikowania domeny. Aby uzyskać więcej informacji, zobacz <xref:System.AppDomain.FriendlyName%2A> właściwość.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="friendlyName" /> jest <see langword="null" />.</exception>
-        <permission cref="T:System.Security.Permissions.SecurityPermission">do kontrolowania dowodów. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Wyliczenie skojarzone: <see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence" /></permission>
+        <exception cref="T:System.ArgumentNullException"><paramref name="friendlyName" />jest <see langword="null" />.</exception>
+        <permission cref="T:System.Security.Permissions.SecurityPermission">do kontrolowania dowodów. Akcja zabezpieczeń: <see cref="F:System.Security.Permissions.SecurityAction.Demand" />. Skojarzone Wyliczenie:<see cref="F:System.Security.Permissions.SecurityPermissionFlag.ControlEvidence" /></permission>
       </Docs>
     </Member>
     <Member MemberName="EntryAssembly">
@@ -276,13 +276,13 @@
         <ReturnType>System.Reflection.Assembly</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera zestaw wejścia dla aplikacji.</summary>
-        <value>Zestaw wejścia dla aplikacji.</value>
+        <summary>Pobiera zestaw wpisów dla aplikacji.</summary>
+        <value>Zestaw wpisu dla aplikacji.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli aplikacja jest aktywowana w manifeście aplikacji, zestaw wpis jest określana na podstawie manifestu aplikacji. Aplikacja nie jest manifestem aktywowany, zestawu zapisu czy pliku wykonywalnego procesu w domyślnej domeny aplikacji. W innych domenach aplikacji zestaw wpis jest pierwszy plik wykonywalny, który został wykonany przez <xref:System.AppDomain.ExecuteAssembly%2A?displayProperty=nameWithType> metody.  
+ Jeśli aplikacja jest aplikacją aktywowaną w manifeście, zestaw wpisu jest określany na podstawie manifestu aplikacji. Jeśli aplikacja nie jest aktywowana w manifeście, zestaw wpisu jest plikiem wykonywalnym procesu w domyślnej domenie aplikacji. W innych domenach aplikacji zestaw wejściowy jest pierwszym plikiem wykonywalnym, który został wykonany <xref:System.AppDomain.ExecuteAssembly%2A?displayProperty=nameWithType> przez metodę.  
   
  ]]></format>
         </remarks>
@@ -306,13 +306,13 @@
         <ReturnType>System.Threading.HostExecutionContextManager</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera hosta Menedżera kontekstu wykonywania, który zarządza przepływem kontekstu wykonywania.</summary>
-        <value>Host Menedżera kontekstu wykonywania.</value>
+        <summary>Pobiera Menedżera kontekstu wykonywania hosta, który zarządza przepływem kontekstu wykonania.</summary>
+        <value>Menedżer kontekstu wykonywania hosta.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta właściwość umożliwia hosta w celu zapewnienia <xref:System.Threading.HostExecutionContextManager> , mogą brać udział w przepływu kontekstu wykonania przez wywołania asynchronicznego.  
+ Ta właściwość umożliwia hostowi określenie <xref:System.Threading.HostExecutionContextManager> , które może uczestniczyć w przepływie kontekstu wykonywania w wywołaniach asynchronicznych.  
   
  ]]></format>
         </remarks>
@@ -336,18 +336,18 @@
         <ReturnType>System.Security.HostSecurityManager</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera Menedżera zabezpieczeń hosta, który uczestniczy w usłudze security decyzji dla domeny aplikacji.</summary>
+        <summary>Pobiera Menedżera zabezpieczeń hosta, który uczestniczy w decyzjach o zabezpieczeniach dla domeny aplikacji.</summary>
         <value>Menedżer zabezpieczeń hosta.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta właściwość umożliwia hosta w celu zapewnienia <xref:System.Security.HostSecurityManager> do wzięcia udziału w decyzji dotyczących zabezpieczeń dla domeny aplikacji.  
+ Ta właściwość umożliwia hostowi zapewnienie <xref:System.Security.HostSecurityManager> udziału w decyzjach o zabezpieczeniach dla domeny aplikacji.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano nadpisanie <xref:System.AppDomainManager.HostSecurityManager%2A> właściwość Menedżer domeny aplikacji niestandardowych. Ten przykład kodu jest częścią większego przykładu przewidzianego dla <xref:System.AppDomainManager> klasy.  
+ W poniższym przykładzie pokazano przesłonięcie <xref:System.AppDomainManager.HostSecurityManager%2A> właściwości dla niestandardowego Menedżera domeny aplikacji. Ten przykład kodu jest częścią większego przykładu dostarczonego dla <xref:System.AppDomainManager> klasy.  
   
  [!code-csharp[System.AppDomainManager#3](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#3)]
  [!code-vb[System.AppDomainManager#3](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#3)]  
@@ -374,8 +374,8 @@
         <ReturnType>System.AppDomainManagerInitializationOptions</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera flagi inicjowania dla menedżerów domeny niestandardowej aplikacji.</summary>
-        <value>Bitowa kombinacja wartości wyliczenia, które opisują inicjowania akcję do wykonania. Wartość domyślna to <see cref="F:System.AppDomainManagerInitializationOptions.None" />.</value>
+        <summary>Pobiera flagi inicjalizacji dla niestandardowych menedżerów domeny aplikacji.</summary>
+        <value>Bitowa kombinacja wartości wyliczenia opisujących akcję inicjalizacji do wykonania. Wartość domyślna to <see cref="F:System.AppDomainManagerInitializationOptions.None" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -413,21 +413,21 @@
 ## Remarks  
   
 > [!IMPORTANT]
->  Nie należy używać tej metody można zainicjować domenę aplikacji w programie ASP.NET. W programie ASP.NET: konfiguracji muszą być obsługiwane przez hosta. Jeśli używasz tej metody można zainicjować domenę aplikacji hosta zgłasza <xref:System.InvalidOperationException> podczas próby zainicjowania domeny aplikacji. Komunikat o wyjątku wskazuje, że już wystąpiła że inicjowanie.  
+>  Nie należy używać tej metody do inicjowania domeny aplikacji w ASP.NET. W programie ASP.NET konfiguracja musi być obsługiwana przez hosta. Jeśli ta metoda zostanie użyta do zainicjowania domeny aplikacji, Host zgłasza <xref:System.InvalidOperationException> , gdy zostanie podjęta próba zainicjowania domeny aplikacji. Komunikat o wyjątku wskazuje, że inicjalizacja już się nie poszło.  
   
- Ta metoda jest wywoływana bezpośrednio po konstruktora. Wartość domyślna <xref:System.AppDomainManager.InitializeNewDomain%2A> implementacji nic nie robi.  Implementacja niestandardowa można zdefiniować klasy wewnętrzne i delegatów, skonfiguruj interfejs za pomocą interfejsu niezarządzany host lub ustawianie programów obsługi zdarzeń dla nowego <xref:System.AppDomain>.  
+ Ta metoda jest wywoływana natychmiast po konstruktorze. Domyślna <xref:System.AppDomainManager.InitializeNewDomain%2A> implementacja nie robi nic.  Implementacja niestandardowa może skonfigurować wewnętrzne klasy i Delegaty, skonfigurować interfejs z niezarządzanym interfejsem hosta lub skonfigurować programy obsługi zdarzeń dla nowego <xref:System.AppDomain>.  
   
- Ponadto dla dodatku aktywacji implementację niestandardową można zidentyfikować bieżącą <xref:System.AppDomain> jako domeny aplikacji docelowej.  
+ Ponadto, w przypadku aktywacji dodatków, implementacja niestandardowa może identyfikować bieżącą <xref:System.AppDomain> jako domenę aplikacji docelowej.  
   
- Począwszy od [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], można użyć tej metody do izolowanego domyślnej domeny aplikacji, podczas uruchamiania aplikacji lub dla zmodyfikowania piaskownicy nowej domeny aplikacji. Aby to zrobić, należy dostosować <xref:System.Security.Policy.ApplicationTrust.DefaultGrantSet%2A> i <xref:System.Security.Policy.ApplicationTrust.FullTrustAssemblies%2A> właściwości <xref:System.Security.Policy.ApplicationTrust> obiekt, który jest przypisany do <xref:System.AppDomainSetup.ApplicationTrust%2A?displayProperty=nameWithType> właściwość `appDomainInfo`, przed zainicjowaniem domeny aplikacji.  
+ Począwszy od programu [!INCLUDE[net_v40_long](~/includes/net-v40-long-md.md)], można użyć tej metody do piaskownicy domyślnej domeny aplikacji podczas uruchamiania aplikacji lub do modyfikacji piaskownicy nowej domeny aplikacji. W <xref:System.Security.Policy.ApplicationTrust.DefaultGrantSet%2A> tym celu należy dostosować właściwości i <xref:System.Security.Policy.ApplicationTrust.FullTrustAssemblies%2A> w <xref:System.Security.Policy.ApplicationTrust> <xref:System.AppDomainSetup.ApplicationTrust%2A?displayProperty=nameWithType> obiekcie, który jest przypisany do właściwości ,przedzainicjowaniemdomenyaplikacji.`appDomainInfo`  
   
 > [!NOTE]
->  Tylko zestawy przyznane `FullTrust`, takich jak zestawy w globalnej pamięci podręcznej lub wskazany jako `fullTrustAssemblies` w <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> metoda może zostać załadowana w <xref:System.AppDomainManager.%23ctor%2A> Konstruktor i <xref:System.AppDomainManager.InitializeNewDomain%2A> metody.  
+>  Tylko `FullTrust`przyznanych zestawów, takich jak zestawy w globalnej pamięci podręcznej `fullTrustAssemblies` zestawów lub <xref:System.AppDomain.CreateDomain%28System.String%2CSystem.Security.Policy.Evidence%2CSystem.AppDomainSetup%2CSystem.Security.PermissionSet%2CSystem.Security.Policy.StrongName%5B%5D%29?displayProperty=nameWithType> zidentyfikowane jako w metodzie, <xref:System.AppDomainManager.%23ctor%2A> <xref:System.AppDomainManager.InitializeNewDomain%2A> można załadować w konstruktorze i metodzie.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano nadpisanie <xref:System.AppDomainManager.InitializeNewDomain%2A> metodę dla menedżera domen niestandardowych aplikacji. Ten przykład kodu jest częścią większego przykładu przewidzianego dla <xref:System.AppDomainManager> klasy.  
+ W poniższym przykładzie pokazano przesłonięcie <xref:System.AppDomainManager.InitializeNewDomain%2A> metody dla niestandardowego Menedżera domeny aplikacji. Ten przykład kodu jest częścią większego przykładu dostarczonego dla <xref:System.AppDomainManager> klasy.  
   
  [!code-csharp[System.AppDomainManager#2](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.AppDomainManager/CS/customAppDomainManager.cs#2)]
  [!code-vb[System.AppDomainManager#2](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.AppDomainManager/VB/customAppDomainManager.vb#2)]  

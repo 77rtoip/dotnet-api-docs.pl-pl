@@ -1,5 +1,5 @@
 <Type Name="ContextStack" FullName="System.ComponentModel.Design.Serialization.ContextStack">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="489d972dc27b5a50b52b2158196737e6a3cb3eca" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63904207" /></Metadata><TypeSignature Language="C#" Value="public sealed class ContextStack" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="274074fcc2f05c2a1b704bab4c571f6c64b93d8c" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69331192" /></Metadata><TypeSignature Language="C#" Value="public sealed class ContextStack" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ContextStack extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.ComponentModel.Design.Serialization.ContextStack" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ContextStack" />
@@ -27,23 +27,23 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Udostępnia obiekt stosu, który może służyć przez element serializujący do udostępnienia informacji serializatory zagnieżdżonych.</summary>
+    <summary>Udostępnia obiekt stosu, który może być używany przez serializator, aby udostępnić informacje dla zagnieżdżonych serializatorów.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Niektóre serializatory wymagają informacji o kontekście poprawnie utrwalenia stanu obiektu. <xref:System.ComponentModel.Design.Serialization.ContextStack> Klasa umożliwia serializator ustawić danych o kontekście obiektu, który jest serializowana stos, w którym inny element serializujący do niego dostęp. Wartość <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context%2A> właściwości są dostarczane przez <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> udostępnianie informacji do użytku niektóre serializatory.  
+ Niektóre serializatory wymagają informacji o kontekście obiektu, aby prawidłowo utrzymać swój stan. <xref:System.ComponentModel.Design.Serialization.ContextStack> Klasa umożliwia serializatorowi ustawianie danych dotyczących kontekstu obiektu, który jest serializowany do stosu, do którego inny serializator może uzyskać do niego dostęp. Wartość <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager.Context%2A> właściwości jest zapewniana <xref:System.ComponentModel.Design.Serialization.IDesignerSerializationManager> przez, aby udostępnić informacje o użyciu do niektórych serializatorów.  
   
- Stos kontekstu jest przydatne, ponieważ głęboko zagnieżdżone proces serializacji, dokument projektowy i obiekty na każdym poziomie zagnieżdżania może wymagać informacje o kontekście do poprawnie utrwalenia stanu obiektu. Element serializujący można ustawić obiekt kontekstu stosu przed wywołaniem zagnieżdżonych serializatora. Każdy obiekt ustawiony na stosie powinny zostać usunięte przez serializator, które ją ustawiło, po powrocie wywołanie zagnieżdżonej serializatora.  
+ Stos kontekstowy jest przydatny, ponieważ proces serializowania dokumentu projektowego może być głęboko zagnieżdżony, a obiekty na każdym poziomie zagnieżdżania mogą wymagać poprawnego zachowania informacji o kontekście, aby zachować stan obiektu. Serializator może ustawić obiekt kontekstu dla stosu przed wywołaniem zagnieżdżonego serializatora. Każdy obiekt ustawiony na stos powinien zostać usunięty przez serializator, który go ustawi po wywołaniu zagnieżdżonego serializatora.  
   
- Na ogół obiekty na stosie zawierają informacje o kontekście bieżącego obiektu, która jest deserializowana. Serializator nadrzędnego dodaje informacje o kontekście stosu o następny obiekt, który można serializować, wywołuje odpowiednią serializator i, po zakończeniu element serializujący, wykonywania dla obiektu, usuwa informacje o kontekście ze stosu. Jest implementacja każdego elementu serializującego, aby ustalić, jakie obiekty Pobierz przesunięte na ten stos.  
+ Zazwyczaj obiekty na stosie zawierają informacje o kontekście bieżącego obiektu, który jest serializowany. Serializator nadrzędny dodaje informacje kontekstu do stosu dotyczące następnego obiektu do serializacji, wywołuje odpowiedni serializator i, gdy serializator kończy wykonywanie na obiekcie, usuwa informacje kontekstowe ze stosu. Aby określić, które obiekty są wypychane na tym stosie, należy do implementacji każdego programu szeregującego.  
   
- Na przykład obiekt z właściwością o nazwie `Enabled` ma typ danych <xref:System.Boolean>. Jeśli element serializujący zapisuje tę wartość do strumienia danych, może być konieczne w tym kontekście typu właściwości, które są zapisywane. Serializator nie ma tych informacji, ponieważ tylko jest zobowiązany do zapisania <xref:System.Boolean> wartość. Może przekazać tę informację do serializatora, wypychać serializator nadrzędnego <xref:System.ComponentModel.PropertyDescriptor> wskazującej `Enabled` właściwość Stos kontekstu.  
+ Na przykład obiekt z właściwością o nazwie `Enabled` ma <xref:System.Boolean>typ danych. Jeśli serializator zapisuje tę wartość do strumienia danych, może być konieczne dołączenie kontekstu lub typu właściwości, którą zapisuje. Serializator nie ma tych informacji, ponieważ nakazuje tylko zapisanie <xref:System.Boolean> wartości. Aby przekazać te informacje do serializatora, serializator nadrzędny może wypchnąć <xref:System.ComponentModel.PropertyDescriptor> , który wskazuje `Enabled` właściwość na stosie kontekstu.  
   
    
   
 ## Examples  
- Poniższy przykład kodu demonstruje sposób użycia <xref:System.ComponentModel.Design.Serialization.ContextStack> do wypychania, a następnie usuń wartości 10.  
+ Poniższy przykład kodu demonstruje użycie <xref:System.ComponentModel.Design.Serialization.ContextStack> do wypchnięcia, a następnie usunięcie 10 wartości.  
   
  [!code-cpp[ContextStackExample#1](~/samples/snippets/cpp/VS_Snippets_Winforms/ContextStackExample/CPP/class1.cpp#1)]
  [!code-csharp[ContextStackExample#1](~/samples/snippets/csharp/VS_Snippets_Winforms/ContextStackExample/CS/class1.cs#1)]
@@ -51,7 +51,7 @@
   
  ]]></format>
     </remarks>
-    <permission cref="T:System.Security.NamedPermissionSet">Aby uzyskać pełny dostęp do zasobów systemowych. Zapotrzebowanie wartości: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />, <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />. Skojarzony stan:</permission>
+    <permission cref="T:System.Security.NamedPermissionSet">Aby uzyskać pełny dostęp do zasobów systemowych. Wartości popytu: <see cref="F:System.Security.Permissions.SecurityAction.LinkDemand" />, <see cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand" />. Stan skojarzony:</permission>
     <altmember cref="T:System.ComponentModel.Design.Serialization.IDesignerSerializationManager" />
   </Docs>
   <Members>
@@ -91,7 +91,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- W poniższym przykładzie kodu pokazano tworzenie <xref:System.ComponentModel.Design.Serialization.ContextStack> wystąpienia.  
+ Poniższy przykład kodu demonstruje tworzenie <xref:System.ComponentModel.Design.Serialization.ContextStack> wystąpienia.  
   
  [!code-cpp[ContextStackExample#2](~/samples/snippets/cpp/VS_Snippets_Winforms/ContextStackExample/CPP/class1.cpp#2)]
  [!code-csharp[ContextStackExample#2](~/samples/snippets/csharp/VS_Snippets_Winforms/ContextStackExample/CS/class1.cs#2)]
@@ -133,16 +133,16 @@
       </Parameters>
       <Docs>
         <param name="context">Obiekt kontekstu do dołączenia do stosu.</param>
-        <summary>Dołącza obiekt na koniec stosu, a nie wypychania go na górze stosu.</summary>
+        <summary>Dołącza obiekt na końcu stosu, zamiast wypchnięcia go na górze stosu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda umożliwia serializator do komunikacji z innymi serializatory przez dodawanie obiektów danych kontekstowych, które nie mają zostać usunięte w kolejności. Nie ma możliwości można usunąć obiektu, który został dołączony na końcu stosu bez usuwania wszystkich innych obiektów.  
+ Ta metoda umożliwia serializatorowi komunikowanie się z innymi serializatorami przez dodanie kontekstowych obiektów danych, które nie muszą zostać usunięte w kolejności. Nie ma możliwości usunięcia obiektu, który został dołączony na końcu stosu bez usuwania wszystkich innych obiektów.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="context" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="context" />jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Current">
@@ -174,13 +174,13 @@
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera bieżący obiekt na stosie.</summary>
-        <value>Bieżący obiekt na stosie, lub <see langword="null" /> Jeśli żadne obiekty nie zostały przekazane.</value>
+        <summary>Pobiera bieżący obiekt ze stosu.</summary>
+        <value>Bieżący obiekt na stosie lub <see langword="null" /> Jeśli żadne obiekty nie zostały wypchnięte.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący obiekt jest obiekt w górnej części stosu lub obiekt, który został ostatnio dodany do stosu.  
+ Bieżący obiekt jest obiektem w górnej części stosu lub obiekt został ostatnio dodany do stosu.  
   
  ]]></format>
         </remarks>
@@ -228,11 +228,11 @@
         <Parameter Name="level" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="level">Poziom obiektu do pobrania na stosie. Poziom 0 to Szczyt stosu, poziom 1 jest dalej w dół, i tak dalej. Ten poziom musi być mniejsza od 0. Jeśli poziom jest większa niż liczba poziomów na stosie, zwraca <see langword="null" />.</param>
+        <param name="level">Poziom obiektu do pobrania na stosie. Poziom 0 to Górna część stosu, poziom 1 jest następny w dół i tak dalej. Ten poziom musi mieć wartość 0 lub większą. Jeśli poziom jest większy niż liczba poziomów na stosie, zwraca <see langword="null" />.</param>
         <summary>Pobiera obiekt na stosie na określonym poziomie.</summary>
-        <value>Obiekt na stosie na określonym poziomie lub <see langword="null" /> Jeśli żaden obiekt nie istnieje na tym samym poziomie.</value>
+        <value>Obiekt na stosie na określonym poziomie lub <see langword="null" /> Jeśli żaden obiekt nie istnieje na tym poziomie.</value>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="level" /> jest mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="level" />jest mniejsza niż 0.</exception>
       </Docs>
     </Member>
     <Member MemberName="Item">
@@ -267,18 +267,18 @@
         <Parameter Name="type" Type="System.Type" />
       </Parameters>
       <Docs>
-        <param name="type">Typ do pobrania ze stosu kontekstu.</param>
-        <summary>Pobiera pierwszy obiekt na stosie, która dziedziczy po elemencie lub implementuje określonego typu.</summary>
-        <value>Pierwszy obiekt na stosie, która dziedziczy po elemencie lub implementuje określonego typu lub <see langword="null" /> Jeśli żaden obiekt na stosie implementuje tego typu.</value>
+        <param name="type">Typ do pobrania z stosu kontekstowego.</param>
+        <summary>Pobiera pierwszy obiekt ze stosu, który dziedziczy po lub implementuje określony typ.</summary>
+        <value>Pierwszy obiekt na stosie, który dziedziczy z lub implementuje określony typ lub <see langword="null" /> Jeśli żaden obiekt na stosie implementuje typ.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dokonuje na każdym poziomie stosu, wyszukując obiekt, który implementuje lub dziedziczy `type`. Jeśli zostanie znalezione dopasowanie, jest zwracana.  
+ Na każdym poziomie stosu jest wykonywane sprawdzanie, wyszukiwanie obiektu, który implementuje lub dziedziczy `type`. Jeśli zostanie znalezione dopasowanie, zostanie zwrócone.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="type" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="type" />jest <see langword="null" />.</exception>
       </Docs>
     </Member>
     <Member MemberName="Pop">
@@ -311,13 +311,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Usuwa bieżący obiekt zniżki w stosunku do stosu, zwracając wartość.</summary>
-        <returns>Obiekt usuwany ze stosu; <see langword="null" /> Jeśli żadne obiekty nie znajdują się w stosie.</returns>
+        <summary>Usuwa bieżący obiekt z stosu, zwracając jego wartość.</summary>
+        <returns>Obiekt został usunięty ze stosu; <see langword="null" /> Jeśli żadne obiekty nie znajdują się na stosie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład kodu demonstruje, usuwając wartość z zakresu od <xref:System.ComponentModel.Design.Serialization.ContextStack>.  
+ Poniższy przykład kodu demonstruje usunięcie wartości z <xref:System.ComponentModel.Design.Serialization.ContextStack>.  
   
  [!code-cpp[ContextStackExample#4](~/samples/snippets/cpp/VS_Snippets_Winforms/ContextStackExample/CPP/class1.cpp#4)]
  [!code-csharp[ContextStackExample#4](~/samples/snippets/csharp/VS_Snippets_Winforms/ContextStackExample/CS/class1.cs#4)]
@@ -359,13 +359,13 @@
         <Parameter Name="context" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="context">Obiekt kontekstu do umieszczenia na stosie.</param>
-        <summary>Wypchnięcia lub przełącza określony obiekt na stosie.</summary>
+        <param name="context">Obiekt kontekstu do wypchnięcia na stosie.</param>
+        <summary>Wypchnięcia lub umieszczenie określonego obiektu na stosie.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład kodu demonstruje wypychania wartości <xref:System.ComponentModel.Design.Serialization.ContextStack>.  
+ Poniższy przykład kodu demonstruje wartości wypychania do <xref:System.ComponentModel.Design.Serialization.ContextStack>.  
   
  [!code-cpp[ContextStackExample#3](~/samples/snippets/cpp/VS_Snippets_Winforms/ContextStackExample/CPP/class1.cpp#3)]
  [!code-csharp[ContextStackExample#3](~/samples/snippets/csharp/VS_Snippets_Winforms/ContextStackExample/CS/class1.cs#3)]
@@ -373,7 +373,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="context" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="context" />jest <see langword="null" />.</exception>
       </Docs>
     </Member>
   </Members>

@@ -1,5 +1,5 @@
 <Type Name="IEnlistmentNotification" FullName="System.Transactions.IEnlistmentNotification">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0dcde52862800efd6574c0aa26e24371b65d56c6" /><Meta Name="ms.sourcegitcommit" Value="2dd0eede6edd6dd3d2aa8f79010848658b967609" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/18/2019" /><Meta Name="ms.locfileid" Value="59744307" /></Metadata><TypeSignature Language="C#" Value="public interface IEnlistmentNotification" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="36a329fa5a579cd92ba234295630238f8883f58d" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69143472" /></Metadata><TypeSignature Language="C#" Value="public interface IEnlistmentNotification" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IEnlistmentNotification" />
   <TypeSignature Language="DocId" Value="T:System.Transactions.IEnlistmentNotification" />
   <TypeSignature Language="VB.NET" Value="Public Interface IEnlistmentNotification" />
@@ -23,31 +23,31 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>W tym artykule opisano interfejs, który Menedżera zasobów zaimplementować zapewnienie wywołania zwrotne dwóch faza zatwierdzania powiadomień dla Menedżera transakcji na rejestrowanie udziału.</summary>
+    <summary>Opisuje interfejs, który powinien być zaimplementowany przez Menedżera zasobów, aby zapewnić dwa wywołania zwrotne powiadomień o zatwierdzeniu przez Menedżera transakcji w przypadku rejestracji w celu uczestnictwa.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uczestniczyć w transakcji Menedżera zasobów należy zarejestrować w transakcji za pośrednictwem Menedżera transakcji. <xref:System.Transactions.Transaction> Klasa definiuje zestaw metod, których nazwy zaczynają się od `Enlist` tę funkcję, która udostępnia. Poszczególne `Enlist` metody odpowiada różnego rodzaju rejestracji, które mogą mieć Menedżera zasobów.  
+ Aby Menedżer zasobów mógł uczestniczyć w transakcji, musi zarejestrować się w transakcji za pomocą Menedżera transakcji. <xref:System.Transactions.Transaction> Klasa definiuje zestaw metod, których nazwy zaczynają się od `Enlist` tę funkcję, która udostępnia. Poszczególne `Enlist` metody odpowiada różnego rodzaju rejestracji, które mogą mieć Menedżera zasobów.  
   
- Ta klasa Opisuje interfejs, który Menedżera zasobów zaimplementować zapewnienie wywołania zwrotne dwóch faza zatwierdzania powiadomień dla Menedżera transakcji na rejestrowanie udziału. Dla każdego Menedżera zasobów implementacji <xref:System.Transactions.IEnlistmentNotification> interfejsu, należy zarejestrować go za pomocą <xref:System.Transactions.Transaction.EnlistVolatile%2A> metody lub <xref:System.Transactions.Transaction.EnlistDurable%2A> metody <xref:System.Transactions.Transaction> klasy, w zależności od tego, czy zasób jest lotnych lub trwałe. Aby uzyskać więcej informacji na temat rejestracji oraz 2PC, zobacz [rejestrowanie zasobów jako uczestników transakcji](~/docs/framework/data/transactions/enlisting-resources-as-participants-in-a-transaction.md) i [Zatwierdzanie transakcji jednofazowe i wielofazowe](~/docs/framework/data/transactions/committing-a-transaction-in-single-phase-and-multi-phase.md) odpowiednio.  
+ Ta klasa opisuje interfejs, który powinien być zaimplementowany przez Menedżera zasobów, aby zapewnić dwa wywołania zwrotne powiadomień o zatwierdzeniu przez Menedżera transakcji w przypadku rejestracji w celu uczestnictwa. Dla każdej implementacji <xref:System.Transactions.IEnlistmentNotification> interfejsu w Menedżerze zasobów należy zarejestrować ją <xref:System.Transactions.Transaction.EnlistVolatile%2A> przy użyciu metody <xref:System.Transactions.Transaction> lub <xref:System.Transactions.Transaction.EnlistDurable%2A> metody klasy, w zależności od tego, czy zasób jest trwały czy trwały. Aby uzyskać więcej informacji na temat rejestracji i 2PC, zobacz temat [Rejestrowanie zasobów jako uczestników transakcji](~/docs/framework/data/transactions/enlisting-resources-as-participants-in-a-transaction.md) i [zatwierdzanie transakcji w ramach jednej fazy i wielu faz](~/docs/framework/data/transactions/committing-a-transaction-in-single-phase-and-multi-phase.md) .  
   
- Menedżer transakcji powiadamia obiekt zobowiązaniom na różnych etapach protokołu dwóch faza zatwierdzania za pomocą następujących metod.  
+ Menedżer transakcji powiadamia zarejestrowany obiekt w różnych fazach protokołu zatwierdzania dwóch faz przez następujące metody.  
   
 |Metoda|Opis|  
 |------------|-----------------|  
-|<xref:System.Transactions.IEnlistmentNotification.Prepare%2A>|Ta metoda zobowiązaniom obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w pierwszej fazie transakcji, gdy Menedżer transakcji pyta uczestników, czy można zatwierdzić transakcji.|  
-|<xref:System.Transactions.IEnlistmentNotification.Commit%2A>|Ta metoda zobowiązaniom obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji, jeśli transakcja została zatwierdzona.|  
-|<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>|Ta metoda zobowiązaniom obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji, jeśli transakcja została przerwana, (który jest przywracana).|  
-|<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>|Ta metoda zobowiązaniom obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji Jeśli transakcja jest w stanie wątpliwości.|  
+|<xref:System.Transactions.IEnlistmentNotification.Prepare%2A>|Ta metoda zarejestrowanego obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w pierwszej fazie transakcji, gdy Menedżer transakcji prosi uczestników o to, czy może zatwierdzić tę transakcję.|  
+|<xref:System.Transactions.IEnlistmentNotification.Commit%2A>|Ta metoda zarejestrowanego obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji, jeśli transakcja została zatwierdzona.|  
+|<xref:System.Transactions.IEnlistmentNotification.Rollback%2A>|Ta metoda zarejestrowanego obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji, jeśli transakcja została przerwana (jest to wycofywane).|  
+|<xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>|Ta metoda zarejestrowanego obiektu jest używana jako wywołanie zwrotne przez Menedżera transakcji w drugiej fazie transakcji, jeśli transakcja jest wątpliwa.|  
   
 > [!NOTE]
->  Należy pamiętać, że powiadomienia mogą być wysyłane po kolei, czy w określonej kolejności.  
+>  Należy pamiętać, że powiadomienia mogą nie być wysyłane sekwencyjnie lub w określonej kolejności.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano implementację tego interfejsu, a także rejestrowanie obiektu jako uczestnika transakcji przy użyciu <xref:System.Transactions.Transaction.EnlistVolatile%2A> metody.  
+ W poniższym przykładzie przedstawiono implementację tego interfejsu, a także zarejestrować obiekt jako uczestnik transakcji przy użyciu <xref:System.Transactions.Transaction.EnlistVolatile%2A> metody.  
   
  [!code-csharp[Tx_Enlist#1](~/samples/snippets/csharp/VS_Snippets_CFX/tx_enlist/cs/enlist.cs#1)]
  [!code-vb[Tx_Enlist#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_enlist/vb/enlist.vb#1)]  
@@ -90,16 +90,16 @@
       </Parameters>
       <Docs>
         <param name="enlistment"><see cref="T:System.Transactions.Enlistment" /> Obiekt używany do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <summary>Powiadamia zobowiązaniom obiektu, że zatwierdzania transakcji.</summary>
+        <summary>Powiadamia zarejestrowany obiekt, który jest zatwierdzany przez transakcję.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Menedżer transakcji wywołuje tę metodę zobowiązaniom obiektu w drugiej fazie zobowiązania, gdy go powoduje, że wszyscy uczestnicy można zatwierdzić transakcji.  
+ Menedżer transakcji wywołuje tę metodę zarejestrowanego obiektu podczas drugiej fazy zobowiązania, gdy nakazuje wszystkim uczestnikom zatwierdzenie transakcji.  
   
- Menedżer zasobów powinien wykonać wszelkie prace niezbędne do zakończenia transakcji, a następnie informuje Menedżer transakcji, który zakończył się przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metody `enlistment` parametru.  
+ Menedżer zasobów powinien wykonać każdą pracę niezbędną do zakończenia transakcji, a następnie poinformować o tym, że zakończył się <xref:System.Transactions.Enlistment.Done%2A> przez wywołanie metody `enlistment` na parametrze.  
   
- Jeśli Menedżera zasobów został zarejestrowany trwale, ale nie odpowiada, wywołując <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie wiesz, że otrzymał usługi resource manager jest <xref:System.Transactions.IEnlistmentNotification.Commit%2A> wywołania. W efekcie Menedżer transakcji przechowuje oczekiwania na odpowiedź i przechowuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie zostanie wywołana, to fragment informacji jest przechowywana wokół przez czas nieokreślony w pamięci lub zasobów całego systemu. Skutkuje to zasoby nie mogą zostać odzyskane. W przypadku transakcji rozproszonej może to po pewnym czasie wypełnienia dzienniku MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowe i ciągłe wzrost zużycie pamięci procesu Menedżera zasobów. Dlatego jest niezwykle istotne, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metoda po zakończeniu Menedżera zasobów przy użyciu usługi przygotowania pracy.  
+ Jeśli Menedżer zasobów zakończył trwale, ale nie odpowiada przez wywoływanie <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie ma pewności, że Menedżer zasobów <xref:System.Transactions.IEnlistmentNotification.Commit%2A> odebrał wywołanie. W związku z tym Menedżer transakcji kontynuuje oczekiwanie na odpowiedź i utrzymuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> nigdy nie zostanie wywołane, ta część informacji będzie utrzymywana przez czas nieokreślony w pamięci lub w zasobach systemu. W wyniku tego nie można odzyskiwać zasobów. W przypadku transakcji rozproszonej może to spowodować zapełnienie dziennika usługi MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządzanej przez <xref:System.Transactions>program powoduje stopniowe i ciągłe zwiększenie zużycia pamięci przez proces Menedżera zasobów. W związku z tym ważne jest, aby wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę, gdy Menedżer zasobów zostanie wykonany przy użyciu przygotowania do pracy.  
   
  ]]></format>
         </remarks>
@@ -136,19 +136,19 @@
       </Parameters>
       <Docs>
         <param name="enlistment"><see cref="T:System.Transactions.Enlistment" /> Obiekt używany do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <summary>Powiadamia obiekt zobowiązaniom stan transakcji jest w stanie wątpliwości.</summary>
+        <summary>Powiadamia zarejestrowany obiekt, że stan transakcji jest wątpliwy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana dla lotnych zasoby, gdy Menedżer transakcji zostało wywołane na pojedynczy zasób trwałego operacji zatwierdzania jedna faza, a następnie połączenie trwałe zasobu zostało przerwane przed pobierania wyniku transakcji. W tym momencie wyniku transakcji nie można bezpiecznie ustalić.  
+ Ta metoda jest wywoływana dla zasobów lotnych, gdy Menedżer transakcji wywołał operację zatwierdzania pojedynczej fazy do pojedynczego trwałego zasobu, a następnie połączenie z trwałym zasobem zostało utracone przed pobraniem wyniku transakcji. W tym momencie nie można bezpiecznie ustalić wyniku transakcji.  
   
- Jako <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> jest uważany za stan końcowy dla transakcji, nie należy wywołać <xref:System.Transactions.IEnlistmentNotification.Commit%2A> lub <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> po wywołaniu <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>.  
+ Jako <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> że jest uznawany za stan końcowy transakcji, nie należy wywoływać <xref:System.Transactions.IEnlistmentNotification.Commit%2A> ani <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> po wywołaniu <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A>.  
   
 > [!NOTE]
->  Implementacja tej metody dla lotnych zasobu należy wykonać niezależnie od operacji odzyskiwania lub zawierania sam na danych, których to dotyczy.  Należy także wywołać <xref:System.Transactions.Enlistment.Done%2A> metody na `enlistment` parametru po zakończeniu pracy.  
+>  Twoja implementacja tej metody dla zasobu volatile powinna wykonywać operacje odzyskiwania lub zawierania, które są zrozumiałe dla odnośnych danych.  Musi również wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę na `enlistment` parametrze w momencie zakończenia pracy.  
   
- Jeśli Menedżera zasobów został zarejestrowany trwale, ale nie odpowiada, wywołując <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie wiesz, że otrzymał usługi resource manager jest <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> wywołania. W efekcie Menedżer transakcji przechowuje oczekiwania na odpowiedź i przechowuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie zostanie wywołana, to fragment informacji jest przechowywana wokół przez czas nieokreślony w pamięci lub zasobów całego systemu. Skutkuje to zasoby nie mogą zostać odzyskane. W przypadku transakcji rozproszonej może to po pewnym czasie wypełnienia dzienniku MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowe i ciągłe wzrost zużycie pamięci procesu Menedżera zasobów. Dlatego jest niezwykle istotne, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metoda po zakończeniu Menedżera zasobów przy użyciu usługi przygotowania pracy.  
+ Jeśli Menedżer zasobów zakończył trwale, ale nie odpowiada przez wywoływanie <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie ma pewności, że Menedżer zasobów <xref:System.Transactions.IEnlistmentNotification.InDoubt%2A> odebrał wywołanie. W związku z tym Menedżer transakcji kontynuuje oczekiwanie na odpowiedź i utrzymuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> nigdy nie zostanie wywołane, ta część informacji będzie utrzymywana przez czas nieokreślony w pamięci lub w zasobach systemu. W wyniku tego nie można odzyskiwać zasobów. W przypadku transakcji rozproszonej może to spowodować zapełnienie dziennika usługi MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządzanej przez <xref:System.Transactions>program powoduje stopniowe i ciągłe zwiększenie zużycia pamięci przez proces Menedżera zasobów. W związku z tym ważne jest, aby wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę, gdy Menedżer zasobów zostanie wykonany przy użyciu przygotowania do pracy.  
   
  ]]></format>
         </remarks>
@@ -184,21 +184,21 @@
         <Parameter Name="preparingEnlistment" Type="System.Transactions.PreparingEnlistment" />
       </Parameters>
       <Docs>
-        <param name="preparingEnlistment">A <see cref="T:System.Transactions.PreparingEnlistment" /> obiekt używany do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <summary>Powiadamia obiekt zobowiązaniom, który transakcja jest przygotowywane zobowiązania.</summary>
+        <param name="preparingEnlistment"><see cref="T:System.Transactions.PreparingEnlistment" /> Obiekt służący do wysyłania odpowiedzi do Menedżera transakcji.</param>
+        <summary>Powiadamia zarejestrowany obiekt, że transakcja jest przygotowywana do zobowiązania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Menedżer transakcji wywołuje tę metodę zobowiązaniom zasobu menedżera w fazie 1 jako zobowiązanie, gdy sprawdza, czy uczestników tego, czy można zatwierdzić transakcji.  
+ Menedżer transakcji wywołuje tę metodę zarejestrowanego Menedżera zasobów w fazie 1 zobowiązania, gdy prosi uczestników, czy może zatwierdzić tę transakcję.  
   
- Implementując Menedżera zasobów trwałe, należy rejestrować swoje przygotowanie rekord w tej fazie. Rekord powinien zawierać wszystkie informacje wymagane do przeprowadzenia odzyskiwania. Obejmuje to <xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A> właściwość, która jest przekazywana do Menedżera transakcji w <xref:System.Transactions.TransactionManager.Reenlist%2A> metody podczas odzyskiwania. Aby uzyskać więcej informacji na temat odzyskiwania, zobacz [przeprowadzania odzyskiwania](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
+ Podczas implementowania Menedżera zasobów trwałych należy rejestrować swój rekord przygotowania w tej fazie. Rekord powinien zawierać wszystkie informacje niezbędne do przeprowadzenia odzyskiwania. Obejmuje <xref:System.Transactions.PreparingEnlistment.RecoveryInformation%2A> to właściwość, która jest przenoszona do Menedżera transakcji <xref:System.Transactions.TransactionManager.Reenlist%2A> w metodzie podczas odzyskiwania. Aby uzyskać więcej informacji o odzyskiwaniu, zobacz [odzyskiwanie](https://msdn.microsoft.com/library/d342c5c7-da64-4a4c-8e63-b52f4fbf2691).  
   
- Menedżera zasobów powinno zająć całą pracę, które muszą zostać ukończone przed wywołaniem <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metody `preparingEnlistment` parametru, aby wskazać jego głos zobowiązania. Należy upewnić się, że jest to realizowane przed odbierał powiadomienia fazy 2 takie jako zatwierdzenie wycofywania lub w razie wątpliwości. Jest to spowodowane powiadomienia fazy 2 może się tak zdarzyć tekście w tym samym wątku, który wywołał <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metody w fazie 1. W efekcie nie powinien wykonać pracę po <xref:System.Transactions.PreparingEnlistment.Prepared%2A> wywołania (na przykład uwalniający blokady), które powinny być została ukończona przed odbierał powiadomienia fazy 2.  
+ Menedżer zasobów powinien ukończyć całą pracę, która musi zostać zakończona przed wywołaniem <xref:System.Transactions.PreparingEnlistment.Prepared%2A> metody parametru, `preparingEnlistment` aby wskazać jej głos na zobowiązania. Należy upewnić się, że zostało to wykonane przed odebraniem powiadomienia fazy 2, takie jak zatwierdzenie, wycofanie lub wątpliwości. Dzieje się tak, ponieważ powiadomienia fazy 2 mogą być wbudowane w tym samym wątku, <xref:System.Transactions.PreparingEnlistment.Prepared%2A> który wywołał metodę w fazie 1. W związku z tym nie należy wykonywać żadnej pracy po <xref:System.Transactions.PreparingEnlistment.Prepared%2A> wywołaniu (na przykład zwalniać blokad), które należy wykonać przed odebraniem powiadomień fazy 2.  
   
- Można również wywołać metodę `preparingEnlistment` parametru, aby wskazać głos na potrzeby wycofywania.  
+ Możesz również wywołać metodę `preparingEnlistment` parametru, aby wskazać głos do wycofania.  
   
- Jeśli obiekt jedynie obserwację i reagować na postęp transakcji, bez uczestnictwa w nim implementacja tej metody należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metody `preparingEnlistment` parametru po zakończeniu pracy. W ten sposób Menedżera zasobów nie będzie odbierać powiadomień Faza 2.  
+ Jeśli chcesz, aby obiekt miał jedynie obserwować i reagować na postęp transakcji, bez udziału w niej, implementacja tej metody powinna wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę `preparingEnlistment` parametru po zakończeniu pracy. Dzięki temu Menedżer zasobów nie otrzyma żadnego powiadomienia fazy 2.  
   
  ]]></format>
         </remarks>
@@ -234,17 +234,17 @@
         <Parameter Name="enlistment" Type="System.Transactions.Enlistment" />
       </Parameters>
       <Docs>
-        <param name="enlistment">A <see cref="T:System.Transactions.Enlistment" /> obiekt używany do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <summary>Powiadamia obiekt zobowiązaniom, który transakcja jest wycofywana (anulowane).</summary>
+        <param name="enlistment"><see cref="T:System.Transactions.Enlistment" /> Obiekt służący do wysyłania odpowiedzi do Menedżera transakcji.</param>
+        <summary>Powiadamia zarejestrowany obiekt, że transakcja jest wycofywana (przerwana).</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Menedżer transakcji wywołuje tę metodę w zobowiązaniom obiektu, gdy transakcja jest wycofywana (anulowane) z powodu braku możliwości jednego lub więcej uczestników transakcji zatwierdzania transakcji.  
+ Menedżer transakcji wywołuje tę metodę zarejestrowanego obiektu, gdy transakcja jest wycofywana (przerwana) z powodu niemożności co najmniej jednego uczestnika transakcji na zatwierdzenie transakcji.  
   
- Menedżer zasobów powinien wykonać wszelkie prace niezbędne do zakończenia transakcji, a następnie informuje Menedżer transakcji, który zakończył się przez wywołanie metody <xref:System.Transactions.Enlistment.Done%2A> metody `enlistment` parametru.  
+ Menedżer zasobów powinien wykonać każdą pracę niezbędną do zakończenia transakcji, a następnie poinformować o tym, że zakończył się <xref:System.Transactions.Enlistment.Done%2A> przez wywołanie metody `enlistment` na parametrze.  
   
- Jeśli Menedżera zasobów został zarejestrowany trwale, ale nie odpowiada, wywołując <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie wiesz, że otrzymał usługi resource manager jest <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> wywołania. W efekcie Menedżer transakcji przechowuje oczekiwania na odpowiedź i przechowuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> jest nigdy nie zostanie wywołana, to fragment informacji jest przechowywana wokół przez czas nieokreślony w pamięci lub zasobów całego systemu. Skutkuje to zasoby nie mogą zostać odzyskane. W przypadku transakcji rozproszonej może to po pewnym czasie wypełnienia dzienniku MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządza <xref:System.Transactions>, powoduje to stopniowe i ciągłe wzrost zużycie pamięci procesu Menedżera zasobów. Dlatego jest niezwykle istotne, należy wywołać <xref:System.Transactions.Enlistment.Done%2A> metoda po zakończeniu Menedżera zasobów przy użyciu usługi przygotowania pracy.  
+ Jeśli Menedżer zasobów zakończył trwale, ale nie odpowiada przez wywoływanie <xref:System.Transactions.Enlistment.Done%2A> metody, Menedżer transakcji nie ma pewności, że Menedżer zasobów <xref:System.Transactions.IEnlistmentNotification.Rollback%2A> odebrał wywołanie. W związku z tym Menedżer transakcji kontynuuje oczekiwanie na odpowiedź i utrzymuje informacje istotne dla tej transakcji.  Jeśli <xref:System.Transactions.Enlistment.Done%2A> nigdy nie zostanie wywołane, ta część informacji będzie utrzymywana przez czas nieokreślony w pamięci lub w zasobach systemu. W wyniku tego nie można odzyskiwać zasobów. W przypadku transakcji rozproszonej może to spowodować zapełnienie dziennika usługi MSDTC, który zatrzymuje proces MSDTC. W przypadku transakcji zarządzanej przez <xref:System.Transactions>program powoduje stopniowe i ciągłe zwiększenie zużycia pamięci przez proces Menedżera zasobów. W związku z tym ważne jest, aby wywołać <xref:System.Transactions.Enlistment.Done%2A> metodę, gdy Menedżer zasobów zostanie wykonany przy użyciu przygotowania do pracy.  
   
  ]]></format>
         </remarks>
