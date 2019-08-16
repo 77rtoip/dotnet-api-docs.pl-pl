@@ -1,5 +1,5 @@
 <Type Name="OdbcParameter" FullName="System.Data.Odbc.OdbcParameter">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0ecaa02dc8754496668938db83ca98b7f4e3ec22" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63891708" /></Metadata><TypeSignature Language="C#" Value="public sealed class OdbcParameter : System.Data.Common.DbParameter, ICloneable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="40c5dc16d468f38a9a2b62ee568e1cd5085a278f" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69126263" /></Metadata><TypeSignature Language="C#" Value="public sealed class OdbcParameter : System.Data.Common.DbParameter, ICloneable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit OdbcParameter extends System.Data.Common.DbParameter implements class System.Data.IDataParameter, class System.Data.IDbDataParameter, class System.ICloneable" />
   <TypeSignature Language="DocId" Value="T:System.Data.Odbc.OdbcParameter" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class OdbcParameter&#xA;Inherits DbParameter&#xA;Implements ICloneable" />
@@ -40,14 +40,14 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Reprezentuje parametr <see cref="T:System.Data.Odbc.OdbcCommand" /> oraz opcjonalnie jego mapowanie <see cref="T:System.Data.DataColumn" />. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Reprezentuje parametr do <see cref="T:System.Data.Odbc.OdbcCommand" /> i opcjonalnie, jego mapowanie <see cref="T:System.Data.DataColumn" />na. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Nazwy parametrów nie jest uwzględniana.  
+ W nazwach parametrów nie jest rozróżniana wielkość liter.  
   
- Podczas wykonywania zapytań względem bazy danych Oracle przy użyciu dostawcy Microsoft OLE DB dla Oracle (MSDAORA i) i ODBC .NET Framework Data Provider, za pomocą `LIKE` klauzuli kwerendy wartości w polach o stałej długości mogą nie zwracać wszystkie oczekiwane dopasowań. Przyczyną jest to, że gdy Oracle jest zgodna z wartości dla pól o stałej długości w `LIKE` klauzuli odpowiada całej długości ciągu, w tym wszelkie dopełnienie spacje końcowe. Na przykład, jeśli tabela w bazy danych Oracle zawiera pole o nazwie "Pole1", która jest zdefiniowana jako `char(3)`, a następnie wprowadź wartość "" do wiersza tej tabeli, poniższy kod nie będzie zwracać wiersza.  
+ Podczas wykonywania zapytania dotyczącego bazy danych Oracle przy użyciu Microsoft OLE DB Provider dla Oracle (MSDAORA i) i dostawca danych ODBC .NET Framework użycie `LIKE` klauzuli w celu zbadania wartości pól o stałej długości może nie zwracać wszystkich oczekiwanych dopasowań. Przyczyną jest to, że gdy Oracle dopasowuje wartości dla pól o stałej długości `LIKE` w klauzuli, dopasowuje całą długość ciągu, łącznie z wszelkimi końcowymi spacjami uzupełniania. Na przykład jeśli tabela w bazie danych Oracle zawiera pole o nazwie "pole1", które jest zdefiniowane jako `char(3)`, i wprowadzisz wartość "a" do wiersza tej tabeli, poniższy kod nie zwróci wiersza.  
   
 ```vb  
 Dim queryString As String = "SELECT * FROM Table1 WHERE Field1 LIKE ?"  
@@ -63,21 +63,21 @@ command.Parameters.Add("@p1", OleDbType.Char, 3).Value = "a";
 OleDbDataReader reader = command.ExecuteReader();  
 ```  
   
- Jest to spowodowane Oracle przechowuje wartość kolumny jako "" (dopełnienie "", przy użyciu końcowe spacje na pole Stała długość 3), który Oracle nie traktuje jako dopasowanie dla wartości parametru "a" w przypadku właściwości `LIKE` porównania pól o stałej długości.  
+ Jest to spowodowane tym, że program Oracle przechowuje wartość kolumny jako "a" (uzupełnienie "a", z spacjami końcowymi, do stałej długości pola wynoszącej 3), której Oracle nie traktuje jako dopasowanie wartości parametru "a" w przypadku `LIKE` porównania pól o stałej długości.  
   
- Aby rozwiązać ten problem, Dołącz symbolu wieloznacznego procent ("%") do wartości parametru (`"a%"`), lub użyj SQL `=` porównania zamiast tego.  
+ Aby rozwiązać ten problem, Dołącz wartość procentową ("%") symbol wieloznaczny do wartości`"a%"`parametru () lub zamiast tego `=` Użyj porównania SQL.  
   
    
   
 ## Examples  
- Poniższy przykład obejmuje tworzenie wielu wystąpień <xref:System.Data.Odbc.OdbcParameter> za pośrednictwem <xref:System.Data.Odbc.OdbcParameterCollection> w ramach <xref:System.Data.Odbc.OdbcDataAdapter>. Te parametry są używane do wybierz dane ze źródła danych i umieść je w <xref:System.Data.DataSet>. W tym przykładzie założono, że <xref:System.Data.DataSet> i <xref:System.Data.Odbc.OdbcDataAdapter> zostały już utworzone przy użyciu odpowiedniego schematu, poleceń i połączenia.  
+ Poniższy przykład tworzy wiele wystąpień <xref:System.Data.Odbc.OdbcParameter> <xref:System.Data.Odbc.OdbcParameterCollection> przez <xref:System.Data.Odbc.OdbcDataAdapter>. Te parametry służą do wybierania danych ze źródła danych i umieszczania danych w <xref:System.Data.DataSet>. W tym przykładzie przyjęto <xref:System.Data.DataSet> założenie <xref:System.Data.Odbc.OdbcDataAdapter> , że a i zostały już utworzone przy użyciu odpowiedniego schematu, poleceń i połączenia.  
   
  [!code-csharp[Classic WebData OdbcParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter/VB/source.vb#1)]  
   
  ]]></format>
     </remarks>
-    <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+    <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
   </Docs>
   <Members>
     <MemberGroup MemberName=".ctor">
@@ -87,7 +87,7 @@ OleDbDataReader reader = command.ExecuteReader();
       </AssemblyInfo>
       <Docs>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy.</summary>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </MemberGroup>
     <Member MemberName=".ctor">
@@ -115,19 +115,19 @@ OleDbDataReader reader = command.ExecuteReader();
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podstawowy Konstruktor inicjuje wszystkie pola do wartości domyślnych.  
+ Konstruktor podstawowy inicjuje wszystkie pola do ich wartości domyślnych.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
  [!code-csharp[Classic WebData OdbcParameter.OdbcParameter#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.OdbcParameter#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -155,21 +155,21 @@ OleDbDataReader reader = command.ExecuteReader();
       </Parameters>
       <Docs>
         <param name="name">Nazwa parametru.</param>
-        <param name="type">Jedną z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która używa parametru nazwę i typ danych.</summary>
+        <param name="type">Jedna z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru i typu danych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
  [!code-csharp[Classic WebData OdbcParameter.OdbcParameter1#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter1/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.OdbcParameter1#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter1/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametr jest nieprawidłowy typ zaplecza.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametrze jest nieprawidłowym typem danych zaplecza.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -197,23 +197,23 @@ OleDbDataReader reader = command.ExecuteReader();
       </Parameters>
       <Docs>
         <param name="name">Nazwa parametru.</param>
-        <param name="value"><see cref="T:System.Data.Odbc.OdbcParameter" /> Obiektu.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która używa nazwy parametrów i <see cref="T:System.Data.Odbc.OdbcParameter" /> obiektu.</summary>
+        <param name="value"><see cref="T:System.Data.Odbc.OdbcParameter" /> Obiekt.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru <see cref="T:System.Data.Odbc.OdbcParameter" /> i obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy zachować ostrożność podczas korzystania z tego przeciążenia <xref:System.Data.Odbc.OdbcParameter> konstruktora, aby określić wartości parametrów liczby całkowitej. Ponieważ ma to przeciążenie `value` typu <xref:System.Object>, należy przekonwertować wartość całkowitą <xref:System.Object> typu, gdy wartość jest równa zero, tak jak pokazano w poniższym przykładzie języka C#.  
+ Należy zachować ostrożność podczas korzystania z tego przeciążenia konstruktora <xref:System.Data.Odbc.OdbcParameter> , aby określić wartości parametru Integer. Ponieważ to Przeciążenie `value` Pobiera typ <xref:System.Object>, należy przekonwertować wartość całkowitą na <xref:System.Object> typ, gdy wartość jest równa zero, jak pokazano w poniższym C# przykładzie.  
   
 ```  
 Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));  
 ```  
   
- Jeśli nie wykonasz tej konwersji, kompilator zakłada próby wywołania <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> przeciążenia konstruktora.  
+ Jeśli ta konwersja nie zostanie wykonana, kompilator zakłada, że próbujesz wywołać <xref:System.Data.Odbc.OdbcParameter.%23ctor%2A?displayProperty=nameWithType> przeciążenie konstruktora.  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -242,22 +242,22 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </Parameters>
       <Docs>
         <param name="name">Nazwa parametru.</param>
-        <param name="type">Jedną z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
+        <param name="type">Jedna z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
         <param name="size">Długość parametru.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która korzysta z nazwy parametru, typ danych i długość.</summary>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru, typu danych i długości.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
  [!code-csharp[Classic WebData OdbcParameter.OdbcParameter2#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter2/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.OdbcParameter2#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter2/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametr jest nieprawidłowy typ zaplecza.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametrze jest nieprawidłowym typem danych zaplecza.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -287,23 +287,23 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </Parameters>
       <Docs>
         <param name="name">Nazwa parametru.</param>
-        <param name="type">Jedną z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
+        <param name="type">Jedna z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
         <param name="size">Długość parametru.</param>
         <param name="sourcecolumn">Nazwa kolumny źródłowej.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która korzysta z nazwy parametru, typ danych, długość i nazwa kolumny źródłowej.</summary>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru, typu danych, długości i nazwy kolumny źródłowej.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
  [!code-csharp[Classic WebData OdbcParameter.OdbcParameter3#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter3/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.OdbcParameter3#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter3/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametr jest nieprawidłowy typ zaplecza.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametrze jest nieprawidłowym typem danych zaplecza.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -343,29 +343,29 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </Parameters>
       <Docs>
         <param name="parameterName">Nazwa parametru.</param>
-        <param name="odbcType">Jedną z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
+        <param name="odbcType">Jedna z <see cref="T:System.Data.Odbc.OdbcType" /> wartości.</param>
         <param name="size">Długość parametru.</param>
-        <param name="parameterDirection">Jedną z <see cref="T:System.Data.ParameterDirection" /> wartości.</param>
-        <param name="isNullable"><see langword="true" /> Jeśli wartość pola może być równa null; w przeciwnym razie <see langword="false" />.</param>
-        <param name="precision">Całkowita liczba cyfr po lewej i prawej strony punktu dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</param>
-        <param name="scale">Całkowita liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</param>
+        <param name="parameterDirection">Jedna z <see cref="T:System.Data.ParameterDirection" /> wartości.</param>
+        <param name="isNullable"><see langword="true" />Jeśli wartość pola może mieć wartość null; w <see langword="false" />przeciwnym razie.</param>
+        <param name="precision">Całkowita liczba cyfr z lewej i prawej strony przecinka dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> zostanie rozpoznany.</param>
+        <param name="scale">Łączna liczba rozwiązanych miejsc <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> dziesiętnych.</param>
         <param name="srcColumn">Nazwa kolumny źródłowej.</param>
-        <param name="srcVersion">Jedną z <see cref="T:System.Data.DataRowVersion" /> wartości.</param>
-        <param name="value"><see cref="T:System.Object" /> Czyli wartość <see cref="T:System.Data.Odbc.OdbcParameter" />.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która korzysta z nazwy parametru, typ danych, długość, nazwa kolumny źródłowej, kierunek parametru, dokładnością liczbową i inne właściwości.</summary>
+        <param name="srcVersion">Jedna z <see cref="T:System.Data.DataRowVersion" /> wartości.</param>
+        <param name="value">Jest to wartość <see cref="T:System.Data.Odbc.OdbcParameter" />. <see cref="T:System.Object" /></param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru, typu danych, długości, nazwy kolumny źródłowej, kierunku parametru, dokładności liczbowej i innych właściwości.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i wyświetla <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>wyświetla.  
   
  [!code-csharp[Classic WebData OdbcParameter.OdbcParameter4#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter4/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.OdbcParameter4#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.OdbcParameter4/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametr jest nieprawidłowy typ zaplecza.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametrze jest nieprawidłowym typem danych zaplecza.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -404,21 +404,21 @@ Parameter = new OdbcParameter("@pname", Convert.ToInt32(0));
       </Parameters>
       <Docs>
         <param name="parameterName">Nazwa parametru.</param>
-        <param name="odbcType">Jedną z <see cref="P:System.Data.Odbc.OdbcParameter.OdbcType" /> wartości.</param>
+        <param name="odbcType">Jedna z <see cref="P:System.Data.Odbc.OdbcParameter.OdbcType" /> wartości.</param>
         <param name="size">Długość parametru.</param>
-        <param name="parameterDirection">Jedną z <see cref="T:System.Data.ParameterDirection" /> wartości.</param>
-        <param name="precision">Całkowita liczba cyfr po lewej i prawej strony punktu dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</param>
-        <param name="scale">Całkowita liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</param>
+        <param name="parameterDirection">Jedna z <see cref="T:System.Data.ParameterDirection" /> wartości.</param>
+        <param name="precision">Całkowita liczba cyfr z lewej i prawej strony przecinka dziesiętnego, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> zostanie rozpoznany.</param>
+        <param name="scale">Łączna liczba rozwiązanych miejsc <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> dziesiętnych.</param>
         <param name="sourceColumn">Nazwa kolumny źródłowej.</param>
-        <param name="sourceVersion">Jedną z <see cref="T:System.Data.DataRowVersion" /> wartości.</param>
-        <param name="sourceColumnNullMapping"><see langword="true" /> Jeśli odpowiedni kolumna źródłowa jest dopuszczającego wartość null; <see langword="false" /> Jeśli tak nie jest.</param>
-        <param name="value"><see cref="T:System.Object" /> Czyli wartość <see cref="T:System.Data.Odbc.OdbcParameter" />.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Odbc.OdbcParameter" /> klasę, która korzysta z nazwy parametru, typ danych, długość, nazwa kolumny źródłowej, kierunek parametru, dokładnością liczbową i inne właściwości.</summary>
+        <param name="sourceVersion">Jedna z <see cref="T:System.Data.DataRowVersion" /> wartości.</param>
+        <param name="sourceColumnNullMapping"><see langword="true" />Jeśli odpowiadająca kolumna źródłowa dopuszcza wartość null; <see langword="false" /> Jeśli tak nie jest.</param>
+        <param name="value">Jest to wartość <see cref="T:System.Data.Odbc.OdbcParameter" />. <see cref="T:System.Object" /></param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.Odbc.OdbcParameter" /> klasy, która używa nazwy parametru, typu danych, długości, nazwy kolumny źródłowej, kierunku parametru, dokładności liczbowej i innych właściwości.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i wyświetla <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i <xref:System.Data.Odbc.OdbcParameter.ParameterName%2A>wyświetla.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -439,8 +439,8 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametr jest nieprawidłowy typ zaplecza.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Wartość podana w <paramref name="type" /> parametrze jest nieprawidłowym typem danych zaplecza.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="DbType">
@@ -480,31 +480,31 @@ public void CreateOdbcParameter()
         <ReturnType>System.Data.DbType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia <see cref="T:System.Data.DbType" /> parametru.</summary>
-        <value>Jedną z <see cref="T:System.Data.DbType" /> wartości. Wartość domyślna to <see cref="T:System.String" />.</value>
+        <summary>Pobiera lub ustawia <see cref="T:System.Data.DbType" /> parametr.</summary>
+        <value>Jedna z <see cref="T:System.Data.DbType" /> wartości. Wartość domyślna to <see cref="T:System.String" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> i <xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone. W związku z tym, ustawienie <xref:System.Data.Odbc.OdbcParameter.DbType%2A> zmiany <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> na obsługujący <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>.  
+ <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> I<xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone. W związku z tym <xref:System.Data.Odbc.OdbcParameter.DbType%2A> ustawienie <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> zmiany na pomocniczą <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>.  
   
- Aby uzyskać listę obsługiwanych typów danych znajduje się w odpowiednim <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> elementu członkowskiego. Aby uzyskać więcej informacji, zobacz [parametry elementu DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md).  
+ Aby uzyskać listę obsługiwanych typów danych, zobacz odpowiedni <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> element członkowski. Aby uzyskać więcej informacji, zobacz [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).  
   
 > [!NOTE]
->  <xref:System.Data.DbType.Object> dla ODBC nie jest obsługiwana przez dostawcę danych programu Microsoft .NET Framework.  
+>  <xref:System.Data.DbType.Object>Program nie obsługuje Dostawca danych Microsoft .NET Framework dla ODBC.  
   
    
   
 ## Examples  
- Poniższy przykład wywołuje **procedury składowanej** z trzema parametrami przy użyciu interfejsu ODBC ostawca zarządzany.  
+ Poniższy przykład wywołuje **procedurę składowaną** z trzema parametrami przy użyciu dostawcy zarządzanego ODBC.  
   
  [!code-csharp[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/CS/source.cs#1)]
  [!code-vb[Classic WebData OdbcParameter.DbType#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/Classic WebData OdbcParameter.DbType/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException">Właściwości nie został ustawiony na prawidłowy <see cref="T:System.Data.DbType" />.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentOutOfRangeException">Właściwość nie została ustawiona jako prawidłowa <see cref="T:System.Data.DbType" />.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Direction">
@@ -541,20 +541,20 @@ public void CreateOdbcParameter()
         <ReturnType>System.Data.ParameterDirection</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość wskazującą, czy parametrem tylko wejściowym, jest tylko do danych wyjściowych, dwukierunkowe lub procedury składowanej zwracanej wartości parametru.</summary>
-        <value>Jedną z <see cref="T:System.Data.ParameterDirection" /> wartości. Wartość domyślna to <see langword="Input" />.</value>
+        <summary>Pobiera lub ustawia wartość wskazującą, czy parametr jest tylko wejściowy, tylko w trybie wyjściowym, dwukierunkowym lub parametrem wartości zwracanej procedury składowanej.</summary>
+        <value>Jedna z <see cref="T:System.Data.ParameterDirection" /> wartości. Wartość domyślna to <see langword="Input" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Data.ParameterDirection> jest `Output`, a wykonanie skojarzonego <xref:System.Data.Odbc.OdbcCommand> nie zwraca wartości, <xref:System.Data.Odbc.OdbcParameter> będzie zawierać wartości null. Wartości null są obsługiwane za pomocą <xref:System.DBNull> klasy.  
+ <xref:System.Data.Odbc.OdbcCommand> <xref:System.Data.Odbc.OdbcParameter> Jeśli jest ,`Output`a wykonywanie skojarzone nie zwraca wartości, będzie zawierać wartość null. <xref:System.Data.ParameterDirection> Wartości null są obsługiwane za pomocą <xref:System.DBNull> klasy.  
   
- `Output`, `InputOut`, i `ReturnValue` Parametry zwracane przez wywołanie metody <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> nie są dostępne, dopóki nie zostanie wywołana <xref:System.Data.Odbc.OdbcDataReader.Close%2A> lub `Dispose` na <xref:System.Data.Odbc.OdbcDataReader>.  
+ `Output`, `InputOut`, i `ReturnValue` parametry zwracane przez wywołanie <xref:System.Data.Odbc.OdbcCommand.ExecuteReader%2A> nie <xref:System.Data.Odbc.OdbcDataReader.Close%2A> sądostępne`Dispose` do momentu wywołania lub w. <xref:System.Data.Odbc.OdbcDataReader>  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateMyProc(connection As OdbcConnection)  
@@ -581,8 +581,8 @@ public void CreateMyProc(OdbcConnection connection)
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Właściwości nie został ustawiony na jedną z prawidłowych <see cref="T:System.Data.ParameterDirection" /> wartości.</exception>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <exception cref="T:System.ArgumentException">Właściwość nie została ustawiona na jedną z prawidłowych <see cref="T:System.Data.ParameterDirection" /> wartości.</exception>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="IsNullable">
@@ -623,7 +623,7 @@ public void CreateMyProc(OdbcConnection connection)
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia wartość wskazującą, czy parametr akceptuje wartości null.</summary>
-        <value><see langword="true" /> Jeśli są akceptowane wartości null; w przeciwnym razie <see langword="false" />. Wartość domyślna to <see langword="false" />.</value>
+        <value><see langword="true" />Jeśli wartości null są akceptowane; w <see langword="false" />przeciwnym razie. Wartość domyślna to <see langword="false" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -633,7 +633,7 @@ public void CreateMyProc(OdbcConnection connection)
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -654,7 +654,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="OdbcType">
@@ -691,19 +691,19 @@ public void CreateOdbcParameter()
         <ReturnType>System.Data.Odbc.OdbcType</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia <see cref="T:System.Data.Odbc.OdbcType" /> parametru.</summary>
-        <value><see cref="T:System.Data.Odbc.OdbcType" /> Wartość, która jest <see cref="T:System.Data.Odbc.OdbcType" /> parametru. Wartość domyślna to <see langword="Nchar" />.</value>
+        <summary>Pobiera lub ustawia <see cref="T:System.Data.Odbc.OdbcType" /> parametr.</summary>
+        <value>Wartość, która <see cref="T:System.Data.Odbc.OdbcType" /> jest wartością parametru. <see cref="T:System.Data.Odbc.OdbcType" /> Wartość domyślna to <see langword="Nchar" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> i <xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone. W związku z tym, ustawienie <xref:System.Data.Odbc.OdbcParameter.DbType%2A> zmiany <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> na obsługujący <xref:System.Data.Odbc.OdbcType>.  
+ <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> I<xref:System.Data.Odbc.OdbcParameter.DbType%2A> są połączone. W związku z tym <xref:System.Data.Odbc.OdbcParameter.DbType%2A> ustawienie <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> zmiany na pomocniczą <xref:System.Data.Odbc.OdbcType>.  
   
- Aby uzyskać listę obsługiwanych typów danych znajduje się w odpowiednim <xref:System.Data.Odbc.OdbcType> elementu członkowskiego. Aby uzyskać więcej informacji, zobacz [parametry elementu DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md).  
+ Aby uzyskać listę obsługiwanych typów danych, zobacz odpowiedni <xref:System.Data.Odbc.OdbcType> element członkowski. Aby uzyskać więcej informacji, zobacz [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Offset">
@@ -776,19 +776,19 @@ public void CreateOdbcParameter()
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zamiast nazwanych parametrów dostawcy .NET ODBC używane parametry pozycyjne, które są oznaczone znakiem zapytania (?) w składni tekstu polecenia. Parametr obiekty w <xref:System.Data.Odbc.OdbcParameterCollection> i rzeczywistych parametrów zaakceptowane przez procedurę składowaną lub sparametryzowanych instrukcji SQL odnoszą się do siebie nawzajem w kolejności, w którym <xref:System.Data.Odbc.OdbcParameter> obiekty są wstawiane do kolekcji, a nie przez Nazwa parametru. Nazwy parametrów mogą być dostarczane, ale zostaną zignorowane podczas tworzenia powiązania obiektu parametru.  
+ Zamiast parametrów nazwanych, Dostawca ODBC .NET używa parametrów pozycyjnych, które są oznaczone znakiem zapytania (?) w składni tekstu polecenia. Obiekty parametrów w <xref:System.Data.Odbc.OdbcParameterCollection> i rzeczywiste parametry akceptowane przez procedurę składowaną lub sparametryzowanej instrukcji SQL odpowiadają sobie nawzajem w zależności od kolejności, w <xref:System.Data.Odbc.OdbcParameter> jakiej obiekty są wstawiane do kolekcji, a nie przez Nazwa parametru. Można podać nazwy parametrów, ale zostaną one zignorowane podczas wiązania obiektu parametru.  
   
    
   
 ## Examples  
- W poniższym przykładzie założono, że źródło danych ma nazwę tabeli **MyTable** i procedury składowanej o nazwie MyProc, która jest zdefiniowana jako:  
+ W poniższym przykładzie przyjęto założenie, że źródło danych ma nazwę tabeli **MyTable** i procedurę przechowywaną o nazwie "Moja proc" zdefiniowaną jako:  
   
 ```  
 CREATE TABLE MyTable (col1 int, col2 smallmoney, col3 decimal)  
 CREATE PROC MyProc (@p1 int, @p2 smallmoney, @p3 decimal) AS INSERT INTO MyTable VALUES (@p1, @p2, @p3)  
 ```  
   
- Poniższy przykład tworzy parametrów i wywołuje procedury składowane MyProc:  
+ Poniższy przykład tworzy parametry i wywołuje procedurę przechowywaną procedury składowanej:  
   
 ```vb  
 Public Sub CreateMyProc(connection As OdbcConnection)  
@@ -817,7 +817,7 @@ public void CreateMyProc(OdbcConnection connection)
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Precision">
@@ -851,23 +851,23 @@ public void CreateMyProc(OdbcConnection connection)
         <ReturnType>System.Byte</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia liczbę cyfr używana do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości.</summary>
-        <value>Maksymalna liczba cyfr używana do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości. Wartość domyślna to 0, co oznacza, że dostawcy danych, ustawia dokładność <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</value>
+        <summary>Pobiera lub ustawia liczbę cyfr używanych do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości.</summary>
+        <value>Maksymalna liczba cyfr użyta do reprezentowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> właściwości. Wartość domyślna to 0, co oznacza, że dostawca danych ustawia precyzję dla <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ustawienie tej właściwości na wartość inną niż wartość w bazie danych jest zależna od implementacji dostawcy danych i może zwrócić danych błędu w kodzie, truncate lub Rundy.  
+ Ustawienie tej właściwości na wartość inną niż wartość w bazie danych zależy od implementacji dostawcy danych i może zwracać kod błędu, obcinać lub zaokrąglać dane.  
   
- <xref:System.Data.Odbc.OdbcParameter.Precision%2A> Właściwość ma wpływ tylko na parametry którego <xref:System.Data.Odbc.OdbcType> jest `Decimal` lub `Numeric`. Dla innych typów danych <xref:System.Data.Odbc.OdbcParameter.Precision%2A> jest ignorowana.  
+ Właściwość ma wpływ tylko na parametry <xref:System.Data.Odbc.OdbcType> , `Decimal` których parametr ma wartość lub `Numeric`. <xref:System.Data.Odbc.OdbcParameter.Precision%2A> W przypadku innych typów <xref:System.Data.Odbc.OdbcParameter.Precision%2A> danych jest ignorowana.  
   
 > [!NOTE]
->  Użyj tej właściwości, aby przekształcić dane przekazane do bazy danych nie jest obsługiwana. Aby round, truncate, a w przeciwnym razie przekształcić dane przed przekazaniem go do bazy danych należy użyć <xref:System.Math> klasy, która jest częścią `System` przestrzeni nazw przed przypisaniem wartości do parametru `Value` właściwości.  
+>  Użycie tej właściwości w celu przekształcenie danych przesyłanych do bazy danych nie jest obsługiwane. Aby zaokrąglić, obciąć lub w inny sposób wymuszać dane przed przekazaniem ich do <xref:System.Math> bazy danych, należy użyć klasy `System` , która jest częścią przestrzeni nazw przed przypisaniem `Value` wartości do właściwości parametru.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -890,7 +890,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="ResetDbType">
@@ -916,18 +916,18 @@ public void CreateOdbcParameter()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Typ skojarzony z tym resetuje <see cref="T:System.Data.Odbc.OdbcParameter" />.</summary>
+        <summary>Resetuje typ skojarzony z tym <see cref="T:System.Data.Odbc.OdbcParameter" />elementem.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas wykonywania polecenia zawierającą wartości parametrów, kod albo można ustawić typu parametru jawnie lub parametr można wywnioskować jej typu z jego wartość. Wywołanie tej metody powoduje zresetowanie parametru, aby go ponownie można wywnioskować jej typu z wartości przekazanej w parametrze. Wywołanie tej metody ma wpływ zarówno na <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> właściwości <xref:System.Data.Odbc.OdbcParameter>.  
+ Gdy wykonujesz polecenie, które zawiera wartości parametrów, kod może jawnie ustawić typ parametru lub parametr może wywnioskować swój typ z jego wartości. Wywołanie tej metody resetuje parametr tak, aby mógł ponownie wnioskować o jego typ z wartości przekazaną w parametrze. Wywołanie tej metody ma wpływ <xref:System.Data.Odbc.OdbcParameter.DbType%2A> na właściwości <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> <xref:System.Data.Odbc.OdbcParameter>i.  
   
  Wywoływanie <xref:System.Data.Odbc.OdbcParameter.ResetDbType%2A> resetuje <xref:System.Data.Odbc.OdbcParameter.DbType%2A> do wartości domyślnej (ciąg).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="ResetOdbcType">
@@ -953,16 +953,16 @@ public void CreateOdbcParameter()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Typ skojarzony z tym resetuje <see cref="T:System.Data.Odbc.OdbcParameter" />.</summary>
+        <summary>Resetuje typ skojarzony z tym <see cref="T:System.Data.Odbc.OdbcParameter" />elementem.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas wykonywania polecenia zawierającą wartości parametrów, kod albo można ustawić typu parametru jawnie lub parametr można wywnioskować jej typu z jego wartość. Wywołanie tej metody powoduje zresetowanie parametru, aby go ponownie można wywnioskować jej typu z wartości przekazanej w parametrze. Wywołanie tej metody ma wpływ zarówno na <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> właściwości <xref:System.Data.Odbc.OdbcParameter>.  
+ Gdy wykonujesz polecenie, które zawiera wartości parametrów, kod może jawnie ustawić typ parametru lub parametr może wywnioskować swój typ z jego wartości. Wywołanie tej metody resetuje parametr tak, aby mógł ponownie wnioskować o jego typ z wartości przekazaną w parametrze. Wywołanie tej metody ma wpływ <xref:System.Data.Odbc.OdbcParameter.DbType%2A> na właściwości <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> <xref:System.Data.Odbc.OdbcParameter>i.  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Scale">
@@ -996,30 +996,30 @@ public void CreateOdbcParameter()
         <ReturnType>System.Byte</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia liczbę miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany.</summary>
-        <value>Liczba miejsc dziesiętnych, do którego <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> został rozwiązany. Wartość domyślna to 0.</value>
+        <summary>Pobiera lub ustawia liczbę miejsc dziesiętnych, do których <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> zostanie rozwiązany.</summary>
+        <value>Liczba rozwiązanych miejsc <see cref="P:System.Data.Odbc.OdbcParameter.Value" /> dziesiętnych. Wartość domyślna to 0.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.Scale%2A> Właściwość jest używana tylko w przypadku dziesiętną, a liczbowych parametrów wejściowych.  
+ <xref:System.Data.Odbc.OdbcParameter.Scale%2A> Właściwość jest używana tylko dla parametrów wejściowych dziesiętnych i liczbowych.  
   
- Efekt ustawienie tej właściwości na wartość inną niż wartość w bazie danych jest zależna od implementacji dostawcy danych i może zwrócić kod błędu obciąć lub zaokrąglanie danych.  
+ Efekt ustawienia tej właściwości na wartość inną niż wartość w bazie danych zależy od implementacji dostawcy danych i może zwracać kod błędu lub obciąć lub zaokrąglić dane.  
   
- <xref:System.Data.Odbc.OdbcParameter.Scale%2A> Właściwość ma wpływ tylko na parametry którego <xref:System.Data.Odbc.OdbcType> jest `Decimal` lub `Numeric`. Dla innych typów danych <xref:System.Data.Odbc.OdbcParameter.Scale%2A> jest ignorowana.  
+ Właściwość ma wpływ tylko na parametry <xref:System.Data.Odbc.OdbcType> , `Decimal` których parametr ma wartość lub `Numeric`. <xref:System.Data.Odbc.OdbcParameter.Scale%2A> W przypadku innych typów <xref:System.Data.Odbc.OdbcParameter.Scale%2A> danych jest ignorowana.  
   
- Korzystając z programu SQL Server Native Client 10 (lub nowszy) aby powiązać parametr, którego typem jest dziesiętnych, numeryczne, VarNumeric, DBDate lub Odcisk czasowy, należy ręcznie określić odpowiednią wartość skali.  
-  
-> [!NOTE]
->  Użyj tej właściwości, aby przekształcić dane przekazane do bazy danych nie jest obsługiwana. Aby round, truncate, a w przeciwnym razie przekształcić dane przed przekazaniem go do bazy danych należy użyć <xref:System.Math> klasy, która jest częścią `System` przestrzeni nazw przed przypisaniem wartości do parametru `Value` właściwości.  
+ W przypadku używania SQL Server Native Client 10 (lub nowszego) do powiązania parametru, którego typem jest Decimal, numeric, VarNumeric, DBDate lub DBTimeStamp, należy ręcznie określić odpowiednią wartość skali.  
   
 > [!NOTE]
->  Dostawcy danych .NET framework, które są dołączone do .NET Framework w wersji 1.0 nie weryfikują `scale` z <xref:System.Decimal> wartości parametrów. Może to spowodować zmodyfikowane dane wstawiane w źródle danych. Jeśli używasz platformy .NET Framework w wersji 1.0, sprawdź `scale` z `decimal` wartości przed ustawieniem wartość tego parametru. Korzystając z .NET Framework w wersji 1.1 lub nowszej wersji, `scale` wartości, które przekraczają `decimal` Skala parametru może być tylko obcięte w skali, jeżeli jest to zachowanie podstawowy sterownik ODBC.  
+>  Użycie tej właściwości w celu przekształcenie danych przesyłanych do bazy danych nie jest obsługiwane. Aby zaokrąglić, obciąć lub w inny sposób wymuszać dane przed przekazaniem ich do <xref:System.Math> bazy danych, należy użyć klasy `System` , która jest częścią przestrzeni nazw przed przypisaniem `Value` wartości do właściwości parametru.  
+  
+> [!NOTE]
+>  .NET Framework dostawcy danych, którzy są dołączeni do .NET Framework wersji 1,0, nie `scale` weryfikują <xref:System.Decimal> wartości parametrów. Może to spowodować Wstawianie modyfikowanych danych w źródle danych. Jeśli używasz .NET Framework w wersji 1,0, sprawdź `scale` poprawność `decimal` wartości przed ustawieniem wartości parametru. W przypadku używania .NET Framework w wersji 1,1 lub nowszej, `scale` wartości `decimal` przekraczające skalę parametru mogą być obcinane tylko w skali, jeśli jest to zachowanie bazowego sterownika ODBC.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -1042,7 +1042,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Size">
@@ -1077,30 +1077,30 @@ public void CreateOdbcParameter()
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia maksymalny rozmiar danych w kolumnie.</summary>
-        <value>Maksymalny rozmiar danych w kolumnie. Wartością domyślną jest wnioskowany z wartości parametru.</value>
+        <value>Maksymalny rozmiar danych w kolumnie. Wartość domyślna jest wywnioskowana z wartości parametru.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.Size%2A> Właściwość jest używana dla typów danych binarnych i ciąg.  
+ <xref:System.Data.Odbc.OdbcParameter.Size%2A> Właściwość jest używana dla typów binarnych i ciągów.  
   
- Dla typów danych typu i ANSI dane ciągowe, <xref:System.Data.Odbc.OdbcParameter.Size%2A> właściwość odwołuje się do liczby bajtów. W przypadku danych ciągu Unicode <xref:System.Data.Odbc.OdbcParameter.Size%2A> odwołuje się do liczby znaków. Liczba ciągów nie obejmuje kończącego znaku.  
+ W przypadku typów danych niebędących ciągami i danych <xref:System.Data.Odbc.OdbcParameter.Size%2A> ciągu ANSI Właściwość przywołuje liczbę bajtów. Dla danych <xref:System.Data.Odbc.OdbcParameter.Size%2A> ciągu Unicode odnosi się do liczby znaków. Liczba ciągów nie zawiera znaku kończącego.  
   
- Dla typów danych o zmiennej długości `Size` opisuje maksymalną ilość danych do przesłania do serwera. Na przykład wartość ciągu Unicode `Size` może służyć do ograniczania ilość danych wysyłanych do serwera do pierwszych 100 znaków.  
+ W przypadku typów danych o zmiennej długości `Size` program opisuje maksymalną ilość danych do przesłania do serwera. Na przykład w przypadku wartości `Size` ciągu Unicode może służyć do ograniczenia ilości danych wysyłanych do serwera do pierwszych 100 znaków.  
   
- Dla parametrów dwukierunkowe i danych wyjściowych i wartości zwracane, trzeba ustawić wartość `Size`. Nie jest to wymagane dla parametrów wejściowych, a jeśli nie zostały jawnie ustawiona, wartość jest wnioskowany z rzeczywisty rozmiar określony parametr podczas wykonywania sparametryzowanych instrukcji.  
+ W przypadku parametrów dwukierunkowy i Output oraz wartości zwracanych należy ustawić wartość `Size`. Nie jest to wymagane w przypadku parametrów wejściowych, a jeśli nie zostanie ustawiona jawnie, wartość jest wywnioskowana z rzeczywistego rozmiaru określonego parametru w przypadku wykonania instrukcji sparametryzowanej.  
   
- <xref:System.Data.Common.DbParameter.DbType%2A>, <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A>, I <xref:System.Data.Odbc.OdbcParameter.Size%2A> przez ustawienie można wywnioskować właściwości parametru <xref:System.Data.Odbc.OdbcParameter.Value%2A>. W związku z tym nie należy je określić. Jednak nie są widoczne w <xref:System.Data.Odbc.OdbcParameter> ustawienia właściwości. Na przykład, jeśli rozmiar parametru została wykryta `Size` nie zawiera wartości wywnioskowane po wykonaniu instrukcji.  
+ ,, I <xref:System.Data.Odbc.OdbcParameter.Value%2A>właściwości parametru można wywnioskować według ustawienia. <xref:System.Data.Odbc.OdbcParameter.Size%2A> <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> <xref:System.Data.Common.DbParameter.DbType%2A> W związku z tym nie trzeba określać ich. Jednak nie są one widoczne w <xref:System.Data.Odbc.OdbcParameter> ustawieniach właściwości. Na przykład jeśli rozmiar parametru został wywnioskowany, `Size` nie zawiera wartości wywnioskowanej po wykonaniu instrukcji.  
   
 > [!NOTE]
->  Aby uzyskać `OdbcParameter` za pomocą <xref:System.Data.Odbc.OdbcParameter.Direction%2A> z `ParameterDirection.Output`, `ParameterDirection.InputOutput`, lub `ParameterDirection.ReturnValue`, wyjątek jest zgłaszany, gdy polecenie jest wykonywane, jeśli rozmiar wartość zwrócona przez obiekt źródła danych przekracza określoną `Size` z <xref:System.Data.Odbc.OdbcParameter>.  
+>  `ParameterDirection.InputOutput`W przypadku `OdbcParameter` `Size` z <xref:System.Data.Odbc.OdbcParameter.Direction%2A> ,`ParameterDirection.Output`lub ,wyjątekjestgenerowany,gdypoleceniejestwykonywane,jeślirozmiarwartości`ParameterDirection.ReturnValue`zwróconej przez źródło danych przekracza określoną <xref:System.Data.Odbc.OdbcParameter>wartość.  
   
- Dla typów danych o stałej długości, wartość `Size` jest ignorowana. Mogą być pobierane do celów informacyjnych i zwraca maksymalną liczbę bajtów używanych przez dostawcę przy przekazywaniu wartości parametru do serwera.  
+ W przypadku typów danych o stałej długości wartość `Size` jest ignorowana. Można ją pobrać do celów informacyjnych i zwraca maksymalną ilość bajtów używaną przez dostawcę podczas przesyłania wartości parametru do serwera.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -1125,7 +1125,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="SourceColumn">
@@ -1159,20 +1159,20 @@ public void CreateOdbcParameter()
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia nazwę kolumny źródłowej mapowane na <see cref="T:System.Data.DataSet" /> i używany podczas ładowania lub zwracania <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</summary>
-        <value>Nazwa kolumny źródłowej, która będzie służyć do ustawiania wartości tego parametru. Wartością domyślną jest ciąg pusty ("").</value>
+        <summary>Pobiera lub ustawia nazwę kolumny źródłowej zamapowanej <see cref="T:System.Data.DataSet" /> na i użytą do załadowania lub <see cref="P:System.Data.Odbc.OdbcParameter.Value" />zwrócenia.</summary>
+        <value>Nazwa kolumny źródłowej, która będzie używana do ustawiania wartości tego parametru. Wartością domyślną jest ciąg pusty ("").</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> jest ustawiona na jakąkolwiek inną niż pustym ciągiem, wartość parametru jest pobierana z kolumny z `SourceColumn` nazwy. Jeśli <xref:System.Data.Odbc.OdbcParameter.Direction%2A> ustawiono `Input`, wartość jest pobierana z <xref:System.Data.DataSet>. Jeśli `Direction` ustawiono `Output`, wartość jest pobierana z źródła danych. A `Direction` z `InputOutput` jest kombinacją obu tych elementów.  
+ Gdy <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> jest ustawiona na coś innego niż pusty ciąg, wartość parametru jest pobierana z kolumny `SourceColumn` o nazwie. Jeśli <xref:System.Data.Odbc.OdbcParameter.Direction%2A> jest ustawiona na `Input`, <xref:System.Data.DataSet>wartość jest pobierana z. Jeśli `Direction` jest ustawiona na `Output`, wartość jest pobierana ze źródła danych. A `Direction` z`InputOutput` jest kombinacją obu.  
   
- Aby uzyskać więcej informacji o sposobie używania <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> właściwości, zobacz [parametry elementu DataAdapter](~/docs/framework/data/adonet/dataadapter-parameters.md) i [aktualizowanie źródeł danych za pomocą elementów DataAdapters](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md).  
+ Aby uzyskać więcej informacji na temat sposobu korzystania <xref:System.Data.Odbc.OdbcParameter.SourceColumn%2A> z właściwości, zobacz [DataAdapter Parameters](~/docs/framework/data/adonet/dataadapter-parameters.md) i [Aktualizowanie źródeł danych za pomocą adapterów](~/docs/framework/data/adonet/updating-data-sources-with-dataadapters.md).  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -1191,7 +1191,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="SourceColumnNullMapping">
@@ -1216,32 +1216,32 @@ public void CreateOdbcParameter()
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Ustawia lub pobiera wartość, która wskazuje, czy źródłowa kolumna ma wartość null. Dzięki temu <see cref="T:System.Data.Common.DbCommandBuilder" /> prawidłowo wygenerować instrukcji aktualizacji dla kolumny dopuszczające wartość null.</summary>
-        <value><see langword="true" /> Jeśli kolumna źródłowa jest dopuszczającego wartość null; <see langword="false" /> Jeśli tak nie jest.</value>
+        <summary>Ustawia lub pobiera wartość wskazującą, czy kolumna źródłowa dopuszcza wartość null. Umożliwia <see cref="T:System.Data.Common.DbCommandBuilder" /> to poprawne generowanie instrukcji update dla kolumn dopuszczających wartości null.</summary>
+        <value><see langword="true" />Jeśli kolumna źródłowa ma wartość null; <see langword="false" /> Jeśli tak nie jest.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> jest używany przez <xref:System.Data.Common.DbCommandBuilder> można prawidłowo wygenerować polecenia aktualizacji podczas pracy z kolumny dopuszczające wartość null. Ogólnie rzecz biorąc, użytkowania <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> jest ograniczona do deweloperów dziedziczenie z <xref:System.Data.Common.DbCommandBuilder>.  
+ <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A>jest używana przez <xref:System.Data.Common.DbCommandBuilder> program do prawidłowej generacji poleceń aktualizacji w przypadku kolumn o wartości null. Ogólnie rzecz biorąc, <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> korzystanie z programu jest ograniczone do deweloperów <xref:System.Data.Common.DbCommandBuilder>dziedziczących z programu.  
   
- <xref:System.Data.Common.DbCommandBuilder> używa tej właściwości, aby określić, czy źródłowa kolumna ma wartość null i ustawia tę właściwość na `true` przypadku dopuszczającego wartość null, i `false` Jeśli tak nie jest. Gdy <xref:System.Data.Common.DbCommandBuilder> jest generowanie jej instrukcji Update, sprawdza, czy <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> dla każdego parametru. Jeśli właściwość jest `true`, <xref:System.Data.Common.DbCommandBuilder> generuje klauzulach WHERE, jak w poniższym przykładzie. W tym wyrażeniu zapytania "NazwaPola" reprezentuje nazwę pola:  
+ <xref:System.Data.Common.DbCommandBuilder>używa tej właściwości, aby określić, czy kolumna źródłowa dopuszcza wartość null, i ustawia `true` tę właściwość na, jeśli nie `false` jest to wartość null, i jeśli nie jest. Kiedy <xref:System.Data.Common.DbCommandBuilder> generuje swoją instrukcję Update, bada <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> dla każdego parametru. Jeśli właściwość ma `true`wartość, <xref:System.Data.Common.DbCommandBuilder> program generuje klauzule WHERE podobne do poniższego przykładu. W tym wyrażeniu zapytania "NazwaPola" reprezentuje nazwę pola:  
   
 ```  
 ((@IsNull_FieldName = 1 AND FieldName IS NULL) OR   
   (FieldName = @Original_FieldName))  
 ```  
   
- Jeśli <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> dla pole ma wartość FAŁSZ, <xref:System.Data.Common.DbCommandBuilder> generuje następującą klauzulę WHERE:  
+ Jeśli <xref:System.Data.Odbc.OdbcParameter.SourceColumnNullMapping%2A> pole ma wartość false, <xref:System.Data.Common.DbCommandBuilder> generuje następującą klauzulę WHERE:  
   
 ```  
 FieldName = @OriginalFieldName  
 ```  
   
- Ponadto @IsNull_FieldName zawiera 1, jeśli pole źródłowe zawiera wartość null i 0, jeśli nie jest. Ten mechanizm pozwala zoptymalizować wydajność w programie SQL Server i zapewnia wspólny kod, który działa na wielu dostawców.  
+ Ponadto @IsNull_FieldName zawiera 1, jeśli pole źródłowe zawiera wartość null, a wartość 0, jeśli nie. Ten mechanizm umożliwia optymalizację wydajności w SQL Server i zapewnia obsługę wspólnego kodu, który działa dla wielu dostawców.  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="SourceVersion">
@@ -1276,19 +1276,19 @@ FieldName = @OriginalFieldName
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia <see cref="T:System.Data.DataRowVersion" /> do użycia podczas ładowania <see cref="P:System.Data.Odbc.OdbcParameter.Value" />.</summary>
-        <value>Jedną z <see cref="T:System.Data.DataRowVersion" /> wartości. Ustawieniem domyślnym jest bieżący.</value>
+        <value>Jedna z <see cref="T:System.Data.DataRowVersion" /> wartości. Wartość domyślna to Current.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `SourceVersion` Jest używany przez <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> podczas <xref:System.Data.Common.DbDataAdapter.Update*> operację, aby określić, czy wartość tego parametru jest równa bieżącego lub oryginalny. Dzięki temu klucze podstawowe do zaktualizowania.  
+ Jest używany przez <xref:System.Data.Odbc.OdbcDataAdapter.UpdateCommand%2A> podczas<xref:System.Data.Common.DbDataAdapter.Update*> operacji do określenia, czy wartość parametru jest ustawiona na Current czy Original. `SourceVersion` Dzięki temu klucze podstawowe mają być aktualizowane.  
   
- Ta właściwość jest ustawiona na wersję <xref:System.Data.DataRow> używane przez jedną `Item` właściwości (`DataRow` indeksatora), lub <xref:System.Data.DataRow.GetChildRows%2A> metody.  
+ Ta właściwość jest <xref:System.Data.DataRow> ustawiona na wersję używaną przez `Item` Właściwość (`DataRow` indeksator) lub <xref:System.Data.DataRow.GetChildRows%2A> metodę.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -1309,7 +1309,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="System.ICloneable.Clone">
@@ -1338,13 +1338,13 @@ public void CreateOdbcParameter()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Aby uzyskać opis tego elementu członkowskiego, zobacz <see cref="M:System.ICloneable.Clone" />.</summary>
-        <returns>Nowy <see cref="T:System.Object" /> czyli kopią tego wystąpienia.</returns>
+        <summary>Aby uzyskać opis tego elementu członkowskiego, <see cref="M:System.ICloneable.Clone" />Zobacz.</summary>
+        <returns>Nowy <see cref="T:System.Object" /> , który jest kopią tego wystąpienia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ten element jest jawną implementacją członków. Mogą być używane tylko wtedy, gdy <xref:System.Data.Odbc.OdbcParameter> wystąpienia jest rzutowany na <xref:System.ICloneable> interfejsu.  
+ Ten element jest jawną implementacją członków. Może być używana tylko wtedy, <xref:System.Data.Odbc.OdbcParameter> gdy wystąpienie jest rzutowane <xref:System.ICloneable> do interfejsu.  
   
  ]]></format>
         </remarks>
@@ -1377,7 +1377,7 @@ public void CreateOdbcParameter()
         <summary>Pobiera ciąg, który zawiera <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</summary>
         <returns>Ciąg, który zawiera <see cref="P:System.Data.Odbc.OdbcParameter.ParameterName" />.</returns>
         <remarks>To be added.</remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
     <Member MemberName="Value">
@@ -1418,25 +1418,25 @@ public void CreateOdbcParameter()
       </ReturnValue>
       <Docs>
         <summary>Pobiera lub ustawia wartość parametru.</summary>
-        <value><see cref="T:System.Object" /> Czyli wartość parametru. Wartość domyślna to null.</value>
+        <value><see cref="T:System.Object" /> Jest to wartość parametru. Wartość domyślna to null.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dla parametrów wejściowych jest powiązana wartość <xref:System.Data.Odbc.OdbcCommand> wysyłanego do serwera. Dane wyjściowe i parametry zwracana wartość, wartość jest ustawiana po zakończeniu <xref:System.Data.Odbc.OdbcCommand> oraz po <xref:System.Data.Odbc.OdbcDataReader> jest zamknięty.  
+ W przypadku parametrów wejściowych wartość jest powiązana z <xref:System.Data.Odbc.OdbcCommand> , która jest wysyłana do serwera. W przypadku parametrów danych wyjściowych i zwracanych wartość jest ustawiana po zakończeniu <xref:System.Data.Odbc.OdbcCommand> i <xref:System.Data.Odbc.OdbcDataReader> po zamknięciu.  
   
- Wartość parametru o wartości null jest wysyłany do serwera, użytkownik musi określić <xref:System.DBNull>, nie ma wartości null. Wartość null w systemie jest pusty obiekt, który nie ma wartości. <xref:System.DBNull> jest używana do reprezentowania wartości null. Jeśli parametr jest używany, aby wywołać procedurę składowaną z parametrami, które mają przypisane wartości domyślne, ustawienie <xref:System.Data.Odbc.OdbcParameter.Value%2A> na null powoduje, że wartość domyślna ma być używany.  
+ Po wysłaniu wartości parametru o wartości null do serwera, użytkownik musi określić <xref:System.DBNull>, a nie null. Wartość null w systemie jest pustym obiektem, który nie ma wartości. <xref:System.DBNull>służy do reprezentowania wartości null. Jeśli parametr jest używany do wywołania procedury składowanej z parametrami, które mają wartości domyślne, <xref:System.Data.Odbc.OdbcParameter.Value%2A> ustawienie wartość null powoduje użycie wartości domyślnej.  
   
- Jeśli aplikacja określa typ bazy danych, wiązana wartość jest konwertowana do tego typu dostawcy wysyła dane do serwera. Dostawca próbuje przekonwertować wartość dowolnego typu, jeśli obsługuje <xref:System.IConvertible> interfejsu. Jeśli określony typ nie jest zgodny z wartością, może spowodować błędy konwersji.  
+ Jeśli aplikacja określa typ bazy danych, wartość związana jest konwertowana na ten typ, gdy dostawca wysyła dane do serwera. Dostawca próbuje przekonwertować dowolny typ wartości, jeśli obsługuje <xref:System.IConvertible> interfejs. Błędy konwersji mogą wynikać, jeśli określony typ nie jest zgodny z wartością.  
   
- Zarówno <xref:System.Data.Odbc.OdbcParameter.DbType%2A> i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> przez ustawienie można wywnioskować właściwości <xref:System.Data.Odbc.OdbcParameter.Value%2A>. Jeśli ma to zastosowanie, rozmiar, dokładności i skali również wynika z <xref:System.Data.Odbc.OdbcParameter.Value%2A> po wykonaniu sparametryzowanych instrukcji. Wywnioskowane wartości nie są widoczne dla użytkownika.  
+ <xref:System.Data.Odbc.OdbcParameter.DbType%2A> Właściwości i <xref:System.Data.Odbc.OdbcParameter.OdbcType%2A> można wywnioskować według ustawienia <xref:System.Data.Odbc.OdbcParameter.Value%2A>. W razie potrzeby, rozmiar, precyzja i skala są również wywnioskowane z <xref:System.Data.Odbc.OdbcParameter.Value%2A> momentu wykonania instrukcji sparametryzowanej. Jednak wartości wywnioskowane nie są widoczne dla użytkownika.  
   
- <xref:System.Data.Odbc.OdbcParameter.Value%2A> Właściwość jest zastępowany `Update` metody.  
+ Właściwość jest zastępowana `Update` przez metodę. <xref:System.Data.Odbc.OdbcParameter.Value%2A>  
   
    
   
 ## Examples  
- Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre jego właściwości.  
+ Poniższy przykład tworzy <xref:System.Data.Odbc.OdbcParameter> i ustawia niektóre właściwości.  
   
 ```vb  
 Public Sub CreateOdbcParameter()  
@@ -1455,7 +1455,7 @@ public void CreateOdbcParameter()
   
  ]]></format>
         </remarks>
-        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceń</related>
+        <related type="Article" href="~/docs/framework/data/adonet/commands-and-parameters.md">Praca z poleceniami</related>
       </Docs>
     </Member>
   </Members>
