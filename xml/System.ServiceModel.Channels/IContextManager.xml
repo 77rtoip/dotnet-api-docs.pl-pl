@@ -1,5 +1,5 @@
 <Type Name="IContextManager" FullName="System.ServiceModel.Channels.IContextManager">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="201b988b459f1722c1209014d5473e630e59c8f6" /><Meta Name="ms.sourcegitcommit" Value="f9e71795ba0f9c2dfaa74bec233343ed0f3ffd99" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/14/2019" /><Meta Name="ms.locfileid" Value="57914840" /></Metadata><TypeSignature Language="C#" Value="public interface IContextManager" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="fd40311f073f441f3f8b4ab1e72b7d600d70e6d4" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69156004" /></Metadata><TypeSignature Language="C#" Value="public interface IContextManager" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IContextManager" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.IContextManager" />
   <TypeSignature Language="VB.NET" Value="Public Interface IContextManager" />
@@ -20,12 +20,12 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Definiuje interfejs, który pozwala na pobieranie i ustawianie kontekstu w kanale.</summary>
+    <summary>Definiuje interfejs, który umożliwia pobieranie i Ustawianie kontekstu w kanale.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dla kanałów używające <xref:System.ServiceModel.WSHttpContextBinding> z <xref:System.ServiceModel.SessionMode.NotAllowed> wartość zestawu, nie można pobrać kontekstu na komputerze klienckim, za pomocą <xref:System.ServiceModel.Channels.IContextManager> ponieważ nowy kanał, który ustanawia sesję jest tworzony za każdym razem <xref:System.ServiceModel.Channels.IChannelFactory.GetProperty%2A> jest wywoływana, aby wymusić <xref:System.ServiceModel.SessionMode.NotAllowed> Semantyka w kanale. Oznacza to, że nawet, jeśli kontekst jest prawidłowo propagowany z powrotem do klienta w tym przypadku, go nie można pobrać przy użyciu <xref:System.ServiceModel.Channels.IContextManager>. Nadal można pobrać za pomocą <xref:System.ServiceModel.Channels.ContextMessageProperty> jak pokazano w poniższym kodzie.  
+ W przypadku kanałów, <xref:System.ServiceModel.WSHttpContextBinding> które używają <xref:System.ServiceModel.SessionMode.NotAllowed> zestawu wartości, kontekst nie może zostać pobrany na kliencie przy użyciu <xref:System.ServiceModel.Channels.IContextManager> , ponieważ nowy kanał, który ustanawia sesję, jest tworzony za <xref:System.ServiceModel.Channels.IChannelFactory.GetProperty%2A> każdym razem, gdy <xref:System.ServiceModel.SessionMode.NotAllowed> jest wywoływana w celu wymuszenia Semantyka w kanale. Oznacza to, że mimo że kontekst jest prawidłowo propagowany do klienta w tym przypadku, nie można go pobrać za pomocą polecenia <xref:System.ServiceModel.Channels.IContextManager>. Nadal można ją pobrać przy użyciu <xref:System.ServiceModel.Channels.ContextMessageProperty> polecenia, jak pokazano w poniższym kodzie.  
   
 ```csharp  
 using (new OperationContextScope((IContextChannel)channel))  
@@ -64,33 +64,33 @@ using (new OperationContextScope((IContextChannel)channel))
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość wskazującą, czy włączono zarządzanie kontekstem.</summary>
-        <value><see langword="true" /> Jeśli kontekst jest włączone; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pobiera lub ustawia wartość wskazującą, czy zarządzanie kontekstem jest włączone.</summary>
+        <value><see langword="true" />Jeśli kontekst jest włączony; w przeciwnym razie. <see langword="false" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po włączeniu zarządzania kontekstem kanał kontekstu buforuje kontekstu w okresie swojego istnienia. Kontekst można pobrać z kanału za pośrednictwem `IContextManager` właściwość kanału, wywołując <xref:System.ServiceModel.Channels.IContextManager.GetContext%2A> metody na nim. Kanał można również wstępnie zainicjowana z kontekstem przed otwierana, wywołując <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> metody właściwości kanału. Gdy kanał jest inicjowany z kontekstem nie można zresetować.  
+ Gdy włączono zarządzanie kontekstem, kanał kontekstu buforuje kontekst w jego okres istnienia. Kontekst można pobrać z kanału za pośrednictwem `IContextManager` właściwości kanału przez wywołanie <xref:System.ServiceModel.Channels.IContextManager.GetContext%2A> metody w tym kanale. Kanał może być również wstępnie zainicjowany przy użyciu kontekstu przed otwarciem przez wywołanie <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> metody we właściwości kanału. Po zainicjowaniu kanału z kontekstem nie można go zresetować.  
   
- Poniżej przedstawiono invariants w tym trybie:  
+ Następujące elementy są nieodmianami w tym trybie:  
   
--   Dowolne wywołanie <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> po otwarciu kanał zgłasza `InvalidOperationException`.  
+-   Każde wywołanie <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> po otwartym kanale `InvalidOperationException`zgłasza.  
   
--   Dowolne próba wysłania kontekstu za pośrednictwem `ContextMessageProperty` w wychodzących wiadomościach zgłasza `InvalidOperationException`.  
+-   Wszystkie próby wysłania kontekstu za pomocą `ContextMessageProperty` wiadomości wychodzącej zgłaszają. `InvalidOperationException`  
   
--   Gdy wiadomość zostaje odebrana z serwera z kontekstem, gdy kanał jest już zainicjowany z kontekstem `ProtocolException` zgłaszany. Należy pamiętać o tym, czy można pobrać kontekstu początkowej z serwera, gdy kanał zostanie otwarty bez jawnego ustawienia kontekstu.  
+-   Jeśli komunikat jest odbierany z serwera z kontekstem, gdy kanał jest już zainicjowany przy użyciu kontekstu a `ProtocolException` jest zgłaszany. Należy zauważyć, że można odbierać kontekst początkowy z serwera, jeśli kanał jest otwarty bez jawnego ustawiania kontekstu.  
   
--   `ContextMessageProperty` Na przychodzący komunikat jest zawsze `null`.  
+-   Komunikat przychodzący jest zawsze `null`. `ContextMessageProperty`  
   
- Gdy zarządzanie kontekstu nie jest włączone, kanał kontekstu nie zarządza kontekstu. Odpowiada za aplikację do pobrania, zarządzania i zastosować kontekst za pośrednictwem `ContextMessageProperty`. Dowolne próba wywołania <xref:System.ServiceModel.Channels.IContextManager.GetContext%2A> lub <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> za pomocą bezpośrednie `IContextManager` kanału właściwość skutkuje `InvalidOperationException`.  
+ Gdy zarządzanie kontekstem nie jest włączone, kanał kontekstu nie będzie zarządzać kontekstem. Jest on odpowiedzialny za pobieranie i stosowanie kontekstu oraz zarządzanie nim za pomocą programu `ContextMessageProperty`. Każda próba wywołania <xref:System.ServiceModel.Channels.IContextManager.GetContext%2A> lub <xref:System.ServiceModel.Channels.IContextManager.SetContext%2A> użycia przez `IContextManager` Właściwość Channel powoduje `InvalidOperationException`.  
   
- Wszystkie pliki cookie protokołu HTTP, z wyjątkiem plików cookie protokołu HTTP kontekstu, są obsługiwane na poziomie kanału. Pliki cookie protokołu HTTP w kontekście są zarządzane na poziomie aplikacji. Może to mieć nieoczekiwanych konsekwencji w przypadku kanałów są udostępniane na komunikowanie się z różnymi wystąpieniami objęte <xref:System.ServiceModel.Channels.ContextMessageProperty>. W poniższej tabeli przedstawiono wpływ plików cookie protokołu HTTP podczas <xref:System.ServiceModel.Channels.IContextManager.Enabled%2A> jest ustawiona jako `true` lub `false`.  
+ Wszystkie pliki cookie HTTP, z wyjątkiem kontekstu plików cookie protokołu HTTP, są obsługiwane na poziomie kanału. Kontekstowe pliki cookie HTTP są zarządzane na poziomie aplikacji. Może to mieć nieoczekiwane konsekwencje, gdy kanały są udostępniane, aby komunikować się <xref:System.ServiceModel.Channels.ContextMessageProperty>z różnymi wystąpieniami przeznaczonymi dla programu. W poniższej tabeli pokazano <xref:System.ServiceModel.Channels.IContextManager.Enabled%2A> `true` , w jaki sposób pliki cookie HTTP mają wpływ, gdy `false`jest ustawiony na lub.  
   
-|Wiązanie|Wartość IContextManager.Enabled|Zakres pliku Cookie HTTP kontekstu|Inne zakresu plików cookie protokołu HTTP|  
+|Wiązanie|IContextManager. Enabled — wartość|Zakres plików cookie HTTP kontekstu|Zakres innych plików cookie HTTP|  
 |-------------|-----------------------------------|-------------------------------|------------------------------|  
 |BasicHttpBinding|n/d|ChannelFactory|ChannelFactory|  
-|BasicHttpContextBinding|true|Kanał|Kanał|  
-|BasicHttpContextBinding|false|Dla każdego komunikatu (jawnie zarządzane przez aplikację)|Kanał|  
+|BasicHttpContextBinding|true|Ukierunkowan|Ukierunkowan|  
+|BasicHttpContextBinding|false|Dla każdego komunikatu (jawnie zarządzany przez aplikację)|Ukierunkowan|  
   
  ]]></format>
         </remarks>
@@ -118,12 +118,12 @@ using (new OperationContextScope((IContextChannel)channel))
       <Parameters />
       <Docs>
         <summary>Pobiera kontekst.</summary>
-        <returns><see cref="T:System.Collections.Generic.IDictionary`2" /> Par klucz/wartość z przestrzeni nazw i nazwy kontekstu.</returns>
+        <returns><see cref="T:System.Collections.Generic.IDictionary`2" /> Pary klucz/wartość z przestrzenią nazw i nazwą kontekstu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy kod pokazuje, jak można uzyskać kontekst z wystąpienia typizowanego serwera proxy na komputerze klienckim.  
+ Poniższy kod przedstawia sposób uzyskiwania kontekstu z wystąpienia serwera proxy z określonym typem na komputerze klienckim.  
   
 ```  
 IDictionary<string, string> context;  
@@ -160,13 +160,13 @@ if (cm != null)
         <Parameter Name="context" Type="System.Collections.Generic.IDictionary&lt;System.String,System.String&gt;" Index="0" FrameworkAlternate="netframework-4.8" />
       </Parameters>
       <Docs>
-        <param name="context"><see cref="T:System.Collections.Generic.IDictionary`2" /> Par klucz/wartość z przestrzeni nazw i nazwy kontekstu, który jest ustawiony.</param>
+        <param name="context"><see cref="T:System.Collections.Generic.IDictionary`2" /> Pary klucz/wartość z przestrzenią nazw i nazwą kontekstu, który jest ustawiony.</param>
         <summary>Ustawia kontekst.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy kod pokazuje, jak można ustawić kontekstu na komputerze klienckim.  
+ Poniższy kod pokazuje, jak można ustawić kontekst na kliencie.  
   
 ```  
 IDictionary<string, string> context;  

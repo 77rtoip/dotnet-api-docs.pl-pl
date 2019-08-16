@@ -1,5 +1,5 @@
 <Type Name="IObjectReference" FullName="System.Runtime.Serialization.IObjectReference">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="15a572ce6bbd23462a8f69dedc62f0a26c7b6cbd" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58743528" /></Metadata><TypeSignature Language="C#" Value="public interface IObjectReference" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="74bd210c6351b3af37461586750f2df84e536d7a" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69087394" /></Metadata><TypeSignature Language="C#" Value="public interface IObjectReference" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IObjectReference" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Serialization.IObjectReference" />
   <TypeSignature Language="VB.NET" Value="Public Interface IObjectReference" />
@@ -29,7 +29,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Wskazuje, że bieżący implementujący interfejs jest odwołanie do innego obiektu.</summary>
+    <summary>Wskazuje, że bieżący implementujący interfejs jest odwołaniem do innego obiektu.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -40,7 +40,7 @@
   
  ]]></format>
     </remarks>
-    <block subset="none" type="overrides"><para>Implementuje ten interfejs na obiektach, które są odniesieniami do innego obiektu, którego nie można rozpoznać, dopóki bieżący obiekt jest całkowicie przywrócona. Na etapie naprawy dowolny obiekt implementujący <see cref="T:System.Runtime.Serialization.IObjectReference" /> zostaje przesłane zapytanie jego rzeczywistego obiektu i ten obiekt jest wstawiany do wykresu. Naprawy odnosi się do procesu finalizowanie odwołania nie jest jeszcze zakończona podczas deserializacji obiektu.</para></block>
+    <block subset="none" type="overrides"><para>Zaimplementuj ten interfejs dla obiektów, które są odwołaniami do innego obiektu, którego nie można rozpoznać do momentu całkowitego przywrócenia bieżącego obiektu. W trakcie procesu naprawy każdy obiekt implementujący <see cref="T:System.Runtime.Serialization.IObjectReference" /> jest pytany o jego obiekt rzeczywisty i został wstawiony do grafu. Naprawa odnosi się do procesu finalizowania odwołań, które nie zostały jeszcze zakończone podczas procesu deserializacji obiektu.</para></block>
   </Docs>
   <Members>
     <Member MemberName="GetRealObject">
@@ -80,18 +80,18 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> z jest przeprowadzona bieżący obiekt.</param>
-        <summary>Zwraca obiekt rzeczywistego, który powinien zostać przeprowadzona, zamiast obiektu, który określa serializowanym strumieniu.</summary>
-        <returns>Rzeczywiste obiekt, który zostanie przełączone do wykresu.</returns>
+        <param name="context"><see cref="T:System.Runtime.Serialization.StreamingContext" /> Z której jest deserializowany bieżący obiekt.</param>
+        <summary>Zwraca rzeczywisty obiekt, który powinien zostać deserializowany, a nie obiekt, który określa serializowany strumień.</summary>
+        <returns>Rzeczywisty obiekt, który jest umieszczony na grafie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest przydatna w sytuacji wywołaniem funkcji zdalnych, gdzie serializacji obiektu serwera proxy twórca nie faktyczny obiekt. Gdy obiekt serwera proxy twórca jest przeprowadzona, deserializacji wywołań jej <xref:System.Runtime.Serialization.IObjectReference.GetRealObject%2A> metody. W tym momencie obiektu serwera proxy twórcy tworzy nowe wystąpienie obiektu serwera proxy, który odwołuje się do oryginalnego obiektu rzeczywistego, na przykład na komputerze zdalnym. Na koniec obiektu serwera proxy twórca jest odrzucana i odzyskać później przez wyrzucanie elementów bezużytecznych.  
+ Ta metoda jest przydatna w sytuacji zdalnej, w której można serializować obiekt twórcy proxy, a nie rzeczywisty obiekt. Gdy obiekt twórcy proxy jest deserializowany, deserializacja wywołuje jego <xref:System.Runtime.Serialization.IObjectReference.GetRealObject%2A> metodę. W tym momencie obiekt twórcy proxy tworzy nowe wystąpienie obiektu proxy, który odwołuje się z powrotem do oryginalnego rzeczywistego obiektu, na przykład na komputerze zdalnym. Na koniec obiekt twórcy proxy jest odrzucany i odzyskiwany później przez wyrzucanie elementów bezużytecznych.  
   
- Na przykład, należy wziąć pod uwagę sposób <xref:System.Type> obiekty są serializowane. Zamiast przekazywania danych z <xref:System.Type> obiektu system przekazuje obiekt zastępczy nazwą obiektu typu i informacje na temat zestawu, w którym został znaleziony w implementacji obiektu <xref:System.Runtime.Serialization.IObjectReference>. Gdy będzie dostępnych zarówno nazwę typu, jak i nazwy zestawu infrastruktury deserializacji wywołuje <xref:System.Runtime.Serialization.IObjectReference.GetRealObject%2A> na obiekt zastępczy, który została przesłana. Zwraca ten symbol zastępczy <xref:System.Type> obiektu, który jest wstawiany do wykresu.  
+ Rozważmy na przykład, <xref:System.Type> jak obiekty są serializowane. Zamiast przesyłania danych z <xref:System.Type> obiektu, system przesyła obiekt symbolu zastępczego z nazwą obiektu typu i informacjami na zestawie, gdzie znajduje się w obiekcie implementującym. <xref:System.Runtime.Serialization.IObjectReference> Gdy jest dostępna zarówno nazwa typu, jak i nazwa zestawu, infrastruktura deserializacji wywołuje <xref:System.Runtime.Serialization.IObjectReference.GetRealObject%2A> obiekt będący symbolem zastępczym, który został przesłany. Ten posiadacz zwraca <xref:System.Type> obiekt, który jest wstawiany do grafu.  
   
- Ta metoda jest chroniona przez <xref:System.Security.Permissions.SecurityAction.LinkDemand?displayProperty=nameWithType> dla <xref:System.Security.Permissions.SecurityPermission> z <xref:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter?displayProperty=nameWithType> określony.  
+ Ta metoda jest chroniona <xref:System.Security.Permissions.SecurityAction.LinkDemand?displayProperty=nameWithType> za <xref:System.Security.Permissions.SecurityPermission> pomocą dla z <xref:System.Security.Permissions.SecurityPermissionFlag.SerializationFormatter?displayProperty=nameWithType> określonym.  
   
    
   
@@ -102,7 +102,7 @@
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie posiada wymaganych uprawnień. Wywołanie nie będzie działać w średnich zaufanych serwerów.</exception>
+        <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie posiada wymaganych uprawnień. Wywołanie nie będzie działało na średnim zaufanym serwerze.</exception>
       </Docs>
     </Member>
   </Members>

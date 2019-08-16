@@ -1,5 +1,5 @@
 <Type Name="OrderablePartitioner&lt;TSource&gt;" FullName="System.Collections.Concurrent.OrderablePartitioner&lt;TSource&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4295a3693c36941120b6d7f8ca16a522af93939a" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63908901" /></Metadata><TypeSignature Language="C#" Value="public abstract class OrderablePartitioner&lt;TSource&gt; : System.Collections.Concurrent.Partitioner&lt;TSource&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="77c1a068739a2583efc6a074f3fac42fb6deea13" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69335110" /></Metadata><TypeSignature Language="C#" Value="public abstract class OrderablePartitioner&lt;TSource&gt; : System.Collections.Concurrent.Partitioner&lt;TSource&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit OrderablePartitioner`1&lt;TSource&gt; extends System.Collections.Concurrent.Partitioner`1&lt;!TSource&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Collections.Concurrent.OrderablePartitioner`1" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class OrderablePartitioner(Of TSource)&#xA;Inherits Partitioner(Of TSource)" />
@@ -33,24 +33,24 @@
   <Interfaces />
   <Docs>
     <typeparam name="TSource">Typ elementów w kolekcji.</typeparam>
-    <summary>Reprezentuje określonego sposób podział źródła danych zamówić na wiele partycji.</summary>
+    <summary>Reprezentuje szczególny sposób dzielenia źródła danych z kolejnością na wiele partycji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Implementacja klasy pochodnej jest odpowiedzialny za kolejność elementów w pary klucz wartość w jakikolwiek sposób jest odpowiednia. Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Implementacja klasy pochodnej jest odpowiedzialna za porządkowanie elementów do par klucz-wartość w dowolny sposób. Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak zaimplementować prędkości partycjonera, który zwraca jeden element w czasie:  
+ Poniższy przykład pokazuje, jak zaimplementować uporządkowany partycjonowaner, który zwraca jeden element jednocześnie:  
   
  [!code-csharp[System.Collections.Concurrent.OrderablePartitioner#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.collections.concurrent.orderablepartitioner/cs/orderablepartitioner.cs#1)]
  [!code-vb[System.Collections.Concurrent.OrderablePartitioner#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.collections.concurrent.orderablepartitioner/vb/orderablepartitioner.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>Wszystkie publiczne elementy członkowskie <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> są odporne na wątki i może być wywoływana z wielu wątków jednocześnie.</threadsafe>
+    <threadsafe>Wszystkie publiczne elementy członkowskie <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> są bezpieczne dla wątków i mogą być wywoływane z wielu wątków jednocześnie.</threadsafe>
     <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
     <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
   </Docs>
@@ -85,21 +85,21 @@
         <Parameter Name="keysNormalized" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="keysOrderedInEachPartition">Wskazuje, czy elementy w poszczególnych partycjach są uzyskane zgodnie z kolejnością zwiększenie kluczy.</param>
-        <param name="keysOrderedAcrossPartitions">Wskazuje, czy elementy w starszej partycji zawsze istnieje możliwość przed elementy w późniejszym partycji. W przypadku opcji true każdy element w partycji 0 ma klucz kolejności mniejszych niż dowolnego elementu w partycji 1, każdy element w partycji 1 ma klucz kolejności mniejszych niż dowolnego elementu w partycji 2 i tak dalej.</param>
-        <param name="keysNormalized">Wskazuje, czy klucze są znormalizowane. W przypadku opcji true, wszystkie klucze kolejności mają różne liczby całkowite z zakresu [0.. numberOfElements-1]. Jeśli "false", musi być nadal uporządkowania kluczy się różnić, ale ich względną kolejność uznaje się, nie ich wartości bezwzględne.</param>
-        <summary>Metoda wywoływana z konstruktorów w klasach pochodnych można zainicjować <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> klasie z atrybutem określone ograniczenia kluczy indeksu.</summary>
+        <param name="keysOrderedInEachPartition">Wskazuje, czy elementy w każdej partycji są nadające się do zwiększenia wartości kluczy.</param>
+        <param name="keysOrderedAcrossPartitions">Wskazuje, czy elementy w starszej partycji zawsze są dostępne przed elementami w nowszej partycji. Jeśli wartość jest równa true, każdy element na partycji 0 ma mniejszy klucz kolejności niż każdy element na partycji 1, każdy element na partycji 1 ma mniejszy klucz kolejności niż każdy element w partycji 2 i tak dalej.</param>
+        <param name="keysNormalized">Wskazuje, czy klucze są znormalizowane. W przypadku wartości true wszystkie klucze Order są odrębnymi liczbami całkowitymi z zakresu [0.. numberOfElements-1]. W przypadku wartości false klucze kolejności muszą być różne, ale tylko ich kolejność względna jest traktowana jako ich wartości bezwzględne.</param>
+        <summary>Wywoływana z konstruktorów w klasach pochodnych w <see cref="T:System.Collections.Concurrent.OrderablePartitioner`1" /> celu zainicjowania klasy z określonymi ograniczeniami dotyczącymi kluczy indeksu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -132,26 +132,26 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy obiekt, który można podzielić na partycje kolekcji źródłowej do zmiennej liczby partycji.</summary>
-        <returns>Obiekt, który można utworzyć partycji w źródle danych.</returns>
+        <summary>Tworzy obiekt, który może podzielić podstawową kolekcję na zmienną liczbę partycji.</summary>
+        <returns>Obiekt, który może tworzyć partycje za pośrednictwem bazowego źródła danych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zwrócony obiekt implementuje <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejsu. Wywoływanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu tworzy innej partycji za pośrednictwem sekwencji.  
+ Zwrócony obiekt implementuje <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejs. Wywołanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu powoduje utworzenie kolejnej partycji w sekwencji.  
   
- Domyślna implementacja zapewnia takie samo zachowanie jako <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderableDynamicPartitions%2A> z tą różnicą, że zwrócony zestawie partycji nie zawiera kluczy dla elementów.  
+ Domyślna implementacja zapewnia takie samo zachowanie, jak <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderableDynamicPartitions%2A> z tą różnicą, że zwracany zestaw partycji nie udostępnia kluczy dla elementów.  
   
- <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetDynamicPartitions%2A> Metoda jest obsługiwana tylko w przypadku <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> właściwość zwraca wartość true.  
+ Metoda jest obsługiwana tylko wtedy, <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> gdy właściwość zwraca wartość true. <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetDynamicPartitions%2A>  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Dynamiczne partycjonowanie nie jest obsługiwana przez klasę bazową. Musi być implementowane w klasach pochodnych.</exception>
+        <exception cref="T:System.NotSupportedException">Partycjonowanie dynamiczne nie jest obsługiwane przez klasę bazową. Musi być zaimplementowany w klasach pochodnych.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -184,26 +184,26 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy obiekt, który można podzielić na partycje kolekcji źródłowej do zmiennej liczby partycji.</summary>
-        <returns>Obiekt, który można utworzyć partycji w źródle danych.</returns>
+        <summary>Tworzy obiekt, który może podzielić podstawową kolekcję na zmienną liczbę partycji.</summary>
+        <returns>Obiekt, który może tworzyć partycje za pośrednictwem bazowego źródła danych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zwrócony obiekt implementuje <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejsu. Wywoływanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu tworzy innej partycji za pośrednictwem sekwencji.  
+ Zwrócony obiekt implementuje <xref:System.Collections.Generic.IEnumerable%601?displayProperty=nameWithType> interfejs. Wywołanie <xref:System.Collections.Generic.IEnumerable%601.GetEnumerator%2A> obiektu powoduje utworzenie kolejnej partycji w sekwencji.  
   
- Każda partycja jest reprezentowany jako moduł wyliczający za pośrednictwem pary klucz wartość. Wartość w parze jest sam element, a klucz jest liczbą całkowitą, która określa względne uporządkowanie tego elementu do innych elementów.  
+ Każda partycja jest reprezentowana jako moduł wyliczający dla par klucz-wartość. Wartość w parze jest elementem, a klucz jest liczbą całkowitą, która określa względną kolejność tego elementu względem innych elementów.  
   
- <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderableDynamicPartitions%2A> Metoda jest obsługiwana tylko w przypadku <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> właściwość zwraca wartość true.  
+ Metoda jest obsługiwana tylko wtedy, <xref:System.Collections.Concurrent.Partitioner%601.SupportsDynamicPartitions%2A> gdy właściwość zwraca wartość true. <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderableDynamicPartitions%2A>  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.NotSupportedException">Dynamiczne partycjonowanie nie jest obsługiwany przez ten partycjonera.</exception>
+        <exception cref="T:System.NotSupportedException">Partycjonowanie dynamiczne nie jest obsługiwane przez tę partycję.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -238,24 +238,24 @@
         <Parameter Name="partitionCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="partitionCount">Liczba partycji w celu tworzenia.</param>
-        <summary>Dzieli kolekcji źródłowej do określonej liczby partycji prędkości.</summary>
-        <returns>Lista zawierająca <paramref name="partitionCount" /> modułów wyliczających.</returns>
+        <param name="partitionCount">Liczba partycji do utworzenia.</param>
+        <summary>Dzieli podstawową kolekcję na określoną liczbę partycji do uporządkowania.</summary>
+        <returns>Lista zawierająca <paramref name="partitionCount" /> moduł wyliczający.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Każda partycja jest reprezentowany jako moduł wyliczający za pośrednictwem pary klucz wartość.  
+ Każda partycja jest reprezentowana jako moduł wyliczający dla par klucz-wartość.  
   
- Wartość pary jest sam element, a klucz jest liczbą całkowitą, która określa względne uporządkowanie tego elementu do innych elementów w źródle danych.  
+ Wartość pary jest elementem, a klucz jest liczbą całkowitą, która określa względną kolejność tego elementu względem innych elementów w źródle danych.  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -290,22 +290,22 @@
         <Parameter Name="partitionCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="partitionCount">Liczba partycji w celu tworzenia.</param>
-        <summary>Dzieli kolekcji źródłowej do danej liczby partycji uporządkowany.</summary>
-        <returns>Lista zawierająca <paramref name="partitionCount" /> modułów wyliczających.</returns>
+        <param name="partitionCount">Liczba partycji do utworzenia.</param>
+        <summary>Tworzy partycję źródłową kolekcji w podaną liczbę uporządkowanych partycji.</summary>
+        <returns>Lista zawierająca <paramref name="partitionCount" /> moduł wyliczający.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Domyślna implementacja zapewnia takie samo zachowanie jako <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderablePartitions%2A> z tą różnicą, że zwrócony zestawie partycji nie zawiera kluczy dla elementów.  
+ Domyślna implementacja zapewnia takie samo zachowanie, jak <xref:System.Collections.Concurrent.OrderablePartitioner%601.GetOrderablePartitions%2A> z tą różnicą, że zwracany zestaw partycji nie udostępnia kluczy dla elementów.  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -337,15 +337,15 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera informacje, czy są znormalizowane uporządkowania kluczy.</summary>
-        <value><see langword="true" /> Jeśli klucze są znormalizowane; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Określa, czy klucze kolejności są znormalizowane.</summary>
+        <value><see langword="true" />Jeśli klucze są znormalizowane; w przeciwnym razie. <see langword="false" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Collections.Concurrent.OrderablePartitioner%601.KeysNormalized%2A> zwraca wartość PRAWDA, wszystkie klucze kolejności mają różne liczby całkowite z zakresu [0.. numberOfElements-1]. Jeśli właściwość zwraca wartość FAŁSZ, kolejność kluczy może nadal być różne, ale tylko ich względną kolejność uznaje się, nie ich wartości bezwzględne.  
+ Jeśli <xref:System.Collections.Concurrent.OrderablePartitioner%601.KeysNormalized%2A> zwraca wartość true, wszystkie klucze Order są odrębnymi liczbami całkowitymi z zakresu [0.. numberOfElements-1]. Jeśli właściwość zwraca wartość false, klucze kolejności muszą być różne, ale tylko ich kolejność względna jest traktowana, a nie ich wartości bezwzględne.  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
@@ -379,21 +379,21 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera informacje, czy elementy w starszej partycji zawsze występować przed elementy w późniejszym partycji.</summary>
-        <value><see langword="true" /> Jeśli elementy w starszej partycji zawsze występować przed elementy w późniejszym partycji; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pobiera, czy elementy w starszej partycji zawsze są dostępne przed elementami w nowszej partycji.</summary>
+        <value><see langword="true" />Jeśli elementy we wcześniejszej partycji zawsze są dostępne przed elementami na późniejszej partycji; w przeciwnym razie. <see langword="false" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Collections.Concurrent.OrderablePartitioner%601.KeysOrderedAcrossPartitions%2A> zwraca wartość PRAWDA, każdy element w partycji 0 ma klucz zamówienia mniejszych niż dowolnego elementu w partycji 1, każdy element w partycji 1 ma klucz zamówienia mniejszych niż dowolnego elementu w partycji 2 i tak dalej.  
+ Jeśli <xref:System.Collections.Concurrent.OrderablePartitioner%601.KeysOrderedAcrossPartitions%2A> zwraca wartość true, każdy element w partycji 0 ma mniejszy klucz kolejności niż dowolny element na partycji 1, każdy element na partycji 1 ma mniejszy klucz kolejności niż każdy element w partycji 2 i tak dalej.  
   
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>
@@ -425,19 +425,19 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera informacje, czy elementy w poszczególnych partycjach są uzyskane zgodnie z kolejnością zwiększenie kluczy.</summary>
-        <value><see langword="true" /> Jeśli elementy w poszczególnych partycjach są uzyskane zgodnie z kolejnością zwiększenie klucze; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pobiera, czy elementy w każdej partycji są nadające się do wzrostu kluczy.</summary>
+        <value><see langword="true" />Jeśli elementy w każdej partycji są uzyskane w kolejności wzrostu kluczy; w przeciwnym razie. <see langword="false" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Aby uzyskać więcej informacji, zobacz [niestandardowe Partycjonery dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
+ Aby uzyskać więcej informacji, zobacz [niestandardowe partycje dla PLINQ i TPL](~/docs/standard/parallel-programming/custom-partitioners-for-plinq-and-tpl.md).  
   
  ]]></format>
         </remarks>
         <related type="Article" href="https://msdn.microsoft.com/library/96153688-9a01-47c4-8430-909cee9a2887">Niestandardowe partycjonery dla PLINQ i TPL</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c7a66677-cb59-4cbf-969a-d2e8fc61a6ce">Instrukcje: Przyspieszanie małych jednostek pętli</related>
-        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie Partycjonera przy użyciu statycznej liczby partycji</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/f4410508-cac6-4ba7-bef1-c5e68b2794f3">Instrukcje: Implementowanie partycji ze statyczną liczbą partycji</related>
         <related type="Article" href="https://msdn.microsoft.com/library/c875ad12-a161-43e6-ad1c-3d6927c536a7">Instrukcje: Implementowanie partycji dynamicznych</related>
       </Docs>
     </Member>

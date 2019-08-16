@@ -1,5 +1,5 @@
 <Type Name="IDuplexContextChannel" FullName="System.ServiceModel.IDuplexContextChannel">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="762f053efbddf564c59046b32b1a5542fe2db98f" /><Meta Name="ms.sourcegitcommit" Value="723b8a6d92667ba86fcda96190bad3b4a03283b3" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/09/2018" /><Meta Name="ms.locfileid" Value="51322150" /></Metadata><TypeSignature Language="C#" Value="public interface IDuplexContextChannel : System.ServiceModel.IContextChannel, System.ServiceModel.IExtensibleObject&lt;System.ServiceModel.IContextChannel&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="466be7c6dd4033a2b69879a8f6b6e42db9656cce" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69102028" /></Metadata><TypeSignature Language="C#" Value="public interface IDuplexContextChannel : System.ServiceModel.IContextChannel, System.ServiceModel.IExtensibleObject&lt;System.ServiceModel.IContextChannel&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IDuplexContextChannel implements class System.ServiceModel.Channels.IChannel, class System.ServiceModel.ICommunicationObject, class System.ServiceModel.IContextChannel, class System.ServiceModel.IExtensibleObject`1&lt;class System.ServiceModel.IContextChannel&gt;" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.IDuplexContextChannel" />
   <TypeSignature Language="VB.NET" Value="Public Interface IDuplexContextChannel&#xA;Implements IContextChannel, IExtensibleObject(Of IContextChannel)" />
@@ -26,12 +26,12 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Definiuje interfejs kanału klienta musi implementować do wymiany wiadomości w sesji dwukierunkowego.</summary>
+    <summary>Definiuje interfejs, który musi implementować kanał klienta do wymiany komunikatów w sesji dupleksowej.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Kontrakt dupleksowy wymaga elementu session, ponieważ kontekst muszą być ustalane do skorelowania zestaw komunikatów przesyłanych między klientem a usługą.  
+ Kontrakt dupleksowy wymaga sesji, ponieważ należy ustanowić kontekst w celu skorelowania zestawu komunikatów wysyłanych między klientem a usługą.  
   
  ]]></format>
     </remarks>
@@ -55,13 +55,13 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia wartość wskazującą, czy sesji danych wejściowych jest automatycznie zamknięcia.</summary>
-        <value><see langword="true" /> Jeśli wejściowy sesji jest automatycznie; zamknięcia w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pobiera lub ustawia wartość wskazującą, czy sesja wejściowa jest zamykana automatycznie.</summary>
+        <value><see langword="true" />Jeśli sesja wejściowa jest zamykana automatycznie; w przeciwnym razie. <see langword="false" /></value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po stronie zdalnej inicjuje zamykania, kanał zostaje automatycznie zamknięty dla użytkownika, jeśli <xref:System.ServiceModel.IDuplexContextChannel.AutomaticInputSessionShutdown%2A> ustawiono `true`. Ustawienie `false` umożliwiają zamiast tego użytkownika wysyłać komunikaty z żądaniem ostatecznego strony zdalnej na jego dane wyjściowe w sesji przed zamknięciem kanału.  
+ Gdy strona zdalna inicjuje zamykanie, kanał jest automatycznie zamykany dla użytkownika, jeśli <xref:System.ServiceModel.IDuplexContextChannel.AutomaticInputSessionShutdown%2A> jest ustawiony na. `true` Ustawienie go na `false` zamiast tego zezwala użytkownikowi na wysyłanie niektórych komunikatów końcowych do strony zdalnej w sesji wyjściowej przed zamknięciem kanału.  
   
  ]]></format>
         </remarks>
@@ -90,11 +90,11 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, jak długo operację zamknięcia musi ukończyć przed przekroczeniem limitu czasu.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który odbiera powiadomienie o ukończeniu zamknij operację asynchroniczną.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną Zamknij.</param>
-        <summary>Rozpoczyna operację asynchroniczną, aby zamknąć sesję dane wyjściowe na komputerze klienckim, który ma określony limit czasu i obiektu stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Odwołujący się asynchroniczną operację zamknięcia.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa czas trwania operacji zamykania przed upływem limitu czasu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o zamknięciu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z asynchroniczną operacją Close.</param>
+        <summary>Rozpoczyna operację asynchroniczną w celu zamknięcia sesji wyjściowej na kliencie, który ma określony limit czasu i skojarzony z nim obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Który odwołuje się do asynchronicznej operacji zamknięcia.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -116,8 +116,8 @@
         <ReturnType>System.ServiceModel.InstanceContext</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia kontekst wystąpienia skojarzone z programem exchange dwukierunkowego wiadomości.</summary>
-        <value><see cref="T:System.ServiceModel.InstanceContext" /> Skojarzonych z programem exchange dwukierunkowego wiadomości.</value>
+        <summary>Pobiera lub ustawia kontekst wystąpienia skojarzony z wymianą komunikatów dupleksowych.</summary>
+        <value><see cref="T:System.ServiceModel.InstanceContext" /> Skojarzona z wymianą wiadomości dupleksowej.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -142,8 +142,8 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, jak długo operację zamknięcia musi ukończyć przed przekroczeniem limitu czasu.</param>
-        <summary>Zamyka sesję dane wyjściowe na kliencie, który został skojarzony z Kanał dupleksowy.</summary>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa czas trwania operacji zamykania przed upływem limitu czasu.</param>
+        <summary>Zamyka sesję wyjściową na kliencie skojarzonym z kanałem dupleksu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -168,8 +168,8 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.IDuplexContextChannel.BeginCloseOutputSession(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
-        <summary>Kończy operację asynchroniczną, aby zamknąć sesję dane wyjściowe na komputerze klienckim.</summary>
+        <param name="result">Zwracany przez wywołanie <see cref="M:System.ServiceModel.IDuplexContextChannel.BeginCloseOutputSession(System.TimeSpan,System.AsyncCallback,System.Object)" />metody. <see cref="T:System.IAsyncResult" /></param>
+        <summary>Kończy operację asynchroniczną w celu zamknięcia sesji wyjściowej na kliencie.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

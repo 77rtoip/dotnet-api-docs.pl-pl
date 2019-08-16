@@ -1,5 +1,5 @@
 <Type Name="DependentTransaction" FullName="System.Transactions.DependentTransaction">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4aa0b5e95ba1b90608a89db6dcedcedceb0b98fd" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58743570" /></Metadata><TypeSignature Language="C#" Value="public sealed class DependentTransaction : System.Transactions.Transaction, System.Runtime.Serialization.ISerializable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="8df0469f9917704ea67c6383e691ea154ba04e9f" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69098329" /></Metadata><TypeSignature Language="C#" Value="public sealed class DependentTransaction : System.Transactions.Transaction, System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit DependentTransaction extends System.Transactions.Transaction implements class System.Runtime.Serialization.ISerializable" />
   <TypeSignature Language="DocId" Value="T:System.Transactions.DependentTransaction" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class DependentTransaction&#xA;Inherits Transaction&#xA;Implements ISerializable" />
@@ -35,21 +35,21 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>W tym artykule opisano klonowania transakcji, zapewniając gwarancji, że nie można zatwierdzić transakcji, dopóki aplikacja jest dostępna do pozostałej dotyczące pracy w transakcji. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Opisuje klon transakcji zapewniający gwarancję, że nie można zatwierdzić transakcji, dopóki aplikacja nie będzie mogła zostać zamieszczona w odniesieniu do pracy w transakcji. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Transactions.DependentTransaction> Jest klonem <xref:System.Transactions.Transaction> obiekt utworzony za pomocą <xref:System.Transactions.Transaction.DependentClone%2A> metody.  Jedynym celem jest umożliwienie aplikacji na osiągnięcie rest i gwarantuje, że transakcji nie można zatwierdzić, podczas gdy praca jest nadal wykonywana w transakcji (na przykład w wątku roboczego).  
+ Jest klonem <xref:System.Transactions.Transaction> obiektu utworzonego przy użyciu <xref:System.Transactions.Transaction.DependentClone%2A> metody. <xref:System.Transactions.DependentTransaction>  Jego jedynym celem jest umożliwienie aplikacji pozostałej i zagwarantowania, że nie można zatwierdzić transakcji, gdy nadal trwa wykonywanie transakcji (na przykład w wątku roboczym).  
   
- Podczas pracy w ramach transakcji sklonowanym na koniec jest gotowy do można zatwierdzić, może poinformować w niej twórca za pomocą transakcji <xref:System.Transactions.DependentTransaction.Complete%2A> metody. Ten sposób można zachować spójności i poprawności danych.  
+ Gdy działanie wykonane w ramach sklonowanej transakcji jest ostatecznie gotowe i gotowy do zatwierdzenia, może informować twórcę transakcji przy użyciu <xref:System.Transactions.DependentTransaction.Complete%2A> metody. W ten sposób można zachować spójność i poprawność danych.  
   
- <xref:System.Transactions.DependentCloneOption> Wyliczenie służy do określania zachowania przy zatwierdzeniu.  Ten formant zachowanie temu aplikacja może się zatrzymać, a także zapewnia obsługę współbieżności. Aby uzyskać więcej informacji na temat sposobu używania tego wyliczenia, zobacz [Zarządzanie współbieżnością za pomocą DependentTransaction](https://msdn.microsoft.com/library/bdad8468-2a90-4b81-8375-278067120cab).  
+ <xref:System.Transactions.DependentCloneOption> Wyliczenie służy do określania zachowania dotyczącego zatwierdzania.  Ta kontrola zachowania pozwala aplikacji na pozostałą część, a także zapewnia obsługę współbieżności. Aby uzyskać więcej informacji na temat sposobu korzystania z tego wyliczenia, zobacz [Zarządzanie współbieżnością przy użyciu DependentTransaction](https://msdn.microsoft.com/library/bdad8468-2a90-4b81-8375-278067120cab).  
   
    
   
 ## Examples  
- Poniższy przykład przedstawia sposób tworzenia zależnych transakcji.  
+ Poniższy przykład pokazuje, jak utworzyć zależną transakcję.  
   
  [!code-csharp[Tx_DependentTx#1](~/samples/snippets/csharp/VS_Snippets_CFX/tx_dependenttx/cs/dependenttx.cs#1)]
  [!code-vb[Tx_DependentTx#1](~/samples/snippets/visualbasic/VS_Snippets_CFX/tx_dependenttx/vb/dependenttx.vb#1)]  
@@ -89,22 +89,22 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Próbuje ukończyć transakcji zależnych.</summary>
+        <summary>Próbuje wykonać transakcję zależną.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołaj tę metodę podczas klon zależny chce, aby poinformować autora transakcji, czy zakończyło się swoją pracę i można można zatwierdzić transakcji, jeśli element nadrzędny jest również gotowe.  
+ Wywołaj tę metodę, gdy klon zależny chce poinformować twórcę o transakcji, że zakończył swoją pracę, i transakcja może zostać zatwierdzona, jeśli element nadrzędny jest również gotowy.  
   
- Po wywołaniu to wywołanie nie powinien podejmować żadnych dodatkowych działań w transakcji lub wyjątku.  
+ Po wywołaniu tego wywołania nie należy podejmować żadnych dodatkowych czynności w ramach transakcji lub zgłaszany jest wyjątek.  
   
- Jeśli domena aplikacji przestanie działać, gdy ta metoda jest wywoływana i ukończenia transakcji może przerwać transakcji.  
+ Jeśli domena aplikacji ulegnie awarii po wywołaniu tej metody i przed ukończeniem transakcji, transakcja może zostać przerwana.  
   
- **Uwaga** tę metodę należy wywoływać tylko raz w okresie istnienia zależne transakcji.  
+ **Uwaga** Ta metoda powinna być wywoływana tylko raz w okresie istnienia transakcji zależnej.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Transactions.TransactionException">Każda próba dla dodatkowych działań w transakcji po ta metoda jest wywoływana. Obejmują one, wywoływanie metod, takich jak <see cref="Overload:System.Transactions.Transaction.EnlistVolatile" />, <see cref="Overload:System.Transactions.Transaction.EnlistDurable" />, <see cref="M:System.Transactions.Transaction.Clone" />, <see cref="M:System.Transactions.Transaction.DependentClone(System.Transactions.DependentCloneOption)" /> , ani żadnych operacji serializacji w transakcji.</exception>
+        <exception cref="T:System.Transactions.TransactionException">Każda próba wykonania dodatkowej pracy nad transakcją po wywołaniu tej metody. Obejmują one wywoływanie <see cref="Overload:System.Transactions.Transaction.EnlistVolatile" />metod <see cref="M:System.Transactions.Transaction.Clone" />, takich jak <see cref="Overload:System.Transactions.Transaction.EnlistDurable" />, <see cref="M:System.Transactions.Transaction.DependentClone(System.Transactions.DependentCloneOption)" /> ,, lub operacji serializacji w transakcji.</exception>
         <related type="Article" href="https://msdn.microsoft.com/library/b85a97d8-8e02-4555-95df-34c8af095148">Zarządzanie współbieżnością za pomocą DependentTransaction</related>
       </Docs>
     </Member>

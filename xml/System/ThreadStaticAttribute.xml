@@ -1,5 +1,5 @@
 <Type Name="ThreadStaticAttribute" FullName="System.ThreadStaticAttribute">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ba7f6c207809025b013b88d46ad82761ef60cc87" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58721076" /></Metadata><TypeSignature Language="C#" Value="public class ThreadStaticAttribute : Attribute" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="e81be9c1815291ab9511fff2c31612aa676379c1" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69404922" /></Metadata><TypeSignature Language="C#" Value="public class ThreadStaticAttribute : Attribute" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable beforefieldinit ThreadStaticAttribute extends System.Attribute" />
   <TypeSignature Language="DocId" Value="T:System.ThreadStaticAttribute" />
   <TypeSignature Language="VB.NET" Value="Public Class ThreadStaticAttribute&#xA;Inherits Attribute" />
@@ -42,33 +42,33 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Wskazuje, że wartość pola statycznego jest unikatowy dla każdego wątku.</summary>
+    <summary>Wskazuje, że wartość pola statycznego jest unikatowa dla każdego wątku.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- A `static` pole oznaczone za pomocą <xref:System.ThreadStaticAttribute> nie jest udostępniana między wątkami. Każdy wątek wykonywania ma oddzielne wystąpienie pola, niezależnie ustawia i pobiera wartości dla tego pola. Jeśli pole jest dostępne w innym wątku, będzie zawierać inną wartość.  
+ Pole oznaczone za pomocą <xref:System.ThreadStaticAttribute> nie jest współużytkowane przez wątki. `static` Każdy wykonywany wątek ma oddzielne wystąpienie pola, a niezależnie ustawia i pobiera wartości dla tego pola. Jeśli pole jest dostępne w innym wątku, będzie zawierać inną wartość.  
   
- Należy pamiętać, że oprócz zastosowania <xref:System.ThreadStaticAttribute> atrybutu do pola, musisz również zdefiniować go jako `static` pola (w języku C#) lub `Shared` pola (w języku Visual Basic).  
+ Należy zauważyć, <xref:System.ThreadStaticAttribute> że oprócz stosowania atrybutu do pola, należy również zdefiniować go `static` jako pole C# `Shared` (w) lub pole (w Visual Basic).  
   
 > [!NOTE]
->  Nie określaj wartości początkowe dla pola oznaczone `ThreadStaticAttribute`, ponieważ takie inicjowanie odbywa się tylko raz, gdy Konstruktor klasy wykonuje i dlatego ma wpływ na tylko jeden wątek. Jeśli nie określisz wartości początkowej, możesz polegać na pole inicjowany do wartości domyślnej, jeśli jest typem wartości lub do `null` Jeśli typ odwołania.  
+>  Nie określaj wartości początkowych dla pól oznaczonych za pomocą `ThreadStaticAttribute`, ponieważ takie inicjowanie występuje tylko raz, gdy Konstruktor klasy jest wykonywany i w związku z tym dotyczy tylko jednego wątku. Jeśli nie określisz wartości początkowej, możesz polegać na zainicjowaniu pola do jego wartości domyślnej, jeśli jest to typ wartości lub do `null` , jeśli jest to typ referencyjny.  
   
- Użyj tego atrybutu, ponieważ jest, a nie od niej pochodzić.  
+ Użyj tego atrybutu, ponieważ jest i nie pochodzą od niego.  
   
  Aby uzyskać więcej informacji o korzystaniu z atrybutów, zobacz [atrybuty](~/docs/standard/attributes/index.md).  
   
    
   
 ## Examples  
- Poniższy przykład tworzy generator liczb losowych, tworzy dziesięć wątki oprócz wątku głównego, a następnie generuje liczby losowe dwa miliony w każdym wątku. Używa ona <xref:System.ThreadStaticAttribute> atrybutu, aby obliczyć sumę i liczbę liczb losowych na wątek. Definiuje również dwa wątku dodatkowe pola, `previous` i `abnormal`, która umożliwia wykrywanie uszkodzeń generator liczb losowych.  
+ Poniższy przykład tworzy wystąpienie generatora liczb losowych, utworzy dziesięć wątków oprócz wątku głównego, a następnie generuje 2 000 000 liczby losowe w każdym wątku. Używa atrybutu, <xref:System.ThreadStaticAttribute> aby obliczyć sumę i liczbę losowych liczb na wątek. Definiuje także dwa dodatkowe pola dla każdego wątku, `previous` `abnormal`które umożliwiają wykrywanie uszkodzenia generatora liczb losowych.  
   
  [!code-csharp[System.ThreadStaticAttribute#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threadstaticattribute/cs/threadsafe2a.cs#1)]
  [!code-vb[System.ThreadStaticAttribute#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threadstaticattribute/vb/threadsafe2a.vb#1)]  
   
- W przykładzie użyto `lock` instrukcji w języku C# i `SyncLock` konstruowania w języku Visual Basic do synchronizowania dostępu do generator liczb losowych. Zapobiega to uszkodzenie generator liczb losowych, co zwykle powoduje zwracanie wartości zero dla wszystkich kolejnych wywołań.  
+ W przykładzie zastosowano `lock` instrukcję w C# i `SyncLock` konstrukcja w Visual Basic, aby zsynchronizować dostęp do generatora liczb losowych. Zapobiega to uszkodzeniu generatora liczb losowych, co zazwyczaj powoduje zwrócenie wartości zero dla wszystkich kolejnych wywołań.  
   
- W przykładzie użyto również <xref:System.Threading.CountdownEvent> klasy, aby upewnić się, że każdy wątek została zakończona, generowania liczb losowych, przed wyświetleniem łączna liczba wywołań. W przeciwnym razie jeśli główny wątek kończy wykonywanie przed zakończeniem dodatkowe wątki, które spowoduje utworzenie go, wyświetla niedokładne wartość całkowita liczba wywołań metody.  
+ W przykładzie używa <xref:System.Threading.CountdownEvent> się również klasy, aby upewnić się, że każdy wątek zakończył Generowanie liczb losowych przed wyświetleniem łącznej liczby wywołań. W przeciwnym razie, jeśli wątek główny kończy wykonywanie przed dodatkowymi wątkami, które je duplikuje, wyświetla niedokładną wartość dla łącznej liczby wywołań metod.  
   
  ]]></format>
     </remarks>

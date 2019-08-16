@@ -1,5 +1,5 @@
 <Type Name="IDuplexSession" FullName="System.ServiceModel.Channels.IDuplexSession">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="8e2288779b884fb864395f74d1f1c86ad03976d4" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58555416" /></Metadata><TypeSignature Language="C#" Value="public interface IDuplexSession : System.ServiceModel.Channels.IInputSession, System.ServiceModel.Channels.IOutputSession" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="4893578ce73fa37c40f4ed3571ed2e659faba7dc" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69155868" /></Metadata><TypeSignature Language="C#" Value="public interface IDuplexSession : System.ServiceModel.Channels.IInputSession, System.ServiceModel.Channels.IOutputSession" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IDuplexSession implements class System.ServiceModel.Channels.IInputSession, class System.ServiceModel.Channels.IOutputSession, class System.ServiceModel.Channels.ISession" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.IDuplexSession" />
   <TypeSignature Language="VB.NET" Value="Public Interface IDuplexSession&#xA;Implements IInputSession, IOutputSession" />
@@ -32,14 +32,14 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Definiuje interfejs dla sesji na każdej stronie dwukierunkowej komunikacji między punktami końcowymi przesyłania komunikatów.</summary>
+    <summary>Definiuje interfejs dla sesji zaimplementowanej po każdej stronie komunikacji dwukierunkowej między punktami końcowymi komunikatów.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.ServiceModel.Channels.IDuplexSession> Interfejs jest złożenie przychodzących sesji, zdefiniowane przez <xref:System.ServiceModel.Channels.IInputSession> interfejsu i wychodzących sesji, zdefiniowane przez <xref:System.ServiceModel.Channels.IOutputSession> interfejsu. Przychodzących sesji lub wychodzących sesji można przerywać działanie niezależnie od drugiego. Wychodzących sesji można przerywać działanie synchronicznie, wywołując <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> lub asynchronicznie przez wywołanie <xref:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession%2A>.  
+ Interfejs jest złożeniem sesji przychodzącej, zdefiniowanej <xref:System.ServiceModel.Channels.IInputSession> przez interfejs i <xref:System.ServiceModel.Channels.IOutputSession> sesji wychodzącej, zdefiniowanej przez interfejs. <xref:System.ServiceModel.Channels.IDuplexSession> Sesja przychodząca lub sesja wychodząca można przerwać niezależnie od siebie. Sesję wychodzącą można przerwać synchronicznie, wywołując <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> lub asynchronicznie wywołując <xref:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession%2A>metodę.  
   
- Przychodzących sesji można zdalnie zakończone. <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> Skojarzone z przychodzących sesji rozpoczyna się, zwracając `null` podczas tej sesji jest zamknięcie.  
+ Sesja przychodząca może zostać przerwana zdalnie. Skojarzona z sesją przychodzącą `null` rozpoczyna się po zamknięciu sesji. <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>  
   
  ]]></format>
     </remarks>
@@ -52,7 +52,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Rozpoczyna operację asynchroniczną, aby zakończyć sesję ruchu wychodzącego.</summary>
+        <summary>Rozpoczyna operację asynchroniczną w celu zakończenia sesji wychodzącej.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="BeginCloseOutputSession">
@@ -86,15 +86,15 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegować.</param>
-        <param name="state"><see langword="object" /> Zawierający informacje o stanie dla tego żądania.</param>
-        <summary>Rozpoczyna operację asynchroniczną, aby zakończyć sesję ruchu wychodzącego.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Odwołujący się przed zakończeniem asynchronicznego wychodzących sesji.</returns>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat.</param>
+        <param name="state"><see langword="object" /> Zawiera informacje o stanie dla tego żądania.</param>
+        <summary>Rozpoczyna operację asynchroniczną w celu zakończenia sesji wychodzącej.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do kończenia asynchronicznej sesji wychodzącej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wychodzących sesji nie ma wpływu na przychodzących sesji i dlatego sprawia, że oświadczenia o możliwość odbierania komunikatów w sesji skojarzone z kanału wejściowego. Ta operacja musi zostać zakończone w domyślny interwał czasu.  
+ Zakończenie sesji wychodzącej nie ma wpływu na sesję przychodzącą i dlatego nie ma żadnej instrukcji dotyczącej możliwości odbierania wiadomości w sesji skojarzonej z tym kanałem wejściowym. Ta operacja musi zostać zakończona w domyślnym interwale czasu.  
   
  ]]></format>
         </remarks>
@@ -132,16 +132,16 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> , Który określa przedział czasu, w którym należy wykonać operację.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegować.</param>
-        <param name="state"><see langword="object" /> Zawierający informacje o stanie dla tego żądania.</param>
-        <summary>Rozpoczyna operację asynchroniczną, aby zakończyć sesję ruchu wychodzącego z określonego limitu czasu, w którym należy wykonać operację.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Odwołujący się przed zakończeniem asynchronicznego wychodzących sesji.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa przedział czasu, w którym operacja musi zostać zakończona.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat.</param>
+        <param name="state"><see langword="object" /> Zawiera informacje o stanie dla tego żądania.</param>
+        <summary>Rozpoczyna operację asynchroniczną w celu zakończenia sesji wychodzącej z określonym limitem czasu, w ramach której operacja musi zostać zakończona.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do kończenia asynchronicznej sesji wychodzącej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wychodzących sesji nie ma wpływu na przychodzących sesji i dlatego sprawia, że oświadczenia o możliwość odbierania komunikatów w sesji skojarzone z kanału wejściowego.  
+ Zakończenie sesji wychodzącej nie ma wpływu na sesję przychodzącą i dlatego nie ma żadnej instrukcji dotyczącej możliwości odbierania wiadomości w sesji skojarzonej z tym kanałem wejściowym.  
   
  ]]></format>
         </remarks>
@@ -154,7 +154,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Kończy sesję ruchu wychodzącego, który wskazuje, że dalszych komunikatów wysyłanych z tego punktu końcowego w kanale, który został skojarzony z sesją.</summary>
+        <summary>Kończy sesję wychodzącą, która wskazuje, że żadne komunikaty nie będą wysyłane z tego punktu końcowego w kanale skojarzonym z sesją.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="CloseOutputSession">
@@ -185,28 +185,28 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Kończy sesję ruchu wychodzącego, który wskazuje, że dalszych komunikatów wysyłanych z tego punktu końcowego w kanale, który został skojarzony z sesją.</summary>
+        <summary>Kończy sesję wychodzącą, która wskazuje, że żadne komunikaty nie będą wysyłane z tego punktu końcowego w kanale skojarzonym z sesją.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession> sygnałów do drugiej stronie sesji, który powinien zostać zwrócony `null` wszystkie oczekujące lub kolejnych wywołań <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> jest idempotentne, dzięki czemu ponownego wywoływania nie ma wpływu.  
+ Wywoływanie <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession> sygnałów z drugą stroną sesji, która powinna zostać zwrócona `null` przez wszystkie oczekujące lub kolejne wywołania do <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A>jest idempotentne, więc jego wywołanie nie ma wpływu.  
   
- Wychodzących sesji nie ma wpływu na przychodzących sesji i dlatego sprawia, że oświadczenia o możliwość odbierania komunikatów w sesji skojarzone z kanału wejściowego.  
+ Zakończenie sesji wychodzącej nie ma wpływu na sesję przychodzącą i dlatego nie ma żadnej instrukcji dotyczącej możliwości odbierania wiadomości w sesji skojarzonej z tym kanałem wejściowym.  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides"><para>
-            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest to metoda sesji, która może współdziałać z <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> , który jest właścicielem sesji. W szczególności usługi okres istnienia sesji jest umieszczany razem z okresem istnienia Twojego kanału (tak, jakby była przy użyciu protokołu TCP i niezawodnej sesji i zabezpieczeń): 
--Jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest wywoływana przed <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> nosi nazwę na kanale, <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> ma oczekiwać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> na zakończenie.  
+            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" />jest metodą sesji, która może współdziałać <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> z właścicielem sesji. W szczególności, jeśli okres istnienia sesji jest umieszczany wraz z okresem istnienia kanału (na przykład z użyciem protokołu TCP i niezawodnej sesji i zabezpieczeń): 
+-Jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest wywoływana przed <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> jest wywoływana w <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> kanale, <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> należy poczekać na zakończenie.  
   
-— Jeśli kanał jest <see cref="F:System.ServiceModel.CommunicationState.Created" /> lub <see cref="F:System.ServiceModel.CommunicationState.Opening" /> stanu, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> powinno zgłosić <see cref="T:System.InvalidOperationException" />.  
+- <see cref="F:System.ServiceModel.CommunicationState.Created" /> Jeśli kanał jest w <see cref="F:System.ServiceModel.CommunicationState.Opening" /> stanielub<see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , powinien zgłosić. <see cref="T:System.InvalidOperationException" />  
   
-— Jeśli kanał jest <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> stanu, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> powinno zgłosić <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />.  
+-Jeśli kanał jest w <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> stanie, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> należy zgłosić <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />.  
   
--Kanału powinien błędów, jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> zgłasza wyjątek.  
+-Kanał powinien zgłaszać błąd <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , jeśli zostanie wyrzucany.  
   
--Wdrożenia <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> w kanale powinien wywoływać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> i sprawdź, czy <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> zwraca <see langword="null" />, który wskazuje, że <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> została wywołana z drugiej strony sesji.</para></block>
+- <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> Implementacja w kanale powinna wywołać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , a następnie sprawdzić, czy <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> funkcja <see langword="null" />Returns wskazuje <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , że została wywołana po drugiej stronie sesji.</para></block>
       </Docs>
     </Member>
     <Member MemberName="CloseOutputSession">
@@ -239,29 +239,29 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> , Który określa przedział czasu, w którym należy wykonać operację.</param>
-        <summary>Kończy sesję ruchu wychodzącego, który wskazuje, że dalszych komunikatów wysyłanych z tego punktu końcowego w kanale, który został skojarzony z sesją w określonym interwale czasu.</summary>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa przedział czasu, w którym operacja musi zostać zakończona.</param>
+        <summary>Kończy sesję wychodzącą, która wskazuje, że żadne komunikaty nie będą wysyłane z tego punktu końcowego w kanale skojarzonym z sesją w określonym przedziale czasu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%28System.TimeSpan%29> sygnałów do drugiej stronie sesji, który powinien zostać zwrócony `null` wszystkie oczekujące lub kolejnych wywołań <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A> jest idempotentne, dzięki czemu ponownego wywoływania nie ma wpływu.  
+ Wywoływanie <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%28System.TimeSpan%29> sygnałów z drugą stroną sesji, która powinna zostać zwrócona `null` przez wszystkie oczekujące lub kolejne wywołania do <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>. <xref:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession%2A>jest idempotentne, więc jego wywołanie nie ma wpływu.  
   
- Wychodzących sesji nie ma wpływu na przychodzących sesji i dlatego sprawia, że oświadczenia o możliwość odbierania komunikatów w sesji skojarzone z kanału wejściowego.  
+ Zakończenie sesji wychodzącej nie ma wpływu na sesję przychodzącą i dlatego nie ma żadnej instrukcji dotyczącej możliwości odbierania wiadomości w sesji skojarzonej z tym kanałem wejściowym.  
   
  ]]></format>
         </remarks>
         <block subset="none" type="overrides"><para>
-            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest to metoda sesji, która może współdziałać z <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> , który jest właścicielem sesji. W szczególności usługi okres istnienia sesji jest umieszczany razem z okresem istnienia Twojego kanału (tak, jakby była przy użyciu protokołu TCP i niezawodnej sesji i zabezpieczeń): 
--Jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest wywoływana przed <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> nosi nazwę na kanale, <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> ma oczekiwać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> na zakończenie.  
+            <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" />jest metodą sesji, która może współdziałać <see cref="T:System.ServiceModel.Channels.IDuplexSessionChannel" /> z właścicielem sesji. W szczególności, jeśli okres istnienia sesji jest umieszczany wraz z okresem istnienia kanału (na przykład z użyciem protokołu TCP i niezawodnej sesji i zabezpieczeń): 
+-Jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> jest wywoływana przed <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> jest wywoływana w <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> kanale, <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> należy poczekać na zakończenie.  
   
-— Jeśli kanał jest <see cref="F:System.ServiceModel.CommunicationState.Created" /> lub <see cref="F:System.ServiceModel.CommunicationState.Opening" /> stanu, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> powinno zgłosić <see cref="T:System.InvalidOperationException" />.  
+- <see cref="F:System.ServiceModel.CommunicationState.Created" /> Jeśli kanał jest w <see cref="F:System.ServiceModel.CommunicationState.Opening" /> stanielub<see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , powinien zgłosić. <see cref="T:System.InvalidOperationException" />  
   
-— Jeśli kanał jest <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> stanu, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> powinno zgłosić <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />.  
+-Jeśli kanał jest w <see cref="F:System.ServiceModel.CommunicationState.Faulted" /> stanie, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> należy zgłosić <see cref="T:System.ServiceModel.CommunicationObjectFaultedException" />.  
   
--Kanału powinien błędów, jeśli <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> zgłasza wyjątek.  
+-Kanał powinien zgłaszać błąd <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , jeśli zostanie wyrzucany.  
   
--Wdrożenia <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> w kanale powinien wywoływać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> i sprawdź, czy <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> zwraca <see langword="null" />oznaczający, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> została wywołana z drugiej strony sesji.</para></block>
+- <see cref="M:System.ServiceModel.ICommunicationObject.Close" /> Implementacja w kanale powinna wywołać <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> , a następnie sprawdzić, czy <see cref="M:System.ServiceModel.Channels.IInputChannel.Receive" /> zwraca <see langword="null" />, wskazując, <see cref="M:System.ServiceModel.Channels.IDuplexSession.CloseOutputSession" /> że został wywołany po drugiej stronie sesji.</para></block>
       </Docs>
     </Member>
     <Member MemberName="EndCloseOutputSession">
@@ -294,13 +294,13 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do jednego z <see cref="Overload:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession" /> metody.</param>
-        <summary>Kończy operację asynchroniczną, aby zakończyć sesję ruchu wychodzącego, która wskazuje, że dalszych komunikatów wysyłanych z tego punktu końcowego w kanale, który został skojarzony z sesją.</summary>
+        <param name="result">Zwracany przez wywołanie jednej <see cref="Overload:System.ServiceModel.Channels.IDuplexSession.BeginCloseOutputSession" /> z metod. <see cref="T:System.IAsyncResult" /></param>
+        <summary>Kończy operację asynchroniczną w celu zakończenia sesji wychodzącej, która wskazuje, że żadne komunikaty nie będą wysyłane z tego punktu końcowego w kanale skojarzonym z sesją.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wychodzących sesji nie ma wpływu na przychodzących sesji i dlatego sprawia, że oświadczenia o możliwość odbierania komunikatów w sesji skojarzone z kanału wejściowego  
+ Zakończenie sesji wychodzącej nie ma wpływu na sesję przychodzącą i dlatego nie ma żadnej instrukcji dotyczącej możliwości odbierania wiadomości w sesji skojarzonej z danym kanałem wejściowym  
   
  ]]></format>
         </remarks>

@@ -1,5 +1,5 @@
 <Type Name="ConcurrencyMode" FullName="System.ServiceModel.ConcurrencyMode">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="fe756765593e1dcdb7c997005b1f83edb4d26063" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64151500" /></Metadata><TypeSignature Language="C#" Value="public enum ConcurrencyMode" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cca9d43f5d75d4ca5e1b48f649086195ff3502e1" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69103049" /></Metadata><TypeSignature Language="C#" Value="public enum ConcurrencyMode" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed ConcurrencyMode extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.ConcurrencyMode" />
   <TypeSignature Language="VB.NET" Value="Public Enum ConcurrencyMode" />
@@ -15,25 +15,25 @@
     <BaseTypeName>System.Enum</BaseTypeName>
   </Base>
   <Docs>
-    <summary>Określa, czy klasa usługi obsługuje jednowątkowe lub wielowątkowych tryby działania.</summary>
+    <summary>Określa, czy Klasa usługi obsługuje tryby operacji jednowątkowej lub wielowątkowej.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.ServiceModel.ConcurrencyMode> jest używana w połączeniu z <xref:System.ServiceModel.ServiceBehaviorAttribute.ConcurrencyMode%2A> właściwości w celu określenia, czy klasa usługi obsługuje jednowątkowe lub wielowątkowych tryby działania. Jednowątkowe operacji może być współużytkowane lub nie obsługującą.  
+ <xref:System.ServiceModel.ConcurrencyMode>jest używany w połączeniu z <xref:System.ServiceModel.ServiceBehaviorAttribute.ConcurrencyMode%2A> właściwością, aby określić, czy Klasa usługi obsługuje tryby operacji jednowątkowej lub wielowątkowej. Operacja pojedynczego wątku może być współużytkowana lub niewspółpracująca.  
   
- W poniższej tabeli przedstawiono, kiedy usług Windows Communication Foundation (WCF) zezwala na operację do wywołania podczas drugiego jednym jest w toku, w zależności od <xref:System.ServiceModel.ConcurrencyMode>.  
+ W poniższej tabeli przedstawiono, kiedy Windows Communication Foundation (WCF) umożliwia wywoływanie operacji, gdy inna jest w toku, w zależności od <xref:System.ServiceModel.ConcurrencyMode>.  
   
-|Wartość przed|Można wywołać nową operację?|  
+|Wartość concurrency|Czy można wywołać nową operację?|  
 |---------------------------|-------------------------------------|  
-|Single|Nigdy nie.|  
-|Wielobieżna ConcurrencyMode|Tylko podczas wywoływania innej usługi lub wywołanie zwrotne.|  
-|Wielokrotne|Zawsze.|  
+|Single|Ustawione.|  
+|Współużytkowane|Tylko podczas wywoływania innej usługi lub wywołania zwrotnego.|  
+|Wielokrotne|Stałego.|  
   
    
   
 ## Examples  
- Poniższy przykład kodu demonstruje różnic między za pomocą pojedynczej, wielobieżna ConcurrencyMode i wielu. W tym przykładzie nie kompiluje się bez rzeczywistego wykonania związanych z nim, ale pokazują rodzaj wątkowości gwarantuje, że sprawia, że usługi WCF i co to oznacza dla kodu operacji.  
+ Poniższy przykład kodu demonstruje różnice między użyciem pojedynczej, współużytkowanej i wielu. Ten przykład nie kompiluje się bez prawdziwej implementacji, ale pokazuje rodzaj gwarancji związanych z wątkami wykonywanych przez program WCF oraz to, co oznacza dla kodu operacji.  
   
  [!code-csharp[C_BestPractices-Concurrency#1](~/samples/snippets/csharp/VS_Snippets_CFX/c_bestpractices-concurrency/cs/reentrantandmultiple.cs#1)]  
   
@@ -60,7 +60,7 @@
       </ReturnValue>
       <MemberValue>2</MemberValue>
       <Docs>
-        <summary>Wystąpienie usługi jest wielowątkowych. Nie gwarancji synchronizacji zostały wprowadzone. Ponieważ innych wątków można zmienić obiektu usługi w dowolnym momencie, należy obsłużyć synchronizację i stan spójności.</summary>
+        <summary>Wystąpienie usługi jest wielowątkowe. Nie są wykonywane żadne gwarancje synchronizacji. Ponieważ inne wątki mogą zmieniać obiekt usługi w dowolnym momencie, należy zawsze obsługiwać synchronizację i spójność stanu.</summary>
       </Docs>
     </Member>
     <Member MemberName="Reentrant">
@@ -82,7 +82,7 @@
       </ReturnValue>
       <MemberValue>1</MemberValue>
       <Docs>
-        <summary>Wystąpienie usługi jest jednowątkowym i akceptuje wywołania współużytkowane. Współużytkowane usługa akceptuje wywołań podczas wywoływania innej usługi; Dlatego jest odpowiedzialny za pozostaw spójne przed objaśnienia swoje stan obiektu i należy potwierdzić, czy dane lokalne operacja jest prawidłowa, po objaśnienia. Należy pamiętać, że wystąpienie usługi jest odblokowana tylko przez za pośrednictwem kanału WCF podczas wywoływania innej usługi. W tym przypadku usługa o nazwie wprowadzić ponownie pierwszej usługi za pośrednictwem wywołania zwrotnego. Jeśli pierwsza usługa nie jest współużytkowane, sekwencja wywołań powoduje zakleszczenia. Aby uzyskać więcej informacji, zobacz <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.ConcurrencyMode" />.</summary>
+        <summary>Wystąpienie usługi jest jednowątkowe i akceptuje wywołania współużytkowane. Usługa współużytkowania akceptuje wywołania podczas wywoływania innej usługi; w związku z tym ponosisz odpowiedzialność za pozostawienie stanu obiektu spójnego przed objaśnieniami i musisz potwierdzić, że dane dotyczące operacji są prawidłowe po wywołaniach. Należy zauważyć, że wystąpienie usługi jest odblokowane tylko przez wywołanie innej usługi za pośrednictwem kanału WCF. W takim przypadku wywołana usługa może ponownie wprowadzić pierwszą usługę za pośrednictwem wywołania zwrotnego. Jeśli pierwsza usługa nie jest współużytkowana, sekwencja wywołań skutkuje zakleszczeniem. Aby uzyskać szczegółowe informacje <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.ConcurrencyMode" />, zobacz.</summary>
       </Docs>
     </Member>
     <Member MemberName="Single">
@@ -104,7 +104,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>Wystąpienie usługi jest jednowątkowym i nie akceptuje wywołania współużytkowane. Jeśli <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode" /> właściwość <see cref="F:System.ServiceModel.InstanceContextMode.Single" />oraz dodatkowe nadejścia podczas, gdy wystąpienie usługi wywołanie, te komunikaty musi poczekać, aż usługa stanie się dostępna aż lub przekraczają limit czasu wiadomości.</summary>
+        <summary>Wystąpienie usługi jest jednowątkowe i nie akceptuje wywołań współużytkowanych. Jeśli właściwość jest <see cref="F:System.ServiceModel.InstanceContextMode.Single" />i dodatkowe komunikaty docierają podczas wywołania usługi wystąpienia, te komunikaty muszą czekać do momentu udostępnienia usługi lub do momentu przekroczenia limitu czasu komunikatów. <see cref="P:System.ServiceModel.ServiceBehaviorAttribute.InstanceContextMode" /></summary>
       </Docs>
     </Member>
   </Members>

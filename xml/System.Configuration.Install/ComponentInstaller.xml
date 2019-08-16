@@ -1,5 +1,5 @@
 <Type Name="ComponentInstaller" FullName="System.Configuration.Install.ComponentInstaller">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="72e26826edc3d9c376c2a42cf9f8cdd83c710d44" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63896270" /></Metadata><TypeSignature Language="C#" Value="public abstract class ComponentInstaller : System.Configuration.Install.Installer" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="2606a10ffa85c82a06c6db57afcf7c3eeb23f9c3" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69380063" /></Metadata><TypeSignature Language="C#" Value="public abstract class ComponentInstaller : System.Configuration.Install.Installer" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ComponentInstaller extends System.Configuration.Install.Installer" />
   <TypeSignature Language="DocId" Value="T:System.Configuration.Install.ComponentInstaller" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class ComponentInstaller&#xA;Inherits Installer" />
@@ -16,9 +16,9 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Określa Instalatora, który kopiuje właściwości ze składnika do użycia w czasie instalacji.</summary>
+    <summary>Określa Instalatora, który kopiuje właściwości z składnika, który ma być używany podczas instalacji.</summary>
     <remarks>To be added.</remarks>
-    <block subset="none" type="overrides"><para>Przy dziedziczeniu z <see cref="T:System.Configuration.Install.ComponentInstaller" />, konieczne jest przesłonięcie <see cref="M:System.Configuration.Install.ComponentInstaller.CopyFromComponent(System.ComponentModel.IComponent)" /> metodę i zazwyczaj zastąpienia <see cref="M:System.Configuration.Install.Installer.Install(System.Collections.IDictionary)" /> i <see cref="M:System.Configuration.Install.Installer.Uninstall(System.Collections.IDictionary)" /> metody.</para></block>
+    <block subset="none" type="overrides"><para>W przypadku dziedziczenia <see cref="T:System.Configuration.Install.ComponentInstaller" />z, należy <see cref="M:System.Configuration.Install.ComponentInstaller.CopyFromComponent(System.ComponentModel.IComponent)" /> zastąpić metodę <see cref="M:System.Configuration.Install.Installer.Install(System.Collections.IDictionary)" /> i przesłonić metody i <see cref="M:System.Configuration.Install.Installer.Uninstall(System.Collections.IDictionary)" /> .</para></block>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -61,18 +61,18 @@
         <Parameter Name="component" Type="System.ComponentModel.IComponent" />
       </Parameters>
       <Docs>
-        <param name="component">Składnik do skopiowania.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, godzina jest kopie wszystkich właściwości, które są wymagane w instalacji z określonego składnika.</summary>
+        <param name="component">Składnik, z którego mają zostać skopiowane.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, kopiuje wszystkie właściwości, które są wymagane w czasie instalacji z określonego składnika.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Instalator należy wykonać wszystkie informacje, może on ze składnika na żywo i zapisz go do użycia w czasie instalacji.  
+ Instalator powinien pobrać wszystkie informacje, które mogą znajdować się w aktywnym składniku, i zapisać go do użycia w czasie instalacji.  
   
    
   
 ## Examples  
- W poniższym przykładzie zdefiniowano klasę `MyInstallClass`, co powoduje utworzenie w dzienniku zdarzeń i kopiuje właściwości zdarzenia dziennika składnika <xref:System.Diagnostics.EventLogInstaller>. Sprawdza również czy <xref:System.ServiceProcess.ServiceInstaller> można wykonać tego samego rodzaju instalacji jako <xref:System.Diagnostics.EventLogInstaller>.  
+ W poniższym przykładzie zdefiniowano klasę `MyInstallClass`, która tworzy dziennik zdarzeń i kopiuje właściwości składnika dziennika zdarzeń do programu. <xref:System.Diagnostics.EventLogInstaller> Sprawdza również, czy <xref:System.ServiceProcess.ServiceInstaller> można wykonać instalację tego samego rodzaju <xref:System.Diagnostics.EventLogInstaller>co.  
   
  [!code-cpp[ComponentInstaller_CopyFromComponent#1](~/samples/snippets/cpp/VS_Snippets_CLR/ComponentInstaller_CopyFromComponent/CPP/componentinstaller_copyfromcomponent.cpp#1)]
  [!code-csharp[ComponentInstaller_CopyFromComponent#1](~/samples/snippets/csharp/VS_Snippets_CLR/ComponentInstaller_CopyFromComponent/CS/componentinstaller_copyfromcomponent.cs#1)]
@@ -104,18 +104,18 @@
       </Parameters>
       <Docs>
         <param name="otherInstaller">Instalator do porównania.</param>
-        <summary>Określa, jeśli określony Instalator instaluje ten sam obiekt jako tego Instalatora.</summary>
-        <returns><see langword="true" /> Jeśli Instalator i Instalator określił <paramref name="otherInstaller" /> parametru instalacji tego samego obiektu; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Określa, czy określony Instalator instaluje ten sam obiekt co ten Instalator.</summary>
+        <returns><see langword="true" />Jeśli ten Instalator i Instalator określony przez <paramref name="otherInstaller" /> parametr instalują ten sam obiekt; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zazwyczaj <xref:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller%2A> zwraca `true` tylko wtedy, gdy Instalator i Instalator określił `otherInstaller` parametru instalacji tego samego obiektu. W takim przypadku wywołanie <xref:System.Configuration.Install.Installer.Install%2A> lub <xref:System.Configuration.Install.Installer.Uninstall%2A> metody w obu wyniki Instalatora, w tym samym stanie systemu.  
+ Zwykle zwraca <xref:System.Configuration.Install.ComponentInstaller.IsEquivalentInstaller%2A> `true` tylko wtedy, gdy Instalator i Instalator określony przez `otherInstaller` parametr instalują ten sam obiekt. W takim przypadku wywołanie <xref:System.Configuration.Install.Installer.Install%2A> metody lub <xref:System.Configuration.Install.Installer.Uninstall%2A> dla każdego Instalatora powoduje ten sam stan systemu.  
   
    
   
 ## Examples  
- W poniższym przykładzie zdefiniowano klasę `MyInstallClass`, co powoduje utworzenie w dzienniku zdarzeń i kopiuje właściwości zdarzenia dziennika składnika <xref:System.Diagnostics.EventLogInstaller> obiektu. Sprawdza również czy <xref:System.ServiceProcess.ServiceInstaller> obiektu może obsłużyć tego samego rodzaju instalacji jako <xref:System.Diagnostics.EventLogInstaller>.  
+ W poniższym przykładzie zdefiniowano klasę `MyInstallClass`, która tworzy dziennik zdarzeń i kopiuje właściwości składnika dziennika zdarzeń <xref:System.Diagnostics.EventLogInstaller> do obiektu. Sprawdza także, czy <xref:System.ServiceProcess.ServiceInstaller> obiekt może obsługiwać ten sam rodzaj instalacji co. <xref:System.Diagnostics.EventLogInstaller>  
   
  [!code-cpp[ComponentInstaller_CopyFromComponent#2](~/samples/snippets/cpp/VS_Snippets_CLR/ComponentInstaller_CopyFromComponent/CPP/componentinstaller_copyfromcomponent.cpp#2)]
  [!code-csharp[ComponentInstaller_CopyFromComponent#2](~/samples/snippets/csharp/VS_Snippets_CLR/ComponentInstaller_CopyFromComponent/CS/componentinstaller_copyfromcomponent.cs#2)]
