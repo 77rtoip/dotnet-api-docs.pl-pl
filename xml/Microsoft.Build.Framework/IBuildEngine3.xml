@@ -1,5 +1,5 @@
 <Type Name="IBuildEngine3" FullName="Microsoft.Build.Framework.IBuildEngine3">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1a79c30483bc51c8c07078c055e28db5e30e1b46" /><Meta Name="ms.sourcegitcommit" Value="4ee26ac79338b0bf99fa1e0913e8a06b21994d8e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/26/2019" /><Meta Name="ms.locfileid" Value="58452027" /></Metadata><TypeSignature Language="C#" Value="public interface IBuildEngine3 : Microsoft.Build.Framework.IBuildEngine2" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="237cd3348f0aafbb2c6ef10907ab16c97a0b5113" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69287957" /></Metadata><TypeSignature Language="C#" Value="public interface IBuildEngine3 : Microsoft.Build.Framework.IBuildEngine2" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IBuildEngine3 implements class Microsoft.Build.Framework.IBuildEngine, class Microsoft.Build.Framework.IBuildEngine2" />
   <TypeSignature Language="DocId" Value="T:Microsoft.Build.Framework.IBuildEngine3" />
   <TypeSignature Language="VB.NET" Value="Public Interface IBuildEngine3&#xA;Implements IBuildEngine2" />
@@ -18,7 +18,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Ten interfejs rozszerza IBuildEngine zapewnienie metoda umożliwiająca Kompilowanie projektu równolegle pliki.</summary>
+    <summary>Ten interfejs rozszerza IBuildEngine, aby zapewnić metodę, która umożliwia równoległe Kompilowanie plików projektu.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -46,16 +46,16 @@
         <Parameter Name="returnTargetOutputs" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="projectFileNames">Projekt do kompilacji.</param>
-        <param name="targetNames">Obiekty docelowe w skompilować projekt (może być null).</param>
-        <param name="globalProperties">Tablica <see cref="T:System.Collections.IDictionary" /> dodatkowe globalnych właściwości do zastosowania do projektów podrzędnych (wpisy tablicy może być null).  
+        <param name="projectFileNames">Projekt do skompilowania.</param>
+        <param name="targetNames">Elementy docelowe w projekcie do skompilowania (mogą mieć wartość null).</param>
+        <param name="globalProperties">Tablica <see cref="T:System.Collections.IDictionary" /> dodatkowych właściwości globalnych do zastosowania do projektu podrzędnego (wpisy tablicowe mogą mieć wartość null).  
   
 Klucze i powinny być ciągami.</param>
-        <param name="removeGlobalProperties">Lista właściwości globalne, które powinny zostać usunięte.</param>
-        <param name="toolsVersion">Wersja narzędzi rozpoznawane przez aparat, który zostanie użyty podczas kompilacji (może być null).</param>
-        <param name="returnTargetOutputs">W BuildEngineResult powinna zostać zwrócona docelowe produkty wyjściowe.</param>
-        <summary>Zezwala na zadania zainicjować kompilację w pliku projektu</summary>
-        <returns>Jeśli kompilacja zakończy się pomyślnie, zwracane są dane wyjściowe określonych celów.</returns>
+        <param name="removeGlobalProperties">Lista właściwości globalnych, które należy usunąć.</param>
+        <param name="toolsVersion">Wersja narzędzi rozpoznawana przez aparat, która będzie używana podczas tej kompilacji (może mieć wartość null).</param>
+        <param name="returnTargetOutputs">Czy docelowe dane wyjściowe są zwracane w BuildEngineResult.</param>
+        <summary>Umożliwia wykonywanie zadań w celu zainicjowania kompilacji w pliku projektu</summary>
+        <returns>Jeśli kompilacja zakończy się pomyślnie, zwracane są dane wyjściowe określonych elementów docelowych.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -76,7 +76,7 @@ Klucze i powinny być ciągami.</param>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Czeka, aby ponownie pobrać kontroli po reaguje.</summary>
+        <summary>Czeka na odzyskanie kontroli po uzyskaniu.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -97,12 +97,12 @@ Klucze i powinny być ciągami.</param>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Informuje system, że to zadanie jest składnikiem spoza procesu długotrwałych i innych pracy można wykonać w kompilacji podczas tej pracy.</summary>
+        <summary>Informuje system, że to zadanie ma długotrwały składnik, a inne prace można wykonać w kompilacji podczas wykonywania tej operacji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Istnieje tylko jeden węzeł (proces msbuild.exe) dla każdego procesora CPU. Tylko jeden projekt, docelowej i zadań można tworzyć w dowolnym momencie w węźle. Jeśli zadanie oczekuje się, na przykład zainicjowanego narzędzia lub niektóre inne zdarzenie, aby ukończyć, zadania można wywołać wydajności, która zwraca natychmiast. Jeśli jakieś są dostępne w ten sposób węzeł zbudować obiekt docelowy w innym projekcie.  Gdy zadanie jest gotowe kontynuować, należy wywołać <xref:Microsoft.Build.Framework.IBuildEngine3.Reacquire%2A>. Zgodnie z zasadą nierównej, jeśli zadanie oczekuje, że operacja może potrwać ponad 20 lub 30 sekund, go wybrać do wywołania `Yield` przed rozpoczęciem operacji i `Reacquire` po zakończeniu operacji.  
+ Dla każdego procesora CPU jest dostępny tylko jeden węzeł (proces MSBuild. exe). W dowolnym momencie w węźle można kompilować tylko jeden projekt, cel i zadanie. Jeśli zadanie oczekuje na przykład w przypadku narzędzia położonego lub innego zdarzenia do wykonania, zadanie może wywołać funkcję Yield, która natychmiast zwraca wartość. Dzięki temu węzeł tworzy obiekt docelowy w innym projekcie, jeśli jest dostępny.  Gdy zadanie jest gotowe do kontynuowania, powinno wywołać <xref:Microsoft.Build.Framework.IBuildEngine3.Reacquire%2A>. Jako zasada nieprzewidziana, jeśli zadanie będzie oczekiwać, że operacja zajmie ponad 20 lub 30 sekund, może wybrać wywołanie `Yield` przed rozpoczęciem operacji i `Reacquire` po zakończeniu operacji.  
   
  ]]></format>
         </remarks>

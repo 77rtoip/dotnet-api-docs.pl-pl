@@ -1,5 +1,5 @@
 <Type Name="ObjectManager" FullName="System.Runtime.Serialization.ObjectManager">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="48af6609a59b0fc9b2fee0cd334574425d221b97" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58746688" /></Metadata><TypeSignature Language="C#" Value="public class ObjectManager" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d92aafa257bd571710c2129d245109033ca0697d" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69087183" /></Metadata><TypeSignature Language="C#" Value="public class ObjectManager" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi ObjectManager extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Serialization.ObjectManager" />
   <TypeSignature Language="VB.NET" Value="Public Class ObjectManager" />
@@ -32,19 +32,19 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Przechowuje informacje o obiektach, ponieważ są one deserializacji.</summary>
+    <summary>Śledzi obiekty w miarę ich deserializacji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas deserializacji <xref:System.Runtime.Serialization.Formatter> zapytania <xref:System.Runtime.Serialization.ObjectManager> do określenia, czy odwołanie do obiektu w strumieniu Zserializowany odwołuje się do obiektu, który już został zdeserializowany (odwołania do tyłu), lub do obiektu, który nie został jeszcze zdeserializować (odwołanie do przodu). W przypadku odwołania w serializowanym strumieniu odwołania do przodu, a następnie <xref:System.Runtime.Serialization.Formatter> można zarejestrować naprawy przy użyciu <xref:System.Runtime.Serialization.ObjectManager>. W przypadku odwołania w serializowanym strumieniu odwołaniem z poprzednimi wersjami <xref:System.Runtime.Serialization.Formatter> natychmiast kończy odwołania. Naprawy odnosi się do procesu finalizowanie odwołania do obiektu nie jest jeszcze zakończona podczas deserializacji obiektu. Po deserializacji wymaganego obiektu <xref:System.Runtime.Serialization.ObjectManager> ukończy odwołania.  
+ Podczas deserializacji <xref:System.Runtime.Serialization.Formatter> <xref:System.Runtime.Serialization.ObjectManager> zapytanie w celu ustalenia, czy odwołanie do obiektu w serializowanym strumieniu odwołuje się do obiektu, który został już deserializowany (odwołanie do tyłu) lub do obiektu, który nie został jeszcze deserializowane (odwołanie do przodu). Jeśli odwołanie w serializowanym strumieniu jest odwołaniem do przodu, <xref:System.Runtime.Serialization.Formatter> można zarejestrować korektę <xref:System.Runtime.Serialization.ObjectManager>przy użyciu. Jeśli odwołanie w serializowanym strumieniu jest odwołaniem do tyłu, <xref:System.Runtime.Serialization.Formatter> natychmiast uzupełnia odwołanie. Naprawa odnosi się do procesu finalizowania odwołań do obiektu, który nie został jeszcze ukończony podczas procesu deserializacji obiektu. Po deserializacji <xref:System.Runtime.Serialization.ObjectManager> wymaganego obiektu zostanie wykonane odwołanie.  
   
- <xref:System.Runtime.Serialization.ObjectManager> Następuje zestaw reguł, które wymuszają kolejność naprawy. Wszystkie obiekty, które implementują <xref:System.Runtime.Serialization.ISerializable> lub <xref:System.Runtime.Serialization.ISerializationSurrogate> można oczekiwać, że masz wszystkie obiekty, które są przesyłane za pośrednictwem <xref:System.Runtime.Serialization.SerializationInfo> dostępne, gdy jest przeprowadzona drzewa obiektów. Obiekt nadrzędny nie może jednak zakładają, że wszystkie jego obiekty podrzędne zostaną w pełni zakończone gdy jest w pełni przeprowadzona. Wszystkich obiektów podrzędnych będą obecne, ale nie do wszystkich obiektów z podwójnym zawsze będą obecne. Jeśli obiekt wymaga wykonywania pewnych akcji, które są zależne od wykonywanie kodu na jego obiektów podrzędnych, może opóźnić te akcje, implementować <xref:System.Runtime.Serialization.IDeserializationCallback> interfejs i wykonywania kodu, tylko wtedy, gdy jest wywołanie zwrotne w tym interfejsie.  
+ <xref:System.Runtime.Serialization.ObjectManager> Poniżej znajduje się zestaw reguł, które określają kolejność naprawienia. Wszystkie obiekty, które <xref:System.Runtime.Serialization.ISerializable> implementują lub <xref:System.Runtime.Serialization.ISerializationSurrogate> mają, mogą oczekiwać, że wszystkie obiekty, które są <xref:System.Runtime.Serialization.SerializationInfo> przesyłane przez program, są dostępne po deserializacji drzewa obiektów. Jednak obiekt nadrzędny nie może zakładać, że wszystkie jego obiekty podrzędne zostaną w pełni ukończone, gdy zostanie całkowicie odszeregowany. Wszystkie obiekty podrzędne będą obecne, ale nie wszystkie obiekty grandchild muszą być obecne. Jeśli obiekt musi wykonać pewne akcje, które są zależne od wykonywania kodu na obiektach podrzędnych, może opóźnić te działania, zaimplementować <xref:System.Runtime.Serialization.IDeserializationCallback> interfejs i wykonać kod tylko wtedy, gdy jest on wywoływany ponownie w tym interfejsie.  
   
    
   
 ## Examples  
- Poniższy przykład kodu pokazuje sposób użycia <xref:System.Runtime.Serialization.ObjectManager> klasy w celu zaprezentowania wykresu obiektu, przechodząc do każdego obiektu tylko raz.  
+ Poniższy przykład kodu pokazuje, jak używać <xref:System.Runtime.Serialization.ObjectManager> klasy do przechodzenia przez Graf obiektu, przechodząc do każdego obiektu tylko raz.  
   
  [!code-csharp[ObjectManager#1](~/samples/snippets/csharp/VS_Snippets_Misc/ObjectManager/CS/ObjectManager.cs#1)]  
   
@@ -87,8 +87,8 @@
         <Parameter Name="context" Type="System.Runtime.Serialization.StreamingContext" />
       </Parameters>
       <Docs>
-        <param name="selector">Selektor dwuskładnikowego do użycia. <see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> Określa prawidłowe zastępczy do użycia podczas deserializacji obiektów danego typu. Podczas deserializacji selektor dwuskładnikowego tworzy nowe wystąpienie obiektu na podstawie informacji przekazywanych w strumieniu.</param>
-        <param name="context">Kontekst strumieniowy. <see cref="T:System.Runtime.Serialization.StreamingContext" /> Nie jest używany przez <see langword="ObjectManager" />, ale jest przekazywany jako parametr do żadnych obiektów, implementowanie <see cref="T:System.Runtime.Serialization.ISerializable" /> lub mające <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. Te obiekty może zająć określonej akcji w zależności od źródła informacji do deserializacji.</param>
+        <param name="selector">Selektor surogatu do użycia. <see cref="T:System.Runtime.Serialization.ISurrogateSelector" /> Określa odpowiedni Surogat, który ma być używany podczas deserializacji obiektów danego typu. Podczas deserializacji selektor surogatu tworzy nowe wystąpienie obiektu z informacji przesyłanych w strumieniu.</param>
+        <param name="context">Kontekst strumieniowy. Nie jest używana przez <see langword="ObjectManager" />, ale jest przenoszona jako parametr do dowolnych <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />obiektów <see cref="T:System.Runtime.Serialization.ISerializable" /> implementujących lub posiadających. <see cref="T:System.Runtime.Serialization.StreamingContext" /> Te obiekty mogą wykonywać określone akcje w zależności od źródła informacji do deserializacji.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Runtime.Serialization.ObjectManager" /> klasy.</summary>
         <remarks>To be added.</remarks>
         <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie posiada wymaganych uprawnień.</exception>
@@ -130,16 +130,16 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wykonuje wszystkie zarejestrowane korekty.</summary>
+        <summary>Wykonuje wszystkie zarejestrowane naprawy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Korekt są przeprowadzane przez wszystkie odpowiednie zastępczy samego obiektu (jeśli implementuje <xref:System.Runtime.Serialization.ISerializable>), lub w implementacji domyślnej.  
+ Naprawy są wykonywane przez każdy odpowiedni Surogat, sam obiekt (jeśli implementuje <xref:System.Runtime.Serialization.ISerializable>) lub implementację domyślną.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Runtime.Serialization.SerializationException">Naprawa nie została ukończona pomyślnie.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">Naprawa nie została pomyślnie ukończona.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetObject">
@@ -175,17 +175,17 @@
       </Parameters>
       <Docs>
         <param name="objectID">Identyfikator żądanego obiektu.</param>
-        <summary>Zwraca obiekt z identyfikatorem określony obiekt.</summary>
-        <returns>Obiekt o identyfikatorze określonego obiektu, jeśli zostały wcześniej zapisane lub <see langword="null" /> Jeśli zarejestrowano nie ma takiego obiektu.</returns>
+        <summary>Zwraca obiekt o określonym IDENTYFIKATORze obiektu.</summary>
+        <returns>Obiekt o określonym identyfikatorze obiektu, jeśli został wcześniej zapisany, lub <see langword="null" /> Jeśli nie zarejestrowano takiego obiektu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zarejestrowany i wydawane Identyfikatora obiektu za pomocą wywołania do obiektu <xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A> metody.  
+ Obiekt można zarejestrować i wystawić identyfikator obiektu z wywołaniem <xref:System.Runtime.Serialization.ObjectManager.RegisterObject%2A> metody.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejsza niż zero.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejszy lub równy zero.</exception>
       </Docs>
     </Member>
     <Member MemberName="RaiseDeserializationEvent">
@@ -218,7 +218,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wywołuje zdarzenie deserializacji do dowolnego zarejestrowanego obiektu, który implementuje <see cref="T:System.Runtime.Serialization.IDeserializationCallback" />.</summary>
+        <summary>Podnosi zdarzenie deserializacji do dowolnego zarejestrowanego obiektu, <see cref="T:System.Runtime.Serialization.IDeserializationCallback" />który implementuje.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -253,8 +253,8 @@
         <Parameter Name="obj" Type="System.Object" Index="0" FrameworkAlternate="netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="obj">Wystąpienie tego typu, który zawiera metodę do wywołania.</param>
-        <summary>Wywołuje metody oznaczonej jako <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" />.</summary>
+        <param name="obj">Wystąpienie typu, który zawiera metodę, która ma zostać wywołana.</param>
+        <summary>Wywołuje metodę oznaczoną przy użyciu <see cref="T:System.Runtime.Serialization.OnDeserializingAttribute" />.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -265,7 +265,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Rejestruje naprawy dla jednego elementu w tablicy, można wykonać później.</summary>
+        <summary>Rejestruje korektę dla jednego elementu w tablicy, aby można było wykonać ją później.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="RecordArrayElementFixup">
@@ -302,20 +302,20 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="arrayToBeFixed">Identyfikator tablicy, używanego do rejestrowania naprawy.</param>
-        <param name="index">Indeks w <c>arrayFixup</c> zażądanego naprawy dla.</param>
-        <param name="objectRequired">Identyfikator obiektu, który będzie wskazywać bieżącego elementu tablicy po zakończeniu naprawy.</param>
-        <summary>Rejestruje naprawy dla jednego elementu w tablicy.</summary>
+        <param name="arrayToBeFixed">Identyfikator tablicy używanej do rejestrowania naprawy.</param>
+        <param name="index">Indeks w <c>arrayFixup</c> , dla którego zażądano naprawy.</param>
+        <param name="objectRequired">Identyfikator obiektu, do którego będzie wskazywał bieżący element tablicy po zakończeniu naprawy.</param>
+        <summary>Rejestruje korektę dla jednego elementu w tablicy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Naprawa jest określony element określonej tablicy. Wartość używana podczas procesu naprawy jest podawany jako `objectRequired` parametru.  
+ Naprawa dotyczy określonego elementu określonej tablicy. Wartość używana podczas procesu naprawy jest podana w `objectRequired` parametrze.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayToBeFixed" /> Lub <paramref name="objectRequired" /> parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="index" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Parametr <paramref name="arrayToBeFixed" /> lub<paramref name="objectRequired" /> jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="index" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RecordArrayElementFixup">
@@ -352,20 +352,20 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="arrayToBeFixed">Identyfikator tablicy, używanego do rejestrowania naprawy.</param>
-        <param name="indices">Indeksy w tablicy wielowymiarowej, który naprawy jest wnioskowany dla.</param>
-        <param name="objectRequired">Identyfikator obiektu elementów tablicy będzie wskazywać po zakończeniu naprawy.</param>
-        <summary>Korekty rekordów dla określonych elementów w tablicy, można wykonać później.</summary>
+        <param name="arrayToBeFixed">Identyfikator tablicy używanej do rejestrowania naprawy.</param>
+        <param name="indices">Indeksy w tablicy wielowymiarowe, dla których zażądano naprawy.</param>
+        <param name="objectRequired">Identyfikator obiektu, do którego będą wskazywać elementy tablicy po zakończeniu naprawy.</param>
+        <summary>Rejestruje naprawy dla określonych elementów w tablicy, które mają zostać wykonane później.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Naprawa jest dla określonych elementów określonej tablicy. Wartość używana podczas procesu naprawy jest podawany jako `objectRequired` parametru.  
+ Naprawa dotyczy określonych elementów określonej tablicy. Wartość używana podczas procesu naprawy jest podana w `objectRequired` parametrze.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayToBeFixed" /> Lub <paramref name="objectRequired" /> parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="indices" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Parametr <paramref name="arrayToBeFixed" /> lub<paramref name="objectRequired" /> jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="indices" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RecordDelayedFixup">
@@ -402,20 +402,20 @@
         <Parameter Name="objectRequired" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="objectToBeFixed">Identyfikator obiektu, który wymaga odwołania do <paramref name="objectRequired" />.</param>
-        <param name="memberName">Nazwa elementu członkowskiego <paramref name="objectToBeFixed" /> której będą wykonywane naprawy.</param>
+        <param name="objectToBeFixed">Identyfikator obiektu, do <paramref name="objectRequired" />którego należy odwołanie.</param>
+        <param name="memberName">Nazwa elementu członkowskiego <paramref name="objectToBeFixed" /> , w którym zostanie wykonane naprawianie.</param>
         <param name="objectRequired">Identyfikator obiektu wymaganego przez <paramref name="objectToBeFixed" />.</param>
-        <summary>Rejestruje naprawy dla elementu członkowskiego obiektu, aby być wykonane później.</summary>
+        <summary>Rejestruje korekty dla elementu członkowskiego obiektu, który ma zostać wykonany później.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Naprawa jest dla określonego elementu członkowskiego określonego obiektu. Wartość do użycia podczas procesu naprawy jest dostarczana jako `objectRequired` argumentu.  
+ Naprawa dotyczy określonego elementu członkowskiego określonego obiektu. Wartość, która ma być używana podczas procesu naprawy, jest podawana `objectRequired` jako argument.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectToBeFixed" /> lub <paramref name="objectRequired" /> parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="memberName" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectToBeFixed" />lub <paramref name="objectRequired" /> parametr jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="memberName" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RecordFixup">
@@ -453,19 +453,19 @@
       </Parameters>
       <Docs>
         <param name="objectToBeFixed">Identyfikator obiektu, który wymaga odwołania do <paramref name="objectRequired" /> obiektu.</param>
-        <param name="member">Członek <paramref name="objectToBeFixed" /> której będą wykonywane naprawy.</param>
+        <param name="member">Element członkowski <paramref name="objectToBeFixed" /> , do którego zostanie wykonane naprawianie.</param>
         <param name="objectRequired">Identyfikator obiektu wymaganego przez <paramref name="objectToBeFixed" />.</param>
-        <summary>Rejestruje naprawy dla członka obiektu, można wykonać później.</summary>
+        <summary>Rejestruje korektę dla elementu członkowskiego obiektu, który zostanie wykonany później.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Naprawa jest dla określonego elementu członkowskiego określonego obiektu. Wartość do użycia podczas procesu naprawy jest dostarczana jako `objectRequired` parametru.  
+ Naprawa dotyczy określonego elementu członkowskiego określonego obiektu. Wartość, która ma być używana podczas procesu naprawy, jest podawana `objectRequired` jako parametr.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectToBeFixed" /> Lub <paramref name="objectRequired" /> parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="member" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Parametr <paramref name="objectToBeFixed" /> lub<paramref name="objectRequired" /> jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="member" /></exception>
       </Docs>
     </Member>
     <MemberGroup MemberName="RegisterObject">
@@ -475,7 +475,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Rejestruje obiektu, ponieważ jest ona przeprowadzona.</summary>
+        <summary>Rejestruje obiekt w trakcie jego deserializacji.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="RegisterObject">
@@ -518,18 +518,18 @@
       <Docs>
         <param name="obj">Obiekt do rejestracji.</param>
         <param name="objectID">Identyfikator obiektu do zarejestrowania.</param>
-        <summary>Rejestry deserializacji obiektu jako jego, kojarząc ją z <paramref name="objectID" />.</summary>
+        <summary>Rejestruje obiekt w trakcie jego deserializacji, kojarząc go z <paramref name="objectID" />.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.Serialization.ObjectManager> przechowuje informacje o obiekcie i jego identyfikator. Nowsze podczas deserializacji <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> może służyć do określenia, czy identyfikator określonego obiektu została już przeprowadzona lub czy jest odwołaniem do przodu do obiektu, który jeszcze nie została przeprowadzona.  
+ <xref:System.Runtime.Serialization.ObjectManager>zachowuje informacje dotyczące zarówno obiektu, jak i jego identyfikatora. Później podczas deserializacji <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> można użyć do określenia, czy określony identyfikator obiektu został już deserializowany, czy też jest odwołaniem do przodu do obiektu, który nie został jeszcze deserializowany.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="objectID" /> Został już zarejestrowany dla obiektu innego niż <paramref name="obj" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">Element został już zarejestrowany dla obiektu innego niż <paramref name="obj" />. <paramref name="objectID" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -573,19 +573,19 @@
       <Docs>
         <param name="obj">Obiekt do rejestracji.</param>
         <param name="objectID">Identyfikator obiektu do zarejestrowania.</param>
-        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Używanych if <paramref name="obj" /> implementuje <see cref="T:System.Runtime.Serialization.ISerializable" /> lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" /> zostanie zakończone wszelkie informacje wymagane naprawy i następnie przekazywane do wymaganego obiektu, po ukończeniu tego obiektu.</param>
-        <summary>Rejestry deserializacji obiektu jako jego, kojarząc ją z <paramref name="objectID" />i rejestrowania <see cref="T:System.Runtime.Serialization.SerializationInfo" /> używane z nim.</summary>
+        <param name="info">Użyta <see cref="T:System.Runtime.Serialization.SerializationInfo" /> , <paramref name="obj" /> Jeśli <see cref="T:System.Runtime.Serialization.ISerializable" /> implementuje lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" />zostanie wykonane z wszelkimi wymaganymi informacjami o naprawie, a następnie przekazywać do wymaganego obiektu po zakończeniu tego obiektu.</param>
+        <summary>Rejestruje obiekt w trakcie jego deserializacji, kojarzenia go z <paramref name="objectID" />i <see cref="T:System.Runtime.Serialization.SerializationInfo" /> rejestrowania użytego z nim.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.Serialization.ObjectManager> przechowuje informacje dotyczące obiektu i jego identyfikator. Później, podczas deserializacji, możesz użyć <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> Aby dowiedzieć się, czy konkretny obiekt identyfikator już została przeprowadzona, czy jest odwołaniem do przodu do obiektu, który jeszcze nie została przeprowadzona.  
+ <xref:System.Runtime.Serialization.ObjectManager>zachowuje informacje dotyczące zarówno obiektu, jak i jego identyfikatora. Później podczas deserializacji można użyć <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> programu w celu ustalenia, czy określony identyfikator obiektu został już deserializowany, lub jeśli jest to odwołanie do przodu do obiektu, który nie został jeszcze rozszeregowany.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="objectID" /> Został już zarejestrowany dla obiektu innego niż <paramref name="obj" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException">Element został już zarejestrowany dla obiektu innego niż <paramref name="obj" />. <paramref name="objectID" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -631,23 +631,23 @@
       <Docs>
         <param name="obj">Obiekt do rejestracji.</param>
         <param name="objectID">Identyfikator obiektu do zarejestrowania.</param>
-        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Używanych if <paramref name="obj" /> implementuje <see cref="T:System.Runtime.Serialization.ISerializable" /> lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" /> zostanie zakończone wszelkie informacje wymagane naprawy i następnie przekazywane do wymaganego obiektu, po ukończeniu tego obiektu.</param>
-        <param name="idOfContainingObj">Identyfikator obiektu, który zawiera <paramref name="obj" />. Ten parametr jest wymagany tylko wtedy, gdy <paramref name="obj" /> jest typem wartości.</param>
-        <param name="member">Pola w obiekcie zawierającego gdzie <paramref name="obj" /> istnieje. Ten parametr ma znaczenie tylko wtedy, gdy <paramref name="obj" /> jest typem wartości.</param>
-        <summary>Rejestruje członka obiektu, ponieważ jest przeprowadzona, kojarząc ją z <paramref name="objectID" />i rejestrowania <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</summary>
+        <param name="info">Użyta <see cref="T:System.Runtime.Serialization.SerializationInfo" /> , <paramref name="obj" /> Jeśli <see cref="T:System.Runtime.Serialization.ISerializable" /> implementuje lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" />zostanie wykonane z wszelkimi wymaganymi informacjami o naprawie, a następnie przekazywać do wymaganego obiektu po zakończeniu tego obiektu.</param>
+        <param name="idOfContainingObj">Identyfikator obiektu, który zawiera <paramref name="obj" />. Ten parametr jest wymagany tylko wtedy <paramref name="obj" /> , gdy jest typem wartości.</param>
+        <param name="member">Pole w zawierającym go obiekcie, <paramref name="obj" /> gdzie istnieje. Ten parametr ma znaczenie tylko wtedy <paramref name="obj" /> , gdy jest typem wartości.</param>
+        <summary>Rejestruje element członkowski obiektu w trakcie jego deserializacji, kojarząc go z <paramref name="objectID" />i <see cref="T:System.Runtime.Serialization.SerializationInfo" />rejestrując.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy podać `member` i `idOfContainingObj` parametry Jeśli `obj` jest <xref:System.ValueType> ze względu na sposób korekt są przeprowadzane na <xref:System.ValueType> obiektów. Miejsce do przechowywania informacji o <xref:System.ValueType> jest alokowana z zawierającego go obiektu. Jednak gdy <xref:System.ValueType> jest spakowany zarejestrować <xref:System.Runtime.Serialization.ObjectManager>, utracie połączenia z zawierającego go obiektu. Aby zagwarantować, że korekt wystąpić w wystąpieniu <xref:System.ValueType> przechowywanych w obiektu zawierającego i nie ramce wystąpienie <xref:System.Runtime.Serialization.ObjectManager> zachowuje niektóre dodatkowe informacje.  
+ `member` Należy podać <xref:System.ValueType> parametry i `idOfContainingObj` , jeśli `obj` jest to <xref:System.ValueType> spowodowane sposobem wykonywania korekt w obiektach. Miejsce na przechowywanie informacji dla elementu <xref:System.ValueType> jest przydzielony do zawartego w nim obiektu. Jeśli <xref:System.ValueType> jednak obiekt jest opakowany do zarejestrowania <xref:System.Runtime.Serialization.ObjectManager>w, utraci połączenie z jego zawierającym obiektu. W celu zagwarantowania, że naprawianie odbywa się <xref:System.ValueType> w wystąpieniu przechowywanym w obiekcie zawierającym, a nie w zapakowanym wystąpieniu <xref:System.Runtime.Serialization.ObjectManager> , zachowuje kilka dodatkowych informacji.  
   
- <xref:System.Runtime.Serialization.ObjectManager> przechowuje informacje o obiekcie i jego identyfikator. Nowsze podczas deserializacji <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> może służyć do odnajdywanie określonego obiektu o identyfikatorze już została przeprowadzona, czy czy do przodu odwołanie do obiektu nie jest jeszcze przeprowadzona.  
+ <xref:System.Runtime.Serialization.ObjectManager>zachowuje informacje dotyczące zarówno obiektu, jak i jego identyfikatora. Później podczas deserializacji można <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> użyć, aby stwierdzić, czy określony identyfikator obiektu został już deserializowany, czy też nie jest odwołaniem do przodu do obiektu, który nie został jeszcze rozszeregowany.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="objectID" /> Został już zarejestrowany dla obiektu innego niż <paramref name="obj" />, lub <paramref name="member" /> nie <see cref="T:System.Reflection.FieldInfo" /> i <paramref name="member" /> nie <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="member" /> <paramref name="member" /> <paramref name="obj" /> <see cref="T:System.Reflection.FieldInfo" /> Element został już zarejestrowany dla obiektu innego niż, lub nie jest ani i nie <see langword="null" />jest. <paramref name="objectID" /></exception>
       </Docs>
     </Member>
     <Member MemberName="RegisterObject">
@@ -694,24 +694,24 @@
       <Docs>
         <param name="obj">Obiekt do rejestracji.</param>
         <param name="objectID">Identyfikator obiektu do zarejestrowania.</param>
-        <param name="info"><see cref="T:System.Runtime.Serialization.SerializationInfo" /> Używanych if <paramref name="obj" /> implementuje <see cref="T:System.Runtime.Serialization.ISerializable" /> lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" /> zostanie zakończone wszelkie informacje wymagane naprawy i następnie przekazywane do wymaganego obiektu, po ukończeniu tego obiektu.</param>
-        <param name="idOfContainingObj">Identyfikator obiektu, który zawiera <paramref name="obj" />. Ten parametr jest wymagany tylko wtedy, gdy <paramref name="obj" /> jest typem wartości.</param>
-        <param name="member">Pola w obiekcie zawierającego gdzie <paramref name="obj" /> istnieje. Ten parametr ma znaczenie tylko wtedy, gdy <paramref name="obj" /> jest typem wartości.</param>
-        <param name="arrayIndex">Jeśli <paramref name="obj" /> jest <see cref="T:System.ValueType" /> i elementem członkowskim tablicy <paramref name="arrayIndex" /> zawiera indeks w tablicy gdzie <paramref name="obj" /> istnieje. <paramref name="arrayIndex" /> jest ignorowana, jeśli <paramref name="obj" /> nie jest zarówno <see cref="T:System.ValueType" /> i elementem członkowskim tablicy.</param>
-        <summary>Rejestruje element członkowski na tablicy zawartych w obiekcie, gdy jest ona przeprowadzona, kojarząc ją z <paramref name="objectID" />i rejestrowania <see cref="T:System.Runtime.Serialization.SerializationInfo" />.</summary>
+        <param name="info">Użyta <see cref="T:System.Runtime.Serialization.SerializationInfo" /> , <paramref name="obj" /> Jeśli <see cref="T:System.Runtime.Serialization.ISerializable" /> implementuje lub ma <see cref="T:System.Runtime.Serialization.ISerializationSurrogate" />. <paramref name="info" />zostanie wykonane z wszelkimi wymaganymi informacjami o naprawie, a następnie przekazywać do wymaganego obiektu po zakończeniu tego obiektu.</param>
+        <param name="idOfContainingObj">Identyfikator obiektu, który zawiera <paramref name="obj" />. Ten parametr jest wymagany tylko wtedy <paramref name="obj" /> , gdy jest typem wartości.</param>
+        <param name="member">Pole w zawierającym go obiekcie, <paramref name="obj" /> gdzie istnieje. Ten parametr ma znaczenie tylko wtedy <paramref name="obj" /> , gdy jest typem wartości.</param>
+        <param name="arrayIndex">Jeśli <paramref name="obj" /> <paramref name="arrayIndex" /> jest i składową tablicy, zawiera indeks w tej tablicy, gdzie <paramref name="obj" /> istnieje. <see cref="T:System.ValueType" /> <paramref name="arrayIndex" />jest ignorowany <paramref name="obj" /> <see cref="T:System.ValueType" /> , jeśli nie jest ani elementem członkowskim tablicy.</param>
+        <summary>Rejestruje element członkowski tablicy zawartej w obiekcie podczas jego deserializacji, kojarząc go z <paramref name="objectID" />i <see cref="T:System.Runtime.Serialization.SerializationInfo" />rejestrując.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy podać `member` i `idOfContainingObj` parametry Jeśli `obj` jest <xref:System.ValueType> ze względu na sposób korekt są przeprowadzane na <xref:System.ValueType> obiektów. Miejsce do przechowywania informacji o <xref:System.ValueType> jest alokowana z zawierającego go obiektu. Jednak gdy <xref:System.ValueType> jest spakowany zarejestrować <xref:System.Runtime.Serialization.ObjectManager>, utracie połączenia z zawierającego go obiektu. Aby zagwarantować, że korekt wystąpić w wystąpieniu <xref:System.ValueType> przechowywanych w obiektu zawierającego i nie ramce wystąpienie <xref:System.Runtime.Serialization.ObjectManager> zachowuje niektóre dodatkowe informacje.  
+ `member` Należy podać <xref:System.ValueType> parametry i `idOfContainingObj` , jeśli `obj` jest to <xref:System.ValueType> spowodowane sposobem wykonywania korekt w obiektach. Miejsce na przechowywanie informacji dla elementu <xref:System.ValueType> jest przydzielony do zawartego w nim obiektu. Jeśli <xref:System.ValueType> jednak obiekt jest opakowany do zarejestrowania <xref:System.Runtime.Serialization.ObjectManager>w, utraci połączenie z jego zawierającym obiektu. W celu zagwarantowania, że naprawianie odbywa się <xref:System.ValueType> w wystąpieniu przechowywanym w obiekcie zawierającym, a nie w zapakowanym wystąpieniu <xref:System.Runtime.Serialization.ObjectManager> , zachowuje kilka dodatkowych informacji.  
   
- <xref:System.Runtime.Serialization.ObjectManager> przechowuje informacje o obiekcie i jego identyfikator. Nowsze podczas deserializacji <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> może służyć do odnajdywanie określonego obiektu o identyfikatorze już została przeprowadzona, czy czy do przodu odwołanie do obiektu nie jest jeszcze przeprowadzona.  
+ <xref:System.Runtime.Serialization.ObjectManager>zachowuje informacje dotyczące zarówno obiektu, jak i jego identyfikatora. Później podczas deserializacji można <xref:System.Runtime.Serialization.ObjectManager.GetObject%2A> użyć, aby stwierdzić, czy określony identyfikator obiektu został już deserializowany, czy też nie jest odwołaniem do przodu do obiektu, który nie został jeszcze rozszeregowany.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="obj" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejsza niż zero.</exception>
-        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="objectID" /> Został już zarejestrowany dla obiektu innego niż <paramref name="obj" />, lub <paramref name="member" /> nie <see cref="T:System.Reflection.FieldInfo" /> i <paramref name="member" /> nie jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="obj" /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="objectID" /> Parametr jest mniejszy lub równy zero.</exception>
+        <exception cref="T:System.Runtime.Serialization.SerializationException"><paramref name="member" /> <paramref name="member" /> <paramref name="obj" /> <see cref="T:System.Reflection.FieldInfo" /> Element został już zarejestrowany dla obiektu innego niż, lub nie <see langword="null" />jest ani. <paramref name="objectID" /></exception>
       </Docs>
     </Member>
   </Members>
