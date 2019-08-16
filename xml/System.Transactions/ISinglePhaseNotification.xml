@@ -1,5 +1,5 @@
 <Type Name="ISinglePhaseNotification" FullName="System.Transactions.ISinglePhaseNotification">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="c1fae04d7a912030254cfe620bf0ab8be03b1fa2" /><Meta Name="ms.sourcegitcommit" Value="2767b5903996fbd7e2b81eda1114dfc9d0d9db63" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/02/2019" /><Meta Name="ms.locfileid" Value="65014162" /></Metadata><TypeSignature Language="C#" Value="public interface ISinglePhaseNotification : System.Transactions.IEnlistmentNotification" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="8f08119f98d0a4221b34ca22b03dba45536b95a3" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69257926" /></Metadata><TypeSignature Language="C#" Value="public interface ISinglePhaseNotification : System.Transactions.IEnlistmentNotification" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract ISinglePhaseNotification implements class System.Transactions.IEnlistmentNotification" />
   <TypeSignature Language="DocId" Value="T:System.Transactions.ISinglePhaseNotification" />
   <TypeSignature Language="VB.NET" Value="Public Interface ISinglePhaseNotification&#xA;Implements IEnlistmentNotification" />
@@ -27,18 +27,18 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Opisuje obiekt zasobu, który obsługuje jedna faza zatwierdzania optymalizacji, aby wziąć udział w transakcji.</summary>
+    <summary>Opisuje obiekt zasobu, który obsługuje optymalizację zatwierdzania pojedynczej fazy, aby uczestniczyć w transakcji.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy pamiętać, że nawet wtedy, gdy Menedżera zasobów implementuje ten interfejs do obsługi jedna faza zatwierdzania optymalizacji, nie ma żadnej gwarancji odbiera jednego etapu zatwierdzania. Zamiast tego menedżera transakcji może nadal wysyłać dwa powiadomienia zatwierdzania fazy.  
+ Należy pamiętać, że nawet jeśli Menedżer zasobów implementuje ten interfejs do obsługi optymalizacji zatwierdzania pojedynczej fazy, nie ma gwarancji, że otrzymuje jednofazowe zatwierdzenie. Menedżer transakcji może nadal wysyłać powiadomienia o zatwierdzeniu dwóch faz.  
   
- Aby zarejestrować Menedżera zasobów jako uczestnika transakcji, należy wywołać <xref:System.Transactions.Transaction.EnlistVolatile%2A> metody lub <xref:System.Transactions.Transaction.EnlistDurable%2A> metody <xref:System.Transactions.Transaction> klasy. W szczególności `EnlistmentOptions` powinna być równa parametr <xref:System.Transactions.EnlistmentOptions.None> aby upewnić się, że zatwierdzania jedna faza jest wykonywana. Jeśli przez pomyłkę jest równa <xref:System.Transactions.EnlistmentOptions.EnlistDuringPrepareRequired>, nie jedna faza zatwierdzania występuje.  
+ Aby zarejestrować Menedżera zasobów jako uczestnik transakcji, wywołaj <xref:System.Transactions.Transaction.EnlistVolatile%2A> metodę <xref:System.Transactions.Transaction.EnlistDurable%2A> lub metodę <xref:System.Transactions.Transaction> klasy. W <xref:System.Transactions.EnlistmentOptions.None> celu sprawdzenia `EnlistmentOptions` , czy jest wykonywane pojedynczej fazy, parametr powinien być równy. Jeśli zostanie on wyznaczony w sposób <xref:System.Transactions.EnlistmentOptions.EnlistDuringPrepareRequired>nieokreślony, nie ma żadnego zatwierdzenia pojedynczej fazy.  
   
- Ponieważ <xref:System.Transactions.ISinglePhaseNotification> pochodzi od klasy interfejs <xref:System.Transactions.IEnlistmentNotification> interfejsu, Menedżer zasobów musi implementować też wszystkich metod drugiego, dla fazy dwa powiadomienia zatwierdzania.  Jest to szersze Menedżera transakcji czy dwóch faza zatwierdzania, lub jedna faza zatwierdzania optymalizacji jest używana z tym Menedżera zasobów.  Jednak implementacja ten interfejs zapewnia usługi resource manager szansy sprzedaży, aby skorzystać z optymalizacji, gdy będzie ona dostępna.  
+ Ponieważ interfejs pochodzi <xref:System.Transactions.IEnlistmentNotification> z interfejsu, Menedżer zasobów musi również zaimplementować wszystkie metody tej ostatniej dla powiadomień o zatwierdzaniu dwufazowym. <xref:System.Transactions.ISinglePhaseNotification>  Jest to wybór menedżera transakcji, w którym można określić dwie zatwierdzanie faz lub optymalizację zatwierdzania pojedynczej fazy przy użyciu tego Menedżera zasobów.  Jednak wdrożenie tego interfejsu nadaje menedżerowi zasobów możliwość skorzystania z optymalizacji, gdy jest ona dostępna.  
   
- Jeśli służy optymalizacji i Menedżer transakcji wywołuje <xref:System.Transactions.ISinglePhaseNotification.SinglePhaseCommit%2A> metody zasobów usługi resource manager powinien odpowiedzieć na to wywołanie za pomocą różnych metod <xref:System.Transactions.SinglePhaseEnlistment> klasy informują menedżera transakcji, jeśli transakcja ma zostać przekazana lub wycofana.  
+ Jeśli Optymalizacja jest używana, a Menedżer transakcji wywołuje <xref:System.Transactions.ISinglePhaseNotification.SinglePhaseCommit%2A> metodę zarejestrowanego zasobu, Menedżer zasobów powinien odpowiedzieć na to wywołanie przy użyciu różnych metod <xref:System.Transactions.SinglePhaseEnlistment> klasy w celu informowania menedżera transakcji, jeśli transakcja ma być zatwierdzana lub wycofywana.  
   
  ]]></format>
     </remarks>
@@ -83,20 +83,20 @@
         <Parameter Name="enlistment" Type="System.Transactions.SinglePhaseEnlistment" Index="0" FrameworkAlternate="xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="singlePhaseEnlistment">A <see cref="T:System.Transactions.SinglePhaseEnlistment" /> używane do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <param name="enlistment">A <see cref="T:System.Transactions.SinglePhaseEnlistment" /> używane do wysyłania odpowiedzi do Menedżera transakcji.</param>
-        <summary>Reprezentuje implementację Menedżera zasobów wywołania zwrotnego dla jedna faza zatwierdzania optymalizacji.</summary>
+        <param name="singlePhaseEnlistment"><see cref="T:System.Transactions.SinglePhaseEnlistment" /> Służy do wysyłania odpowiedzi do Menedżera transakcji.</param>
+        <param name="enlistment"><see cref="T:System.Transactions.SinglePhaseEnlistment" /> Służy do wysyłania odpowiedzi do Menedżera transakcji.</param>
+        <summary>Reprezentuje implementację wywołania zwrotnego usługi Resource Manager dla optymalizacji zatwierdzania pojedynczej fazy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jest to szersze Menedżera transakcji czy dwóch faza zatwierdzania, lub jedna faza zatwierdzania optymalizacji jest używana z tym Menedżera zasobów.  Aby uzyskać więcej informacji na temat jedna faza i dwóch faza zatwierdzania, zobacz [Zatwierdzanie transakcji w Single-Phase i wielofazowe](https://msdn.microsoft.com/library/74b3cfe1-d33a-45b8-91f4-dfd6f6598c4d).  
+ Jest to wybór menedżera transakcji, w którym można określić dwie zatwierdzanie faz lub optymalizację zatwierdzania pojedynczej fazy przy użyciu tego Menedżera zasobów.  Aby uzyskać więcej informacji na temat pojedynczej fazy i dwóch zatwierdzeń, zobacz [zatwierdzanie transakcji w ramach jednej fazy i](https://msdn.microsoft.com/library/74b3cfe1-d33a-45b8-91f4-dfd6f6598c4d)wielofazowej.  
   
- W związku z tym, w tym rejestracji usługi resource manager albo <xref:System.Transactions.ISinglePhaseNotification.SinglePhaseCommit%2A> metoda jest wywoływana lub dwóch faza zatwierdzania metody zdefiniowane w <xref:System.Transactions.IEnlistmentNotification> noszą nazwę interfejsu.  
+ W związku z tym w przypadku tej rejestracji Menedżera <xref:System.Transactions.ISinglePhaseNotification.SinglePhaseCommit%2A> zasobów wywoływana jest metoda lub dwie metody zatwierdzania fazy zdefiniowane <xref:System.Transactions.IEnlistmentNotification> w interfejsie są wywoływane.  
   
- Implementacja tej metody należy wywołać albo <xref:System.Transactions.SinglePhaseEnlistment.Committed%2A> metody lub <xref:System.Transactions.SinglePhaseEnlistment.Aborted%2A> metody `singlePhaseEnlistment` parametru, aby wskazać, czy transakcja powinna zostać przekazana lub wycofana.  
+ Implementacja tej metody powinna wywołać <xref:System.Transactions.SinglePhaseEnlistment.Committed%2A> metodę <xref:System.Transactions.SinglePhaseEnlistment.Aborted%2A> lub metodę parametru, `singlePhaseEnlistment` aby wskazać, czy transakcja powinna być zatwierdzana czy wycofywana.  
   
- Menedżer transakcji wywołuje tę metodę, gdy istnieje tylko jeden lotnych rejestracji, który obsługuje jednego etapu zatwierdzania, lub gdy występują zero lub więcej nietrwałe i jeden trwałej rejestracji. W tym ostatnim przypadku, nietrwałe odbierać <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> powiadomienia dotyczące dwu phase zatwierdzenia, a jedynym trwałej rejestracji odbiera powiadomienie jednofazowy zatwierdzenia.  
+ Menedżer transakcji wywołuje tę metodę, gdy istnieje tylko jedna nietrwała rejestracja, która obsługuje zatwierdzenie pojedynczej fazy, lub gdy istnieje zero lub więcej nietrwałych rejestracji i jedną trwałą rejestrację. W tym drugim przypadku nietrwałe rejestracje otrzymują <xref:System.Transactions.IEnlistmentNotification.Prepare%2A> powiadomienia dla dwóch faz zatwierdzania, a jedyna trwała Rejestracja otrzymuje powiadomienie o zatwierdzeniu pojedynczej fazy.  
   
  ]]></format>
         </remarks>
