@@ -1,5 +1,5 @@
 <Type Name="ExtensibleClassFactory" FullName="System.Runtime.InteropServices.ExtensibleClassFactory">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="c19e9b8869d9e1e23c9e71dec7657d7ba070d7b7" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64114719" /></Metadata><TypeSignature Language="C#" Value="public sealed class ExtensibleClassFactory" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="675047477e44908948d7adf8b77eed0360351b55" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69064289" /></Metadata><TypeSignature Language="C#" Value="public sealed class ExtensibleClassFactory" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ExtensibleClassFactory extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.InteropServices.ExtensibleClassFactory" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ExtensibleClassFactory" />
@@ -22,17 +22,17 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Umożliwia dostosowywanie obiektów zarządzanych, które rozszerzają z niezarządzanych obiektów podczas tworzenia.</summary>
+    <summary>Umożliwia dostosowanie zarządzanych obiektów, które wykraczają poza niezarządzane obiekty podczas tworzenia.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `ExtensibleClassFactory` Pozwala użytkownikom na określenie `delegate` który jest wywoływany podczas konstruowania wywoływana otoka środowiska uruchomieniowego (RCW) zapewniający wystąpienia podstawowego obiektu COM. W efekcie wywołania zwrotnego działa jako fabryki klas dla obiektu COM opakowane przez RCW. Bez wywołania zwrotnego, środowisko uruchomieniowe języka wspólnego tworzy obiekt COM, wywołując `CoCreateInstance`. To wywołanie zwrotne zapewnia alternatywny sposób aktywacji obiektu źródłowego, takich jak z monikerem COM lub poprzez świadczenie pojedynczego obiektu. <xref:System.Runtime.InteropServices.ExtensibleClassFactory.RegisterObjectCreationCallback%2A> Metoda musi zostać wywołana `static` inicjatora klasy, która rozszerza RCW. Wywołanie zwrotne utworzenia tylko jeden obiekt jest dozwolony dla typu obiektu. Po aktywowaniu extensible RCW wywołania zwrotnego jest zarejestrowany. Gdy obiekt COM musi zostać utworzona, wywołanie zwrotne jest wywoływana w celu zapewnienia odwołania do obiektu. Wywołanie zwrotne musi zwracać `IUnknown` wskaźnik interfejsu do podstawowego obiektu.  
+ Umożliwia użytkownikom określenie klasy, która jest wywoływana podczas konstruowania otoki (RCW) środowiska uruchomieniowego, która zapewnia wystąpienie bazowego obiektu com. `delegate` `ExtensibleClassFactory` W efekcie wywołanie zwrotne działa jako fabryka klas dla obiektu COM zawiniętego przez OTOKę. Bez wywołania zwrotnego, środowisko uruchomieniowe języka wspólnego tworzy źródłowy obiekt COM przez `CoCreateInstance`wywołanie. To wywołanie zwrotne zapewnia alternatywny sposób aktywowania obiektu bazowego, na przykład z monikerem COM lub przez udostępnienie pojedynczego obiektu. Metoda musi być wywoływana `static` w inicjatorze klasy rozszerzającej otoki. <xref:System.Runtime.InteropServices.ExtensibleClassFactory.RegisterObjectCreationCallback%2A> Dozwolone jest tylko jedno wywołanie zwrotne tworzenia obiektu dla typu obiektu. Po aktywowaniu rozszerzalnej OTOKi zostanie zarejestrowane wywołanie zwrotne. Po utworzeniu bazowego obiektu COM należy wywołać wywołanie zwrotne, aby dostarczyć odwołanie do obiektu. Wywołanie zwrotne musi zwracać `IUnknown` wskaźnik interfejsu dla obiektu podstawowego.  
   
    
   
 ## Examples  
- Rejestruje `delegate` , zostanie wywołana w każdym przypadku, gdy wystąpienie typu zarządzanego, który rozciąga się od typu niezarządzanego musi przydzielić zagregowane obiektu niezarządzanych. To `delegate` oczekuje się, przydzielanie i agregowanie obiektu niezarządzanych i nosi nazwę zamiast `CoCreateInstance`. Ta procedura musi zostać wywołana w kontekście `static` inicjator dla klasy, dla której zostanie wykonane wywołania zwrotne.  
+ `delegate` Rejestruje, który zostanie wywołany za każdym razem, gdy wystąpienie typu zarządzanego, który rozciąga się od typu niezarządzanego, musi przydzielić zagregowany obiekt niezarządzany. Jest `delegate` to oczekiwane przydzielenie i agregowanie obiektu niezarządzanego i jest wywoływana `CoCreateInstance`zamiast. Ta procedura musi być wywoływana w kontekście `static` inicjatora dla klasy, dla której zostaną wykonane wywołania zwrotne.  
   
  [!code-cpp[Classic ExtensibleClassFactory Example#1](~/samples/snippets/cpp/VS_Snippets_CLR_Classic/classic ExtensibleClassFactory Example/CPP/source.cpp#1)]
  [!code-csharp[Classic ExtensibleClassFactory Example#1](~/samples/snippets/csharp/VS_Snippets_CLR_Classic/classic ExtensibleClassFactory Example/CS/source.cs#1)]
@@ -69,15 +69,15 @@
         <Parameter Name="callback" Type="System.Runtime.InteropServices.ObjectCreationDelegate" />
       </Parameters>
       <Docs>
-        <param name="callback">A <see langword="delegate" /> o nazwie zamiast <see langword="CoCreateInstance" />.</param>
-        <summary>Rejestruje <see langword="delegate" /> który jest wywoływany, gdy wystąpienie typu zarządzanego, który rozciąga się od typu niezarządzanego, musi przydzielić zagregowane obiektu niezarządzanych.</summary>
+        <param name="callback"><see langword="delegate" /> Jest wywoływana <see langword="CoCreateInstance" />zamiast.</param>
+        <summary><see langword="delegate" /> Rejestruje, który jest wywoływany w przypadku wystąpienia typu zarządzanego, który rozciąga się od typu niezarządzanego, musi przydzielić zagregowany obiekt niezarządzany.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- To `delegate` przydziela i agreguje niezarządzanych obiektów i nosi nazwę zamiast `CoCreateInstance`. To `delegate` musi być zarejestrowana w kontekście `static` inicjatora klasy, dla której zostanie wykonane wywołania zwrotne.  
+ Spowoduje `delegate` to przydzielenie i agregowanie obiektu niezarządzanego i jest wywoływana `CoCreateInstance`zamiast. Ta `delegate` wartość musi być zarejestrowana w kontekście `static` inicjatora klasy, dla którego zostaną wykonane wywołania zwrotne.  
   
- Tylko jednej z klas w hierarchii należy zarejestrować `delegate` wywołania zwrotnego.  
+ Tylko jedna Klasa w hierarchii powinna rejestrować `delegate` wywołanie zwrotne.  
   
  ]]></format>
         </remarks>
