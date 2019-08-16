@@ -1,5 +1,5 @@
 <Type Name="MuxLogger" FullName="Microsoft.Build.Utilities.MuxLogger">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4d26f3df7bd22314896c660b52443518560ca8be" /><Meta Name="ms.sourcegitcommit" Value="662f143e6be46d519ff8ab4451d543d91e651478" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/18/2018" /><Meta Name="ms.locfileid" Value="53564227" /></Metadata><TypeSignature Language="C#" Value="public class MuxLogger : Microsoft.Build.Framework.INodeLogger" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f0c1bac8025c518b15c3a4195610e83185d7213e" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69298566" /></Metadata><TypeSignature Language="C#" Value="public class MuxLogger : Microsoft.Build.Framework.INodeLogger" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit MuxLogger extends System.Object implements class Microsoft.Build.Framework.ILogger, class Microsoft.Build.Framework.INodeLogger" />
   <TypeSignature Language="DocId" Value="T:Microsoft.Build.Utilities.MuxLogger" />
   <TypeSignature Language="VB.NET" Value="Public Class MuxLogger&#xA;Implements INodeLogger" />
@@ -21,46 +21,46 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Reprezentuje multipleksowania rejestratora. Tego rejestratora ma na celu rejestrować i wyrejestrowywać wielu rejestratorów podczas kompilacji. Obsługuje scenariusz środowiska IDE programu Visual Studio, w którym są rejestrowane i wyrejestrować rejestratorów dla każdego projektu systemu kompilacji żądania. Jeden fizyczny kompilacji może mieć wiele logicznych kompilacji, każdy z swój własny zestaw rejestratorów.  
+    <summary>Reprezentuje Rejestrator multipleksowy. Celem tego rejestratora jest zarejestrowanie i Wyrejestrowanie wielu rejestratorów podczas kompilacji. Obsługuje scenariusz środowiska IDE programu Visual Studio, w którym rejestratory są rejestrowane i wyrejestrowane dla każdego żądania kompilacji systemu projektu. Jedna kompilacja fizyczna może mieć wiele kompilacji logicznych, z których każdy ma własny zestaw rejestratorów.  
   
-<see langword="MuxLogger" /> Rejestruje się za pomocą Menedżera kompilacji jako rejestratora styl regularne centralnej/l. Go odbiera komunikaty z menedżerem kompilacji i tras ich prawidłowe rejestratora, oparte na logicznej kompilację komunikat pochodzi.</summary>
+<see langword="MuxLogger" /> Rejestruje się w Menedżerze kompilacji jako zwykły centralny Rejestrator stylu/l. Odbiera komunikaty od Menedżera kompilacji i kieruje je do właściwego rejestratora na podstawie logicznej kompilacji, z której pochodzi wiadomość.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `MuxLogger` Zwykle działa w następujący sposób:  
+ Ogólnie `MuxLogger` rzecz biorąc, następujące funkcje:  
   
--   `MuxLogger` Jest zarejestrowany na początku kompilacji Begin Menedżera kompilacji.  
+-   `MuxLogger` Jest zarejestrowany na początku kompilacji Rozpocznij kompilację programu Build Manager.  
   
-     Wszystkie rejestratory zarejestrowane przed Menedżera kompilacji rozpoczyna się kompilacja pobrać zdarzenia uruchomienia kompilacji w tym samym czasie jako `MuxLogger`.  
+     Wszystkie rejestratory zarejestrowane przed uruchomieniem Menedżera kompilacji uruchamiają kompilację w tym samym czasie co `MuxLogger`.  
   
-     Wszystkie rejestratory zarejestrowane po Menedżera kompilacji rozpoczyna się kompilacja Uzyskaj syntetyzowany zdarzeń uruchomienia kompilacji. Nie można buforować zdarzenie, ponieważ sygnatura czasowa zdarzenia uruchomienia kompilacji jest określana, gdy zdarzenie jest tworzone i buforowanie zdarzenia spowodowałoby to nadanie czasy tworzenia nieprawidłowe w rejestratorów zarejestrowanych do `MuxLogger`.  
+     Wszystkie rejestratory zarejestrowane po uruchomieniu programu Build Manager uruchamiają kompilację. Nie można zapisać zdarzenia w pamięci podręcznej, ponieważ sygnatura czasowa zdarzenia kompilacji jest określana podczas tworzenia zdarzenia, a buforowanie zdarzenia może dać nieprawidłowe czasy kompilacji w rejestratorach zarejestrowanych `MuxLogger`w programie.  
   
--   `MuxLogger` Jest inicjowany przez Menedżera kompilacji  
+-   `MuxLogger` Zostanie zainicjowany przez Menedżera kompilacji  
   
-     `MuxLogger` Nasłuchuje wszystkie zdarzenia w źródle zdarzenia z menedżerem kompilacji i poprawnie kieruje zdarzenia do rejestratorów zarejestrowanych.  
+     `MuxLogger` Nasłuchuje wszystkich zdarzeń w źródle zdarzeń z Menedżera kompilacji i prawidłowo kieruje zdarzenia do zarejestrowanych rejestratorów.  
   
--   `MuxLogger` Jest zamknięcia po zakończeniu kompilacji w celu kompilacji. W tej chwili jego wyrejestrowuje wszystkie rejestratory podłączone do niego.  
+-   `MuxLogger` Jest zamykany po zakończeniu kompilacji w końcowej kompilacji. W tym momencie wyrejestruje wszelkie dołączone rejestratory.  
   
--   `MuxLogger` Rejestruje zdarzenie Kompilacja została ukończona, gdy zdarzenie Zakończono projektu dla pierwszego zdarzenia projekt, uruchomiony jest widoczny dla każdego rejestratora.  
+-   `MuxLogger` Rejestruje zdarzenie Build-zakończony, gdy dla każdego rejestratora jest widziane zdarzenie zakończone projektem dla pierwszego projektu.  
   
- `MuxLogger` Rejestruje rejestratorów w następujący sposób:  
+ `MuxLogger` Rejestruje rejestratory w następujący sposób:  
   
-1.  Rejestrator jest przekazywany do `MuxLogger.RegisterLogger` metody o identyfikatorze przesyłania, która jest używana do rozsyłania wiadomości do tego rejestratora.  
+1.  Rejestrator jest przekazywany do `MuxLogger.RegisterLogger` metody z identyfikatorem przesyłania używanym do kierowania wiadomości do tego rejestratora.  
   
-2.  `MuxLogger` Rejestruje program rejestrujący do `MuxLogger` źródła zdarzeń.  
+2.  Rejestruje Rejestrator do źródła `MuxLogger`zdarzeń. `MuxLogger`  
   
-3.  Jeśli zdarzenie dotyczące uruchomionej kompilacji został już zalogowany, `MuxLogger` tworzy nowe zdarzenie uruchomienia kompilacji i wysyła je do źródła zdarzeń rejestratora.  
+3.  Jeśli zdarzenie Build-Started zostało już zarejestrowane, `MuxLogger` tworzy nowe zdarzenie kompilacji i wysyła je do źródła zdarzeń rejestratora.  
   
- `MuxLogger` Wyrejestrowuje rejestratorów w następujący sposób:  
+ `MuxLogger` Wyrejestrowanie rejestruje w następujący sposób:  
   
-1.  Po zakończeniu przesyłania kompilacji `MuxLogger.UnregisterLogger` metoda jest wywoływana z Identyfikatorem przesyłania dla rejestratora.  
+1.  Po zakończeniu `MuxLogger.UnregisterLogger` tworzenia kompilacji Metoda jest wywoływana z identyfikatorem przesłania dla rejestratora.  
   
-2.  `MuxLogger` Wyszukuje stanu powodzenia zdarzenia Zakończono projektu dla Identyfikatora przesyłania i dzienniki zdarzeń z Kompilacja została ukończona z rejestratorem.  
+2.  `MuxLogger` Wyszukuje stan sukcesu zdarzenia zakończenia projektu dla identyfikatora przesłania i rejestruje zdarzenie kompilacji zakończone do rejestratora.  
   
-3.  `MuxLogger` Czyści źródła zdarzeń.  
+3.  `MuxLogger` Czyści Źródło zdarzenia.  
   
-     Należy pamiętać, że Wyrejestruj pochodzi z wątku innego niż wątek rejestrowania i problem z synchronizacją może wystąpić, jeśli Wyrejestruj jest wywoływana, gdy rejestrowane są zdarzenia.  
+     Należy zauważyć, że Wyrejestrowanie pochodzi z wątku innego niż wątek rejestrowania i może wystąpić problem z synchronizacją w przypadku wywołania wyrejestrowania podczas rejestrowania zdarzeń.  
   
  ]]></format>
     </remarks>
@@ -79,7 +79,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Tworzy nowe wystąpienie klasy multipleksowania rejestratora.</summary>
+        <summary>Tworzy nowe wystąpienie rejestratora multipleksowania.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -89,7 +89,7 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Inicjuje <see langword="MuxLogger" /> wystąpienia.</summary>
+        <summary><see langword="MuxLogger" /> Inicjuje wystąpienie.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Initialize">
@@ -115,7 +115,7 @@
       </Parameters>
       <Docs>
         <param name="eventSource">Źródło zdarzenia.</param>
-        <summary>Inicjowanie <see langword="MuxLogger" /> wystąpienie źródła określonego zdarzenia.</summary>
+        <summary>Zainicjuj <see langword="MuxLogger" /> wystąpienie z określonym źródłem zdarzenia.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -144,7 +144,7 @@
       <Docs>
         <param name="eventSource">Źródło zdarzenia.</param>
         <param name="maxNodeCount">Maksymalna liczba węzłów.</param>
-        <summary>Inicjowanie <see langword="MuxLogger" /> wystąpienia określonego zdarzenia, źródło i określoną maksymalną liczbę węzłów.</summary>
+        <summary>Zainicjuj <see langword="MuxLogger" /> wystąpienie z określonym źródłem zdarzenia i Określ maksymalną liczbę węzłów.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -167,8 +167,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia atrybut parametrów wymaganych przez <see langword="ILogger" /> interfejsu.</summary>
-        <value>Atrybut parametry.</value>
+        <summary>Pobiera lub ustawia atrybut Parameters wymagany przez <see langword="ILogger" /> interfejs.</summary>
+        <value>Atrybut Parameters.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -192,9 +192,9 @@
         <Parameter Name="logger" Type="Microsoft.Build.Framework.ILogger" />
       </Parameters>
       <Docs>
-        <param name="submissionId">Identyfikator przesyłania rejestratora jest zarejestrowany.</param>
+        <param name="submissionId">Identyfikator przesyłanego rejestratora.</param>
         <param name="logger">Rejestrator do zarejestrowania.</param>
-        <summary>Rejestruje program rejestrujący na <see langword="MuxLogger" /> i zgłasza zdarzenie dotyczące uruchomionej kompilacji, jeśli zdarzenie uruchomienia kompilacji jest już zarejestrowane.</summary>
+        <summary>Rejestruje Rejestrator dla <see langword="MuxLogger" /> i zgłasza zdarzenie uruchomienia kompilacji, jeśli zdarzenie kompilacji zostało już zarejestrowane.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -218,7 +218,7 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zamyka <see langword="MuxLogger" /> i czyści się dowolny stan.</summary>
+        <summary><see langword="MuxLogger" /> Zamyka i czyści wszystkie Stany.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -241,9 +241,9 @@
         <Parameter Name="submissionId" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="submissionId">Identyfikator przesyłania rejestratora do usunięcia.</param>
-        <summary>Usuwa określonego rejestratora z MuxLogger.</summary>
-        <returns><see langword="true" /> Jeśli metoda zakończy się w zakresie usuwania rejestratora; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="submissionId">Identyfikator przesłania rejestratora, który ma zostać usunięty.</param>
+        <summary>Usuwa określony Rejestrator z MuxLogger.</summary>
+        <returns><see langword="true" />Jeśli metoda zakończy się pomyślnie, usuwanie rejestratora; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -266,8 +266,8 @@
         <ReturnType>Microsoft.Build.Framework.LoggerVerbosity</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera lub ustawia atrybut poziom szczegółowości, wymagane przez <see langword="ILogger" /> interfejsu.</summary>
-        <value>Atrybut poziomu szczegółowości.</value>
+        <summary>Pobiera lub ustawia atrybut szczegółowości wymagany przez <see langword="ILogger" /> interfejs.</summary>
+        <value>Atrybut szczegółowości.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

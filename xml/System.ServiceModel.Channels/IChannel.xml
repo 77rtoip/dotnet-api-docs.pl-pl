@@ -1,5 +1,5 @@
 <Type Name="IChannel" FullName="System.ServiceModel.Channels.IChannel">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="5bb8c8034c4fb8b8ca5fe0609ac81120289f5550" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58555065" /></Metadata><TypeSignature Language="C#" Value="public interface IChannel : System.ServiceModel.ICommunicationObject" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="a729a9ce6bd3948e6b42a7349ef8e22ea2d02a12" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69156106" /></Metadata><TypeSignature Language="C#" Value="public interface IChannel : System.ServiceModel.ICommunicationObject" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IChannel implements class System.ServiceModel.ICommunicationObject" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.IChannel" />
   <TypeSignature Language="VB.NET" Value="Public Interface IChannel&#xA;Implements ICommunicationObject" />
@@ -26,7 +26,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Definiuje podstawowe interfejs, który muszą implementować wszystkie obiekty kanału. Wymaga to, że implementują interfejsu maszyny stanu, które są współużytkowane przez wszystkie obiekty komunikacji oraz miały zaimplementowane metodę, aby pobrać obiekty ze stosu kanału.</summary>
+    <summary>Definiuje podstawowy interfejs, który musi implementować wszystkie obiekty kanału. Wymaga, aby implementują interfejs komputera stanu współużytkowany przez wszystkie obiekty komunikacyjne i implementujący metodę pobierania obiektów ze stosu kanału.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -34,23 +34,23 @@
 
 [!INCLUDE [untrusted-data-interface-note](~/includes/untrusted-data-interface-note.md)]
 
- Kanały musi spełniać kontrakt automatu stanów, zgodnie z definicją <xref:System.ServiceModel.ICommunicationObject> interfejsu.  
+ Kanały muszą spełniać umowę automatu Stanów, zgodnie z <xref:System.ServiceModel.ICommunicationObject> definicją w interfejsie.  
   
- <xref:System.ServiceModel.Channels.IChannel> Dodaje interfejsu  
+ <xref:System.ServiceModel.Channels.IChannel> Interfejs dodaje  
   
- <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A> Metoda <xref:System.ServiceModel.ICommunicationObject> interfejsu. Ta metoda zapewnia mechanizm służący do pobierania właściwości ze stosu kanału, niezależnie od tego, gdzie w stosie tych właściwości na żywo. Termin "property" w nazwie metody odnosi się do informacji, który należy do jednego z kanałów w stosie. Typ CLR tej właściwości zależy od `T`. Ta metoda pobierania służy również na fabryki kanałów i odbiorników kanału.  
+ <xref:System.ServiceModel.Channels.IChannel.GetProperty%2A>Metoda do <xref:System.ServiceModel.ICommunicationObject> interfejsu. Ta metoda zapewnia mechanizm pobierania właściwości z stosu kanału niezależnie od tego, gdzie w stosie te właściwości są aktywne. Termin "Property" w nazwie metody odnosi się do informacji, które należą do jednego z kanałów w stosie. Typ CLR dla tej właściwości jest określany przez `T`. Ta metoda pobierania jest również używana w przypadku fabryk kanałów i odbiorników kanałów.  
   
- `IChannel` jest dziedziczona przez każdy z interfejsów channel skojarzonych z wzorców podstawowych wymiany komunikatów:  
+ `IChannel`jest dziedziczona przez każdy z interfejsów kanałów skojarzonych z podstawowymi wzorcami komunikatów — Exchange:  
   
--   <xref:System.ServiceModel.Channels.IInputChannel> do odbierania wiadomości.  
+-   <xref:System.ServiceModel.Channels.IInputChannel>do otrzymywania wiadomości.  
   
--   <xref:System.ServiceModel.Channels.IOutputChannel> do wysyłania wiadomości.  
+-   <xref:System.ServiceModel.Channels.IOutputChannel>do wysyłania wiadomości.  
   
--   <xref:System.ServiceModel.Channels.IRequestChannel> Wysyłanie żądania.  
+-   <xref:System.ServiceModel.Channels.IRequestChannel>do wysłania żądania.  
   
--   <xref:System.ServiceModel.Channels.IReplyChannel> na udzielenie odpowiedzi.  
+-   <xref:System.ServiceModel.Channels.IReplyChannel>do wysyłania odpowiedzi.  
   
--   <xref:System.ServiceModel.Channels.IDuplexChannel> dwukierunkowej wiadomości.  
+-   <xref:System.ServiceModel.Channels.IDuplexChannel>w przypadku komunikatów dwukierunkowych.  
   
  ]]></format>
     </remarks>
@@ -91,19 +91,19 @@
       </TypeParameters>
       <Parameters />
       <Docs>
-        <typeparam name="T">Typizowany obiekt, dla której metodę wykonywania zapytań.</typeparam>
-        <summary>Zwraca typizowany obiekt wymagane, jeśli jest obecny, z odpowiednią warstwę stosu kanału.</summary>
-        <returns>Typizowany obiekt <paramref name="T" /> wymagane, jeśli jest obecny lub <see langword="null" /> Jeśli tak nie jest.</returns>
+        <typeparam name="T">Typ obiektu, dla którego Metoda wykonuje zapytanie.</typeparam>
+        <summary>Zwraca żądany obiekt typu, jeśli jest obecny, z odpowiedniej warstwy w stosie kanału.</summary>
+        <returns>Obiekt <paramref name="T" /> typu, którego zażądano, jeśli <see langword="null" /> jest obecny lub nie jest.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Umożliwia to żądanie typizowany obiekt, takich jak interfejs do ustawiania właściwości lub pobierania stanu z odpowiednią warstwę stosu kanału. Jeśli warstwa obsługuje zwraca żądany obiekt, zwraca go. W przeciwnym razie deleguje ona wywołania do następnej warstwy ze stosu. Jeśli otrzymuje na dole stosu i nie warstwy kanału obsługiwane żądany obiekt, a następnie metoda zwraca `null`.  
+ Użyj tego żądania, aby zażądać określonego typu obiektu, takiego jak interfejs do ustawiania właściwości lub pobierania stanu z odpowiedniej warstwy w stosie kanałów. Jeśli warstwa obsługuje zwracanie żądanego obiektu, zwraca go. W przeciwnym razie deleguje wywołanie do następnej warstwy w stosie. Jeśli zostanie umieszczony na dole stosu i żadna Warstwa kanału nie obsługuje żądanego obiektu, metoda zwraca `null`.  
   
    
   
 ## Examples  
- Poniższy przykład pokazuje, jak można zaimplementować tę właściwość według kanału, który deleguje wywołanie za pomocą stosu`InnerChannel` właściwość, która pobiera kanał wewnętrznego dla tego kanału.  
+ Poniższy przykład pokazuje, jak ta właściwość może zostać zaimplementowana przez kanał, który oddelegatuje wywołanie stosu przy`InnerChannel` użyciu właściwości pobierającej wewnętrzny kanał tego kanału.  
   
  [!code-csharp[S_UEIChannel#0](~/samples/snippets/csharp/VS_Snippets_CFX/s_ueichannel/cs/generatedclient.cs#0)]  
   

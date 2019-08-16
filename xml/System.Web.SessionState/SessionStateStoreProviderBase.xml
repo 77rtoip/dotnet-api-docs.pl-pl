@@ -1,5 +1,5 @@
 <Type Name="SessionStateStoreProviderBase" FullName="System.Web.SessionState.SessionStateStoreProviderBase">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="1841436a6479c0b1c33c26794c28ee86cb78e78f" /><Meta Name="ms.sourcegitcommit" Value="16d2d159872fd213cae4b8f371d7ae9c8b027c89" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="11/17/2018" /><Meta Name="ms.locfileid" Value="51936018" /></Metadata><TypeSignature Language="C#" Value="public abstract class SessionStateStoreProviderBase : System.Configuration.Provider.ProviderBase" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ce6b63abe6d57923d9f1b4e8ac6116840111358b" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69256733" /></Metadata><TypeSignature Language="C#" Value="public abstract class SessionStateStoreProviderBase : System.Configuration.Provider.ProviderBase" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SessionStateStoreProviderBase extends System.Configuration.Provider.ProviderBase" />
   <TypeSignature Language="DocId" Value="T:System.Web.SessionState.SessionStateStoreProviderBase" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class SessionStateStoreProviderBase&#xA;Inherits ProviderBase" />
@@ -15,37 +15,37 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Definiuje wymagane elementy dostawcę stanu sesji dla magazynu danych.</summary>
+    <summary>Definiuje wymaganych członków dostawcy stanu sesji dla magazynu danych.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Stan sesji programu ASP.NET odczytuje i zapisuje dane sesji z i do magazynu danych przy użyciu stanu sesji przechowywania dostawcy. Dostawca magazynu stanu sesji jest klasa, która dziedziczy <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasy abstrakcyjnej i zastąpienia jej członków z implementacjami specyficzne dla danych są przechowywane. Dostawca magazynu stanu sesji jest wywoływany przez <xref:System.Web.SessionState.SessionStateModule> klasy podczas przetwarzania strony programu ASP.NET do komunikowania się z magazynem danych do przechowywania i pobierania zmienne sesji i sesji powiązane informacje, takie jak wartość limitu czasu.  
+ Stan sesji ASP.NET odczytuje i zapisuje dane sesji z i do magazynu danych przy użyciu dostawcy magazynu stanów sesji. Dostawca magazynu stanów sesji jest klasą, która dziedziczy <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasę abstrakcyjną i zastępuje jej składowe implementacjami specyficznymi dla magazynu danych. Dostawca magazynu stanów sesji jest wywoływany przez <xref:System.Web.SessionState.SessionStateModule> klasę podczas przetwarzania strony ASP.NET w celu komunikowania się z magazynem danych w celu przechowywania i pobierania zmiennych sesji oraz powiązanych informacji o sesji, takich jak wartość limitu czasu.  
   
- Dane sesji w ramach każdej aplikacji ASP.NET były przechowywane osobno dla każdego <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> właściwości. Aplikacje ASP.NET nie należy udostępniać dane sesji.  
+ Dane sesji w każdej aplikacji ASP.NET są przechowywane oddzielnie dla każdej <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> właściwości. Aplikacje ASP.NET nie udostępniają danych sesji.  
   
- Można określić niestandardowego <xref:System.Web.SessionState.SessionStateStoreProviderBase> wdrożenia dla aplikacji ASP.NET, ustawiając `mode` atrybutu `sessionState` element konfiguracji do <xref:System.Web.SessionState.SessionStateMode.Custom> i `customProvider` atrybutu jako nazwę niestandardowego dostawcy pokazano w przykładzie w tym temacie.  
+ Możesz określić implementację <xref:System.Web.SessionState.SessionStateStoreProviderBase> niestandardową dla aplikacji ASP.NET, `mode` ustawiając atrybut `sessionState` elementu konfiguracji na <xref:System.Web.SessionState.SessionStateMode.Custom> i `customProvider` atrybut na nazwę niestandardowego dostawcy, jako pokazano w przykładzie dla tego tematu.  
   
-## <a name="locking-session-store-data"></a>Blokowanie Data Store sesji  
- Ponieważ wielowątkowe umożliwiają reagowanie na współbieżnych żądań aplikacji ASP.NET, jest możliwe, jednoczesnych żądań może próbować uzyskać dostęp do tych samych informacji sesji. Rozważmy scenariusz, w której wiele ramek w zestawie ramek wszystkich dostęp do tej samej aplikacji. Oddzielne żądania dla każdej ramki w zestawie ramek mogą być wykonywane na serwerze sieci Web, jednocześnie w różnych wątkach. Strony ASP.NET dla każdego źródła ramek dostęp do zmiennych stanu sesji, może mieć wiele wątków jednocześnie dostęp do magazynu sesji.  
+## <a name="locking-session-store-data"></a>Blokowanie danych magazynu sesji  
+ Ponieważ aplikacje ASP.NET są wielowątkowe w celu obsługi odpowiedzi na współbieżne żądania, istnieje możliwość, że współbieżne żądania mogą próbować uzyskać dostęp do tych samych informacji sesji. Rozważmy scenariusz, w którym wiele ramek w zestawie ramek uzyskuje dostęp do tej samej aplikacji. Osobne żądania dla każdej ramki w zestawie ramek można wykonać na serwerze sieci Web współbieżnie w różnych wątkach. Jeśli ASP.NET strony dla każdej zmiennej stanu sesji dostępu do źródła ramki, można mieć wiele wątków uzyskujących dostęp do magazynu sesji współbieżnie.  
   
- Aby uniknąć konfliktów danych w magazynie sesji i nieoczekiwane zachowanie stanu sesji, <xref:System.Web.SessionState.SessionStateModule> i <xref:System.Web.SessionState.SessionStateStoreProviderBase> klas obejmują funkcje blokady wyłącznie blokuje elementu magazynu sesji dla określonej sesji na czas trwania wykonywanie strony ASP.NET. Należy pamiętać, że nawet jeśli <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> atrybut jest oznaczony jako `ReadOnly`, innych stron ASP.NET, w tej samej aplikacji może mieć możliwość zapisu w magazynie sesji, więc żądanie sesji tylko do odczytu danych z magazynu może nadal się to zakończyć oczekiwanie na zablokowane dane mogą być zwolniona.  
+ Aby uniknąć kolizji danych w magazynie sesji i nieoczekiwanym zachowaniu stanu sesji, <xref:System.Web.SessionState.SessionStateModule> klasy <xref:System.Web.SessionState.SessionStateStoreProviderBase> i zawierają funkcję blokowania, która blokuje wyłącznie element magazynu sesji dla określonej sesji na czas trwania wykonanie strony ASP.NET. Należy pamiętać, że nawet <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> Jeśli atrybut jest oznaczony `ReadOnly`jako, inne strony ASP.NET w tej samej aplikacji mogą mieć możliwość zapisu w magazynie sesji, dlatego żądanie dotyczące danych sesji tylko do odczytu ze sklepu może nadal kończyć się oczekiwaniem na zablokowanie danych zwolnione.  
   
- Blokady jest ustawiony na sesji magazynu danych na początku żądania, w wywołaniu <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody. Po ukończeniu żądania blokada jest zwalniana podczas wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody.  
+ Blokada jest ustawiona na danych magazynu sesji na początku żądania, w wywołaniu <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody. Po zakończeniu żądania blokada zostaje wydana podczas wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody.  
   
- Jeśli <xref:System.Web.SessionState.SessionStateModule> podczas wywołania obiektu napotka dane sesji zablokowane <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> lub <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody ponownie zażąda on dane sesji w odstępach czasu pół sekundy, dopóki blokada jest zwalniana albo ilość czasu, który został zablokowany w dane sesji przekracza wartość <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> właściwości. Jeśli zostanie przekroczony limit czasu wykonywania, <xref:System.Web.SessionState.SessionStateModule> wywoła obiektu <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metody z bezpłatnymi data store sesji i żądań sesji przechowywania danych w tym czasie.  
+ Jeśli obiekt napotka zablokowane dane sesji w trakcie wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody lub, spowoduje to ponowne zażądanie danych sesji w połowie interwału do momentu zwolnienia blokady lub czasu, przez który <xref:System.Web.SessionState.SessionStateModule> zablokowane dane sesji przekraczają wartość <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> właściwości. W przypadku przekroczenia <xref:System.Web.SessionState.SessionStateModule> limitu czasu wykonywania obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> wywoła metodę, aby zwolnić dane magazynu sesji i zażądać danych magazynu sesji w tym czasie.  
   
- Ponieważ zablokowany sesji magazynu danych może być zwolniony przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metody w oddzielnym wątku przed wywołaniem do <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody dla bieżącej odpowiedzi, może zostać podjęta próba i wersji danych magazynu stanu sesji, który ma już zwolnione i zmodyfikowane przez inną sesję. Aby uniknąć tej sytuacji <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> i <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody zwracają Identyfikator blokady. Ten identyfikator blokady musi być dołączone do każdego żądania do modyfikowania danych zablokowane magazynu sesji. Sesja magazyn danych jest modyfikowany tylko wtedy, gdy jest to identyfikator blokady w magazynie danych jest zgodny z identyfikatorem blokady, w dostarczonych przez <xref:System.Web.SessionState.SessionStateModule>.  
+ Ponieważ zablokowane dane magazynu sesji mogły zostać zwolnione przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metody w oddzielnym wątku przed wywołaniem <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody dla bieżącej odpowiedzi, podjęto próbę ustawienia i zwolnienia danych magazynu stanu sesji, które mają został już wystawiony i zmodyfikowany przez inną sesję. Aby uniknąć tej sytuacji, <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody i <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> zwracają identyfikator blokady. Ten identyfikator blokady musi być dołączony do każdego żądania, aby można było zmodyfikować zablokowane dane magazynu sesji. Dane magazynu sesji są modyfikowane tylko wtedy, gdy identyfikator blokady w magazynie danych jest zgodny z identyfikatorem blokady dostarczonym przez <xref:System.Web.SessionState.SessionStateModule>.  
   
-## <a name="deleting-expired-session-store-data"></a>Usuwanie danych z wygasłych sesji Store  
- Gdy <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> metoda jest wywoływana dla określonej sesji, dane dla tej sesji, zostaną usunięte z magazynu danych przy użyciu <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> metody; w przeciwnym razie dane pozostaną w magazynie danych sesji do przyszłych żądań serwera dla sesji. Do <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementacji, aby usunąć dane wygasłych sesji.  
+## <a name="deleting-expired-session-store-data"></a>Usuwanie danych magazynu wygasłych sesji  
+ Gdy metoda jest wywoływana dla konkretnej sesji, dane dla tej sesji są usuwane z magazynu danych <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> przy użyciu metody; w przeciwnym razie dane pozostaną w magazynie danych sesji na serwerze przyszłych żądań sesji. <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> Aby usunąć wygasłe dane <xref:System.Web.SessionState.SessionStateStoreProviderBase> sesji, należy wykonać implementację.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
- Poniższy przykład kodu pokazuje pliku Web.config dla aplikacji ASP.NET, który jest skonfigurowany do używania dostawcy niestandardowego magazynu stanu sesji.  
+ Poniższy przykład kodu przedstawia plik Web. config dla aplikacji ASP.NET, która jest skonfigurowana do używania niestandardowego dostawcy magazynu stanów sesji.  
   
 ```  
 <configuration>  
@@ -69,7 +69,7 @@
   
  ]]></format>
     </remarks>
-    <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+    <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
   </Docs>
   <Members>
     <Member MemberName=".ctor">
@@ -96,16 +96,16 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Nie należy zaimplementować konstruktora dla klasy, która dziedziczy <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasy abstrakcyjnej. Inicjowanie wartości <xref:System.Web.SessionState.SessionStateStoreProviderBase> wdrożenia są przekazywane do <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> implementacji metody.  
+ Nie trzeba implementować konstruktora dla klasy, która dziedziczy <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasę abstrakcyjną. Wartości inicjujące dla <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementacji są przesyłane <xref:System.Configuration.Provider.ProviderBase.Initialize%2A> do implementacji metody.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="CreateNewStoreData">
@@ -130,29 +130,29 @@
       </Parameters>
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
-        <param name="timeout">Stan sesji <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> wartość dla nowej klasy <see cref="T:System.Web.SessionState.SessionStateStoreData" />.</param>
-        <summary>Tworzy nową <see cref="T:System.Web.SessionState.SessionStateStoreData" /> obiekt ma być używany dla bieżącego żądania.</summary>
+        <param name="timeout">Wartość stanu <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> sesji dla nowej <see cref="T:System.Web.SessionState.SessionStateStoreData" />.</param>
+        <summary>Tworzy nowy <see cref="T:System.Web.SessionState.SessionStateStoreData" /> obiekt, który będzie używany dla bieżącego żądania.</summary>
         <returns>Nowy <see cref="T:System.Web.SessionState.SessionStateStoreData" /> dla bieżącego żądania.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> metodę na początku żądanie dla strony ASP.NET, podczas <xref:System.Web.HttpApplication.AcquireRequestState> zdarzeń. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> Metoda jest wywoływana, gdy:  
+ Obiekt wywołuje metodę na początku żądania dla strony <xref:System.Web.HttpApplication.AcquireRequestState> ASP.NET, w trakcie zdarzenia. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> <xref:System.Web.SessionState.SessionStateModule> Metoda <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> jest wywoływana, jeśli:  
   
--   żądanie przychodzące ma Brak Identyfikatora sesji lub  
+-   żądanie przychodzące nie ma identyfikatora sesji lub  
   
--   żądanie przychodzące ma identyfikator sesji, ale sesja nie znajduje się w magazynie danych.  
+-   żądanie przychodzące ma identyfikator sesji, ale nie można odnaleźć sesji w magazynie danych.  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> Metoda tworzy nowy <xref:System.Web.SessionState.SessionStateStoreData> obiektu z pustą <xref:System.Web.SessionState.ISessionStateItemCollection> obiektu <xref:System.Web.HttpStaticObjectsCollection> kolekcji i określonego `timeout` wartość. <xref:System.Web.HttpStaticObjectsCollection> Kolekcji dla aplikacji ASP.NET można pobrać przy użyciu <xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A> metody.  
+ <xref:System.Web.SessionState.SessionStateStoreData> <xref:System.Web.SessionState.ISessionStateItemCollection> <xref:System.Web.HttpStaticObjectsCollection> Metoda tworzy nowy obiekt z pustym obiektem, kolekcją i określoną `timeout` wartością. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> Kolekcję dla aplikacji ASP.NET można pobrać <xref:System.Web.SessionState.SessionStateUtility.GetSessionStaticObjects%2A> przy użyciu metody. <xref:System.Web.HttpStaticObjectsCollection>  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="CreateUninitializedItem">
@@ -180,27 +180,27 @@
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id"><see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> Dla bieżącego żądania.</param>
         <param name="timeout">Sesja <see cref="P:System.Web.SessionState.HttpSessionState.Timeout" /> dla bieżącego żądania.</param>
-        <summary>Dodaje nowy element stanu sesji w magazynie danych.</summary>
+        <summary>Dodaje nowy element stanu sesji do magazynu danych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> Metoda jest używana z sesji podczas `cookieless` i `regenerateExpiredSessionId` atrybuty są oba `true`. Posiadanie `regenerateExpiredSessionId attribute` równa `true` powoduje, że <xref:System.Web.SessionState.SessionStateModule> obiekt, aby wygenerować nowy <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartości w przypadku wygasłych <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> napotkano wartość.  
+ Metoda jest używana z sesjami, `cookieless` gdy atrybuty `regenerateExpiredSessionId` i są oba `true`. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> `regenerateExpiredSessionId attribute` <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> Ustawienie powoduje, że <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> obiekt generuje nową wartość po napotkaniu wartości wygasłej. <xref:System.Web.SessionState.SessionStateModule> `true`  
   
- Proces generowania nowego <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość wymaga przekierowania folderu w przeglądarce adres URL, który zawiera nowo wygenerowane <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> Metoda jest wywoływana podczas wstępnego żądania, który zawiera wygasłe <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość. Po <xref:System.Web.SessionState.SessionStateModule> obiektu uzyskuje się nowy <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość, aby zastąpić wartość wygasłe, wywołuje <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> metodę, aby dodać wpis niezainicjowanej z magazynem danych stanu sesji. Przeglądarka jest następnie przekierowywane do adresu URL zawierająca nowo wygenerowane <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość. Istnienie niezainicjowanej zapisu w magazynie danych sesji zapewnia, że przekierowane żądanie, która zawiera nowo wygenerowane <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość dla żądania wygasłych sesji nie zostanie odczytany i zamiast tego traktowane jako nowej sesji.  
+ Proces generowania nowej <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartości wymaga przekierowania przeglądarki do adresu URL, który zawiera nowo wygenerowaną <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość. Metoda jest wywoływana podczas początkowego żądania zawierającego wartość wygasłą <xref:System.Web.SessionState.HttpSessionState.SessionID%2A>. <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> Gdy obiekt uzyska nową <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość w celu zastąpienia <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> wartości wygasłej, wywołuje metodę w celu dodania niezainicjowanego wpisu do magazynu danych stanu sesji. <xref:System.Web.SessionState.SessionStateModule> Przeglądarka zostanie następnie przekierowana do adresu URL zawierającego nowo wygenerowaną <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość. Istnienie niezainicjowanego wpisu w magazynie danych sesji zapewnia, że przekierowane żądanie, które obejmuje nowo wygenerowaną <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartość, nie zostanie pomylone dla żądania wygasłej sesji i jest traktowane jako nowa sesja.  
   
- Niezainicjowane zapisu w magazynie danych sesji jest skojarzony z nowo wygenerowane <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartości i zawiera tylko wartości domyślne, w tym datę wygaśnięcia, czas i wartość, która odnosi się do `actionFlags` parametru <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A>i <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody. Niezainicjowane zapisu w magazynie stanów sesji powinien zawierać `actionFlags` wartość równą <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wartość wyliczenia. Ta wartość jest przekazywana do <xref:System.Web.SessionState.SessionStateModule> obiektu przez <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> i <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metod i informuje <xref:System.Web.SessionState.SessionStateModule> obiekt bieżącej sesji nowe ale niezainicjowane sesji. <xref:System.Web.SessionState.SessionStateModule> Obiektu spowoduje zainicjowanie nowej sesji i podnieść `Session_OnStart` zdarzeń.  
+ Niezainicjowany wpis w magazynie danych sesji jest skojarzony z nowo wygenerowaną <xref:System.Web.SessionState.HttpSessionState.SessionID%2A> wartością i zawiera tylko wartości domyślne, w tym datę i godzinę wygaśnięcia oraz wartość odpowiadającą `actionFlags` parametrowi <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> i<xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody. Niezainicjowany wpis w magazynie stanów sesji powinien zawierać `actionFlags` wartość równą <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wartości wyliczenia. Ta wartość jest przenoszona do <xref:System.Web.SessionState.SessionStateModule> obiektu <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> za pomocą metod <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> i informuje <xref:System.Web.SessionState.SessionStateModule> obiekt, że bieżąca sesja jest nową, ale niezainicjowaną sesją. Obiekt zainicjuje nową sesję i `Session_OnStart` zgłosi zdarzenie. <xref:System.Web.SessionState.SessionStateModule>  
   
- Aby uzyskać więcej informacji o sesjach cookieless zobacz <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> właściwości.  
+ Aby uzyskać więcej informacji na temat sesji bez plików cookie <xref:System.Web.SessionState.HttpSessionState.IsCookieless%2A> , zobacz Właściwość.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="Dispose">
@@ -221,21 +221,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwalnia wszelkie zasoby używane przez <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> implementacji.</summary>
+        <summary>Zwalnia wszystkie zasoby używane przez <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> implementację.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=nameWithType> Metoda jest wywoływana, gdy <xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=nameWithType> metoda jest wykonywana na zamknięcie domeny aplikacji. Klasy, które dziedziczą <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasy można użyć tej metody można zwolnić wszystkie zasoby, które nie są już w użyciu.  
+ Metoda jest wywoływana, <xref:System.Web.SessionState.SessionStateModule.Dispose%2A?displayProperty=nameWithType> gdy metoda jest wykonywana podczas zamykania domeny aplikacji. <xref:System.Web.SessionState.SessionStateStoreProviderBase.Dispose%2A?displayProperty=nameWithType> Klasy dziedziczące <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasę mogą korzystać z tej metody, aby zwolnić zasoby, które nie są już używane.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="EndRequest">
@@ -259,21 +259,21 @@
       </Parameters>
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
-        <summary>Wywoływane przez <see cref="T:System.Web.SessionState.SessionStateModule" /> obiektu na końcu żądania.</summary>
+        <summary>Wywoływane przez <see cref="T:System.Web.SessionState.SessionStateModule" /> obiekt na końcu żądania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> metodę na końcu żądanie dla strony ASP.NET, podczas <xref:System.Web.HttpApplication.EndRequest> zdarzeń. Możesz użyć <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> metodę, aby wykonać wymagane przez dostawcę magazynu stanu sesji na żądanie czyszczenia.  
+ Obiekt wywołuje metodę na końcu żądania dla strony <xref:System.Web.HttpApplication.EndRequest> ASP.NET podczas zdarzenia. <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> <xref:System.Web.SessionState.SessionStateModule> Możesz użyć metody, <xref:System.Web.SessionState.SessionStateStoreProviderBase.EndRequest%2A> aby wykonać każde oczyszczanie dla żądania wymagane przez dostawcę magazynu stanów sesji.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="GetItem">
@@ -303,36 +303,36 @@
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id"><see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> Dla bieżącego żądania.</param>
-        <param name="locked">Po powrocie z tej metody zawiera wartość logiczna, która jest równa <see langword="true" /> Jeśli element Żądana sesja jest zablokowana w magazynie danych sesji; w przeciwnym razie <see langword="false" />.</param>
-        <param name="lockAge">Po powrocie z tej metody zawiera <see cref="T:System.TimeSpan" /> obiektu, który jest ustawiony na czas, który został zablokowany element w magazynie danych sesji.</param>
-        <param name="lockId">Po powrocie z tej metody zawiera obiekt, który jest ustawiony na identyfikator blokady dla bieżącego żądania. Szczegółowe informacje dotyczące Identyfikator blokady, zobacz "Blokowanie dane sesji Store" w <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> klasy podsumowania.</param>
-        <param name="actions">Po powrocie z tej metody zawiera jeden z <see cref="T:System.Web.SessionState.SessionStateActions" /> wartości, wskazującą, czy bieżąca sesja jest niezainicjowany, cookieless "session".</param>
+        <param name="locked">Gdy ta metoda zwraca, zawiera wartość logiczną, która jest ustawiona na <see langword="true" /> Jeśli żądany element sesji jest zablokowany w magazynie danych sesji; <see langword="false" />w przeciwnym razie.</param>
+        <param name="lockAge">Gdy ta metoda zwraca, zawiera <see cref="T:System.TimeSpan" /> obiekt, który jest ustawiony na ilość czasu, przez który element w magazynie danych sesji został zablokowany.</param>
+        <param name="lockId">Gdy ta metoda zwraca, zawiera obiekt, który jest ustawiony na identyfikator blokady dla bieżącego żądania. Aby uzyskać szczegółowe informacje na temat identyfikatora blokady, zobacz "Blokowanie sesji-zapisywanie danych" <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> w podsumowaniu klasy.</param>
+        <param name="actions">Gdy ta metoda zwraca, zawiera jedną z <see cref="T:System.Web.SessionState.SessionStateActions" /> wartości, wskazującą, czy bieżąca sesja jest niezainicjowaną sesją bez plików cookie.</param>
         <summary>Zwraca dane stanu sesji tylko do odczytu z magazynu danych sesji.</summary>
-        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> wypełniane przy użyciu wartości sesji i informacji z magazynu danych sesji.</returns>
+        <returns><see cref="T:System.Web.SessionState.SessionStateStoreData" /> Wypełniono z wartościami sesji i informacjami z magazynu danych sesji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody na początku żądania podczas <xref:System.Web.HttpApplication.AcquireRequestState> zdarzenie, kiedy <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> ma ustawioną wartość atrybutu `ReadOnly`. Jeśli <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> ma ustawioną wartość atrybutu `true`, <xref:System.Web.SessionState.SessionStateModule> zamiast tego obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody.  
+ `ReadOnly` <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> Obiekt wywołuje metodę na początku żądania <xref:System.Web.HttpApplication.AcquireRequestState> w przypadku, gdy atrybut jest ustawiony na. <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> <xref:System.Web.SessionState.SessionStateModule> Jeśli atrybut jest ustawiony na `true`, <xref:System.Web.SessionState.SessionStateModule> obiekt wywołuje <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metodę. <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> Metoda zwraca <xref:System.Web.SessionState.SessionStateStoreData> obiektu wypełniane przy użyciu informacji o sesji z magazynu danych i aktualizuje daty wygaśnięcia dane sesji. Jeśli żadne dane element sesji znajduje się w magazynie danych <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody ustawia `locked` `out` parametr `false` i zwraca `null`. Powoduje to, że <xref:System.Web.SessionState.SessionStateModule> obiekt do wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> metodę, aby utworzyć element Nowa sesja w magazynie danych.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> Metoda<xref:System.Web.SessionState.SessionStateStoreData> zwraca obiekt wypełniony informacjami o sesji z magazynu danych i aktualizuje datę wygaśnięcia danych sesji. Jeśli w magazynie danych nie zostaną znalezione żadne dane elementu sesji, <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> Metoda `locked` `out` Ustawia parametr na `false` i zwraca wartość `null`. Powoduje to, <xref:System.Web.SessionState.SessionStateModule> że obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> wywołuje metodę w celu utworzenia nowego elementu sesji w magazynie danych.  
   
- Jeśli element sesji danych znajduje się w magazynie danych, ale danych jest zablokowany, <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody ustawia `locked` `out` parametr `true`, ustawia `lockAge` `out` parametr do bieżącej daty i godziny pomniejszoną o datę i czasu, gdy ten element został zablokowany (które są pobierane z magazynu danych), ustawia `lockId` `out` parametru, aby identyfikator blokady pobierane z magazynu danych i zwraca `null`. Powoduje to, że <xref:System.Web.SessionState.SessionStateModule> obiekt do wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metoda ponownie za pół sekundowego interwału próbuje pobrać element sesji.  
+ Jeśli dane <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> elementu sesji znajdują się w magazynie danych, ale dane są zablokowane, Metoda `out` `locked` `out` Ustawia parametr na `true`, ustawia `lockAge` parametr na bieżącą datę i godzinę pomniejszoną o datę i czas, w którym element został zablokowany (pobrany z magazynu danych), ustawia `lockId` `out` parametr na identyfikator blokady pobrany z magazynu danych i zwraca wartość `null`. Powoduje to, <xref:System.Web.SessionState.SessionStateModule> że obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> wywołujący metodę ponownie po połowie drugiego interwału do próby pobrania informacji o elemencie sesji.  
   
- Jeśli wartość która `lockAge` `out` parametr ma wartość przekracza <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> wartości, a następnie <xref:System.Web.SessionState.SessionStateModule> obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metodę, aby wyczyścić blokady na element sesji danych, a następnie wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> ponownie metodą.  
+ Jeśli wartość `lockAge` , która `out` <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> <xref:System.Web.SessionState.SessionStateModule> <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> jest ustawiona dla parametru przekracza wartość,obiektwywołujemetodę,abywyczyścićblokadędanychelementusesji,anastępnieponowniewywołujemetodę.<xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A>  
   
- `actionFlags` Parametr jest używany, gdy zarówno `cookieless` i `regenerateExpiredSessionId` atrybuty są ustawione na `true`. `actionFlags` Wartość <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wskazuje, że wpis w magazynie danych sesji jest nową sesję, który wymaga inicjowania. Niezainicjowane zapisy w magazynie danych sesji są tworzone przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> metody. Jeśli element z magazynu danych sesji nie jest niezainicjowany element `actionFlags` parametr zostanie ustawiony na wartość zero.  
+ Ten `actionFlags` parametr jest używany, gdy `cookieless` atrybuty i `regenerateExpiredSessionId` są ustawione na `true`. Wartość ustawiona na <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wskazuje, że wpis w magazynie danych sesji jest nową sesją wymagającą inicjalizacji. `actionFlags` Niezainicjowane wpisy w magazynie danych sesji są tworzone przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> metody. Jeśli element z magazynu danych sesji nie jest elementem niezainicjowanym, `actionFlags` parametr zostanie ustawiony na zero.  
   
- Implementacji niestandardowego magazynu stanu sesji, obsługujące cookieless sesji należy ustawić `actionFlags` `out` wartość zwracana z magazynu danych sesji dla bieżącego elementu. Jeśli `actionFlags` elementu jest równa wartości parametru dla żądanego magazynu sesji <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wartość wyliczenia, a następnie <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metoda powinna ustawiać wartość w magazynie danych do zera po ustawieniu `actionFlags` `out` parametru.  
+ Niestandardowi implementującemu magazyn stanów sesji, które obsługują sesje bez plików `actionFlags` cookie, należy ustawić `out` parametr na wartość zwróconą z magazynu danych sesji dla bieżącego elementu. `out` `actionFlags` <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> <xref:System.Web.SessionState.SessionStateActions.InitializeItem> Jeśli wartość parametrużądanegoelementumagazynusesjijestrównawartościwyliczenia,metodapowinnaustawićwartośćwmagazyniedanychnazeropoustawieniuparametru.`actionFlags`  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="GetItemExclusive">
@@ -362,32 +362,32 @@
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id"><see cref="P:System.Web.SessionState.HttpSessionState.SessionID" /> Dla bieżącego żądania.</param>
-        <param name="locked">Po powrocie z tej metody zawiera wartość logiczna, która jest równa <see langword="true" /> Jeśli blokada jest pomyślnie uzyskanej; w przeciwnym razie <see langword="false" />.</param>
-        <param name="lockAge">Po powrocie z tej metody zawiera <see cref="T:System.TimeSpan" /> obiektu, który jest ustawiony na czas, który został zablokowany element w magazynie danych sesji.</param>
-        <param name="lockId">Po powrocie z tej metody zawiera obiekt, który jest ustawiony na identyfikator blokady dla bieżącego żądania. Szczegółowe informacje dotyczące Identyfikator blokady, zobacz "Blokowanie dane sesji Store" w <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> klasy podsumowania.</param>
-        <param name="actions">Po powrocie z tej metody zawiera jeden z <see cref="T:System.Web.SessionState.SessionStateActions" /> wartości, wskazującą, czy bieżąca sesja jest niezainicjowany, cookieless "session".</param>
+        <param name="locked">Gdy ta metoda zwraca, zawiera wartość logiczną, która jest ustawiona na <see langword="true" /> , jeśli Blokada została pomyślnie uzyskana; <see langword="false" />w przeciwnym razie.</param>
+        <param name="lockAge">Gdy ta metoda zwraca, zawiera <see cref="T:System.TimeSpan" /> obiekt, który jest ustawiony na ilość czasu, przez który element w magazynie danych sesji został zablokowany.</param>
+        <param name="lockId">Gdy ta metoda zwraca, zawiera obiekt, który jest ustawiony na identyfikator blokady dla bieżącego żądania. Aby uzyskać szczegółowe informacje na temat identyfikatora blokady, zobacz "Blokowanie sesji-zapisywanie danych" <see cref="T:System.Web.SessionState.SessionStateStoreProviderBase" /> w podsumowaniu klasy.</param>
+        <param name="actions">Gdy ta metoda zwraca, zawiera jedną z <see cref="T:System.Web.SessionState.SessionStateActions" /> wartości, wskazującą, czy bieżąca sesja jest niezainicjowaną sesją bez plików cookie.</param>
         <summary>Zwraca dane stanu sesji tylko do odczytu z magazynu danych sesji.</summary>
-        <returns>A <see cref="T:System.Web.SessionState.SessionStateStoreData" /> wypełniane przy użyciu wartości sesji i informacji z magazynu danych sesji.</returns>
+        <returns><see cref="T:System.Web.SessionState.SessionStateStoreData" /> Wypełniono z wartościami sesji i informacjami z magazynu danych sesji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody na początku żądania podczas <xref:System.Web.HttpApplication.AcquireRequestState> zdarzenie, kiedy <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> ma ustawioną wartość atrybutu `true`, co jest ustawieniem domyślnym. Jeśli <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> ma ustawioną wartość atrybutu `ReadOnly`, <xref:System.Web.SessionState.SessionStateModule> zamiast tego obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metody.  
+ `true` <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> Obiekt wywołuje metodę na początku żądania <xref:System.Web.HttpApplication.AcquireRequestState> w przypadku, gdy atrybut jest ustawiony na, który jest wartością domyślną. <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> <xref:System.Web.SessionState.SessionStateModule> Jeśli atrybut jest ustawiony na `ReadOnly`, <xref:System.Web.SessionState.SessionStateModule> obiekt wywołuje <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItem%2A> metodę. <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A>  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> Metoda zwraca <xref:System.Web.SessionState.SessionStateStoreData> obiektu wypełniane przy użyciu informacji o sesji z magazynu danych aktualizacji daty wygaśnięcia przechowywanych danych i blokuje dane element sesji w magazynie danych, czas trwania żądania. Jeśli żadne dane element sesji znajduje się w magazynie danych <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody ustawia `locked` `out` parametr `false` i zwraca `null`. Powoduje to, że <xref:System.Web.SessionState.SessionStateModule> obiekt do wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> metodę, aby utworzyć element Nowa sesja w magazynie danych. Jeśli element sesji danych znajduje się w magazynie danych, ale danych jest zablokowany, <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metody ustawia `locked` `out` parametr `true`, ustawia `lockAge` `out` parametr do bieżącej daty i godziny pomniejszoną o datę i czasu, gdy ten element został zablokowany (które są pobierane z magazynu danych), ustawia `lockId` `out` parametru, aby identyfikator blokady pobierane z magazynu danych i zwraca `null`. Powoduje to, że <xref:System.Web.SessionState.SessionStateModule> obiekt do wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metoda ponownie za pół sekundowego interwału próbuje pobrać element sesji i nałożyć blokady na danych. Jeśli wartość która `lockAge` `out` parametr ma wartość przekracza <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> wartości, a następnie <xref:System.Web.SessionState.SessionStateModule> wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metodę, aby wyczyścić blokady na element sesji danych, a następnie wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> ponownie metodą.  
+ <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> Metoda<xref:System.Web.SessionState.SessionStateStoreData> zwraca obiekt wypełniony informacjami o sesji z magazynu danych, aktualizuje datę wygaśnięcia przechowywanych danych i blokuje dane elementu sesji w magazynie danych na czas trwania żądania. Jeśli w magazynie danych nie zostaną znalezione żadne dane elementu sesji, <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> Metoda `locked` `out` Ustawia parametr na `false` i zwraca wartość `null`. Powoduje to, <xref:System.Web.SessionState.SessionStateModule> że obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateNewStoreData%2A> wywołuje metodę w celu utworzenia nowego elementu sesji w magazynie danych. Jeśli dane <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> elementu sesji znajdują się w magazynie danych, ale dane są zablokowane, Metoda `out` `locked` `out` Ustawia parametr na `true`, ustawia `lockAge` parametr na bieżącą datę i godzinę pomniejszoną o datę i czas, w którym element został zablokowany (pobrany z magazynu danych), ustawia `lockId` `out` parametr na identyfikator blokady pobrany z magazynu danych i zwraca wartość `null`. Powoduje to, <xref:System.Web.SessionState.SessionStateModule> że obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> wywołujący metodę ponownie po połowie drugiego interwału, aby spróbować pobrać informacje o elemencie sesji i uzyskać blokadę danych. Jeśli wartość, do której `lockAge` `out` ustawiono parametr przekracza <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> wartość, <xref:System.Web.SessionState.SessionStateModule> wywołuje <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metodę w celu <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> wyczyszczenia blokady danych elementu sesji, a następnie ponownie wywołuje metodę.  
   
- `actionFlags` Parametr jest używany podczas `cookieless` i `regenerateExpiredSessionId` atrybuty są ustawione na `true`. `actionFlags` Wartość <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wskazuje, że wpis w magazynie danych sesji jest nową sesję, który wymaga inicjowania. Niezainicjowane zapisy w magazynie danych sesji są tworzone przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> metody. Jeśli element z magazynu danych sesji nie jest niezainicjowany element `actionFlags` parametr zostanie ustawiony na wartość zero.  
+ Ten `actionFlags` parametr jest używany, `cookieless` gdy atrybuty `regenerateExpiredSessionId` i są ustawione na. `true` Wartość ustawiona na <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wskazuje, że wpis w magazynie danych sesji jest nową sesją wymagającą inicjalizacji. `actionFlags` Niezainicjowane wpisy w magazynie danych sesji są tworzone przez wywołanie <xref:System.Web.SessionState.SessionStateStoreProviderBase.CreateUninitializedItem%2A> metody. Jeśli element z magazynu danych sesji nie jest elementem niezainicjowanym, `actionFlags` parametr zostanie ustawiony na zero.  
   
- Implementacji niestandardowego magazynu stanu sesji, obsługujące cookieless sesji należy ustawić `actionFlags` `out` wartość zwracana z magazynu danych sesji dla bieżącego elementu. Jeśli `actionFlags` elementu jest równa wartości parametru dla żądanego magazynu sesji <xref:System.Web.SessionState.SessionStateActions.InitializeItem> wartość wyliczenia, a następnie <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> metoda powinna ustawiać wartość w magazynie danych do zera po ustawieniu `actionFlags` `out` parametru.  
+ Niestandardowi implementującemu magazyn stanów sesji, które obsługują sesje bez plików `actionFlags` cookie, należy ustawić `out` parametr na wartość zwróconą z magazynu danych sesji dla bieżącego elementu. `out` `actionFlags` <xref:System.Web.SessionState.SessionStateStoreProviderBase.GetItemExclusive%2A> <xref:System.Web.SessionState.SessionStateActions.InitializeItem> Jeśli wartość parametrużądanegoelementumagazynusesjijestrównawartościwyliczenia,metodapowinnaustawićwartośćwmagazyniedanychnazeropoustawieniuparametru.`actionFlags`  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="InitializeRequest">
@@ -411,21 +411,21 @@
       </Parameters>
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
-        <summary>Wywoływane przez <see cref="T:System.Web.SessionState.SessionStateModule" /> obiektu inicjowania danego żądania.</summary>
+        <summary>Wywoływane przez <see cref="T:System.Web.SessionState.SessionStateModule" /> obiekt dla inicjalizacji żądania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> metoda przed wywołaniem innych <xref:System.Web.SessionState.SessionStateStoreProviderBase> metody. Możesz użyć <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> metodę w celu inicjowanie wymagane przez dostawcę magazynu stanu sesji na żądanie.  
+ Obiekt wywołuje metodę przed wywołaniem innej <xref:System.Web.SessionState.SessionStateStoreProviderBase> metody. <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> <xref:System.Web.SessionState.SessionStateModule> Możesz użyć metody, <xref:System.Web.SessionState.SessionStateStoreProviderBase.InitializeRequest%2A> aby wykonać wszelkie inicjalizacje żądania na żądanie wymagane przez dostawcę magazynu stanów sesji.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="ReleaseItemExclusive">
@@ -453,25 +453,25 @@
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id">Identyfikator sesji dla bieżącego żądania.</param>
         <param name="lockId">Identyfikator blokady dla bieżącego żądania.</param>
-        <summary>Przechowywanie wersji blokady na element w dane sesji.</summary>
+        <summary>Zwalnia blokadę dla elementu w magazynie danych sesji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metodę, aby zaktualizować datę wygaśnięcia i zwolnić blokady na element w magazynie danych sesji. Jest to na końcu żądania podczas <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzeń, jeśli wartości sesji są bez zmian. W przypadku modyfikowania wartości sesji <xref:System.Web.SessionState.SessionStateModule> zamiast tego obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody.  
+ Obiekt wywołuje metodę, <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> aby zaktualizować datę wygaśnięcia i zwolnić blokadę dla elementu w magazynie danych sesji. <xref:System.Web.SessionState.SessionStateModule> Jest on wywoływany na końcu żądania <xref:System.Web.HttpApplication.ReleaseRequestState> w przypadku, gdy wartości sesji nie są zmieniane. Jeśli wartości sesji zostały zmodyfikowane, <xref:System.Web.SessionState.SessionStateModule> obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> wywołuje metodę.  
   
- <xref:System.Web.SessionState.SessionStateModule> Również wywołuje obiekt <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metody, gdy został przekroczony blokady na element w magazynie danych sesji <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> wartość. Aby uzyskać więcej informacji na temat blokowania i szczegółowe informacje o identyfikator blokady, zobacz "Blokowanie dane sesji Store" w <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasa — Przegląd.  
+ Obiekt wywołuje również metodę, <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> gdy blokada elementu w magazynie <xref:System.Web.Configuration.HttpRuntimeSection.ExecutionTimeout%2A> danych sesji przekroczyła wartość. <xref:System.Web.SessionState.SessionStateModule> Aby uzyskać więcej informacji na temat blokowania i szczegółów dotyczących identyfikatora blokady, zobacz "Blokowanie sesji-zapisywanie danych" w <xref:System.Web.SessionState.SessionStateStoreProviderBase> przeglądzie klasy.  
   
- <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> Metoda tylko Usuwa blokadę z elementu w magazynie danych sesji dla bieżącej aplikacji, który odpowiada podanej sesji `id` i `lockId` wartości. Jeśli `lockId` pasuje do nazwy w magazynie danych <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metoda nic nie robi.  
+ Metoda usuwa tylko blokadę z elementu w magazynie danych sesji dla bieżącej aplikacji, która pasuje do podanej sesji `id` i `lockId` wartości. <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> Jeśli parametr <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> nie jest zgodny z danymi w magazynie danych, metoda nie wykonuje żadnych operacji. `lockId`  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="RemoveItem">
@@ -500,22 +500,22 @@
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id">Identyfikator sesji dla bieżącego żądania.</param>
         <param name="lockId">Identyfikator blokady dla bieżącego żądania.</param>
-        <param name="item"><see cref="T:System.Web.SessionState.SessionStateStoreData" /> Reprezentujący elementu do usunięcia z magazynu danych.</param>
-        <summary>Usuwa element danych z magazynu danych sesji.</summary>
+        <param name="item">Reprezentuje <see cref="T:System.Web.SessionState.SessionStateStoreData" /> element, który ma zostać usunięty z magazynu danych.</param>
+        <summary>Usuwa dane elementu z magazynu danych sesji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> metody na końcu żądania podczas <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzeń, aby usunąć dane dla elementu sesji z magazynu danych sesji, jeśli <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> została wywołana metoda. Tylko dane sesji dla bieżącej aplikacji, który odpowiada podanej sesji `id` i `lockId` wartości zostanie usunięty. Aby uzyskać więcej informacji na temat blokowania i szczegółowe informacje o identyfikator blokady, zobacz "Blokowanie dane sesji Store" w <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasa — Przegląd.  
+ Obiekt wywołuje metodę na końcu żądania, w trakcie <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzenia, aby usunąć dane dla <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> elementu sesji z magazynu danych sesji, jeśli metoda została wywołana. <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> <xref:System.Web.SessionState.SessionStateModule> Usuwane są tylko dane sesji dla bieżącej aplikacji, które pasują `id` do `lockId` podanej sesji i wartości. Aby uzyskać więcej informacji na temat blokowania i szczegółów dotyczących identyfikatora blokady, zobacz "Blokowanie sesji-zapisywanie danych" w <xref:System.Web.SessionState.SessionStateStoreProviderBase> przeglądzie klasy.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="ResetItemTimeout">
@@ -541,27 +541,27 @@
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id">Identyfikator sesji dla bieżącego żądania.</param>
-        <summary>Aktualizacji, datę i godzinę wygaśnięcia elementu w magazynie danych sesji.</summary>
+        <summary>Aktualizuje datę i godzinę wygaśnięcia elementu w magazynie danych sesji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> metodę, aby zaktualizować datę i godzinę wygaśnięcia sesji do bieżącej daty i godziny powiększoną o sesji <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> wartość przy albo:  
+ Obiekt wywołuje metodę, <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> aby zaktualizować datę i godzinę wygaśnięcia sesji na bieżącą datę i godzinę oraz wartość sesji <xref:System.Web.SessionState.HttpSessionState.Timeout%2A> , gdy: <xref:System.Web.SessionState.SessionStateModule>  
   
--   <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> atrybut jest `true`, lub  
+-   Ten <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> atrybut jest `true`lub  
   
--   żądanie nie wygenerował <xref:System.Web.HttpApplication.AcquireRequestState> i <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzeń z powodu błędu.  
+-   żądanie nie <xref:System.Web.HttpApplication.AcquireRequestState> zgłosiło zdarzeń i <xref:System.Web.HttpApplication.ReleaseRequestState> z powodu błędu.  
   
- Jeśli wymagana jest strony ASP.NET i <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> ma ustawioną wartość atrybutu `false`, <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> metoda nadal jest wywoływana, aby zaktualizować datę i godzinę wygaśnięcia danych w magazynie danych sesji.  
+ Jeśli zażądano strony ASP.NET, a <xref:System.Web.Configuration.PagesSection.EnableSessionState%2A> atrybut jest ustawiony na `false`, <xref:System.Web.SessionState.SessionStateStoreProviderBase.ResetItemTimeout%2A> Metoda jest nadal wywoływana w celu zaktualizowania daty i godziny wygaśnięcia danych w magazynie danych sesji.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="SetAndReleaseItemExclusive">
@@ -590,28 +590,28 @@
       <Docs>
         <param name="context"><see cref="T:System.Web.HttpContext" /> Dla bieżącego żądania.</param>
         <param name="id">Identyfikator sesji dla bieżącego żądania.</param>
-        <param name="item"><see cref="T:System.Web.SessionState.SessionStateStoreData" /> Obiekt, który zawiera wartości bieżącej sesji, które mają być przechowywane.</param>
+        <param name="item"><see cref="T:System.Web.SessionState.SessionStateStoreData" /> Obiekt, który zawiera bieżące wartości sesji, które mają być przechowywane.</param>
         <param name="lockId">Identyfikator blokady dla bieżącego żądania.</param>
-        <param name="newItem"><see langword="true" /> Aby zidentyfikować element sesji jako nowy element; <see langword="false" /> do identyfikowania element sesji jako istniejącego elementu.</param>
-        <summary>Aktualizuje informacje element sesji w magazynie danych stanu sesji przy użyciu wartości z bieżącego żądania, a następnie usuwa blokadę danych.</summary>
+        <param name="newItem"><see langword="true" />w celu zidentyfikowania elementu sesji jako nowego elementu; <see langword="false" /> do identyfikowania elementu sesji jako istniejącego elementu.</param>
+        <summary>Aktualizuje informacje o elemencie sesji w magazynie danych stanu sesji z wartościami z bieżącego żądania i czyści blokadę danych.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> metody na końcu żądania podczas <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzeń, aby wstawić informacji bieżący element sesji do magazynu danych lub zaktualizowanie istniejących informacji element sesji, w magazynie danych przy użyciu bieżących wartości Aby zaktualizować czas wygaśnięcia w elemencie i zwolnić blokady na danych. Tylko dane sesji dla bieżącej aplikacji, który odpowiada podanej sesji `id` i `lockId` zaktualizować wartości. Aby uzyskać więcej informacji na temat blokowania, zobacz "Blokowanie sesji Store dane" w <xref:System.Web.SessionState.SessionStateStoreProviderBase> klasa — Przegląd.  
+ Obiekt wywołuje metodę na końcu żądania, w trakcie <xref:System.Web.HttpApplication.ReleaseRequestState> zdarzenia, aby wstawić bieżące informacje o elemencie sesji do magazynu danych lub zaktualizować informacje o istniejących elementach sesji w magazynie danych z bieżącymi wartościami, <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> <xref:System.Web.SessionState.SessionStateModule> w celu zaktualizowania czasu wygaśnięcia elementu i zwolnienia blokady danych. Aktualizowane są tylko dane sesji dla bieżącej aplikacji, które pasują `id` do `lockId` podanej sesji i wartości. Aby uzyskać więcej informacji na temat blokowania, zobacz "Blokowanie danych magazynu sesji" <xref:System.Web.SessionState.SessionStateStoreProviderBase> w przeglądzie klasy.  
   
- Jeśli nie zostały zmodyfikowane wartości sesję dla bieżącego żądania, <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> nie jest wywoływana metoda. Zamiast tego <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A> metoda jest wywoływana.  
+ Jeśli wartości sesji dla bieżącego żądania nie zostały zmodyfikowane, <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> Metoda nie jest wywoływana. Zamiast tego Metoda jest wywoływana. <xref:System.Web.SessionState.SessionStateStoreProviderBase.ReleaseItemExclusive%2A>  
   
- Jeśli <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> została wywołana metoda <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> nie jest wywoływana metoda. Zamiast tego <xref:System.Web.SessionState.SessionStateModule> obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> metodę, aby usunąć element sesji dane ze źródła danych.  
+ Jeśli metoda została wywołana, metoda nie jest wywoływana. <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetAndReleaseItemExclusive%2A> <xref:System.Web.SessionState.HttpSessionState.Abandon%2A> Zamiast tego <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> obiekt wywołuje metodę, aby usunąć dane elementu sesji ze źródła danych. <xref:System.Web.SessionState.SessionStateModule>  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
     <Member MemberName="SetItemExpireCallback">
@@ -634,25 +634,25 @@
         <Parameter Name="expireCallback" Type="System.Web.SessionState.SessionStateItemExpireCallback" />
       </Parameters>
       <Docs>
-        <param name="expireCallback"><see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> Delegata dla wszystkich <see langword="Session_OnEnd" /> zdarzenia zdefiniowane w pliku Global.asax.</param>
-        <summary>Ustawia odwołanie <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> delegata dla wszystkich <see langword="Session_OnEnd" /> zdarzenia zdefiniowane w pliku Global.asax.</summary>
-        <returns><see langword="true" /> Jeśli dostawca magazynu stanu sesji obsługuje wywoływania <see langword="Session_OnEnd" /> zdarzenia; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="expireCallback"><see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> Delegat<see langword="Session_OnEnd" /> dla zdarzenia zdefiniowanego w pliku Global. asax.</param>
+        <summary>Ustawia odwołanie do <see cref="T:System.Web.SessionState.SessionStateItemExpireCallback" /> delegata <see langword="Session_OnEnd" /> dla zdarzenia zdefiniowanego w pliku Global. asax.</summary>
+        <returns><see langword="true" />Jeśli dostawca magazynu stanów sesji obsługuje wywoływanie <see langword="Session_OnEnd" /> zdarzenia; w przeciwnym razie,. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Web.SessionState.SessionStateModule> Obiektu wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> metody, gdy moduł jest inicjowany, aby określić, czy wywołania `Session_OnEnd` zdarzeń są obsługiwane przez <xref:System.Web.SessionState.SessionStateStoreProviderBase> implementacji oraz powiązywania <xref:System.Web.SessionState.SessionStateItemExpireCallback> delegowanie przy użyciu `Session_OnEnd` zdarzeń.  
+ `Session_OnEnd` <xref:System.Web.SessionState.SessionStateItemExpireCallback> <xref:System.Web.SessionState.SessionStateStoreProviderBase> Obiekt wywołuje metodę, <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> gdy moduł jest zainicjowany, aby określić, czy wywołania zdarzenia są obsługiwane przez implementację i skojarzyć delegata z <xref:System.Web.SessionState.SessionStateModule> `Session_OnEnd` zdarzenie.  
   
- Implementacje dostawcy niestandardowego magazynu stanu sesji należy używać <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> metodę, aby poinformować <xref:System.Web.SessionState.SessionStateModule> obiektu czy wywołania `Session_OnEnd` zdarzeń są obsługiwane i ustawienie lokalnego odwołania <xref:System.Web.SessionState.SessionStateItemExpireCallback> dostarczonych przez delegata`expireCallback` parametru. Implementacja niestandardowa należy określić, kiedy lokalnej <xref:System.Web.SessionState.SessionStateItemExpireCallback> delegata, który zostanie wywołany. Na przykład delegata można wywołać podczas wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> metody, która jest wywoływana, gdy sesja zostanie porzucony.  
+ Implementacja niestandardowi dostawcy magazynu stanów sesji powinna używać <xref:System.Web.SessionState.SessionStateStoreProviderBase.SetItemExpireCallback%2A> metody do informowania o tym, <xref:System.Web.SessionState.SessionStateModule> czy `Session_OnEnd` wywołania zdarzenia są obsługiwane <xref:System.Web.SessionState.SessionStateItemExpireCallback> , oraz do ustawiania lokalnego odwołania do delegata dostarczonego przez `expireCallback` parametr. Implementacja niestandardowa musi decydować, kiedy <xref:System.Web.SessionState.SessionStateItemExpireCallback> zostanie wywołany lokalny delegat. Na przykład delegat może być wywoływany podczas wywołania <xref:System.Web.SessionState.SessionStateStoreProviderBase.RemoveItem%2A> metody, która jest wywoływana, gdy sesja zostanie porzucona.  
   
    
   
 ## Examples  
- Na przykład implementacja dostawcy magazynu stanu sesji zobacz [implementowanie dostawcy stanu sesji Store](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
+ Przykład implementacji dostawcy magazynu stanów sesji znajduje się w temacie [implementacja dostawcy magazynu stanu sesji](https://msdn.microsoft.com/library/baadfec5-c881-468a-9681-7d8796b05a66).  
   
  ]]></format>
         </remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji platformy ASP.NET</related>
+        <related type="Article" href="https://msdn.microsoft.com/library/6d60d381-6521-4e1d-9089-da6464f2a9bc">Przegląd stanu sesji ASP.NET</related>
       </Docs>
     </Member>
   </Members>
