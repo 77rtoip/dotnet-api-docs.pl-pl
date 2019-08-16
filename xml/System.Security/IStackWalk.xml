@@ -1,5 +1,5 @@
 <Type Name="IStackWalk" FullName="System.Security.IStackWalk">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ffff6974a1ebf871cd84ed3f0b180c1e73b50d37" /><Meta Name="ms.sourcegitcommit" Value="8e213bb5e6801f6e29861ba72664978ad00e34fa" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/18/2019" /><Meta Name="ms.locfileid" Value="56402372" /></Metadata><TypeSignature Language="C#" Value="public interface IStackWalk" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="483fd0c19eb94202f890b134abe0af6b4d2336e7" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69161698" /></Metadata><TypeSignature Language="C#" Value="public interface IStackWalk" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IStackWalk" />
   <TypeSignature Language="DocId" Value="T:System.Security.IStackWalk" />
   <TypeSignature Language="VB.NET" Value="Public Interface IStackWalk" />
@@ -28,14 +28,14 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Zarządza przeszukiwania stosu, która określa, czy wszystkie obiekty wywołujące w stosie wywołań ma wymaganych uprawnień dostępu do chronionego zasobu.</summary>
+    <summary>Zarządza przemieszczeniem stosu, które określa, czy wszyscy wywołujący w stosie wywołań mają uprawnienia wymagane do uzyskiwania dostępu do chronionego zasobu.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Częściowo zaufany kod zawsze stanowi zagrożenie dla bezpieczeństwa. Czasami manipulacji do wykonania czynności w imieniu złośliwy kod, który nie ma uprawnień dostępu do zasobu. W ten sposób złośliwy kod może osiągnąć wyższy dostępu zabezpieczeń nie powinien być dozwolony.  
+ Częściowo zaufany kod zawsze stanowi zagrożenie bezpieczeństwa. Czasami może być manipulowany przez wykonywanie akcji w imieniu złośliwego kodu, który nie ma uprawnień dostępu do zasobu. W ten sposób złośliwy kod może uzyskać wyższy dostęp do zabezpieczeń niż powinien być dozwolony.  
   
- Środowisko uruchomieniowe języka wspólnego pomaga w ochronie kodu zarządzanego z te ataki, uruchamiając przeszukiwania stosu dla wszystkich wywołań. Przeszukiwania stosu wymaga, że cały kod w stosie wywołań ma uprawnienie do dostępu do chronionego zasobu. Ponieważ kod próby ataku zawsze będzie zawarty w stosie wywołań, będzie mogła przekroczyć własnych uprawnień zabezpieczeń.  
+ Środowisko uruchomieniowe języka wspólnego pomaga chronić kod zarządzany przed atakami przez uruchomienie przechodzenia stosu na wszystkie wywołania. Przechodzenie stosu wymaga, aby cały kod w stosie wywołań miał uprawnienia dostępu do chronionego zasobu. Ponieważ kod próbujący atak był zawsze gdzieś w stosie wywołań, nie będzie można przekroczyć własnych uprawnień zabezpieczeń.  
   
  ]]></format>
     </remarks>
@@ -70,19 +70,19 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Potwierdza kod wywołujący dostęp zasobu wskazywanego przez bieżący obiekt uprawnienia, nawet wtedy, gdy wyżej w stosie wywołań nie przyznano uprawnień dostępu do zasobu.</summary>
+        <summary>Potwierdza, że kod wywołujący może uzyskać dostęp do zasobu identyfikowanego przez bieżący obiekt uprawnień, nawet jeśli obiekty wywołujące wyższe w stosie nie uzyskały uprawnień dostępu do zasobu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.Security.IStackWalk.Assert%2A> zatrzymuje sprawdzenie uprawnień na obiekty wywołujące wyżej w stosie wywołań. W związku z tym nawet jeśli te obiekty wywołujące nie masz wymaganych uprawnień, ich mogą nadal uzyskiwać dostęp do zasobów. Potwierdzenie obowiązuje tylko wtedy, gdy kod wywołuje <xref:System.Security.IStackWalk.Assert%2A> przekazuje sprawdzenia zabezpieczeń dla uprawnień, że jest ona potwierdzające.  
+ Wywołanie <xref:System.Security.IStackWalk.Assert%2A> powoduje zatrzymanie sprawdzania uprawnień dla obiektów wywołujących wyższych w stosie wywołań. W związku z tym nawet jeśli Ci wywołujący nie mają wymaganych uprawnień, nadal mogą uzyskać dostęp do zasobów. Potwierdzenie ma zastosowanie tylko wtedy, gdy kod, który <xref:System.Security.IStackWalk.Assert%2A> wywołuje, przekazuje kontrolę zabezpieczeń dla uprawnienia, które jest potwierdzone.  
   
- Wywołanie <xref:System.Security.IStackWalk.Assert%2A> jest efektywne, dopóki kod wywołujący powróci do obiektu wywołującego lub do momentu kolejne wywołanie <xref:System.Security.IStackWalk.Assert%2A> renderuje potwierdzenia poprzedniej nieefektywne. Ponadto <xref:System.Security.CodeAccessPermission.RevertAssert%2A> lub <xref:System.Security.CodeAccessPermission.RevertAll%2A> usuwa oczekujące <xref:System.Security.IStackWalk.Assert%2A>.  
+ Wywołanie <xref:System.Security.IStackWalk.Assert%2A> jest skuteczne do momentu, gdy wywoływany kod powróci do jego obiektu wywołującego lub <xref:System.Security.IStackWalk.Assert%2A> do momentu kolejnego wywołania powyższego potwierdzenia. <xref:System.Security.CodeAccessPermission.RevertAssert%2A> Ponadto lub <xref:System.Security.CodeAccessPermission.RevertAll%2A> usuwa oczekujące <xref:System.Security.IStackWalk.Assert%2A>.  
   
- <xref:System.Security.IStackWalk.Assert%2A> jest ignorowany dla uprawnień nie udzielić, ponieważ żądanie dla tego uprawnienia nie powiedzie się. Jednak jeśli niżej w stosie wywołań kod wywołuje <xref:System.Security.IStackWalk.Demand%2A> dla tego uprawnienia <xref:System.Security.SecurityException> jest zgłaszany, gdy przeszukiwania stosu osiągnie kod, który próbowano wywołania <xref:System.Security.IStackWalk.Assert%2A>. Dzieje się tak, ponieważ kod, który wywołuje <xref:System.Security.IStackWalk.Assert%2A> nie udzielono uprawnień, mimo że aplikacja próbowała <xref:System.Security.IStackWalk.Assert%2A> go.  
+ <xref:System.Security.IStackWalk.Assert%2A>jest ignorowany dla uprawnień, które nie zostały przyznane, ponieważ żądanie tego uprawnienia nie powiedzie się. Jeśli jednak kod niższy od wywołania <xref:System.Security.IStackWalk.Demand%2A> stosu wywołań dla tego uprawnienia <xref:System.Security.SecurityException> , jest generowany, gdy przechodzenie stosu osiągnie kod, który próbował wywołać <xref:System.Security.IStackWalk.Assert%2A>. Dzieje się tak, ponieważ kod, <xref:System.Security.IStackWalk.Assert%2A> który został wywołany, nie otrzymał uprawnienia, nawet jeśli <xref:System.Security.IStackWalk.Assert%2A> próbował go.  
   
 > [!CAUTION]
->  Ponieważ wywołanie <xref:System.Security.IStackWalk.Assert%2A> usuwa wymóg, że wszystkie możesz pisać kod w łańcuch wywołań muszą mieć uprawnienie dostępu do określonego zasobu, można otworzyć się luk w zabezpieczeniach, jeśli niepoprawnie lub niewłaściwie. W związku z tym należy używać ostrożnie doskonałe.  
+>  Ponieważ wywołanie <xref:System.Security.IStackWalk.Assert%2A> usuwa wymaganie, aby cały kod w łańcuchu wywołań musiał otrzymać uprawnienia dostępu do określonego zasobu, można otworzyć luki w zabezpieczeniach, jeśli są one używane nieprawidłowo lub niewłaściwie. W związku z tym powinno być używane z dużą ostrożnością.  
   
  ]]></format>
         </remarks>
@@ -119,21 +119,21 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Określa w czasie wykonywania, czy wszystkie obiekty wywołujące w stosie wywołań przyznano uprawnienia określone przez bieżący obiekt uprawnień.</summary>
+        <summary>Określa w czasie wykonywania, czy wszystkie obiekty wywołujące w stosie wywołań mają przyznane uprawnienia określone przez bieżący obiekt uprawnień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest zwykle używana przez bezpieczne biblioteki, aby upewnić się, że obiekty wywołujące ma uprawnienia do uzyskania dostępu do zasobu. Na przykład wywołuje klasę pliku w bibliotece bezpiecznych klasy <xref:System.Security.IStackWalk.Demand%2A> dla niezbędnych <xref:System.Security.Permissions.FileIOPermission> przed przystąpieniem do wykonywania operacji na pliku żądanego przez obiekt wywołujący.  
+ Ta metoda jest zwykle używana przez bezpieczne biblioteki w celu zapewnienia, że wywołujący mają uprawnienia dostępu do zasobu. Na przykład Klasa plików w bezpiecznej bibliotece klas wywołuje <xref:System.Security.IStackWalk.Demand%2A> wymagane <xref:System.Security.Permissions.FileIOPermission> przed wykonaniem operacji na plikach zażądanej przez wywołującego.  
   
- Uprawnienia kod, który wywołuje tę metodę, nie będą badane; Sprawdzanie zaczyna się od bezpośredniego obiektu wywołującego kod i przechodzi w górę stosu. <xref:System.Security.IStackWalk.Demand%2A> powiedzie się tylko wtedy, gdy nie <xref:System.Security.SecurityException> jest wywoływane.  
+ Uprawnienia kodu, który wywołuje tę metodę, nie są badane; sprawdzenie rozpoczyna się od bezpośredniego wywołującego tego kodu i przechodzi do stosu. <xref:System.Security.IStackWalk.Demand%2A>powiedzie się tylko wtedy <xref:System.Security.SecurityException> , gdy nie zostanie zgłoszony.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.Security.SecurityException">Obiekt wywołujący wyżej w stosie wywołań nie ma uprawnienia określone przez bieżący obiekt uprawnień.  
+        <exception cref="T:System.Security.SecurityException">Obiekt wywołujący znajdujący się wyżej w stosie wywołań nie ma uprawnienia określonego dla bieżącego obiektu uprawnień.  
   
 —lub— 
-Obiekt wywołujący na stosie wywołań została wywołana <see cref="M:System.Security.IStackWalk.Deny" /> dla bieżącego obiektu uprawnień.</exception>
+Obiekt wywołujący w stosie wywołań został <see cref="M:System.Security.IStackWalk.Deny" /> wywołany w bieżącym obiekcie uprawnień.</exception>
       </Docs>
     </Member>
     <Member MemberName="Deny">
@@ -165,20 +165,20 @@ Obiekt wywołujący na stosie wywołań została wywołana <see cref="M:System.S
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Powoduje, że każdy <see cref="M:System.Security.IStackWalk.Demand" /> dla bieżącego obiektu, który przechodzi przez kod wywołujący, aby zakończyć się niepowodzeniem.</summary>
+        <summary>Powoduje, że dla bieżącego obiektu, który przechodzi przez kod wywołujący, nie powiedzie się. <see cref="M:System.Security.IStackWalk.Demand" /></summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda uniemożliwia wywołującym wyżej w stosie wywołań uzyskiwania dostępu do chronionego zasobu za pomocą kodu, który wywołuje tę metodę, nawet wtedy, gdy te obiekty wywołujące przyznano uprawnienia dostępu do niego. Stos wywołań jest zazwyczaj reprezentowany jako rośnie, tak, aby metody wyżej w stosie wywołań mogą wywoływać metod niższe w stosie wywołań.  
+ Ta metoda uniemożliwia wywoływanie obiektów wywołujących wyższego poziomu w stosie wywołań dostępu do chronionego zasobu za pośrednictwem kodu, który wywołuje tę metodę, nawet jeśli Ci wywołujący mają uprawnienia dostępu do niej. Stos wywołań jest zazwyczaj reprezentowany jako rosnący, więc metody wyższe w metodach wywołania stosu wywołań są niższe w stosie wywołań.  
   
- <xref:System.Security.IStackWalk.Deny%2A> można ograniczyć odpowiedzialność programisty lub pomagają zapobiegać luk w zabezpieczeniach przypadkowe, ponieważ zapobiega metodę, która wywołuje <xref:System.Security.IStackWalk.Deny%2A> używany w celu dostępu do zasobów chronionych przez odmowy uprawnień. Wywołuje metodę <xref:System.Security.IStackWalk.Deny%2A> na uprawnienia i jeśli <xref:System.Security.IStackWalk.Demand%2A> dla tego uprawnienia, zostanie wywołany przez obiekt wywołujący niżej w stosie wywołań, sprawdzanie zabezpieczeń nie powiedzie się po osiągnięciu <xref:System.Security.IStackWalk.Deny%2A>.  
+ <xref:System.Security.IStackWalk.Deny%2A>program może ograniczyć odpowiedzialność programisty lub zapobiec przypadkowemu występowaniu luk w zabezpieczeniach, ponieważ pomaga zapobiec metodzie, która wywołuje <xref:System.Security.IStackWalk.Deny%2A> z użycia w celu uzyskania dostępu do zasobu chronionego przez wyrzucane uprawnienie. Jeśli metoda wywołuje <xref:System.Security.IStackWalk.Deny%2A> uprawnienie, a <xref:System.Security.IStackWalk.Demand%2A> dla tego uprawnienia wywoływany przez obiekt wywołujący jest niższy w stosie wywołań, sprawdzanie zabezpieczeń zakończy <xref:System.Security.IStackWalk.Deny%2A>się niepowodzeniem, gdy zostanie osiągnięty.  
   
- <xref:System.Security.IStackWalk.Deny%2A> jest ignorowany dla uprawnień nie udzielić, ponieważ żądanie dla tego uprawnienia nie powiedzie się.  
+ <xref:System.Security.IStackWalk.Deny%2A>jest ignorowany dla uprawnień, które nie zostały przyznane, ponieważ żądanie tego uprawnienia nie powiedzie się.  
   
  ]]></format>
         </remarks>
-        <block subset="none" type="overrides"><para>Nie można przesłonić tę metodę.</para></block>
+        <block subset="none" type="overrides"><para>Nie można zastąpić tej metody.</para></block>
       </Docs>
     </Member>
     <Member MemberName="PermitOnly">
@@ -210,14 +210,14 @@ Obiekt wywołujący na stosie wywołań została wywołana <see cref="M:System.S
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Powoduje, że każdy <see cref="M:System.Security.IStackWalk.Demand" /> dla wszystkich obiektów z wyjątkiem bieżącym przechodzący przez kod wywołujący, aby zakończyć się niepowodzeniem, nawet wtedy, gdy kod wyżej w stosie wywołań ma uprawnienia dostępu do innych zasobów.</summary>
+        <summary>Powoduje, że dla wszystkich obiektów, z wyjątkiem bieżącego, który przechodzi przez wywoływany kod, nie powiedzie się, nawet jeśli kod wyższy w stosie wywołań przyznał uprawnienia dostępu do innych zasobów. <see cref="M:System.Security.IStackWalk.Demand" /></summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Security.IStackWalk.PermitOnly%2A> jest podobny do <xref:System.Security.IStackWalk.Deny%2A>, oba powodują przeszukiwań stosu niepowodzeniem, jeśli w przeciwnym razie powiedzie. Różnica jest to, że <xref:System.Security.IStackWalk.Deny%2A> określa uprawnienia, które spowoduje przejście przez stos zakończyć się niepowodzeniem, ale <xref:System.Security.IStackWalk.PermitOnly%2A> określa tylko uprawnienia, które nie powodują przejście przez stos nie powiedzie się. Wywołaj tę metodę, aby upewnić się, że Twój kod może służyć do dostępu do określonych zasobów.  
+ <xref:System.Security.IStackWalk.PermitOnly%2A>działa podobnie jak <xref:System.Security.IStackWalk.Deny%2A>w przypadku, gdy obie przyczyny kończą się niepowodzeniem. Różnica polega na tym <xref:System.Security.IStackWalk.Deny%2A> , że określa uprawnienia, które spowodują niepowodzenie przechodzenia stosu <xref:System.Security.IStackWalk.PermitOnly%2A> , ale określa jedyne uprawnienia, które nie powodują błędów przeszukiwania stosu. Wywołaj tę metodę, aby upewnić się, że kod może być używany w celu uzyskania dostępu tylko do określonych zasobów.  
   
- <xref:System.Security.IStackWalk.PermitOnly%2A> jest ignorowany dla uprawnień nie udzielić, ponieważ żądanie dla tego uprawnienia nie powiedzie się. Jednak jeśli kod niżej w wywołanie stosu później wywołania <xref:System.Security.IStackWalk.Demand%2A> dla tego uprawnienia <xref:System.Security.SecurityException> jest zgłaszany, gdy przeszukiwania stosu osiągnie kod, który próbowano wywołania <xref:System.Security.IStackWalk.PermitOnly%2A>. Jest to spowodowane kod, który wywołuje <xref:System.Security.IStackWalk.PermitOnly%2A> nie udzielono uprawnień, mimo że ona wywoływana <xref:System.Security.IStackWalk.PermitOnly%2A> dla tego uprawnienia. Stos wywołań jest zazwyczaj reprezentowany jako rośnie, tak, aby metody wyżej w stosie wywołań mogą wywoływać metod niższe w stosie wywołań.  
+ <xref:System.Security.IStackWalk.PermitOnly%2A>jest ignorowany dla uprawnień, które nie zostały przyznane, ponieważ żądanie tego uprawnienia nie powiedzie się. Jeśli jednak kod niższy na stosie wywołań później wywołuje <xref:System.Security.IStackWalk.Demand%2A> dla tego uprawnienia <xref:System.Security.SecurityException> , jest generowany, gdy przeszukiwany stos osiągnie kod, który próbował wywołać <xref:System.Security.IStackWalk.PermitOnly%2A>. Wynika to z faktu, że <xref:System.Security.IStackWalk.PermitOnly%2A> wywoływany kod nie otrzymał uprawnienia, nawet jeśli został wywołany <xref:System.Security.IStackWalk.PermitOnly%2A> dla tego uprawnienia. Stos wywołań jest zazwyczaj reprezentowany jako rosnący, więc metody wyższe w metodach wywołania stosu wywołań są niższe w stosie wywołań.  
   
  ]]></format>
         </remarks>
