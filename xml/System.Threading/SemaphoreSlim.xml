@@ -1,5 +1,5 @@
 <Type Name="SemaphoreSlim" FullName="System.Threading.SemaphoreSlim">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="883d144e65efaa726c8b45cf100640d7f3d7a0cd" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58733064" /></Metadata><TypeSignature Language="C#" Value="public class SemaphoreSlim : IDisposable" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="90123bc6c711f4739700b8e51f6e2da7873234f5" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69098742" /></Metadata><TypeSignature Language="C#" Value="public class SemaphoreSlim : IDisposable" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit SemaphoreSlim extends System.Object implements class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Threading.SemaphoreSlim" />
   <TypeSignature Language="VB.NET" Value="Public Class SemaphoreSlim&#xA;Implements IDisposable" />
@@ -39,18 +39,18 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Reprezentuje uproszczone zamiast <see cref="T:System.Threading.Semaphore" /> , która ogranicza liczbę wątków, które mogą uzyskać dostęp do zasobu lub puli zasobów jednocześnie.</summary>
+    <summary>Reprezentuje uproszczoną alternatywę <see cref="T:System.Threading.Semaphore" /> , która ogranicza liczbę wątków, które mogą uzyskać dostęp do zasobów lub puli zasobów współbieżnie.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Istnieją dwa typy semaforów: lokalne semaforów i semaforów systemu o nazwie. Jest lokalne dla aplikacji. Te ostatnie są widoczne w całym systemie operacyjnym i nadaje się do synchronizacji między procesami. <xref:System.Threading.SemaphoreSlim> Jest uproszczone alternatywa dla <xref:System.Threading.Semaphore> klasę, która nie korzysta z semaforów jądra Windows. W odróżnieniu od <xref:System.Threading.Semaphore> klasy <xref:System.Threading.SemaphoreSlim> klasa nie obsługuje systemu o nazwie semaforów. Służy on jako tylko lokalne semafora. <xref:System.Threading.SemaphoreSlim> Klasa jest zalecane semafora synchronizacji w obrębie pojedynczej aplikacji.  
+ Semafory są dwa typy: semafory lokalne i nazwane semafory systemowe. Była to lokalna dla aplikacji. Ten drugi jest widoczny w całym systemie operacyjnym i jest odpowiedni do synchronizacji między procesami. Jest to lekki alternatywa <xref:System.Threading.Semaphore> dla klasy, która nie używa semaforów jądra systemu Windows. <xref:System.Threading.SemaphoreSlim> W przeciwieństwie <xref:System.Threading.Semaphore> do klasy <xref:System.Threading.SemaphoreSlim> Klasa nie obsługuje nazwanych semaforów systemu. Można go używać tylko jako semafora lokalnego. <xref:System.Threading.SemaphoreSlim> Klasa jest zalecanym semaforem dla synchronizacji w ramach jednej aplikacji.  
   
- Uproszczone semafora kontroluje dostęp do puli zasobów, lokalne dla aplikacji. Podczas tworzenia wystąpienia semafor, można określić maksymalną liczbę wątków, które można wprowadzić semafora jednocześnie. Możesz również określić początkowa liczba wątków, które można wprowadzić semafora jednocześnie. Definiuje liczbę semafora.  
+ Lekki semafor kontroluje dostęp do puli zasobów, która jest lokalna dla Twojej aplikacji. Podczas tworzenia wystąpienia semafora można określić maksymalną liczbę wątków, które mogą wprowadzać semafor współbieżnie. Należy również określić początkową liczbę wątków, które mogą wprowadzać semafor współbieżnie. Definiuje liczbę semaforów.  
   
- Liczba zostanie zmniejszony każdorazowo wątek wchodzi semafora i zwiększana za każdym razem wątku zwalnia semafora. Aby wprowadzić semafora, wątek wywołuje jedną z <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> przeciążenia. Aby zwolnić semafora, wywołuje jedną z <xref:System.Threading.SemaphoreSlim.Release%2A> przeciążenia. Gdy licznik osiągnie zero, kolejne wywołania do jednego z `Wait` metody zapewnić blokowanie do zakończenia inne wątki wersji semafora. Po zablokowaniu wiele wątków nie jest zagwarantowana kolejność, takich jak FIFO lub LIFO sterującą, kiedy wątków wprowadź semafora.  
+ Licznik jest zmniejszany za każdym razem, gdy wątek przechodzi do semafora i zwiększa się za każdym razem, gdy wątek zwalnia semafor. Aby wprowadzić semafor, wątek wywołuje jedno z <xref:System.Threading.SemaphoreSlim.Wait%2A> <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> przeciążeń. Do zwolnienia semafora wywołuje jedno z <xref:System.Threading.SemaphoreSlim.Release%2A> przeciążeń. Gdy licznik osiągnie wartość zero, kolejne wywołania do jednej z tych `Wait` metod są blokowane do momentu zwolnienia semafora przez inne wątki. W przypadku zablokowania wielu wątków nie istnieje gwarantowana kolejność, taka jak FIFO lub LIFO, która kontroluje, kiedy wątki wprowadzają semafor.  
   
- Podstawowa struktura kodu, który używa semafor do ochrony zasobów jest:  
+ Podstawowa struktura kodu korzystającego z semafora do ochrony zasobów to:  
   
 ```vb  
   
@@ -63,22 +63,22 @@ SemaphoreSlim.Release()
   
 ```  
   
- Gdy wszystkie wątki zostały wydane semafora, liczba przy maksymalnej wartości określono podczas tworzenia semafora. Semafor licznik jest dostępny z <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości.  
+ Gdy wszystkie wątki wywydały semafor, licznik jest przy maksymalnej wartości określonej podczas tworzenia semafora. Liczba semaforów jest dostępna z <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości.  
   
 > [!IMPORTANT]
->  <xref:System.Threading.SemaphoreSlim> Klasy nie wymuszają tożsamość wątku lub zadania na wywołania <xref:System.Threading.SemaphoreSlim.Wait%2A>, <xref:System.Threading.SemaphoreSlim.WaitAsync%2A>, i <xref:System.Threading.SemaphoreSlim.Release%2A> metody. Ponadto jeśli <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%29> Konstruktor jest używany do utworzenia wystąpienia <xref:System.Threading.SemaphoreSlim> obiektu <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości można zwiększyć przekracza wartość ustawioną przy użyciu konstruktora. Odpowiada za programisty upewnij się, który wywołuje w celu <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metody odpowiednio są skojarzone z wywołaniami <xref:System.Threading.SemaphoreSlim.Release%2A> metody.  
+>  Klasa nie wymusza tożsamości wątku ani zadania dla wywołań <xref:System.Threading.SemaphoreSlim.Wait%2A>metod, <xref:System.Threading.SemaphoreSlim.WaitAsync%2A>, i <xref:System.Threading.SemaphoreSlim.Release%2A>. <xref:System.Threading.SemaphoreSlim> Ponadto, jeśli <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%29> Konstruktor jest używany do tworzenia <xref:System.Threading.SemaphoreSlim> wystąpienia obiektu, <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość może wzrosnąć poza wartość ustawioną przez konstruktora. Programista jest odpowiedzialny za zapewnienie, że wywołania <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metody są odpowiednio <xref:System.Threading.SemaphoreSlim.Release%2A> sparowane z wywołaniami metod.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy semafor maksymalna liczba wątków trzy i początkowa liczba wątków, zerowego. W przykładzie uruchomiono pięć zadań, które blokować oczekiwanie na semafora. Wywołania wątku głównego <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> przeciążenia, aby zwiększyć tę liczbę semafora jego wartość maksymalną, co pozwala trzy zadania wprowadzić semafora. Każdorazowo, gdy wydaniu semafora wyświetlane liczba semafora w poprzednim. Użycie konsoli komunikaty śledzenia semafora. Interwał symulowane pracy zwiększa się nieco dla każdego wątku ułatwić dane wyjściowe.  
+ Poniższy przykład tworzy semafor z maksymalną liczbą trzech wątków i początkową liczbą zero wątków. Przykład uruchamia pięć zadań, dla których blok oczekuje na semafor. Główny wątek wywołuje <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> Przeciążenie, aby zwiększyć maksymalną liczbę semaforów, co umożliwia wykonywanie trzech zadań w celu wejścia do semafora. Za każdym razem, gdy semafor zostanie wystawiony, zostanie wyświetlona Poprzednia liczba semaforów. Komunikaty konsoli śledzą użycie semafora. Symulowany interwał pracy został nieco zwiększony dla każdego wątku, aby ułatwić odczytywanie danych wyjściowych.  
   
  [!code-csharp[System.Threading.SemaphoreSlim#1](~/samples/snippets/csharp/VS_Snippets_CLR_System/system.threading.semaphoreslim/cs/example.cs#1)]
  [!code-vb[System.Threading.SemaphoreSlim#1](~/samples/snippets/visualbasic/VS_Snippets_CLR_System/system.threading.semaphoreslim/vb/example.vb#1)]  
   
  ]]></format>
     </remarks>
-    <threadsafe>Wszystkie publiczne i chronione elementy członkowskie <see cref="T:System.Threading.SemaphoreSlim" /> są odporne na wątki i mogą być używane jednocześnie z wielu wątków, z wyjątkiem produktów <see cref="M:System.Threading.SemaphoreSlim.Dispose" />, które muszą być zastosowane tylko wtedy, gdy wszystkie operacje na <see cref="T:System.Threading.SemaphoreSlim" /> została ukończona.</threadsafe>
+    <threadsafe>Wszystkie publiczne i chronione elementy członkowskie <see cref="T:System.Threading.SemaphoreSlim" /> są bezpieczne dla wątków i mogą być używane współbieżnie z wielu wątków, z <see cref="M:System.Threading.SemaphoreSlim.Dispose" />wyjątkiem, które muszą być używane tylko wtedy, gdy <see cref="T:System.Threading.SemaphoreSlim" /> wszystkie inne operacje na zakończono.</threadsafe>
     <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
   </Docs>
   <Members>
@@ -122,17 +122,17 @@ SemaphoreSlim.Release()
         <Parameter Name="initialCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="initialCount">Początkowa liczba żądań semaforów, które mogą być przyznane jednocześnie.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Threading.SemaphoreSlim" /> klasy, określając początkowa liczba żądań, które mogą być udzielane jednocześnie.</summary>
+        <param name="initialCount">Początkowa liczba żądań dla semafora, które mogą być przyznawane współbieżnie.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Threading.SemaphoreSlim" /> klasy, określając początkową liczbę żądań, które mogą być przyznawane współbieżnie.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `initialCount` Parametr określa liczbę równoczesnych żądań, aby wprowadzić semafor, które mogą być przyznane. Jednak nedefinuje maksymalną liczbę żądań, które mogą być udzielane jednocześnie. A <xref:System.Threading.SemaphoreSlim> tworzone przez wywołanie konstruktora tego obiektu nie wyrzuca <xref:System.Threading.SemaphoreFullException> wyjątek, jeśli wywołanie <xref:System.Threading.SemaphoreSlim.Release%2A> metody zwiększa ich wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość poza `initialCount`. Dzieje się tak w przypadku więcej wywołań <xref:System.Threading.SemaphoreSlim.Release%2A> metody niż tam są <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metody. Aby ustawić maksymalną liczbę równoczesnych żądań, aby wprowadzić semafor, które mogą być przyznane, należy wywołać <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%2CSystem.Int32%29> konstruktora.  
+ `initialCount` Parametr określa liczbę współbieżnych żądań do wprowadzenia semafora, który może być przyznany. Nie definiuje jednak maksymalnej liczby żądań, które mogą być przyznawane współbieżnie. <xref:System.Threading.SemaphoreSlim.Release%2A> <xref:System.Threading.SemaphoreFullException> `initialCount` <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Obiekt skonkretyzowany przez wywołanie tego konstruktora nie zgłasza wyjątku, jeśli wywołanie metody zwiększa wartość właściwości poza. <xref:System.Threading.SemaphoreSlim> Dzieje się tak, jeśli istnieją więcej wywołań <xref:System.Threading.SemaphoreSlim.Release%2A> metod niż istnieje <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metody. Aby ustawić maksymalną liczbę równoczesnych żądań w celu wprowadzenia semafora, który może być przyznany, <xref:System.Threading.SemaphoreSlim.%23ctor%28System.Int32%2CSystem.Int32%29> Wywołaj konstruktora.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="initialCount" /> jest mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="initialCount" />jest mniejsza niż 0.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -166,11 +166,11 @@ SemaphoreSlim.Release()
         <Parameter Name="maxCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="initialCount">Początkowa liczba żądań semaforów, które mogą być przyznane jednocześnie.</param>
-        <param name="maxCount">Maksymalna liczba żądań dotyczących semafor, które mogą być przyznane jednocześnie.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Threading.SemaphoreSlim" /> klasy, określający początkowej i maksymalna liczba żądań, które mogą być udzielane jednocześnie.</summary>
+        <param name="initialCount">Początkowa liczba żądań dla semafora, które mogą być przyznawane współbieżnie.</param>
+        <param name="maxCount">Maksymalna liczba żądań dla semafora, które mogą być przyznawane współbieżnie.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Threading.SemaphoreSlim" /> klasy, określając początkową i maksymalną liczbę żądań, które mogą być przyznawane współbieżnie.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="initialCount" /> jest mniejsza niż 0, lub <paramref name="initialCount" /> jest większa niż <paramref name="maxCount" />, lub <paramref name="maxCount" /> jest równa lub mniejsza niż 0.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="initialCount" />jest mniejsza niż 0 lub <paramref name="initialCount" /> jest większa niż <paramref name="maxCount" /> <paramref name="maxCount" /> lub równa lub mniejsza od 0.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -203,13 +203,13 @@ SemaphoreSlim.Release()
         <ReturnType>System.Threading.WaitHandle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zwraca <see cref="T:System.Threading.WaitHandle" /> można czekać na semafora.</summary>
-        <value>Element <see cref="T:System.Threading.WaitHandle" /> można czekać na semafora.</value>
+        <summary>Zwraca wartość <see cref="T:System.Threading.WaitHandle" /> , która może być używana do oczekiwania na semafor.</summary>
+        <value><see cref="T:System.Threading.WaitHandle" /> , Który może być używany do oczekiwania na semafor.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Tylko wtedy, gdy musi czekać na SemaphoreSlim z innymi obiektami synchronizacja na podstawie jądra z tej samej dojście oczekiwania, należy użyć tej właściwości. Pomyślne oczekiwania na <xref:System.Threading.SemaphoreSlim.AvailableWaitHandle%2A> nie oznacza pomyślne oczekiwania na <xref:System.Threading.SemaphoreSlim> , ani nie jest zmniejsza liczbę semafora. Po dojście oczekiwania dostępne jest sygnalizowane, należy poczekać <xref:System.Threading.SemaphoreSlim> specjalnie.  
+ Tej właściwości należy używać tylko wtedy, gdy trzeba czekać na SemaphoreSlim wraz z innymi obiektami synchronizacji opartymi na jądrze z tym samym dojściem oczekiwania. Pomyślne oczekiwanie na to <xref:System.Threading.SemaphoreSlim.AvailableWaitHandle%2A> nie oznacza pomyślne oczekiwanie <xref:System.Threading.SemaphoreSlim> na siebie lub zmniejszenie liczby semaforów. Po zasygnalizowaniu dostępnego uchwytu oczekiwania należy zaczekać na <xref:System.Threading.SemaphoreSlim> założenia.  
   
  ]]></format>
         </remarks>
@@ -246,13 +246,13 @@ SemaphoreSlim.Release()
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera liczbę pozostałych wątków, które można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" /> obiektu.</summary>
-        <value>Liczba pozostałych wątków, które można wprowadzić semafora.</value>
+        <summary>Pobiera liczbę pozostałych wątków, które mogą wprowadzić <see cref="T:System.Threading.SemaphoreSlim" /> obiekt.</summary>
+        <value>Liczba pozostałych wątków, które mogą wprowadzić semafor.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Początkowa wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość jest ustawiana przez wywołanie metody <xref:System.Threading.SemaphoreSlim.%23ctor%2A> konstruktora klasy. Jest zmniejszany przez każde wywołanie <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metody i zwiększając każde wywołanie <xref:System.Threading.SemaphoreSlim.Release%2A> metody.  
+ Początkowa wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości jest ustawiana przez wywołanie <xref:System.Threading.SemaphoreSlim.%23ctor%2A> konstruktora klasy. Jest zmniejszany przez każde wywołanie <xref:System.Threading.SemaphoreSlim.Wait%2A> metody lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> i zwiększane <xref:System.Threading.SemaphoreSlim.Release%2A> przez każde wywołanie metody.  
   
  ]]></format>
         </remarks>
@@ -303,17 +303,17 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwalnia wszelkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.SemaphoreSlim" /> klasy.</summary>
+        <summary>Zwalnia wszystkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Threading.SemaphoreSlim" /> klasy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołaj `Dispose` po zakończeniu przy użyciu <xref:System.Threading.SemaphoreSlim>. `Dispose` Pozostawia metoda <xref:System.Threading.SemaphoreSlim> w stanie uniemożliwiającym jego używanie. Po wywołaniu `Dispose`, trzeba zwolnić wszystkie odwołania do <xref:System.Threading.SemaphoreSlim> , moduł zbierający elementy bezużyteczne mógł odzyskać pamięć, <xref:System.Threading.SemaphoreSlim> zajmowaną przez wystąpienie.  
+ Wywołaj `Dispose` po zakończeniu korzystania z <xref:System.Threading.SemaphoreSlim>. `Dispose` Metoda<xref:System.Threading.SemaphoreSlim> pozostawia w stanie niezdatnym do użytku. Po wywołaniu `Dispose`należy wydać wszystkie odwołania <xref:System.Threading.SemaphoreSlim> do, aby moduł wyrzucania elementów bezużytecznych mógł odwoływać pamięć <xref:System.Threading.SemaphoreSlim> , którą zajmował.  
   
- Aby uzyskać więcej informacji, zobacz [Cleaning Up Unmanaged Resources](~/docs/standard/garbage-collection/unmanaged.md) i [Implementing a Dispose Method](~/docs/standard/garbage-collection/implementing-dispose.md).  
+ Aby uzyskać więcej informacji, zobacz [Oczyszczanie zasobów niezarządzanych](~/docs/standard/garbage-collection/unmanaged.md) i implementowanie [metody Dispose](~/docs/standard/garbage-collection/implementing-dispose.md).  
   
 > [!NOTE]
->  Zawsze wywołuj `Dispose` przed publikacją swoje ostatnie odwołanie do <xref:System.Threading.SemaphoreSlim>. W przeciwnym razie zasobów jest przy użyciu nie zostanie zwolniona, dopóki moduł odśmiecania pamięci wywołuje <xref:System.Threading.SemaphoreSlim> obiektu `Finalize` metody.  
+>  Zawsze wywołuj `Dispose` przed wydaniem ostatniego odwołania <xref:System.Threading.SemaphoreSlim>do. W przeciwnym razie używane zasoby nie zostaną zwolnione do momentu wywołania <xref:System.Threading.SemaphoreSlim> `Finalize` metody obiektu przez moduł zbierający elementy bezużyteczne.  
   
  ]]></format>
         </remarks>
@@ -352,13 +352,13 @@ SemaphoreSlim.Release()
         <Parameter Name="disposing" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="disposing"><see langword="true" /> Aby zwolnić zasoby zarządzane i niezarządzane; <see langword="false" /> aby zwolnić tylko niezarządzane zasoby.</param>
-        <summary>Zwalnia zasoby niezarządzane używane przez <see cref="T:System.Threading.SemaphoreSlim" />i opcjonalnie zwalnia zasoby zarządzane.</summary>
+        <param name="disposing"><see langword="true" />Aby zwolnić zasoby zarządzane i niezarządzane; <see langword="false" /> do zwolnienia tylko zasobów niezarządzanych.</param>
+        <summary>Zwalnia zasoby niezarządzane używane przez <see cref="T:System.Threading.SemaphoreSlim" />program i opcjonalnie zwalnia zarządzane zasoby.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W przeciwieństwie do większości elementów członkowskich <xref:System.Threading.SemaphoreSlim>, <xref:System.Threading.SemaphoreSlim.Dispose%2A> nie jest metodą o bezpiecznych wątkach i nie mogą być używane równocześnie z innymi członkami tego wystąpienia.  
+ W przeciwieństwie do większości elementów członkowskich <xref:System.Threading.SemaphoreSlim>, <xref:System.Threading.SemaphoreSlim.Dispose%2A> nie jest bezpieczne dla wątków i nie może być używane jednocześnie z innymi elementami członkowskimi tego wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -373,7 +373,7 @@ SemaphoreSlim.Release()
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wersje <see cref="T:System.Threading.SemaphoreSlim" /> obiektu.</summary>
+        <summary><see cref="T:System.Threading.SemaphoreSlim" /> Zwalnia obiekt.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Release">
@@ -406,18 +406,18 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wersje <see cref="T:System.Threading.SemaphoreSlim" /> obiekt na raz.</summary>
-        <returns>Liczba poprzednich <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
+        <summary><see cref="T:System.Threading.SemaphoreSlim" /> Zwalnia obiekt jeden raz.</summary>
+        <returns>Poprzednia liczba <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołanie <xref:System.Threading.SemaphoreSlim.Release> metody zwiększa <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną. Jeśli wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości wynosi zero, zanim ta metoda jest wywoływana, metoda umożliwia również jednego wątku lub zadania zablokowane przez wywołanie <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metodę, aby wprowadzić semafora.  
+ Wywołanie <xref:System.Threading.SemaphoreSlim.Release> metody zwiększa <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden. Jeśli wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości jest równa zero przed wywołaniem tej metody, Metoda również zezwala jednemu wątkowi lub zadaniu blokowanym przez wywołanie <xref:System.Threading.SemaphoreSlim.Wait%2A> metody lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> , aby wprowadzić semafor.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.Threading.SemaphoreFullException"><see cref="T:System.Threading.SemaphoreSlim" /> Osiągnęło już maksymalny rozmiar.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.Threading.SemaphoreFullException"><see cref="T:System.Threading.SemaphoreSlim" /> Osiągnięto już maksymalny rozmiar.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -453,20 +453,20 @@ SemaphoreSlim.Release()
         <Parameter Name="releaseCount" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="releaseCount">Liczba razy, aby zamknąć semafora.</param>
-        <summary>Wersje <see cref="T:System.Threading.SemaphoreSlim" /> obiekt o określoną liczbę razy.</summary>
-        <returns>Liczba poprzednich <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
+        <param name="releaseCount">Liczba godzin zamykania semafora.</param>
+        <summary><see cref="T:System.Threading.SemaphoreSlim" /> Zwalnia obiekt określoną liczbę razy.</summary>
+        <returns>Poprzednia liczba <see cref="T:System.Threading.SemaphoreSlim" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołanie <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> metody zwiększa <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według `releaseCount`. Jeśli wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości wynosi zero, zanim ta metoda jest wywoływana, metoda umożliwia również `releaseCount` wątków lub zadania, zablokowane przez wywołanie <xref:System.Threading.SemaphoreSlim.Wait%2A> lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> metodę, aby wprowadzić semafora.  
+ Wywołanie <xref:System.Threading.SemaphoreSlim.Release%28System.Int32%29> metody powoduje zwiększenie <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości przez `releaseCount`. Jeśli wartość <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości jest równa zero przed wywołaniem tej metody, Metoda również zezwala `releaseCount` na wątki lub zadania zablokowane <xref:System.Threading.SemaphoreSlim.Wait%2A> przez wywołanie metody lub <xref:System.Threading.SemaphoreSlim.WaitAsync%2A> , aby wprowadzić semafor.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="releaseCount" /> jest mniejsza niż 1.</exception>
-        <exception cref="T:System.Threading.SemaphoreFullException"><see cref="T:System.Threading.SemaphoreSlim" /> Osiągnęło już maksymalny rozmiar.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="releaseCount" />jest mniejsza niż 1.</exception>
+        <exception cref="T:System.Threading.SemaphoreFullException"><see cref="T:System.Threading.SemaphoreSlim" /> Osiągnięto już maksymalny rozmiar.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -478,7 +478,7 @@ SemaphoreSlim.Release()
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
+        <summary>Blokuje bieżący wątek, dopóki nie będzie mógł wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Wait">
@@ -511,16 +511,16 @@ SemaphoreSlim.Release()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
+        <summary>Blokuje bieżący wątek, dopóki nie będzie mógł wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+ Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -556,27 +556,27 @@ SemaphoreSlim.Release()
         <Parameter Name="millisecondsTimeout" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Liczba milisekund, <see cref="F:System.Threading.Timeout.Infinite" />(-1), aby czekać w nieskończoność, lub od zera do testowania stanu dojście oczekiwania i natychmiast zwróci.</param>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu 32-bitowa liczba całkowita ze znakiem określa limit czasu.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania, <see cref="F:System.Threading.Timeout.Infinite" />(-1) oczekiwania na czas nieokreślony lub zero w celu przetestowania stanu uchwytu oczekiwania i natychmiastowego zwrócenia.</param>
+        <summary>Blokuje bieżący wątek <see cref="T:System.Threading.SemaphoreSlim" />, dopóki nie będzie mógł wprowadzić, przy użyciu 32-bitowej podpisanej liczby całkowitej, która określa limit czasu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek został pomyślnie wprowadzony <see cref="T:System.Threading.SemaphoreSlim" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks 
-Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
-Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast.
+Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca.
 
-Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
-Jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%29> i interwał limitu czasu określonego przez `millisecondsTimeout` wygasa:
+Jeśli wątek lub zadanie są blokowane podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%29> i interwał limitu czasu określony przez `millisecondsTimeout` wygasną:
 
-- Wątku lub zadania, nie można przejść do semafora.
-- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwości nie są odejmowane.  
+- Wątek lub zadanie nie wprowadza semafora.
+- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwość nie jest zmniejszana.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.SemaphoreSlim" /> Został usunięty.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
@@ -613,22 +613,22 @@ Jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Th
       </Parameters>
       <Docs>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Token do obserwowania.</param>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />, obserwując <see cref="T:System.Threading.CancellationToken" />.</summary>
+        <summary>Blokuje bieżący wątek, dopóki nie będzie mógł wejść <see cref="T:System.Threading.SemaphoreSlim" />do programu, podczas gdy <see cref="T:System.Threading.CancellationToken" />zaobserwować.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+ Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
- Jeśli `cancellationToken` jest anulowane, wątku lub zadania, nie można przejść do semafor i <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwości nie są odejmowane. Metoda zgłasza <xref:System.OperationCanceledException> wyjątku.  
+ Jeśli `cancellationToken` zostanie anulowana, wątek lub zadanie nie wprowadza semafora <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> i właściwość nie zostanie zmniejszona. Zamiast tego Metoda zgłasza <xref:System.OperationCanceledException> wyjątek.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.  
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.  
   
 —lub— 
-<see cref="T:System.Threading.CancellationTokenSource" /> Utworzonego <paramref name="cancellationToken" /> został już usunięty.</exception>
+<see cref="T:System.Threading.CancellationTokenSource" /> Utworzony<paramref name="cancellationToken" /> został już usunięty.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
       </Docs>
@@ -665,28 +665,28 @@ Jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Th
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący liczbę milisekund oczekiwania, <see cref="T:System.TimeSpan" /> reprezentujący milisekund czekać w nieskończoność,-1 lub <see cref="T:System.TimeSpan" /> reprezentujący milisekund 0 i przetestować dojście oczekiwania i natychmiast zwróci.</param>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />przy użyciu <see cref="T:System.TimeSpan" /> określić limit czasu.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="timeout">Reprezentujący liczbę milisekund oczekiwania <see cref="T:System.TimeSpan" /> , która reprezentuje-1 milisekund, czeka na czas nieokreślony, lub wartość <see cref="T:System.TimeSpan" /> reprezentującą 0 milisekund do przetestowania uchwytu oczekiwania i natychmiastowego zwrócenia. <see cref="T:System.TimeSpan" /></param>
+        <summary>Blokuje bieżący wątek do momentu <see cref="T:System.Threading.SemaphoreSlim" />, w którym będzie można wprowadzić <see cref="T:System.TimeSpan" /> przy użyciu polecenia, aby określić limit czasu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek został pomyślnie wprowadzony <see cref="T:System.Threading.SemaphoreSlim" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
-Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
-Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
  
-Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
-Jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%29> i interwał limitu czasu określonego przez `millisecondsTimeout` wygasa:
+Jeśli wątek lub zadanie są blokowane podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%29> i interwał limitu czasu określony przez `millisecondsTimeout` wygasną:
 
-- Wątku lub zadania, nie można przejść do semafora.
-- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwości nie są odejmowane.   
+- Wątek lub zadanie nie wprowadza semafora.
+- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwość nie jest zmniejszana.   
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">Wystąpienie semaphoreSlim został usunięty. <paramref name="." /></exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
+        <exception cref="T:System.ObjectDisposedException">Wystąpienie semaphoreSlim zostało usunięte<paramref name="." /></exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -722,32 +722,32 @@ Jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Th
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Liczba milisekund, <see cref="F:System.Threading.Timeout.Infinite" />(-1), aby czekać w nieskończoność, lub od zera do testowania stanu dojście oczekiwania i natychmiast zwróci.</param>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania, <see cref="F:System.Threading.Timeout.Infinite" />(-1) oczekiwania na czas nieokreślony lub zero w celu przetestowania stanu uchwytu oczekiwania i natychmiastowego zwrócenia.</param>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Do obserwowania.</param>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu 32-bitowa liczba całkowita ze znakiem określa limit czasu podczas obserwowania <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Blokuje bieżący wątek <see cref="T:System.Threading.SemaphoreSlim" />, dopóki nie będzie mógł wprowadzić, przy użyciu 32-bitowej podpisanej liczby całkowitej, która określa limit czasu, przy <see cref="T:System.Threading.CancellationToken" />zachowaniu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek został pomyślnie wprowadzony <see cref="T:System.Threading.SemaphoreSlim" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
-Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
-Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast.
+Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca.
 
-Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
-Jeśli `cancellationToken` zostało anulowane, lub jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%2CSystem.Threading.CancellationToken%29> i interwał limitu czasu określonego przez `millisecondsTimeout` wygasa:
+Jeśli `cancellationToken` zostanie anulowana, lub jeśli wątek lub zadanie są blokowane podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.Int32%2CSystem.Threading.CancellationToken%29> i interwał limitu czasu określony przez `millisecondsTimeout` wygasną:
 
-- Wątku lub zadania, nie można przejść do semafora.
-- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwości nie są odejmowane.  
+- Wątek lub zadanie nie wprowadza semafora.
+- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwość nie jest zmniejszana.  
  
-Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.OperationCanceledException> wyjątku.  
+Jeśli `cancellationToken` zostanie anulowana, Metoda <xref:System.OperationCanceledException> zgłasza wyjątek.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.SemaphoreSlim" /> Wystąpienie zostało usunięte, lub <see cref="T:System.Threading.CancellationTokenSource" /> utworzonego <paramref name="cancellationToken" /> został usunięty.</exception>
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
+        <exception cref="T:System.ObjectDisposedException">Wystąpienie zostało zlikwidowane <see cref="T:System.Threading.CancellationTokenSource" /> lub utworzone <paramref name="cancellationToken" /> zostało usunięte. <see cref="T:System.Threading.SemaphoreSlim" /></exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
       </Docs>
     </Member>
@@ -783,34 +783,34 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący liczbę milisekund oczekiwania, <see cref="T:System.TimeSpan" /> reprezentujący milisekund czekać w nieskończoność,-1 lub <see cref="T:System.TimeSpan" /> reprezentujący milisekund 0 i przetestować dojście oczekiwania i natychmiast zwróci.</param>
+        <param name="timeout">Reprezentujący liczbę milisekund oczekiwania <see cref="T:System.TimeSpan" /> , która reprezentuje-1 milisekund, czeka na czas nieokreślony, lub wartość <see cref="T:System.TimeSpan" /> reprezentującą 0 milisekund do przetestowania uchwytu oczekiwania i natychmiastowego zwrócenia. <see cref="T:System.TimeSpan" /></param>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Do obserwowania.</param>
-        <summary>Blokuje bieżący wątek, dopóki nie można wprowadzić <see cref="T:System.Threading.SemaphoreSlim" />przy użyciu <see cref="T:System.TimeSpan" /> określa limit czasu podczas obserwowania <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns><see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Blokuje bieżący wątek do momentu <see cref="T:System.Threading.SemaphoreSlim" />, w <see cref="T:System.TimeSpan" /> którym będzie można wprowadzić, przy użyciu, który określa limit czasu <see cref="T:System.Threading.CancellationToken" />, przy zachowaniu.</summary>
+        <returns><see langword="true" />Jeśli bieżący wątek został pomyślnie wprowadzony <see cref="T:System.Threading.SemaphoreSlim" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
-Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
-Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
 
-Jeśli wątku lub zadania jest możliwość wprowadzania semafor, jego zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość, według jedną.  
+Jeśli wątek lub zadanie jest w stanie wprowadzić semafor, zmniejsza <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> właściwość o jeden.  
   
-Jeśli `cancellationToken` zostało anulowane, lub jeśli wątku lub zadania, jest zablokowany podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%2CSystem.Threading.CancellationToken%29> i interwał limitu czasu określonego przez `millisecondsTimeout` wygasa:
+Jeśli `cancellationToken` zostanie anulowana, lub jeśli wątek lub zadanie są blokowane podczas wywoływania <xref:System.Threading.SemaphoreSlim.Wait%28System.TimeSpan%2CSystem.Threading.CancellationToken%29> i interwał limitu czasu określony przez `millisecondsTimeout` wygasną:
 
-- Wątku lub zadania, nie można przejść do semafora.
-- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwości nie są odejmowane.  
+- Wątek lub zadanie nie wprowadza semafora.
+- <xref:System.Threading.SemaphoreSlim.CurrentCount%2A> Właściwość nie jest zmniejszana.  
 
-Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.OperationCanceledException> wyjątku.  
+Jeśli `cancellationToken` zostanie anulowana, Metoda <xref:System.OperationCanceledException> zgłasza wyjątek.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">Wystąpienie semaphoreSlim został usunięty. <paramref name="." /><paramref name="-or-" />  
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
+        <exception cref="T:System.ObjectDisposedException">Wystąpienie semaphoreSlim zostało usunięte<paramref name="." /><paramref name="-or-" />  
   
-<see cref="T:System.Threading.CancellationTokenSource" /> Utworzonego <paramref name="cancellationToken" /> został już usunięty.</exception>
+<see cref="T:System.Threading.CancellationTokenSource" /> Utworzony<paramref name="cancellationToken" /> został już usunięty.</exception>
         <related type="Article" href="~/docs/standard/threading/semaphore-and-semaphoreslim.md">Semafor i klasa SemaphoreSlim</related>
         <related type="Article" href="~/docs/standard/threading/cancellation-in-managed-threads.md">Anulowanie</related>
       </Docs>
@@ -823,7 +823,7 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <AssemblyVersion>4.1.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="WaitAsync">
@@ -856,8 +856,8 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
-        <returns>Zadanie, które zostanie ukończone, gdy wprowadzono semafora.</returns>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />.</summary>
+        <returns>Zadanie, które zostanie ukończone po wprowadzeniu semafora.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.SemaphoreSlim" /> Został usunięty.</exception>
       </Docs>
@@ -894,21 +894,21 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <Parameter Name="millisecondsTimeout" Type="System.Int32" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Liczba milisekund, <see cref="F:System.Threading.Timeout.Infinite" /> (-1), aby czekać w nieskończoność, lub od zera do testowania stanu dojście oczekiwania i natychmiast zwróci.</param>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, za pomocą całkowita 32-bitowego do mierzenia przedział czasu.</summary>
-        <returns>Zadanie, które zostanie ukończone z wynikiem <see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />, w przeciwnym razie z wynikiem <see langword="false" />.</returns>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania, <see cref="F:System.Threading.Timeout.Infinite" /> (-1) oczekiwania na czas nieokreślony lub zero w celu przetestowania stanu uchwytu oczekiwania i natychmiastowego zwrócenia.</param>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu 32-bitowej podpisanej liczby całkowitej w celu zmierzenia interwału czasu.</summary>
+        <returns>Zadanie, które zostanie wykonane z wynikiem <see langword="true" /> <see cref="T:System.Threading.SemaphoreSlim" />, jeśli bieżący wątek został pomyślnie wprowadzony, w <see langword="false" />przeciwnym razie z wynikiem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+ Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
- Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+ Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -943,11 +943,11 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
       </Parameters>
       <Docs>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Token do obserwowania.</param>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, obserwując <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>Zadanie, które zostanie ukończone, gdy wprowadzono semafora.</returns>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, podczas gdy zaobserwować <see cref="T:System.Threading.CancellationToken" />.</summary>
+        <returns>Zadanie, które zostanie ukończone po wprowadzeniu semafora.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -982,21 +982,21 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <Parameter Name="timeout" Type="System.TimeSpan" Index="0" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący liczbę milisekund oczekiwania, <see cref="T:System.TimeSpan" /> reprezentujący milisekund czekać w nieskończoność,-1 lub <see cref="T:System.TimeSpan" /> reprezentujący milisekund 0 i przetestować dojście oczekiwania i natychmiast zwróci.</param>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />przy użyciu <see cref="T:System.TimeSpan" /> do mierzenia przedział czasu.</summary>
-        <returns>Zadanie, które zostanie ukończone z wynikiem <see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />, w przeciwnym razie z wynikiem <see langword="false" />.</returns>
+        <param name="timeout">Reprezentujący liczbę milisekund oczekiwania <see cref="T:System.TimeSpan" /> , która reprezentuje-1 milisekund, czeka na czas nieokreślony, lub wartość <see cref="T:System.TimeSpan" /> reprezentującą 0 milisekund do przetestowania uchwytu oczekiwania i natychmiastowego zwrócenia. <see cref="T:System.TimeSpan" /></param>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu <see cref="T:System.TimeSpan" /> a do mierzenia interwału czasu.</summary>
+        <returns>Zadanie, które zostanie wykonane z wynikiem <see langword="true" /> <see cref="T:System.Threading.SemaphoreSlim" />, jeśli bieżący wątek został pomyślnie wprowadzony, w <see langword="false" />przeciwnym razie z wynikiem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+ Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
- Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+ Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -1031,23 +1031,23 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="millisecondsTimeout">Liczba milisekund, <see cref="F:System.Threading.Timeout.Infinite" /> (-1), aby czekać w nieskończoność, lub od zera do testowania stanu dojście oczekiwania i natychmiast zwróci.</param>
+        <param name="millisecondsTimeout">Liczba milisekund oczekiwania, <see cref="F:System.Threading.Timeout.Infinite" /> (-1) oczekiwania na czas nieokreślony lub zero w celu przetestowania stanu uchwytu oczekiwania i natychmiastowego zwrócenia.</param>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Do obserwowania.</param>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, za pomocą całkowita 32-bitowego do mierzenia przedział czasu, obserwując <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>Zadanie, które zostanie ukończone z wynikiem <see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />, w przeciwnym razie z wynikiem <see langword="false" />.</returns>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu 32-bitowej podpisanej liczby całkowitej w celu zmierzenia interwału czasu, zachowując. <see cref="T:System.Threading.CancellationToken" /></summary>
+        <returns>Zadanie, które zostanie wykonane z wynikiem <see langword="true" /> <see cref="T:System.Threading.SemaphoreSlim" />, jeśli bieżący wątek został pomyślnie wprowadzony, w <see langword="false" />przeciwnym razie z wynikiem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+ Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
  
- Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+ Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest to liczba innych niż -1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie został już usunięty.</exception>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą inną niż-1, która reprezentuje nieskończony limit czasu lub wartość-Timeout jest większa niż <see cref="F:System.Int32.MaxValue" />.</exception>
+        <exception cref="T:System.ObjectDisposedException">Bieżące wystąpienie zostało już usunięte.</exception>
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitAsync">
@@ -1082,22 +1082,22 @@ Jeśli `cancellationToken` jest anulowane, metoda zgłasza <xref:System.Operatio
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" Index="1" FrameworkAlternate="dotnet-uwp-10.0;netcore-1.0;netcore-1.1;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;netstandard-1.0;netstandard-1.1;netstandard-1.2;netstandard-1.3;netstandard-1.4;netstandard-1.6;netstandard-2.0;netstandard-2.1;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="timeout">A <see cref="T:System.TimeSpan" /> reprezentujący liczbę milisekund oczekiwania, <see cref="T:System.TimeSpan" /> reprezentujący milisekund czekać w nieskończoność,-1 lub <see cref="T:System.TimeSpan" /> reprezentujący milisekund 0 i przetestować dojście oczekiwania i natychmiast zwróci.</param>
+        <param name="timeout">Reprezentujący liczbę milisekund oczekiwania <see cref="T:System.TimeSpan" /> , która reprezentuje-1 milisekund, czeka na czas nieokreślony, lub wartość <see cref="T:System.TimeSpan" /> reprezentującą 0 milisekund do przetestowania uchwytu oczekiwania i natychmiastowego zwrócenia. <see cref="T:System.TimeSpan" /></param>
         <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Token do obserwowania.</param>
-        <summary>Asynchronicznie oczekuje na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />przy użyciu <see cref="T:System.TimeSpan" /> do mierzenia przedział czasu, obserwując <see cref="T:System.Threading.CancellationToken" />.</summary>
-        <returns>Zadanie, które zostanie ukończone z wynikiem <see langword="true" /> Jeśli bieżący wątek pomyślnie wprowadzone <see cref="T:System.Threading.SemaphoreSlim" />, w przeciwnym razie z wynikiem <see langword="false" />.</returns>
+        <summary>Asynchronicznie czeka na wprowadzenie <see cref="T:System.Threading.SemaphoreSlim" />, przy użyciu <see cref="T:System.TimeSpan" /> a w celu zmierzenia interwału czasu <see cref="T:System.Threading.CancellationToken" />, przy zachowaniu.</summary>
+        <returns>Zadanie, które zostanie wykonane z wynikiem <see langword="true" /> <see cref="T:System.Threading.SemaphoreSlim" />, jeśli bieżący wątek został pomyślnie wprowadzony, w <see langword="false" />przeciwnym razie z wynikiem.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli limit czasu jest ustawiony na wartość-1 MS, metoda czeka na czas nieokreślony.
+ Jeśli limit czasu jest ustawiony na-1 milisekund, metoda czeka na czas nieokreślony.
 
- Jeśli limit czasu jest równa zero milisekund, metoda nie blokuje. Testuje, stan dojście oczekiwania i zwraca natychmiast. 
+ Jeśli limit czasu jest ustawiony na zero milisekund, metoda nie blokuje. Testuje stan uchwytu oczekiwania i natychmiast wraca. 
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" /> jest liczbą ujemną od-1, która reprezentuje nieskończony limit czasu — lub — limit czasu jest większy niż <see cref="F:System.Int32.MaxValue" />.</exception>
-        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" /> zostało anulowane.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout" />jest liczbą ujemną inną niż-1, która reprezentuje nieskończony limit czasu-lub-limit czasu jest większy <see cref="F:System.Int32.MaxValue" />niż.</exception>
+        <exception cref="T:System.OperationCanceledException"><paramref name="cancellationToken" />zostało anulowane.</exception>
         <exception cref="T:System.ObjectDisposedException"><see cref="T:System.Threading.SemaphoreSlim" /> Został usunięty.</exception>
       </Docs>
     </Member>
