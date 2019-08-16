@@ -1,5 +1,5 @@
 <Type Name="MessageEncoderFactory" FullName="System.ServiceModel.Channels.MessageEncoderFactory">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="9868f72d98880c706c6e54d44665ad79649f6af2" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58547772" /></Metadata><TypeSignature Language="C#" Value="public abstract class MessageEncoderFactory" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="97a120f4b25fd08a61395acf9a3b6fe5c28f1059" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69155112" /></Metadata><TypeSignature Language="C#" Value="public abstract class MessageEncoderFactory" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit MessageEncoderFactory extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.MessageEncoderFactory" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class MessageEncoderFactory" />
@@ -25,14 +25,14 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Abstrakcyjna klasa bazowa, która reprezentuje fabrykę do tworzenia koderów wiadomości, które mogą odczytywać komunikaty ze strumienia i zapisywać je w usłudze stream dla różnych typów Kodowanie komunikatu.</summary>
+    <summary>Abstrakcyjna klasa bazowa, która reprezentuje fabrykę do tworzenia koderów komunikatów, które mogą odczytywać komunikaty ze strumienia i zapisywać je w strumieniu dla różnych typów kodowania komunikatów.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Kodowanie jest procesem przekształcania wiadomość do sekwencji bajtów. Dekodowanie jest procesu.  
+ Kodowanie jest procesem przekształcania komunikatu w sekwencję bajtów. Dekodowanie jest procesem wycofywania.  
   
- Klasa jest używana, jeśli chcesz zaimplementować niestandardowy koder komunikatów. Aby zaimplementować własny niestandardowy koder komunikatów, należy podać niestandardowych implementacji następujące trzy abstrakcyjnych klas bazowych:  
+ Użyj tej klasy, jeśli chcesz zaimplementować niestandardowy koder komunikatów. Aby zaimplementować własny niestandardowy koder komunikatów, należy udostępnić niestandardowe implementacje następujących trzech abstrakcyjnych klas podstawowych:  
   
 -   <xref:System.ServiceModel.Channels.MessageEncodingBindingElement>  
   
@@ -40,12 +40,12 @@
   
 -   <xref:System.ServiceModel.Channels.MessageEncoder>  
   
- Zastąp <xref:System.ServiceModel.Channels.MessageEncoderFactory.Encoder%2A> do zwrócenia wystąpienia niestandardowego <xref:System.ServiceModel.Channels.MessageEncoder>. Następnie budować niestandardowe <xref:System.ServiceModel.Channels.MessageEncoderFactory> stosu element powiązania, używany do konfigurowania usługi lub klienta przez zastąpienie <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A> metodę, aby zwrócić wystąpienia tej fabryki. Aby uzyskać więcej informacji na temat niestandardowe kodery zobacz [transferu danych i serializacji](~/docs/framework/wcf/feature-details/data-transfer-and-serialization.md).  
+ Zastąp <xref:System.ServiceModel.Channels.MessageEncoderFactory.Encoder%2A> , aby zwracało wystąpienie niestandardowe <xref:System.ServiceModel.Channels.MessageEncoder>. Następnie należy połączyć niestandardowe <xref:System.ServiceModel.Channels.MessageEncoderFactory> z stosem elementów powiązania używanym do konfigurowania usługi lub klienta przez <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.CreateMessageEncoderFactory%2A> zastąpienie metody w celu zwrócenia wystąpienia tej fabryki. Aby uzyskać więcej informacji na temat koderów niestandardowych, zobacz [transfer danych i serializacji](~/docs/framework/wcf/feature-details/data-transfer-and-serialization.md).  
   
    
   
 ## Examples  
- Poniższy kod przedstawia sposób zapisania klasę, która jest pochodną <xref:System.ServiceModel.Channels.MessageEncoderFactory>:  
+ Poniższy kod ilustruje sposób pisania klasy pochodnej z <xref:System.ServiceModel.Channels.MessageEncoderFactory>:  
   
  [!code-csharp[S_UE_CustomTextMessageEncoder#8](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencoder.cs#8)]
  [!code-csharp[S_UE_CustomTextMessageEncoder#8](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_customtextmessageencoder/cs/customtextmessageencoderfactory.cs#8)]  
@@ -120,13 +120,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca koder komunikatów, który może służyć do skorelowania wiadomości wymianę oparte na sesji.</summary>
-        <returns><see cref="T:System.ServiceModel.Channels.MessageEncoder" /> Oznacza to używane oparte na sesji wymianę komunikatów.</returns>
+        <summary>Zwraca koder komunikatów, którego można użyć do skorelowania komunikatów w wymianach opartych na sesji.</summary>
+        <returns><see cref="T:System.ServiceModel.Channels.MessageEncoder" /> Jest używany w wymianie komunikatów opartych na sesji.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Koder komunikatów opartych na sesji można przechowywać ścieżkę, którą osoby wiadomości, że stanowią część konwersacji, który składa się z wszystkich wiadomości wymieniane między dwa punkty końcowe, które są częścią sesji.  
+ Koder komunikatów oparty na sesji może śledzić poszczególne komunikaty, które stanowią część rozmowy, która składa się ze wszystkich komunikatów wymienianych między dwoma punktami końcowymi, które są częścią sesji.  
   
  ]]></format>
         </remarks>
@@ -159,8 +159,8 @@
         <ReturnType>System.ServiceModel.Channels.MessageEncoder</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>W przypadku przesłonięcia w klasie pochodnej pobiera koder komunikatów, który jest wytwarzany przez fabrykę.</summary>
-        <value><see cref="T:System.ServiceModel.Channels.MessageEncoder" /> Używane przez fabrykę.</value>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera koder komunikatów, który jest tworzony przez fabrykę.</summary>
+        <value><see cref="T:System.ServiceModel.Channels.MessageEncoder" /> Używany przez fabrykę.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -200,13 +200,13 @@
         <ReturnType>System.ServiceModel.Channels.MessageVersion</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>W przypadku przesłonięcia w klasie pochodnej pobiera wersja komunikatu, używanym przez koderów produkowane przez fabrykę do zakodowania wiadomości.</summary>
-        <value><see cref="T:System.ServiceModel.Channels.MessageVersion" /> Używane przez fabrykę.</value>
+        <summary>Gdy jest zastępowany w klasie pochodnej, Pobiera wersję wiadomości używaną przez kodery generowane przez fabrykę do kodowania komunikatów.</summary>
+        <value><see cref="T:System.ServiceModel.Channels.MessageVersion" /> Używany przez fabrykę.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wersja komunikatu można ustawić za pomocą <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.MessageVersion%2A> właściwości. <xref:System.ServiceModel.Channels.MessageVersion> jest ograniczony do wykorzystywania niektórych wersjach i SOAP, WS-Addressing i nie jest rozszerzalny. Dlatego w przypadku tych wersji nie może być używane, ta właściwość powinna zostać zastąpiona do zwrócenia <xref:System.ServiceModel.Channels.MessageVersion.None%2A?displayProperty=nameWithType>.  
+ Wersję wiadomości można ustawić przy użyciu <xref:System.ServiceModel.Channels.MessageEncodingBindingElement.MessageVersion%2A> właściwości. <xref:System.ServiceModel.Channels.MessageVersion>jest ograniczone do korzystania z niektórych wersji protokołu SOAP i WS-Addressing i nie jest rozszerzalny. Dlatego jeśli te wersje nie będą używane, ta właściwość powinna zostać przesłonięta w celu <xref:System.ServiceModel.Channels.MessageVersion.None%2A?displayProperty=nameWithType>zwrócenia.  
   
    
   
