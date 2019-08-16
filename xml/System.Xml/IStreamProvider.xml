@@ -1,5 +1,5 @@
 <Type Name="IStreamProvider" FullName="System.Xml.IStreamProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="62a39be8fe51095a9ef8b3e39a6bf4f5cea2eeb9" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58686641" /></Metadata><TypeSignature Language="C#" Value="public interface IStreamProvider" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="3c75d46ddc1e28c366359499e3f355b22ecb170a" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69439992" /></Metadata><TypeSignature Language="C#" Value="public interface IStreamProvider" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IStreamProvider" />
   <TypeSignature Language="DocId" Value="T:System.Xml.IStreamProvider" />
   <TypeSignature Language="VB.NET" Value="Public Interface IStreamProvider" />
@@ -23,30 +23,30 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Reprezentuje interfejs, który może być implementowany przez klasy, zapewniając strumieni.</summary>
+    <summary>Reprezentuje interfejs, który może być zaimplementowany przez klasy dostarczające strumienie.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas zapisywania wiadomości wychodzące z treścią przesyłane strumieniowo do usługi składnika zapisywania XML, <xref:System.ServiceModel.Channels.Message> użyje sekwencję wywołań, podobnie do poniższego w jego <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> implementacji:  
+ Podczas pisania wiadomości wychodzącej zawierającej przesłaną strumieniowo do składnika zapisywania XML <xref:System.ServiceModel.Channels.Message> , będzie używana sekwencja wywołań podobna do poniższego w jego <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> implementacji:  
   
--   Należy zapisać wszystkie informacje niezbędne poprzedzających strumienia (na przykład otwierający XML tag).  
+-   Zapisz wszelkie niezbędne informacje przed strumieniem (na przykład otwierającym tagiem XML).  
   
--   Napisz strumienia.  
+-   Zapisz strumień.  
   
--   Napisz żadnych informacji po strumienia (na przykład zamykający XML tag).  
+-   Napisz wszystkie informacje następujące po strumieniu (na przykład zamykając tag XML).  
   
- Działa to również efektywnie integrowana z kodowania, które są podobne do tekstową Kodowanie XML. Istnieją jednak pewne kodowania, który nie należy umieszczać informacje zestaw informacji XML (na przykład znaczników początkowych i końcowych elementów XML) oraz dane zawarte w obrębie elementów. Na przykład kodowanie MTOM komunikat jest podzielony na wiele części. Jedną z części zawiera zestaw informacji XML, który może zawierać odwołania do innych części dla elementu rzeczywistej zawartości. Ponieważ zestaw informacji XML będzie zwykle być niewielka w porównaniu do zawartości przesyłanej strumieniowo, dobrym pomysłem będzie buforować zestaw informacji, zapisać go, a następnie wpisz zawartość w taki sposób, w strumieniu. Oznacza to, że do czasu zamknięcia tagu elementu są zapisywane, firma Microsoft nie powinien mieć zapisywany się strumienia jeszcze.  
+ Dobrze sprawdza się w przypadku kodowań, które są podobne do tekstu kodowania XML. Istnieją jednak pewne kodowania, które nie umieszczają informacji o sprawdzonych XML (na przykład Tagi dla początkowych i końcowych elementów XML) wraz z danymi zawartymi w elementach. Na przykład w kodowaniu MTOM komunikat jest podzielony na wiele części. Jedna część zawiera sprawdzonych XML, który może zawierać odwołania do innych części dla rzeczywistej zawartości elementu. Ponieważ sprawdzonych XML jest zwykle mały w porównaniu do zawartości przesyłanej strumieniowo, warto buforować sprawdzonych, zapisywać go, a następnie zapisywać zawartość w sposób przesyłany strumieniowo. Oznacza to, że przez czas zapisywania znacznika elementu zamykającego nie powinien jeszcze zostać zapisany strumień.  
   
- W tym celu <xref:System.Xml.IStreamProvider> używany jest interfejs. Interfejs ma <xref:System.Xml.IStreamProvider.GetStream> metodę, która zwraca strumień do zapisania. Poprawny sposób zapisać treść komunikatu przesyłanej strumieniowo w <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> jest następująca:  
+ W tym celu <xref:System.Xml.IStreamProvider> używany jest interfejs. Interfejs ma <xref:System.Xml.IStreamProvider.GetStream> metodę, która zwraca strumień, który ma zostać zapisany. Prawidłowy sposób zapisania przesyłanej strumieniowo treści wiadomości w programie <xref:System.ServiceModel.Channels.Message.OnWriteBodyContents%28System.Xml.XmlDictionaryWriter%29> jest następujący:  
   
--   Zapisz wszelkie niezbędne informacje poprzedzających strumienia (na przykład otwierający XML tag)  
+-   Napisz wszystkie wymagane informacje poprzedzające strumień (na przykład otwierającego tag XML)  
   
--   Wywołaj `WriteValue` przeciążenia na <xref:System.Xml.XmlDictionaryWriter> przyjmującej <xref:System.Xml.IStreamProvider>, za pomocą `IStreamProvider` implementację, która zwraca strumień do zapisania.  
+-   Wywołaj `WriteValue` Przeciążenie <xref:System.Xml.XmlDictionaryWriter> , które <xref:System.Xml.IStreamProvider> przyjmujeobiekt,zimplementacjązwracającąstrumień,którymazostaćzapisany.`IStreamProvider`  
   
--   Zapisz wszystkie informacje następującego strumienia (na przykład zamykający XML tag)  
+-   Napisz wszystkie informacje po strumieniu (na przykład zamykając tag XML)  
   
- W przypadku tej metody, moduł zapisujący XML może wybrać kiedy wywołać metodę <xref:System.Xml.IStreamProvider.GetStream> i zapisać dane przesyłane strumieniowo. Na przykład autorzy XML pomocy tekstowych i binarnych wywołać ją od razu i zapisać zawartości przesyłanej strumieniowo między tagiem początkowym i końcowym. Moduł zapisujący MTOM może podjąć <xref:System.Xml.IStreamProvider.GetStream> później, gdy wszystko będzie gotowe do zapisu w odpowiedniej części wiadomości.  
+ W tym podejściu składnik zapisywania XML ma możliwość wyboru, kiedy należy wywołać <xref:System.Xml.IStreamProvider.GetStream> i napisać dane przesyłane strumieniowo. Na przykład tekst i binarne moduły zapisujące XML będą natychmiast je wywoływać i zapisywać przesyłane strumieniowo zawartość między tagami początkowymi i końcowymi. Składnik zapisywania MTOM może zdecydować się na <xref:System.Xml.IStreamProvider.GetStream> późniejsze wywołanie, gdy jest gotowy do zapisania odpowiedniej części wiadomości.  
   
  ]]></format>
     </remarks>
@@ -87,7 +87,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda może służyć do zwrócić strumień, który ma zostać zapisany.  
+ Tej metody można użyć do zwrócenia strumienia, który ma zostać zapisany.  
   
  ]]></format>
         </remarks>
@@ -123,8 +123,8 @@
         <Parameter Name="stream" Type="System.IO.Stream" />
       </Parameters>
       <Docs>
-        <param name="stream">Strumień, zostały udostępnione.</param>
-        <summary>Zwalnia strumienia w danych wyjściowych.</summary>
+        <param name="stream">Wydawany strumień.</param>
+        <summary>Zwalnia strumień do danych wyjściowych.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
