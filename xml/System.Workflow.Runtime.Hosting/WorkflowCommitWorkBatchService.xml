@@ -1,5 +1,5 @@
 <Type Name="WorkflowCommitWorkBatchService" FullName="System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="4edbc67312747a9b07a363e6ee96088d40fc026b" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64177199" /></Metadata><TypeSignature Language="C#" Value="public abstract class WorkflowCommitWorkBatchService : System.Workflow.Runtime.Hosting.WorkflowRuntimeService" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="13b313cfefaffce9af019613f45ebee26d5841aa" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69417762" /></Metadata><TypeSignature Language="C#" Value="public abstract class WorkflowCommitWorkBatchService : System.Workflow.Runtime.Hosting.WorkflowRuntimeService" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit WorkflowCommitWorkBatchService extends System.Workflow.Runtime.Hosting.WorkflowRuntimeService" />
   <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class WorkflowCommitWorkBatchService&#xA;Inherits WorkflowRuntimeService" />
@@ -20,7 +20,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Umożliwia niestandardowej logiki zobowiązania partii pracy.</summary>
+    <summary>Umożliwia logikę niestandardową dla zobowiązania partii zadań.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -29,14 +29,14 @@
 > [!NOTE]
 >  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
   
- Podczas pracy usługa batch jest zatwierdzona środowisko uruchomieniowe wywołuje <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> i nadaje jej pełnomocnika do wywołania w celu rzeczywistego zatwierdzania pracy usługi batch. Środowisko uruchomieniowe nadal ma głównej odpowiedzialności zatwierdzania pracy usługi batch, ale umożliwia <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> do wstawienia samego procesu dostosowywania wokół proces zatwierdzania.  
+ Gdy partia robocza jest zobowiązana do wywołania środowiska uruchomieniowego <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> do i daje mu delegata, aby wykonać rzeczywiste zatwierdzenie partii pracy. Środowisko uruchomieniowe nadal ma główną odpowiedzialność za zatwierdzenie partii pracy, ale umożliwia <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> Wstawianie siebie do procesu dostosowywania wokół procesu zatwierdzania.  
   
- Ten proces umożliwia kompleksową logikę obsługi błędu niestandardowego. Jeśli <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> właścicielem transakcji, tak jak podczas <xref:System.Transactions.Transaction.Current%2A?displayProperty=nameWithType> właściwość zwraca `null` w związku z tym wymagających trzeba tworzyć nowej transakcji otoczenia, może on być więcej niż raz, wywołaj delegat utworzenie nowego transakcja dla każdego wywołania. Najbardziej typowe przypadek, w tym na przykład jest do obsługi sporadyczne problemy z siecią lub tryb failover klastra SQL. Jeśli wywołanie <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService.CommitWorkBatchCallback> zgłasza wyjątek <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> można przechwycić wyjątek, uruchomić nowej transakcji i wywołuje delegata ponownie. Daje to poziom odporności na błędy do wykonywania wystąpienia przepływu pracy, które w przeciwnym razie mogłyby spowodować przepływy pracy, aby zakończyć.  
+ Ten proces umożliwia logikę obsługi błędów niestandardowych. <xref:System.Transactions.Transaction.Current%2A?displayProperty=nameWithType> `null` Jeśli jest <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> właścicielem transakcji, która jest w przypadku, gdy właściwość zwraca w związku z tym konieczność utworzenia nowej transakcji otoczenia, może wywołać delegata więcej niż raz, tworząc nowy transakcja dla każdego wywołania. Najbardziej typowym przykładem jest obsługa sporadycznych problemów z siecią lub trybu failover klastra SQL. Jeśli wywołanie <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService.CommitWorkBatchCallback> throw zgłasza wyjątek <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService> może wychwycić ten wyjątek, uruchom nową transakcję i Wywołaj delegata ponownie. Dzięki temu poziom odporności na wykonanie wystąpienia przepływu pracy może spowodować przerwanie przepływów pracy.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano klasę, która dziedziczy po elemencie <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>.  
+ Poniższy przykład ilustruje klasę, która dziedziczy z <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>.  
   
  [!code-csharp[WF_Samples#0](~/samples/snippets/csharp/VS_Snippets_CFX/wf_samples/cs/snippets.cs#0)]
  [!code-vb[WF_Samples#0](~/samples/snippets/visualbasic/VS_Snippets_CFX/wf_samples/vb/snippets.vb#0)]  
@@ -59,7 +59,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Po zaimplementowaniu w klasie pochodnej, inicjuje nowe wystąpienie klasy <see cref="T:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService" /> klasy.</summary>
+        <summary>Po zaimplementowaniu w klasie pochodnej inicjuje nowe wystąpienie <see cref="T:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService" /> klasy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -82,8 +82,8 @@
         <Parameter Name="commitWorkBatchCallback" Type="System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService+CommitWorkBatchCallback" />
       </Parameters>
       <Docs>
-        <param name="commitWorkBatchCallback"><see cref="T:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService.CommitWorkBatchCallback" /> Pełnomocnika do wywołania do zatwierdzenia pracy usługi batch.</param>
-        <summary>Wywołuje się, aby zatwierdzić partii pracy.</summary>
+        <param name="commitWorkBatchCallback"><see cref="T:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService.CommitWorkBatchCallback" /> Delegat do wywołania zatwierdzenia partii pracy.</param>
+        <summary>Wywołuje się, by zatwierdzić partię pracy.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

@@ -1,5 +1,5 @@
 <Type Name="GCLatencyMode" FullName="System.Runtime.GCLatencyMode">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="2756a606d52ca5a3c8390277c4f5ccc6766d0c6e" /><Meta Name="ms.sourcegitcommit" Value="a3e01ec36374fac54a55add0dcc1e754e394abeb" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/30/2019" /><Meta Name="ms.locfileid" Value="58724301" /></Metadata><TypeSignature Language="C#" Value="public enum GCLatencyMode" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="cba89d6d557396591cdacc05201a44a43bea55ca" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69086748" /></Metadata><TypeSignature Language="C#" Value="public enum GCLatencyMode" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed GCLatencyMode extends System.Enum" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.GCLatencyMode" />
   <TypeSignature Language="VB.NET" Value="Public Enum GCLatencyMode" />
@@ -34,16 +34,16 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Dostosowuje czas, który narusza moduł odśmiecania pamięci, w aplikacji.</summary>
+    <summary>Dostosowuje czas intruzów w aplikacji przez moduł zbierający elementy bezużyteczne.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Możesz dostosować ingerencję operacji wyrzucania elementów bezużytecznych w aplikacji, ustawiając <xref:System.Runtime.GCSettings.LatencyMode%2A> właściwości do dowolnego <xref:System.Runtime.GCLatencyMode> wartości wyliczenia, z wyjątkiem `GCLatencyMode.NoGCRegion`. Należy także określić bieżący tryb opóźnienie moduł odśmiecania pamięci, pobierając <xref:System.Runtime.GCSettings.LatencyMode%2A?displayProperty=nameWithType> wartości właściwości.  
+ Można dostosować inwazyjność wyrzucania elementów bezużytecznych w aplikacji, ustawiając <xref:System.Runtime.GCSettings.LatencyMode%2A> właściwość na dowolną <xref:System.Runtime.GCLatencyMode> wartość wyliczenia z `GCLatencyMode.NoGCRegion`wyjątkiem. Możesz również określić bieżący tryb opóźnienia modułu wyrzucania elementów bezużytecznych <xref:System.Runtime.GCSettings.LatencyMode%2A?displayProperty=nameWithType> , pobierając wartość właściwości.  
   
- Zobacz [tryby opóźnienia](~/docs/standard/garbage-collection/latency.md) dyskusję na temat wpływu ustawienia konfiguracji środowiska uruchomieniowego do wyrzucania elementów bezużytecznych na wartość domyślną dla tego wyliczenia.  
+ Zobacz [tryby opóźnień](~/docs/standard/garbage-collection/latency.md) , aby poznać sposób, w jaki ustawienia konfiguracji środowiska uruchomieniowego dla wyrzucania elementów bezużytecznych wpływają na wartość domyślną dla tego wyliczenia.  
 
-<xref:System.Runtime.GCLatencyMode.Batch?displayProperty=nameWithType> Zastępuje tryb [ \<gcconcurrent — >](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) ustawienie konfiguracji środowiska uruchomieniowego. Jeśli włączono współbieżne wyrzucanie elementów bezużytecznych przez [ \<gcconcurrent — >](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) element, przełączanie do trybu wsadowego zapobiega żadnych dalszych współbieżnych kolekcji.    
+Tryb zastępuje ustawienie konfiguracji środowiska uruchomieniowego [ gcConcurrent>.\<](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) <xref:System.Runtime.GCLatencyMode.Batch?displayProperty=nameWithType> Jeśli współbieżne wyrzucanie elementów bezużytecznych jest włączone przez [ \<element gcConcurrent >](~/docs/framework/configure-apps/file-schema/runtime/gcconcurrent-element.md) , przełączenie do trybu wsadowego uniemożliwia wykonywanie jakichkolwiek dalszych współbieżnych kolekcji.    
 
  ]]></format>
     </remarks>
@@ -83,7 +83,7 @@
       </ReturnValue>
       <MemberValue>0</MemberValue>
       <Docs>
-        <summary>Wyłącza współbieżności kolekcji wyrzucania elementów, a następnie ponownie wzywa obiekty, w wywołaniu usługi batch. Jest to najbardziej istotnych tryb. Ten tryb jest przeznaczona dla maksymalnej przepływności kosztem czasu odpowiedzi.</summary>
+        <summary>Wyłącza współbieżność wyrzucania elementów bezużytecznych i odzyskiwanie obiektów w wywołaniu wsadowym. Jest to najbardziej inwazyjny tryb. Ten tryb został zaprojektowany w celu zapewnienia maksymalnej przepływności przy kosztach odpowiedzi.</summary>
       </Docs>
     </Member>
     <Member MemberName="Interactive">
@@ -119,7 +119,7 @@
       </ReturnValue>
       <MemberValue>1</MemberValue>
       <Docs>
-        <summary>Umożliwia współbieżności kolekcji wyrzucania elementów, a następnie ponownie wzywa obiekty, gdy aplikacja jest uruchomiona. Jest to domyślny tryb dla wyrzucania elementów bezużytecznych stacji roboczej, a płynniejsza niż <see cref="F:System.Runtime.GCLatencyMode.Batch" />. Salda jego czas reakcji przy przepływności. Ten tryb jest odpowiednikiem wyrzucanie elementów bezużytecznych na stacji roboczej, który jest współbieżnych.</summary>
+        <summary>Włącza współbieżność odzyskiwania pamięci i umożliwia odzyskiwanie obiektów, gdy aplikacja jest uruchomiona. Jest to domyślny tryb dla wyrzucania elementów bezużytecznych na stacji roboczej <see cref="F:System.Runtime.GCLatencyMode.Batch" />i jest mniej inwazyjny niż. Usługa IT równoważy czas odpowiedzi z przepustowością. Ten tryb jest równorzędny do wyrzucania elementów bezużytecznych na stacji roboczej, która jest współbieżna.</summary>
       </Docs>
     </Member>
     <Member MemberName="LowLatency">
@@ -155,7 +155,7 @@
       </ReturnValue>
       <MemberValue>2</MemberValue>
       <Docs>
-        <summary>Umożliwia wyrzucanie elementów bezużytecznych, który jest bardziej Konserwatywny w odzyskiwaniu obiektów. Kolekcje pełną występują tylko wtedy, gdy system jest duże wykorzystanie pamięci generacji 0 i 1. generacji kolekcji może pojawić się częściej. Ten tryb nie jest dostępna dla modułu odśmiecania pamięci serwera.</summary>
+        <summary>Włącza wyrzucanie elementów bezużytecznych w przypadku odzyskiwania obiektów. Pełne kolekcje są wykonywane tylko wtedy, gdy system działa w pamięci, a kolekcje generacji 0 i generacja 1 mogą wystąpić częściej. Ten tryb nie jest dostępny dla modułu zbierającego elementy bezużyteczne serwera.</summary>
       </Docs>
     </Member>
     <Member MemberName="NoGCRegion">
@@ -186,9 +186,9 @@
       </ReturnValue>
       <MemberValue>4</MemberValue>
       <Docs>
-        <summary>Wskazuje, że wyrzucanie elementów bezużytecznych została wstrzymana, gdy aplikacja wykonuje ścieżkę krytyczną.  
+        <summary>Wskazuje, że odzyskiwanie pamięci jest wstrzymane, gdy aplikacja wykonuje ścieżkę krytyczną.  
   
- <see cref="F:System.Runtime.GCLatencyMode.NoGCRegion" /> jest to wartość tylko do odczytu; oznacza to, że nie można przypisać <see cref="F:System.Runtime.GCLatencyMode.NoGCRegion" /> wartość <see cref="P:System.Runtime.GCSettings.LatencyMode" /> właściwości. Określ GC region opóźnienie tryb bez przez wywołanie metody <see cref="Overload:System.GC.TryStartNoGCRegion" /> metody i Zakończ jej działanie, wywołując <see cref="M:System.GC.EndNoGCRegion" /> metody.</summary>
+ <see cref="F:System.Runtime.GCLatencyMode.NoGCRegion" />jest wartością tylko do odczytu; oznacza to, że nie można przypisać <see cref="F:System.Runtime.GCLatencyMode.NoGCRegion" /> wartości <see cref="P:System.Runtime.GCSettings.LatencyMode" /> do właściwości. Tryb opóźnienia regionu nie jest określany przez wywołanie <see cref="Overload:System.GC.TryStartNoGCRegion" /> metody i zakończenie jej przez <see cref="M:System.GC.EndNoGCRegion" /> wywołanie metody.</summary>
       </Docs>
     </Member>
     <Member MemberName="SustainedLowLatency">
@@ -223,7 +223,7 @@
       </ReturnValue>
       <MemberValue>3</MemberValue>
       <Docs>
-        <summary>Umożliwia wyrzucanie elementów bezużytecznych, który próbuje zminimalizować czas oczekiwania przez dłuższy czas. Moduł zbierający podejmie próbę niejawnego wykonania generacji 0, 1. generacji i kolekcji współbieżnych generacji 2. Pełne kolekcji blokujących nadal mogą wystąpić, jeśli system jest w dużym wykorzystaniu pamięci.</summary>
+        <summary>Umożliwia wyrzucanie elementów bezużytecznych próbujących zminimalizować opóźnienia w dłuższym okresie. Moduł zbierający próbuje wykonać tylko kolekcje generacji 0, generacja 1 i współbieżnych generacji 2. Pełne kolekcje blokujące mogą nadal występować, jeśli system jest w pamięci.</summary>
       </Docs>
     </Member>
   </Members>

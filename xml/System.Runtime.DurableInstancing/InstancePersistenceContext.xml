@@ -1,5 +1,5 @@
 <Type Name="InstancePersistenceContext" FullName="System.Runtime.DurableInstancing.InstancePersistenceContext">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="b56731eed89c75526c90596c1490cb950651dccf" /><Meta Name="ms.sourcegitcommit" Value="9e3550fb2088d4faf2043f0acb29da4555519937" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/12/2018" /><Meta Name="ms.locfileid" Value="53290316" /></Metadata><TypeSignature Language="C#" Value="public sealed class InstancePersistenceContext" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="196823aeeb4ceb1edeecd15436009bbe1e62bbe6" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69272111" /></Metadata><TypeSignature Language="C#" Value="public sealed class InstancePersistenceContext" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit InstancePersistenceContext extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.DurableInstancing.InstancePersistenceContext" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class InstancePersistenceContext" />
@@ -14,12 +14,12 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Przedstawia informacje o stanie wykonywania podczas wykonywania polecenia trwałości.</summary>
+    <summary>Reprezentuje informacje o stanie wykonywania podczas wykonywania polecenia trwałości.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wystąpienie tej klasy jest przekazywany do metody TryCommand implementacji dostawcy stanów trwałych. Dostawcy stanów trwałych używać tej klasy, sprawdź widok w pamięci wystąpienia, a także wskazuje wyniki operacji na magazynie zewnętrznego, który może mieć wpływ na widok lub innego kontekstu w pamięci.  
+ Wystąpienie tej klasy jest przesyłane do metody TryCommand implementacji dostawcy trwałości. Dostawcy trwałości używają tej klasy do inspekcji widoku w pamięci wystąpienia, a także wskazują wyniki operacji w magazynie zewnętrznym, które mogą mieć wpływ na widok lub inny kontekst w pamięci.  
   
  ]]></format>
     </remarks>
@@ -44,13 +44,13 @@
         <Parameter Name="key" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="key">Wystąpienia identyfikatora klucza dla klucza, który został skojarzony. Nie może być Guid.Empty.</param>
-        <summary>Wskazuje, czy dostawcy stanów trwałych pomyślnie skojarzony klucz do bieżącego wystąpienia w sklepie wystąpienia. Identyfikator klucza jest określony jako parametr.</summary>
+        <param name="key">Identyfikator klucza wystąpienia skojarzonego z kluczem. Nie może być GUID. Empty.</param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie skojarzył klucz z bieżącym wystąpieniem w magazynie wystąpień. Identyfikator klucza jest określony jako parametr.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Klucz wystąpienia musi być nieskojarzonego. Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu.  
+ Klucz wystąpienia musi być nieskojarzony. Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -78,21 +78,21 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="instanceVersion">Wersję blokady przechowywane na wystąpienie lub zero, jeśli dostawcy stanów trwałych nie implementuje wersji blokady.</param>
-        <param name="timeout">Limit czasu dla operacji asynchronicznej.</param>
-        <param name="callback">Metoda wywoływana, gdy operacja została wykonana.</param>
-        <param name="state">Informacje o stanie, związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną, aby powiązać istniejącą blokadę na wystąpienie do bieżącego dojście wystąpienia. Wersja istniejącą blokadę jest przekazywany jako parametr.</summary>
+        <param name="instanceVersion">Wersja blokady zatrzymywana w wystąpieniu lub zero, jeśli dostawca trwałości nie implementuje wersji blokady.</param>
+        <param name="timeout">Przedział czasu dla operacji asynchronicznej.</param>
+        <param name="callback">Metoda, która ma być wywoływana, gdy operacja zostanie ukończona.</param>
+        <param name="state">Informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpocznij operację asynchroniczną w celu powiązania istniejącej blokady wystąpienia z bieżącym dojściem wystąpienia. Wersja istniejącej blokady jest przenoszona jako parametr.</summary>
         <returns>Stan operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas próby uzyskania blokady, dostawcy stanów trwałych może zdecydować, czy bieżące wystąpienie jest już zablokowany z bieżącego magazynu. Jeśli token blokady pasuje uchwyt bieżący token blokady, a następnie próbę odzyskania blokady przez kontrolę wersji i przekazywania go do BeginBindReclaimedLock dostawcy stanów trwałych. Dostawcy stanów trwałych nie musi wprowadzać zmian do wystąpienia, dopóki blokada jest pomyślnie odzyskane. Jeśli nie inne dojście jest powiązany z blokada, następnie BeginBindReclaimedLock operacja powiedzie się i obsługują bieżącego staje się związana z blokady. W przeciwnym razie BeginBindReclaimedLock lub EndBindReclaimedLock zgłasza InstanceHandleConflictException. W przypadku poleceń w toku na inni obserwowani, operacja nie może zakończyć się podczas oczekiwania na wynik z tych poleceń, aby zdecydować, czy można odzyskać blokady.  
+ Podczas próby uzyskania blokady dostawca trwałości może zdecydować, że bieżące wystąpienie jest już zablokowane w bieżącym magazynie. Jeśli token blokady jest zgodny z tokenem blokady bieżącego uchwytu, dostawca trwałości może próbować przejąć blokadę, sprawdzając jego wersję i przekazując ją do BeginBindReclaimedLock. Dostawca trwałości nie może wprowadzać zmian do wystąpienia, dopóki blokada nie zostanie pomyślnie ododzyskiwana. Jeśli żaden inny uchwyt nie jest powiązany z blokadą, operacja BeginBindReclaimedLock się powiedzie i bieżące dojście zostanie powiązane z blokadą. W przeciwnym razie BeginBindReclaimedLock lub EndBindReclaimedLock zgłasza InstanceHandleConflictException. Jeśli polecenia są w toku w innych dojściach, operacja może nie zostać zakończona podczas oczekiwania na wynik tych poleceń, aby zdecydować, czy można odszukać blokadę.  
   
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia i właściciel blokady. Nie można wypełniać wystąpienia. Token blokady skojarzony właściciel blokady jest używany do identyfikowania właściciela blokady.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem i właścicielem blokady. Wystąpienie nie może być ukończone. Token blokady skojarzony z właścicielem blokady jest używany do identyfikowania właściciela blokady.  
   
- Po blokady jest powiązany do uchwytu, pozostaje powiązanej okres istnienia uchwytu. Token blokady ani wersji wystąpienia nie może zostać zmieniona.  
+ Po powiązaniu blokady z dojściem pozostaje ono powiązane z okresem istnienia dojścia. Nie można zmienić tokenu blokady ani wersji wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -120,17 +120,17 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="command">Polecenie trwałości do wykonania.</param>
+        <param name="command">Polecenie trwałości, które ma zostać wykonane.</param>
         <param name="timeout">Wartość limitu czasu dla operacji.</param>
-        <param name="callback">Delegat, który otrzymuje powiadomienie o asynchroniczną odbierania, że kończy operację żądania.</param>
+        <param name="callback">Delegat odnoszący się do powiadomienia asynchronicznego o otrzymaniu żądania.</param>
         <param name="state">Informacje o stanie.</param>
-        <summary>Rozpoczyna asynchronicznie wykonywania polecenia trwałości.</summary>
+        <summary>Rozpoczyna wykonywanie polecenia trwałości asynchronicznie.</summary>
         <returns>Stan operacji asynchronicznej.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dostawcy stanów trwałych, można użyć tej metody można wykonać polecenia podrzędne jako część polecenia. Podpolecenie zostanie wykonana przy użyciu BeginTryCommand, podobne do polecenia przekazywane do InstanceStore.BeginExecute. Polecenia mogą być zagnieżdżone, ale polecenie nie musisz wykonać więcej niż jednego podpolecenie, które znajdują się w danym momencie.  
+ Dostawca trwałości może użyć tej metody do wykonywania poleceń podrzędnych jako części polecenia. Polecenie sub zostanie wykonane przy użyciu BeginTryCommand, podobnie jak polecenia przesłane do obiektu InstanceStore. BeginExecute. Polecenia mogą być zagnieżdżane, ale polecenie nie może wykonać więcej niż jednego polecenia podrzędnego naraz.  
   
  ]]></format>
         </remarks>
@@ -155,15 +155,15 @@
         <Parameter Name="instanceVersion" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="instanceVersion">Wersja blokadę uzyskaną na wystąpienie lub zero, jeśli dostawcy stanów trwałych nie implementuje wersji blokady.</param>
-        <summary>Wiąże nowo pobranych blokady w wystąpieniu do bieżącego dojście wystąpienia. Wersja uzyskano blokady jest przekazywany jako parametr.</summary>
+        <param name="instanceVersion">Wersja blokady pozyskana w wystąpieniu lub zero, jeśli dostawca trwałości nie implementuje wersji blokady.</param>
+        <summary>Tworzy powiązanie nowo uzyskanej blokady wystąpienia z bieżącym dojściem wystąpienia. Wersja uzyskanej blokady jest przenoszona jako parametr.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli dostawcy stanów trwałych implementuje versioning blokada, następnie każdorazowo, gdy jest blokada w wystąpieniu programu wersji muszą być zwiększane za pomocą jednej z magazynu zewnętrznego. Wystąpienie jest zablokowany, po raz pierwszy wersja powinna wynosić 1. Każdy pozyskiwania blokady unieważnia poprzednią blokadę. Bieżący dojście wystąpienia musi być powiązany do wystąpienia i właściciel blokady. Nie można wypełniać wystąpienia. Token blokady skojarzony właściciel blokady jest używany do identyfikowania właściciela blokady  
+ Jeśli dostawca trwałości implementuje przechowywanie wersji blokad, po każdym uzyskaniu blokady w wystąpieniu, wersja musi być zwiększana o jeden w sklepie zewnętrznym. Gdy wystąpienie jest zablokowane po raz pierwszy, wersja powinna mieć wartość 1. Każde pozyskiwanie blokady unieważnia poprzednią blokadę. Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem i właścicielem blokady. Wystąpienie nie może być ukończone. Token blokady skojarzony z właścicielem blokady jest używany do identyfikowania właściciela blokady  
   
- Po blokady jest powiązany do uchwytu, pozostaje powiązanej okres istnienia uchwytu. Token blokady ani wersji wystąpienia nie może zostać zmieniona.  
+ Po powiązaniu blokady z dojściem pozostaje ono powiązane z okresem istnienia dojścia. Nie można zmienić tokenu blokady ani wersji wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -189,7 +189,7 @@
       </Parameters>
       <Docs>
         <param name="persistenceEvent"><see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> Obiekt zawierający informacje o zdarzeniu.</param>
-        <summary>Wiąże <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /> na dojście wystąpienia.</summary>
+        <summary>Tworzy powiązanie z dojściem do wystąpienia. <see cref="T:System.Runtime.DurableInstancing.InstancePersistenceEvent" /></summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -212,13 +212,13 @@
         <Parameter Name="instanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="instanceId">Identyfikator wystąpienia. Nie może być Guid.Empty.</param>
-        <summary>Wiąże wystąpienie, którego identyfikator jest określony jako parametr do bieżącego dojście wystąpienia.</summary>
+        <param name="instanceId">Identyfikator wystąpienia. Nie może być GUID. Empty.</param>
+        <summary>Tworzy powiązanie wystąpienia, którego identyfikator jest określony jako parametr w bieżącym dojściu do wystąpienia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po wystąpienie jest powiązany do uchwytu, pozostaje powiązanej okres istnienia uchwytu. Żadne inne wystąpienie nigdy nie może być powiązana z uchwytu.  
+ Gdy wystąpienie jest powiązane z dojściem, pozostaje ono powiązane z okresem istnienia dojścia. Żadne inne wystąpienie nie może być kiedykolwiek powiązane z dojściem.  
   
  ]]></format>
         </remarks>
@@ -244,14 +244,14 @@
         <Parameter Name="lockToken" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="instanceOwnerId">Identyfikator wystąpienia właściciela.</param>
-        <param name="lockToken">Token blokady właściciela wystąpienia. Dostawcy stanów trwałych może wybrać taką samą wartość dla identyfikatora właściciela wystąpienia i token blokady właściciela.</param>
-        <summary>Wiąże dojście wystąpienia jest bieżącym właścicielem wystąpienia.</summary>
+        <param name="instanceOwnerId">Identyfikator właściciela wystąpienia.</param>
+        <param name="lockToken">Token blokady właściciela wystąpienia. Dostawca trwałości może wybrać użycie tej samej wartości identyfikatora właściciela wystąpienia i tokenu blokady właściciela.</param>
+        <summary>Tworzy powiązanie właściciela wystąpienia z bieżącym dojściem wystąpienia.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Po właścicielem wystąpienia jest powiązany do uchwytu, pozostaje powiązanej okres istnienia uchwytu. Nie ma właściciela wystąpienia nigdy nie może być powiązana z uchwytu.  
+ Po powiązaniu właściciela wystąpienia z dojściem pozostaje ono powiązane z okresem istnienia dojścia. Żaden inny właściciel wystąpienia nie może być kiedykolwiek powiązany z dojściem.  
   
  ]]></format>
         </remarks>
@@ -277,18 +277,18 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="instanceVersion">Wersji blokady przechowywane na wystąpienie lub zero, jeśli dostawcy stanów trwałych nie implementuje wersji blokady.</param>
+        <param name="instanceVersion">Wersja blokady zatrzymywana w wystąpieniu lub zero, jeśli dostawca trwałości nie implementuje wersji blokady.</param>
         <param name="timeout">Wartość limitu czasu dla operacji.</param>
-        <summary>Wiąże istniejącą blokadę na wystąpienie do bieżącego dojście wystąpienia. Wersja istniejącą blokadę jest przekazywany jako parametr.</summary>
+        <summary>Tworzy powiązanie istniejącej blokady wystąpienia z bieżącym dojściem wystąpienia. Wersja istniejącej blokady jest przenoszona jako parametr.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas próby uzyskania blokady, dostawcy stanów trwałych może zdecydować, czy bieżące wystąpienie jest już zablokowany z bieżącego magazynu. Jeśli token blokady pasuje uchwyt bieżący token blokady, a następnie próbę odzyskania blokady przez kontrolę wersji i przekazywania go do BindReclaimedLock dostawcy stanów trwałych. Dostawcy stanów trwałych nie musi wprowadzać zmian do wystąpienia, dopóki blokada jest pomyślnie odzyskane. Jeśli nie inne dojście jest powiązany z blokady, BindReclaimedLock zakończy się pomyślnie i bieżącej uchwyt staje się powiązany z blokady. W przeciwnym razie BindReclaimedLock zgłasza InstanceHandleConflictException. W przypadku poleceń w toku na inni obserwowani, BindReclaimedLock może blokować oczekiwanie na wyniki tych poleceń, przed podjęciem decyzji, czy można odzyskać blokady.  
+ Podczas próby uzyskania blokady dostawca trwałości może zdecydować, że bieżące wystąpienie jest już zablokowane w bieżącym magazynie. Jeśli token blokady jest zgodny z tokenem blokady bieżącego uchwytu, dostawca trwałości może próbować przejąć blokadę, sprawdzając jego wersję i przekazując ją do BindReclaimedLock. Dostawca trwałości nie może wprowadzać zmian do wystąpienia, dopóki blokada nie zostanie pomyślnie ododzyskiwana. Jeśli żaden inny uchwyt nie jest powiązany z blokadą, BindReclaimedLock się powiedzie i bieżące dojście zostanie powiązane z blokadą. W przeciwnym razie BindReclaimedLock zgłasza InstanceHandleConflictException. Jeśli polecenia są w toku dla innych dojść, BindReclaimedLock może blokować oczekiwanie na wyniki tych poleceń przed podjęciem decyzji o tym, czy można odzyskiwać blokadę.  
   
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia i właściciel blokady. Nie można wypełniać wystąpienia. Token blokady skojarzony właściciel blokady jest używany do identyfikowania właściciela blokady.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem i właścicielem blokady. Wystąpienie nie może być ukończone. Token blokady skojarzony z właścicielem blokady jest używany do identyfikowania właściciela blokady.  
   
- Po blokady jest powiązany do uchwytu, pozostaje powiązanej okres istnienia uchwytu. Token blokady ani wersji wystąpienia nie może zostać zmieniona.  
+ Po powiązaniu blokady z dojściem pozostaje ono powiązane z okresem istnienia dojścia. Nie można zmienić tokenu blokady ani wersji wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -311,12 +311,12 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Wskazuje, że dostawcy stanów trwałych pomyślnie oznaczyła bieżącego wystąpienia jako ukończony w magazynie wystąpienia.</summary>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie oznaczył bieżące wystąpienie jako ukończone w magazynie wystąpień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu. Wystąpienie musi zostać zainicjowany i nie już zostać zakończona. (Wystąpienie jest inicjowany, jeśli zestaw danych wystąpienia ma nigdy nie został utrwalony go.) Wszystkie klucze skojarzone z wystąpieniem muszą zostać wykonane.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia. Wystąpienie musi być zainicjowane i nie zostało już ukończone. (Wystąpienie jest inicjowane, jeśli zestaw danych wystąpienia był kiedykolwiek trwały). Wszystkie klucze skojarzone z wystąpieniem muszą zostać ukończone.  
   
  ]]></format>
         </remarks>
@@ -341,13 +341,13 @@
         <Parameter Name="key" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="key">Wystąpienia identyfikatora klucza dla klucza, który został wykonany. Nie może być Guid.Empty.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych ma zostały oznaczone jako klucz jako ukończony z magazynu zewnętrznego. Identyfikator klucza jest określony jako parametr.</summary>
+        <param name="key">Identyfikator klucza wystąpienia dla klucza, który został ukończony. Nie może być GUID. Empty.</param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie oznaczył klucz jako zakończony w magazynie zewnętrznym. Identyfikator klucza jest określony jako parametr.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i nie już zostać zakończona.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i nie został już ukończony.  
   
  ]]></format>
         </remarks>
@@ -372,8 +372,8 @@
         <Parameter Name="instanceVersion" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="instanceVersion">Wersję blokady przechowywane na wystąpienie lub zero, jeśli dostawcy stanów trwałych nie implementuje wersji blokady.</param>
-        <summary>Tworzy wystąpienie wyjątku, który może zostać wygenerowany z TryCommand do wyzwolenia BindReclaimedLock zachowanie.</summary>
+        <param name="instanceVersion">Wersja blokady zatrzymywana w wystąpieniu lub zero, jeśli dostawca trwałości nie implementuje wersji blokady.</param>
+        <summary>Tworzy wystąpienie wyjątku, które może być zgłaszane z TryCommand w celu wyzwalania zachowania BindReclaimedLock.</summary>
         <returns>Wyjątek.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -420,7 +420,7 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       </Parameters>
       <Docs>
         <param name="result">Wynik operacji asynchronicznej.</param>
-        <summary>Kończy operację asynchroniczną, uruchomione przez <see cref="M:System.Runtime.DurableInstancing.InstancePersistenceContext.BeginBindReclaimedLock(System.Int64,System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</summary>
+        <summary>Zamyka operację asynchroniczną uruchomioną przez <see cref="M:System.Runtime.DurableInstancing.InstancePersistenceContext.BeginBindReclaimedLock(System.Int64,System.TimeSpan,System.AsyncCallback,System.Object)" /> metodę.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -444,7 +444,7 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       </Parameters>
       <Docs>
         <param name="result">Stan operacji asynchronicznej.</param>
-        <summary>Kończy operację asynchroniczną.</summary>
+        <summary>Zakończenie operacji asynchronicznej.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -468,14 +468,14 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="command">Polecenie trwałości do wykonania.</param>
+        <param name="command">Polecenie trwałości, które ma zostać wykonane.</param>
         <param name="timeout">Wartość limitu czasu dla operacji.</param>
         <summary>Wykonuje polecenie trwałości.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dostawcy stanów trwałych, można użyć tej metody można wykonać polecenia podrzędne jako część polecenia. Podpolecenie zostanie wykonana przy użyciu TryCommand, podobne do polecenia przekazywane do InstanceStore.Execute. Polecenia mogą być zagnieżdżone, ale polecenie nie musisz wykonać więcej niż jednego podpolecenie, które znajdują się w danym momencie.  
+ Dostawca trwałości może użyć tej metody do wykonywania poleceń podrzędnych jako części polecenia. Polecenie sub zostanie wykonane przy użyciu TryCommand, podobnie jak polecenia przesłane do obiektu InstanceStore. Execute. Polecenia mogą być zagnieżdżane, ale polecenie nie może wykonać więcej niż jednego polecenia podrzędnego naraz.  
   
  ]]></format>
         </remarks>
@@ -502,8 +502,8 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <ReturnType>System.Runtime.DurableInstancing.InstanceHandle</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera bieżący dojście wystąpienia.</summary>
-        <value>Bieżący dojście wystąpienia.</value>
+        <summary>Pobiera bieżące dojście wystąpienia.</summary>
+        <value>Bieżące dojście do wystąpienia.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -523,13 +523,13 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <ReturnType>System.Int64</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wersję blokady nałożonej na bieżącym wystąpieniu przez dojście do bieżącego wystąpienia.</summary>
-        <value>Wersję blokady wystąpienia powiązane z bieżącym dojście wystąpienia lub wartość -1, jeśli uchwyt nie jest powiązany z blokadą.</value>
+        <summary>Pobiera wersję blokady przechowywaną w bieżącym wystąpieniu przez bieżące dojście wystąpienia.</summary>
+        <value>Wersja blokady wystąpienia powiązana z bieżącym dojściem wystąpienia lub-1, jeśli uchwyt nie jest powiązany z blokadą.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dostawcy stanów trwałych należy sprawdzić tę wartość z wersją blokady blokady nałożonej na wystąpieniu w magazynie wystąpienia podczas wykonywania operacji wymagającej blokady (na przykład utrwalanie dane wystąpienia) przy użyciu dojścia powiązany z blokady. Jeśli nie jest zgodny z wersją blokady, polecenie powinna zakończyć się niepowodzeniem z InstanceLockLostException.  
+ Dostawca trwałości powinien sprawdzić tę wartość względem wersji blokady blokady przechowywanej w wystąpieniu w magazynie wystąpień podczas wykonywania operacji wymagającej blokady (na przykład utrwalania danych wystąpienia) przy użyciu dojścia powiązanego z blokadą. Jeśli wersja blokady nie jest zgodna, polecenie powinno kończyć się niepowodzeniem z InstanceLockLostException.  
   
  ]]></format>
         </remarks>
@@ -556,8 +556,8 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <ReturnType>System.Runtime.DurableInstancing.InstanceView</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera obiekt widoku wystąpienia, który reprezentuje stan w pamięci bieżącego wystąpienia. Ten widok odzwierciedla aktualizacji, jak zostały wprowadzone za pomocą polecenia w toku.</summary>
-        <value>Widok wystąpienia obiektu.</value>
+        <summary>Pobiera obiekt widoku wystąpienia, który reprezentuje stan w pamięci bieżącego wystąpienia. Ten widok odzwierciedla aktualizacje, które są wykonywane przez polecenie w toku.</summary>
+        <value>Obiekt widoku wystąpienia.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -584,17 +584,17 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="completedInstanceKeyMetadata" Type="System.Collections.Generic.IDictionary&lt;System.Guid,System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Runtime.DurableInstancing.InstanceValue&gt;&gt;" />
       </Parameters>
       <Docs>
-        <param name="state">Informacje o stanie wystąpienie.</param>
-        <param name="instanceData">Dane wystąpienia jako słownik <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="instanceMetadata">Wystąpienie metadanych jako kolekcja <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="associatedInstanceKeyMetadata">Skojarzone metadane klucza wystąpienia jako słownik identyfikator wystąpienia i wystąpienie metadanych klucza, który jest słownikiem <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="completedInstanceKeyMetadata">Ukończono wystąpienie metadanych jako słownik identyfikator wystąpienia i wystąpienie metadanych klucza, który jest słownikiem <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych pomyślnie pobrał z magazynu wystąpienia bieżącego wystąpienia.</summary>
+        <param name="state">Informacje o stanie wystąpienia.</param>
+        <param name="instanceData">Dane wystąpienia jako słownik <see cref="T:System.Xml.Linq.XName" /> obiektów i. <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /></param>
+        <param name="instanceMetadata">Metadane wystąpienia jako kolekcja <see cref="T:System.Xml.Linq.XName" /> obiektów i. <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /></param>
+        <param name="associatedInstanceKeyMetadata">Metadane klucza wystąpienia skojarzonego jako słownik identyfikatorów wystąpień i metadanych klucza wystąpienia, które są słownikami <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektami.</param>
+        <param name="completedInstanceKeyMetadata">Zakończono metadane wystąpienia jako słownik identyfikatorów wystąpień i metadanych klucza wystąpienia, które jest słownikiem <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektami.</param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie pobrał bieżące wystąpienie z magazynu wystąpień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia. Czy dojście wystąpienia jest powiązany z blokadą lub załadować wystąpienia jest oznaczony jako ukończony, załadowanych danych jest uznawane za zgodne ze sobą. w przeciwnym razie uważa się być w stanie wątpliwości.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem. Jeśli dojście wystąpienia jest powiązane z blokadą lub załadowane wystąpienie jest oznaczone jako ukończone, załadowane dane są uznawane za spójne; w przeciwnym razie jest uznawany za wątpliwy.  
   
  ]]></format>
         </remarks>
@@ -616,15 +616,15 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <ReturnType>System.Guid</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera blokadę tokenu właściciela wystąpienia powiązane z bieżącym dojście wystąpienia.</summary>
-        <value>Token blokady powiązane z bieżącym dojście wystąpienia lub <see cref="F:System.Guid.Empty" /> Jeśli uchwyt nie jest powiązany z właścicielem wystąpienia.</value>
+        <summary>Pobiera token blokady właściciela wystąpienia powiązanego z bieżącym dojściem wystąpienia.</summary>
+        <value>Token blokady powiązany z bieżącym dojściem wystąpienia lub <see cref="F:System.Guid.Empty" /> Jeśli uchwyt nie jest powiązany z właścicielem wystąpienia.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Dostawcy stanów trwałych należy sprawdzić tę wartość na token blokady blokady nałożonej na wystąpieniu w magazynie wystąpienia podczas wykonywania operacji wymagającej blokady (na przykład utrwalanie dane wystąpienia) przy użyciu dojścia powiązany z blokady. Jeśli token blokady nie są zgodne, polecenie powinna zakończyć się niepowodzeniem z InstanceLockLostException.  
+ Dostawca trwałości powinien sprawdzić tę wartość względem tokenu blokady blokady przechowywanej w wystąpieniu w magazynie wystąpień podczas wykonywania operacji wymagającej blokady (na przykład utrwalania danych wystąpienia) przy użyciu dojścia powiązanego z blokadą. Jeśli token blokady nie jest zgodny, polecenie powinno kończyć się niepowodzeniem z InstanceLockLostException.  
   
- Dostawcy stanów trwałych należy używać tej wartości jako token blokady podczas uzyskiwania nowej blokady w wystąpieniu (np. przy użyciu dojścia nie jest już powiązany z blokadę utrwalanie danych wystąpienia). Jeśli wystąpienie jest już zablokowany w magazynie wystąpienia, token blokady dopasowuje ten token blokady dostawcy stanów trwałych mogą próbować odzyskać tego wystąpienia przy użyciu BindReclaimedLock.  
+ Dostawca trwałości powinien używać tej wartości jako tokenu blokady podczas uzyskiwania nowej blokady wystąpienia (na przykład utrwalania danych wystąpienia przy użyciu dojścia, które nie jest już powiązane z blokadą). Jeśli wystąpienie jest już zablokowane w magazynie wystąpień, a token blokady jest zgodny z tokenem blokady, dostawca trwałości może próbować ponownie przejąć wystąpienie przy użyciu BindReclaimedLock.  
   
  ]]></format>
         </remarks>
@@ -649,13 +649,13 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="data" Type="System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Runtime.DurableInstancing.InstanceValue&gt;" />
       </Parameters>
       <Docs>
-        <param name="data">Dane wystąpienia jako słownik <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych pomyślnie zawiera utrwalone zestaw danych wystąpienia magazyn wystąpienia. Skutkuje to inicjowania wystąpienia, jeśli nie była już.</summary>
+        <param name="data">Dane wystąpienia jako słownik <see cref="T:System.Xml.Linq.XName" /> obiektów i. <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /></param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie utrwalał zestaw danych wystąpienia w magazynie wystąpień. Ma to wpływ na inicjowanie wystąpienia, jeśli nie zostało to jeszcze zrobione.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu. Każdy zestaw danych wystąpienia całkowicie zastępuje poprzedni zestaw. Zestaw danych wystąpienie może mieć wartości null — jest to taka sama jak pusty. Przechowywanie wartości null zbiór danych wystąpienia usuwa istniejącego zestawu danych wystąpienia. (Utrwalanie zestaw danych wystąpienia nie ma wpływu na wystąpienie metadanych.)  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia. Każdy zestaw danych wystąpienia całkowicie zastępuje poprzedni zestaw. Zestaw danych wystąpienia może mieć wartość null — jest to taka sama jak pusta. Utrwalanie zestawu danych wystąpienia o wartości null powoduje usunięcie istniejącego zestawu danych wystąpienia. (Utrwalanie zestawu danych wystąpienia nie ma wpływu na metadane wystąpienia).  
   
  ]]></format>
         </remarks>
@@ -680,8 +680,8 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="queryResult" Type="System.Runtime.DurableInstancing.InstanceStoreQueryResult" />
       </Parameters>
       <Docs>
-        <param name="queryResult">Wyniki zapytania względem magazynu wystąpienia.</param>
-        <summary>Dodaje <see cref="T:System.Runtime.DurableInstancing.InstanceStoreQueryResult" /> przekazany jako parametr do listy <see cref="T:System.Runtime.DurableInstancing.InstanceStoreQueryResult" /> obiekty w <see cref="T:System.Runtime.DurableInstancing.InstanceView" />.</summary>
+        <param name="queryResult">Wyniki zapytania względem magazynu wystąpień.</param>
+        <summary>Dodaje przekazaną jako parametr do <see cref="T:System.Runtime.DurableInstancing.InstanceStoreQueryResult" /> listy obiektów w obiekcie <see cref="T:System.Runtime.DurableInstancing.InstanceView" />. <see cref="T:System.Runtime.DurableInstancing.InstanceStoreQueryResult" /></summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -706,15 +706,15 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="complete" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="key">Wystąpienia identyfikatora klucza dla klucza, którego metadanych została odczytana. Nie może być Guid.Empty.</param>
-        <param name="metadata">Metadane jako słownik <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="complete"><see langword="true" /> Jeśli metadane reprezentuje wszystkie metadane skojarzone z klucza wystąpienia; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych pomyślnie ma odczytu niektórych wystąpienie metadanych klucza dla kluczy skojarzone z bieżącego wystąpienia w sklepie wystąpienia.</summary>
+        <param name="key">Identyfikator klucza wystąpienia dla klucza, którego metadane zostały odczytane. Nie może być GUID. Empty.</param>
+        <param name="metadata">Metadane jako słownik <see cref="T:System.Xml.Linq.XName" /> obiektów i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> .</param>
+        <param name="complete"><see langword="true" />Jeśli metadane reprezentują wszystkie metadane skojarzone z kluczem wystąpienia; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie odczytał metadane klucza wystąpienia dla klucza skojarzonego z bieżącym wystąpieniem z magazynu wystąpień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia. Czy dojście wystąpienia jest powiązany z blokadą lub bieżące wystąpienie jest oznaczony jako ukończony, metadanych jest uznawane za zgodne ze sobą. w przeciwnym razie uważa się być w stanie wątpliwości.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem. Jeśli dojście wystąpienia jest powiązane z blokadą lub bieżące wystąpienie jest oznaczone jako ukończone, metadane są uznawane za spójne; w przeciwnym razie jest uznawany za wątpliwy.  
   
  ]]></format>
         </remarks>
@@ -740,9 +740,9 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="complete" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="metadata">Metadane jako słownik <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="complete"><see langword="true" /> Jeśli metadane reprezentuje wszystkie metadane skojarzone z wystąpieniem; w przeciwnym razie <see langword="false" />.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych został pomyślnie odczytać niektóre metadane wystąpienia w ramach bieżącego wystąpienia w sklepie wystąpienia.</summary>
+        <param name="metadata">Metadane jako słownik <see cref="T:System.Xml.Linq.XName" /> obiektów i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> .</param>
+        <param name="complete"><see langword="true" />Jeśli metadane reprezentują wszystkie metadane skojarzone z wystąpieniem; w przeciwnym razie. <see langword="false" /></param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie odczytał metadane wystąpienia bieżącego wystąpienia z magazynu wystąpień.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -766,14 +766,14 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="complete" Type="System.Boolean" />
       </Parameters>
       <Docs>
-        <param name="metadata">Słownik <see cref="T:System.Xml.Linq.XName" /> i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> obiektów.</param>
-        <param name="complete">Wartość, aby określić, czy spójności należy ustawić <see cref="F:System.Runtime.DurableInstancing.InstanceValueConsistency.InDoubt" /> lub <see cref="F:System.Runtime.DurableInstancing.InstanceValueConsistency.Partial" />.</param>
-        <summary>Ustawia metadanych właścicielem wystąpienia przy użyciu danych przekazanych w parametrze.</summary>
+        <param name="metadata">Słownik <see cref="T:System.Xml.Linq.XName" /> obiektów i <see cref="T:System.Runtime.DurableInstancing.InstanceValue" /> .</param>
+        <param name="complete">Wartość określająca, czy spójność ma być ustawiona na <see cref="F:System.Runtime.DurableInstancing.InstanceValueConsistency.InDoubt" /> lub <see cref="F:System.Runtime.DurableInstancing.InstanceValueConsistency.Partial" />.</param>
+        <summary>Ustawia metadane właściciela wystąpienia przy użyciu danych przesyłanych z parametru.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia. Czy dojście wystąpienia jest powiązany z blokadą lub bieżące wystąpienie jest oznaczony jako ukończony, metadanych jest uznawane za zgodne ze sobą. w przeciwnym razie uważa się być w stanie wątpliwości.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem. Jeśli dojście wystąpienia jest powiązane z blokadą lub bieżące wystąpienie jest oznaczone jako ukończone, metadane są uznawane za spójne; w przeciwnym razie jest uznawany za wątpliwy.  
   
  ]]></format>
         </remarks>
@@ -798,13 +798,13 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="cancellationHandler" Type="System.Action&lt;System.Runtime.DurableInstancing.InstancePersistenceContext&gt;" />
       </Parameters>
       <Docs>
-        <param name="cancellationHandler">Odwołanie do funkcji do wywołania.</param>
-        <summary>Ustawia program obsługi anulowania, wywoływana, gdy żądanie anulowania operacji.</summary>
+        <param name="cancellationHandler">Odwołanie do funkcji, która ma zostać wywołana.</param>
+        <summary>Ustawia procedurę obsługi anulowania, która ma zostać wywołana w przypadku żądania anulowania operacji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli zostanie wywołana procedura obsługi anulowania, dostawcy stanów trwałych należy anulować wszystkie oczekujące operacje i zgłosić operationcanceledexception — od TryCommand, aby wskazać, że polecenie trwałości zostało przerwane przed jej ukończeniem.  
+ Jeśli zostanie wywołana procedura obsługi anulowania, dostawca trwałości powinien anulować wszystkie oczekujące operacje i zgłosić OperationCanceledException z TryCommand, aby wskazać, że polecenie trwałości zostało przerwane przed ukończeniem.  
   
  ]]></format>
         </remarks>
@@ -829,13 +829,13 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="key" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="key">Wystąpienia identyfikatora klucza dla klucza, który został nieskojarzone. Nie może być Guid.Empty.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych został pomyślnie odłączyć klucza z bieżącego wystąpienia w sklepie wystąpienia. Identyfikator klucza jest określony jako parametr.</summary>
+        <param name="key">Identyfikator klucza wystąpienia dla klucza, który został usunięty. Nie może być GUID. Empty.</param>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie odłączył klucz z bieżącego wystąpienia w magazynie wystąpień. Identyfikator klucza jest określony jako parametr.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i muszą być oznaczone jako ukończone. Bieżące wystąpienie nie może być oznaczona ukończone.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i musi być oznaczony jako zakończony. Bieżące wystąpienie nie może być oznaczone jako ukończone.  
   
  ]]></format>
         </remarks>
@@ -857,13 +857,13 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <ReturnType>System.Object</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera informacje kontekstu użytkownika, które są dołączone do bieżącego dojście wystąpienia.</summary>
+        <summary>Pobiera informacje kontekstu użytkownika dołączone do bieżącego dojścia do wystąpienia.</summary>
         <value>Informacje kontekstu użytkownika.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Obiekt jest ten, który jest zwracany z InstanceStore.OnNewInstanceHandle dla bieżącego dojście wystąpienia.  
+ Obiekt jest tym, który jest zwracany z obiektu InstanceStore. OnNewInstanceHandle dla bieżącego dojścia do wystąpienia.  
   
  ]]></format>
         </remarks>
@@ -890,15 +890,15 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
         <Parameter Name="value" Type="System.Runtime.DurableInstancing.InstanceValue" />
       </Parameters>
       <Docs>
-        <param name="key">Wystąpienia identyfikatora klucza dla klucza. Nie może być Guid.Empty.</param>
+        <param name="key">Identyfikator klucza wystąpienia klucza. Nie może być GUID. Empty.</param>
         <param name="name">Nazwa właściwości metadanych.</param>
         <param name="value">Wartość właściwości metadanych.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych został zapisany pomyślnie wartość metadanych dla klucza wystąpienia, który jest skojarzony z bieżącym wystąpieniem magazyn wystąpienia</summary>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie zapisał wartość metadanych dla klucza wystąpienia skojarzonego z bieżącym wystąpieniem do magazynu wystąpień</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązany do wystąpienia, a także blokady w tym wystąpieniu. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i nie można wykonać.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a także blokadą dla tego wystąpienia. Klucz wystąpienia musi być skojarzony z bieżącym wystąpieniem i nie może być ukończony.  
   
  ]]></format>
         </remarks>
@@ -926,12 +926,12 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       <Docs>
         <param name="name">Nazwa właściwości metadanych.</param>
         <param name="value">Wartość właściwości metadanych.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych został pomyślnie zapisane wartość metadanych dla bieżącego wystąpienia do magazynu zewnętrznego wystąpienia.</summary>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie zapisał wartość metadanych dla bieżącego wystąpienia do magazynu wystąpienia zewnętrznego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Bieżący dojście wystąpienia musi być powiązana z wystąpieniem także ma blokady dla tego wystąpienia. Nie można wypełniać wystąpienia.  
+ Bieżące dojście do wystąpienia musi być powiązane z wystąpieniem, a ponadto ma blokadę dla tego wystąpienia. Wystąpienie nie może być ukończone.  
   
  ]]></format>
         </remarks>
@@ -959,12 +959,12 @@ protected override bool TryCommand(InstancePersistenceContext context, InstanceP
       <Docs>
         <param name="name">Nazwa właściwości metadanych.</param>
         <param name="value">Wartość właściwości metadanych.</param>
-        <summary>Wskazuje, że dostawcy stanów trwałych został pomyślnie zapisane wartości metadanych dla bieżącego wystąpienia magazyn wystąpienia.</summary>
+        <summary>Wskazuje, że dostawca trwałości pomyślnie zapisał wartość metadanych dla bieżącego właściciela wystąpienia w magazynie wystąpień.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Musi być powiązany dojście wystąpienia jest bieżącym właścicielem wystąpienia.  
+ Bieżące dojście do wystąpienia musi być powiązane z właścicielem wystąpienia.  
   
  ]]></format>
         </remarks>
