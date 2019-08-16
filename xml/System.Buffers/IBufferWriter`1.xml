@@ -1,5 +1,5 @@
 <Type Name="IBufferWriter&lt;T&gt;" FullName="System.Buffers.IBufferWriter&lt;T&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="359ec089f0197c9d6a7bff0677844323bd2fbddd" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63913637" /></Metadata><TypeSignature Language="C#" Value="public interface IBufferWriter&lt;T&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="d652e388e680187d6b3ba95ec73275e726e0cc2d" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69342430" /></Metadata><TypeSignature Language="C#" Value="public interface IBufferWriter&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IBufferWriter`1&lt;T&gt;" />
   <TypeSignature Language="DocId" Value="T:System.Buffers.IBufferWriter`1" />
   <TypeSignature Language="VB.NET" Value="Public Interface IBufferWriter(Of T)" />
@@ -21,7 +21,7 @@
   <Interfaces />
   <Docs>
     <typeparam name="T">Typ elementów w <see cref="T:System.Buffers.IBufferWriter`1" />.</typeparam>
-    <summary>Reprezentuje ujścia danych wyjściowych, w których <typeparamref name="T" /> mogą być zapisywane dane.</summary>
+    <summary>Reprezentuje ujścia danych wyjściowych, <typeparamref name="T" /> w którym można pisać dane.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -50,9 +50,9 @@
         <Parameter Name="count" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="count">Liczba elementów danych zapisane <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</param>
-        <summary>Powiadamia <see cref="T:System.Buffers.IBufferWriter`1" /> , <paramref name="count" /> elementów danych zostały napisane w danych wyjściowych <see cref="T:System.Span`1" /> lub <see cref="T:System.Memory`1" />.</summary>
-        <remarks>Należy zażądać bufor nowego po wywołaniu zaawansowane, aby kontynuować zapisywanie większej ilości danych; Nie można zapisać wcześniej uzyskana buforu.</remarks>
+        <param name="count">Liczba elementów danych zapisywana <see cref="T:System.Span`1" /> w lub. <see cref="T:System.Memory`1" /></param>
+        <summary>Powiadamia, że <paramref name="count" /> elementy danych zostały zapisaną w danych wyjściowych <see cref="T:System.Memory`1" /> <see cref="T:System.Span`1" /> lub. <see cref="T:System.Buffers.IBufferWriter`1" /></summary>
+        <remarks>Musisz zażądać nowego buforu po wywołaniu funkcji Advance, aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.</remarks>
       </Docs>
     </Member>
     <Member MemberName="GetMemory">
@@ -79,21 +79,21 @@
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Memory`1" />. Jeśli jest to 0, zwracany jest pusty bufor.</param>
-        <summary>Zwraca <see cref="T:System.Memory`1" /> do zapisu jest co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />).</summary>
-        <returns>A <see cref="T:System.Memory`1" /> co najmniej rozmiar <paramref name="sizeHint" />. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor.</returns>
+        <param name="sizeHint">Minimalna długość zwracanych <see cref="T:System.Memory`1" />wartości. Jeśli wartość jest równa 0, zwracany jest pusty bufor.</param>
+        <summary>Zwraca do zapisu, który ma co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />). <see cref="T:System.Memory`1" /></summary>
+        <returns><see cref="T:System.Memory`1" /> O rozmiarze<paramref name="sizeHint" />co najmniej. Jeśli <paramref name="sizeHint" /> jest równa 0, zwraca bufor niepusty.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 
-Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+Nie ma gwarancji, że kolejne wywołania będą zwracać ten sam bufor lub bufor o takim samym rozmiarze.
 
-To nigdy nie musi zwracać <xref:System.Span%601.Empty?displayProperty=nameWithType>, ale może zgłosić, jeśli rozmiar buforu żądana jest niedostępny.
+Nigdy nie należy zwracać <xref:System.Span%601.Empty?displayProperty=nameWithType>, ale może zgłosić, czy żądany rozmiar buforu nie jest dostępny.
 
-Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+Musisz zażądać nowego buforu po wywołaniu `Advance` , aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.
 
          ]]></format>
         </remarks>
-        <exception cref="T:System.OutOfMemoryException">Rozmiar buforu żądanego nie jest dostępna.</exception>
+        <exception cref="T:System.OutOfMemoryException">Żądany rozmiar buforu jest niedostępny.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetSpan">
@@ -120,17 +120,17 @@ Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisyw
         <Parameter Name="sizeHint" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="sizeHint">Minimalna długość zwracanego <see cref="T:System.Span`1" />. Jeśli jest to 0, zwracany jest pusty bufor.</param>
-        <summary>Zwraca <see cref="T:System.Span`1" /> do zapisu jest co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />).</summary>
-        <returns>A <see cref="T:System.Span`1" /> co najmniej rozmiar <paramref name="sizeHint" />. Jeśli <paramref name="sizeHint" /> wynosi 0, funkcja zwraca pusty bufor.</returns>
+        <param name="sizeHint">Minimalna długość zwracanych <see cref="T:System.Span`1" />wartości. Jeśli wartość jest równa 0, zwracany jest pusty bufor.</param>
+        <summary>Zwraca do zapisu, który ma co najmniej żądany rozmiar (określony przez <paramref name="sizeHint" />). <see cref="T:System.Span`1" /></summary>
+        <returns><see cref="T:System.Span`1" /> O rozmiarze<paramref name="sizeHint" />co najmniej. Jeśli <paramref name="sizeHint" /> jest równa 0, zwraca bufor niepusty.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[
   
-Nie ma żadnej gwarancji, że kolejnych wywołań zwróci tego samego buforu lub ten sam rozmiar buforu.
+Nie ma gwarancji, że kolejne wywołania będą zwracać ten sam bufor lub bufor o takim samym rozmiarze.
 
-Ta metoda nigdy nie musi zwracać <xref:System.Span%601.Empty?displayProperty=nameWithType>, ale może zgłosić, jeśli rozmiar buforu żądana jest niedostępny.
+Ta metoda nie musi nigdy <xref:System.Span%601.Empty?displayProperty=nameWithType>zwracać, ale może zgłosić, czy żądany rozmiar buforu jest niedostępny.
 
-Należy zażądać bufor nowego po wywołaniu `Advance` aby kontynuować zapisywanie większej ilości danych; nie można zapisać do wcześniej uzyskana buforu.
+Musisz zażądać nowego buforu po wywołaniu `Advance` , aby kontynuować zapisywanie większej ilości danych. nie można zapisywać w wcześniej pobranym buforze.
          ]]></format>
         </remarks>
       </Docs>

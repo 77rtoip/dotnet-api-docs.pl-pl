@@ -1,5 +1,5 @@
 <Type Name="IBinarySerialize" FullName="Microsoft.SqlServer.Server.IBinarySerialize">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0328f2b4183c8d17f811a579d33cf2ee708180df" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56770858" /></Metadata><TypeSignature Language="C#" Value="public interface IBinarySerialize" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ef8c011695a45cf43197dda699d3ad988ba9a430" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69303753" /></Metadata><TypeSignature Language="C#" Value="public interface IBinarySerialize" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IBinarySerialize" />
   <TypeSignature Language="DocId" Value="T:Microsoft.SqlServer.Server.IBinarySerialize" />
   <TypeSignature Language="VB.NET" Value="Public Interface IBinarySerialize" />
@@ -19,16 +19,16 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Udostępnia implementację niestandardową dla typu zdefiniowanego przez użytkownika (UDT) i zdefiniowanych przez użytkownika agregacji serializacji i deserializacji.</summary>
+    <summary>Zawiera implementację niestandardową dla typu zdefiniowanego przez użytkownika (UDT) oraz serializacji agregacji zagregowanej i deserializacji zdefiniowanej przez użytkownika.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Typy zdefiniowane przez użytkownika (UDTs) i agregatów zdefiniowanych przez użytkownika są wymagane do zdefiniowania formacie magazynu, który może być <xref:Microsoft.SqlServer.Server.Format>.`Native` lub <xref:Microsoft.SqlServer.Server.Format>.`UserDefined`.  
+ Typy zdefiniowane przez użytkownika (UDTs) i agregacje zdefiniowane przez użytkownika są wymagane do zdefiniowania formatu magazynu, który może mieć wartość <xref:Microsoft.SqlServer.Server.Format>.`Native` lub <xref:Microsoft.SqlServer.Server.Format>.`UserDefined`.  
   
- <xref:Microsoft.SqlServer.Server.Format>.`Native` zezwala programowi SQL Server do obsługi serializacji i deserializacji automatycznie, ale format ma ograniczeń dotyczących rodzaju typu, która może obsługiwać. <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` zezwala na typy zdefiniowane przez użytkownika i agregacji, obsługują własną serializację. Typy zdefiniowane przez użytkownika i agregacje nie muszą być oznaczone <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` w `SqlUserDefinedType` lub `SqlUserDefinedAggregate` oraz atrybut musi implementować <xref:Microsoft.SqlServer.Server.IBinarySerialize> interfejsu.  
+ <xref:Microsoft.SqlServer.Server.Format>.`Native` zezwala SQL Server na automatyczne obsługiwanie serializacji i deserializacji, ale format ma ograniczenia dotyczące rodzaju typów, które może obsłużyć. <xref:Microsoft.SqlServer.Server.Format>.`UserDefined` pozwala na obsługę własnych serializacji typów i agregacji zdefiniowanych przez użytkownika. Typy i agregacje zdefiniowane przez użytkownika muszą być oznaczone przy <xref:Microsoft.SqlServer.Server.Format>użyciu.`UserDefined` w atrybucie `SqlUserDefinedAggregate` <xref:Microsoft.SqlServer.Server.IBinarySerialize> lub i musi implementować interfejs. `SqlUserDefinedType`  
   
- Należy pamiętać, że nawet w przypadku niestandardowej serializacji, całkowity rozmiar każdego wystąpienia musi być w obszarze maksymalny dopuszczalny limit, obecnie 8000 bajtów.  
+ Należy pamiętać, że nawet w przypadku serializowania niestandardowego łączny rozmiar każdego wystąpienia musi być w maksymalnym dozwolonym limicie, obecnie 8000 bajtów.  
   
  ]]></format>
     </remarks>
@@ -61,18 +61,18 @@
         <Parameter Name="r" Type="System.IO.BinaryReader" />
       </Parameters>
       <Docs>
-        <param name="r"><see cref="T:System.IO.BinaryReader" /> Przesyłania strumieniowego, z którego deserializowany jest.</param>
-        <summary>Generuje typ zdefiniowany przez użytkownika (UDT) lub Agregacja zdefiniowana przez użytkownika na podstawie jego formy binarnej.</summary>
+        <param name="r"><see cref="T:System.IO.BinaryReader" /> Strumień, z którego jest deserializowany obiekt.</param>
+        <summary>Generuje typ zdefiniowany przez użytkownika (UDT) lub wartość zagregowaną zdefiniowaną przez użytkownika w postaci binarnej.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> Metody muszą odtworzenia obiektu przy użyciu informacji zapisanych przez <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> metody.  
+ Metoda musi ponownie stanowić Obiekt przy użyciu informacji pisanych <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> przez metodę. <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A>  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano implementację <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> metoda UDT, który używa <xref:System.IO.BinaryReader> można zdeserializować uprzednio utrwalonego UDT. W tym przykładzie założono, że UDT ma dwie właściwości danych: `StringValue` i `DoubleValue`.  
+ Poniższy przykład pokazuje implementację <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> metody UDT, która <xref:System.IO.BinaryReader> używa do deserializacji wcześniej utrwalonego UDT. W tym przykładzie przyjęto założenie, że UDT ma `StringValue` dwie `DoubleValue`właściwości danych: i.  
   
  [!code-csharp[DataWorks IBinarySerialize Samples#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#1)]
  [!code-vb[DataWorks IBinarySerialize Samples#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#1)]  
@@ -108,18 +108,18 @@
         <Parameter Name="w" Type="System.IO.BinaryWriter" />
       </Parameters>
       <Docs>
-        <param name="w"><see cref="T:System.IO.BinaryWriter" /> Strumień, do którego serializowany jest UDT lub agregacji zdefiniowanej przez użytkownika.</param>
-        <summary>Konwertuje typ zdefiniowany przez użytkownika (UDT) lub Agregacja zdefiniowana przez użytkownika na jego format binarny, dzięki czemu może zostać utrwalona.</summary>
+        <param name="w"><see cref="T:System.IO.BinaryWriter" /> Strumień, do którego jest serializowana wartość zagregowana lub agregacja zdefiniowana przez użytkownika.</param>
+        <summary>Konwertuje typ zdefiniowany przez użytkownika (UDT) lub wartość zagregowaną zdefiniowaną przez użytkownika na format binarny, dzięki czemu może być utrwalony.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zapisywanie informacji wystarczających do strumienia danych binarnych, aby umożliwić <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> metody do odtworzenia z UDT lub Agregacja zdefiniowana przez użytkownika.  
+ Zapisz wystarczające informacje do strumienia binarnego, aby umożliwić <xref:Microsoft.SqlServer.Server.IBinarySerialize.Read%2A> metodzie odtworzenia agregacji zdefiniowanej przez użytkownika.  
   
    
   
 ## Examples  
- W poniższym przykładzie pokazano implementację <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> metoda UDT, który używa <xref:System.IO.BinaryWriter> serializować UDT w formacie binarnym zdefiniowanych przez użytkownika. Dopełnienie znak null ma na celu upewnij się, że wartość ciągu jest całkowicie oddzielony od podwójna wartość tak, aby jeden UDT jest porównywana do innego w kodzie języka Transact-SQL, bajty ciągu są porównywane bajty ciągu i bajtów podwójne są porównywane z double Liczba bajtów.  
+ Poniższy przykład pokazuje implementację <xref:Microsoft.SqlServer.Server.IBinarySerialize.Write%2A> metody UDT, która <xref:System.IO.BinaryWriter> używa do serializacji UDT w formacie binarnym zdefiniowanym przez użytkownika. Celem dopełnienia znaku null jest upewnienie się, że wartość ciągu jest całkowicie oddzielona od wartości podwójnej, dzięki czemu jeden UDT jest porównywany z innym w kodzie Transact-SQL, bajty ciągu są porównywane z bajtami ciągu, a podwójne bajty są porównywane z Double szybkość.  
   
  [!code-csharp[DataWorks IBinarySerialize Samples#2](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/CS/source.cs#2)]
  [!code-vb[DataWorks IBinarySerialize Samples#2](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks IBinarySerialize Samples/VB/source.vb#2)]  

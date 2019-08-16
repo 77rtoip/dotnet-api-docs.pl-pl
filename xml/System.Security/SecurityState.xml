@@ -1,5 +1,5 @@
 <Type Name="SecurityState" FullName="System.Security.SecurityState">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ee39c9b8a439f9d4ac3e5db71f457bb3bc1b6de9" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56781192" /></Metadata><TypeSignature Language="C#" Value="public abstract class SecurityState" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="011df8cd5a661c18666906f987afb474f35269bc" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69161286" /></Metadata><TypeSignature Language="C#" Value="public abstract class SecurityState" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SecurityState extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Security.SecurityState" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class SecurityState" />
@@ -27,14 +27,14 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Udostępnia klasę bazową do żądania stanu zabezpieczeń akcję ze strony <see cref="T:System.AppDomainManager" /> obiektu.</summary>
+    <summary>Udostępnia klasę bazową do żądania stanu zabezpieczeń akcji z <see cref="T:System.AppDomainManager" /> obiektu.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użytkownik musi dziedziczyć z tej klasy, aby podać klasę, która zawiera właściwość, która określa akcję istotnymi dla zabezpieczeń do wykonania. <xref:System.Security.SecurityState> Obiekt, który zostanie uruchomiony z klasy pochodnej jest przekazywany do <xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> metodę pozwala ustalić, czy host zezwala na tę akcję do wykonania. Domyślna implementacja klasy <xref:System.AppDomainManager.CheckSecuritySettings%2A> metoda zawsze zwraca `false`.  Metoda musi zostać zastąpiona w celu wykrywania akcji, które są dozwolone.  
+ Należy dziedziczyć z tej klasy, aby zapewnić klasę, która zawiera właściwość, która określa działania związane z zabezpieczeniami, które mają zostać wykonane. Obiekt, który jest skonkretyzowany z klasy pochodnej, jest przesyłany <xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> do metody w celu ustalenia, czy host zezwala na wykonanie tej akcji. <xref:System.Security.SecurityState> Domyślna implementacja <xref:System.AppDomainManager.CheckSecuritySettings%2A> metody zawsze zwraca wartość `false`.  Metoda musi zostać zastąpiona w celu wykrycia akcji, które są dozwolone.  
   
- Na przykład, jeśli chcesz uzyskać dostęp kamery internetowej, w kodzie biblioteki, należy utworzyć `WebcamSecurityState` obiektu, a następnie wywołać <xref:System.Security.SecurityState.EnsureState%2A> metodę, aby określić, czy host zezwala na dostęp do aparatu sieci Web, jak pokazano w poniższym przykładzie.  (Można znaleźć kod `WebcamSecurityState` w sekcji "Przykład".)  
+ Na przykład jeśli chcesz uzyskać dostęp do kamery sieci Web w kodzie biblioteki, utworzysz `WebcamSecurityState` obiekt i Wywołaj metodę, <xref:System.Security.SecurityState.EnsureState%2A> aby określić, czy host zezwala na dostęp do kamery sieci Web, jak pokazano w poniższym przykładzie.  (Kod `WebcamSecurityState` można znaleźć w sekcji "przykład").  
   
 ```  
 WebcamSecurityState securityState = new WebcamSecurityState("Safe access to Webcam", WebcamSecurityOptions.SafeAccess);  
@@ -50,7 +50,7 @@ catch (ApplicationException e)
 }  
 ```  
   
- Przetwarzania wywołania <xref:System.AppDomainManager> musi być powiadamianym o `WebcamSecurityState` za pośrednictwem nadpisanie <xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> metodzie, jak pokazano w poniższym przykładzie.  
+ Aby przetworzyć wywołanie <xref:System.AppDomainManager> , musi być `WebcamSecurityState` świadome przesłonięcie <xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> metody, jak pokazano w poniższym przykładzie.  
   
 ```  
 [SecurityCritical]  
@@ -83,7 +83,7 @@ private bool PromptUser(string text)
    
   
 ## Examples  
- Poniższy przykład przedstawia sposób przesłonięcia <xref:System.Security.SecurityState> klasy.  
+ Poniższy przykład pokazuje, <xref:System.Security.SecurityState> jak zastąpić klasę.  
   
 ```  
 [SecurityCritical]  
@@ -113,7 +113,7 @@ public class WebcamSecurityState : SecurityState
   
  ]]></format>
     </remarks>
-    <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Nie można użyć tej klasy przez częściowo zaufany lub przejrzysty kod.</permission>
+    <permission cref="T:System.Security.SecurityCriticalAttribute">Wymaga pełnego zaufania do bezpośredniego obiektu wywołującego. Ta klasa nie może być używana przez częściowo zaufany lub przezroczysty kod.</permission>
     <permission cref="F:System.Security.Permissions.SecurityAction.InheritanceDemand">aby uzyskać pełne zaufanie dla obiektów dziedziczących. Klasa ta nie może być dziedziczona przez kod częściowo zaufany.</permission>
   </Docs>
   <Members>
@@ -168,7 +168,7 @@ public class WebcamSecurityState : SecurityState
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, zapewnia, że stan, który jest reprezentowany przez <see cref="T:System.Security.SecurityState" /> jest dostępna na hoście.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, zapewnia, że stan reprezentowany przez <see cref="T:System.Security.SecurityState" /> jest dostępny na hoście.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -218,15 +218,15 @@ public override void EnsureState()
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy stan dla tej implementacji <see cref="T:System.Security.SecurityState" /> klasy jest dostępna na bieżącym hoście.</summary>
-        <returns><see langword="true" /> Jeśli stan jest dostępna; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Pobiera wartość wskazującą, czy stan tej implementacji <see cref="T:System.Security.SecurityState" /> klasy jest dostępny na bieżącym hoście.</summary>
+        <returns><see langword="true" />Jeśli stan jest dostępny; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Security.SecurityState.IsStateAvailable%2A> wywołania <xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> metodę, aby określić, czy stan, który jest reprezentowany przez tę klasę jest dostępne na hoście.  
+ <xref:System.Security.SecurityState.IsStateAvailable%2A><xref:System.AppDomainManager.CheckSecuritySettings%2A?displayProperty=nameWithType> wywołuje metodę, aby określić, czy stan, który jest reprezentowany przez tę klasę, jest dostępny na hoście.  
   
- Zobacz <xref:System.Security.SecurityState> klasę z przykładem implementacji <xref:System.AppDomainManager.CheckSecuritySettings%2A> metody.  
+ Zapoznaj <xref:System.Security.SecurityState> się z klasą, aby zapoznać <xref:System.AppDomainManager.CheckSecuritySettings%2A> się z przykładową implementacją metody.  
   
  ]]></format>
         </remarks>
