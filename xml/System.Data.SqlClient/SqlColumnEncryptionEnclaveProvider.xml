@@ -1,5 +1,5 @@
 <Type Name="SqlColumnEncryptionEnclaveProvider" FullName="System.Data.SqlClient.SqlColumnEncryptionEnclaveProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0d8c6d8339cbde319a3e4a6540c118a4aa27f4ac" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63890498" /></Metadata><TypeSignature Language="C#" Value="public abstract class SqlColumnEncryptionEnclaveProvider" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ab7728433078f1517fa2e2a7c821e998379cfbce" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69369286" /></Metadata><TypeSignature Language="C#" Value="public abstract class SqlColumnEncryptionEnclaveProvider" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit SqlColumnEncryptionEnclaveProvider extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Data.SqlClient.SqlColumnEncryptionEnclaveProvider" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class SqlColumnEncryptionEnclaveProvider" />
@@ -14,12 +14,12 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Klasa bazowa, która definiuje interfejs dla enklawy dostawców dla funkcji Always Encrypted.</summary>
+    <summary>Klasa bazowa, która definiuje interfejs dla dostawców enklawy dla Always Encrypted.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Enklawa jest chroniony region pamięci w programie SQL Server używane do obliczeń w przypadku kolumn zaszyfrowanych. Dostawca enklawy hermetyzuje szczegóły dotyczące implementacji klienta protokołu zaświadczania enklawy, jak również logikę do tworzenia i buforowanie enklawy sesji.  
+ Enklawy jest chronionym regionem pamięci wewnątrz SQL Server używanym do obliczeń dla zaszyfrowanych kolumn. Dostawca enklawy hermetyzuje szczegóły implementacji po stronie klienta protokołu zaświadczania enklawy, a także logikę tworzenia i buforowania sesji enklawy.  
   
  ]]></format>
     </remarks>
@@ -38,7 +38,7 @@
       </AssemblyInfo>
       <Parameters />
       <Docs>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.SqlClient.SqlColumnEncryptionEnclaveProvider" /> klasy</summary>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Data.SqlClient.SqlColumnEncryptionEnclaveProvider" /> klasy</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -66,13 +66,13 @@
         <Parameter Name="counter" Type="System.Int64" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="enclaveAttestationInfo">Informacje o dostawcy korzysta z zaświadczania enklawy i generowanie klucza symetrycznego w sesji. Format tych informacji jest specyficzne dla protokołu zaświadczania enklawy.</param>
-        <param name="clientDiffieHellmanKey">Obiekt algorytmu Diffie-Hellman, który hermetyzuje parę kluczy po stronie klienta.</param>
-        <param name="attestationUrl">Punkt końcowy usługi zaświadczania zaświadczania enklawy.</param>
-        <param name="servername">Nazwa wystąpienia programu SQL Server, zawierający enklawy.</param>
-        <param name="sqlEnclaveSession">Sesji żądanego enklawy lub <see langword="null" /> Jeśli dostawca nie implementuje się buforowanie sesji.</param>
-        <param name="counter">Licznik, że dostawca enklawy oczekuje się, Zwiększ każdorazowo SqlClient pobiera sesji z pamięci podręcznej. To pole ma na celu zapobieganie atakom metodą powtórzeń.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wykonuje zaświadczania enklawy, wygenerowaniu klucza symetrycznego dla sesji, tworzy sesji enklawy i przechowuje informacje o sesji w pamięci podręcznej.</summary>
+        <param name="enclaveAttestationInfo">Informacje wykorzystywane przez dostawcę do zaświadczania enklawy i wygenerowania klucza symetrycznego dla sesji. Format tych informacji jest specyficzny dla protokołu zaświadczania enklawy.</param>
+        <param name="clientDiffieHellmanKey">Obiekt algorytmu Diffie-Hellmana, który hermetyzuje parę kluczy po stronie klienta.</param>
+        <param name="attestationUrl">Punkt końcowy usługi zaświadczania na potrzeby zaświadczania enklawy.</param>
+        <param name="servername">Nazwa wystąpienia SQL Server zawierającego enklawy.</param>
+        <param name="sqlEnclaveSession">Żądana sesja enklawy lub <see langword="null" /> dostawca nie implementuje buforowania sesji.</param>
+        <param name="counter">Licznik, który powinien zostać zwiększony przez dostawcę enklawy za każdym razem, gdy klient pobiera sesję z pamięci podręcznej. Celem tego pola jest zapobieganie atakom metodą powtórzeń.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, wykonuje zaświadczanie enklawy, generuje klucz symetryczny dla sesji, tworzy sesję enklawy i zapisuje informacje o sesji w pamięci podręcznej.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -93,8 +93,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera informacje, których SqlClient używa później, aby zainicjować proces zaświadczania enklawy i nawiązywania bezpiecznej sesji przy użyciu enklawy.</summary>
-        <returns>Informacje SqlClient używa później, aby zainicjować proces zaświadczania enklawy i nawiązywania bezpiecznej sesji przy użyciu enklawy.</returns>
+        <summary>Pobiera informacje, które następnie używają klient do zainicjowania procesu zaświadczania enklawy i ustanowienia bezpiecznej sesji z enklawy.</summary>
+        <returns>Informacje dotyczące korzystania z tej procedury klient inicjuje proces zaświadczania enklawy i ustanowienia bezpiecznej sesji z enklawy.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -120,11 +120,11 @@
         <Parameter Name="counter" Type="System.Int64" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="serverName">Nazwa wystąpienia programu SQL Server, zawierający enklawy.</param>
-        <param name="attestationUrl">Punkt końcowy usługi zaświadczania o kontakty SqlClient zaświadczania enklawy.</param>
-        <param name="sqlEnclaveSession">Po powrocie z tej metody sesji żądanego enklawy lub <see langword="null" /> Jeśli dostawca nie implementuje się buforowanie sesji. Ten parametr jest traktowany jako niezainicjowany.</param>
-        <param name="counter">Licznik, że dostawca enklawy oczekuje się, Zwiększ każdorazowo SqlClient pobiera sesji z pamięci podręcznej. To pole ma na celu zapobieganie atakom metodą powtórzeń.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wyszukuje istniejących enklawy informacji o sesji w pamięci podręcznej sesji enklawy. Jeśli dostawca enklawy nie implementuje buforowanie sesji enklawy, ta metoda powinien zwrócić <see langword="null" /> w <paramref name="sqlEnclaveSession" /> parametru.</summary>
+        <param name="serverName">Nazwa wystąpienia SQL Server zawierającego enklawy.</param>
+        <param name="attestationUrl">Punkt końcowy usługi zaświadczania, kontakty SqlClient, aby zaświadczyć enklawy.</param>
+        <param name="sqlEnclaveSession">Gdy ta metoda zwraca, żądana sesja enklawy lub <see langword="null" /> dostawca nie implementuje buforowania sesji. Ten parametr jest traktowany jako niezainicjowany.</param>
+        <param name="counter">Licznik, który powinien zostać zwiększony przez dostawcę enklawy za każdym razem, gdy klient pobiera sesję z pamięci podręcznej. Celem tego pola jest zapobieganie atakom metodą powtórzeń.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, wyszukuje istniejące informacje sesji enklawy w pamięci podręcznej sesji enklawy. Jeśli dostawca enklawy nie implementuje buforowania sesji enklawy, Metoda ta powinna zostać zwrócona <see langword="null" /> <paramref name="sqlEnclaveSession" /> w parametrze.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -149,10 +149,10 @@
         <Parameter Name="enclaveSession" Type="System.Data.SqlClient.SqlEnclaveSession" />
       </Parameters>
       <Docs>
-        <param name="serverName">Nazwa wystąpienia programu SQL Server, zawierający enklawy.</param>
-        <param name="enclaveAttestationUrl">Punkt końcowy usługi zaświadczania o kontakty SqlClient zaświadczania enklawy.</param>
-        <param name="enclaveSession">Sesja unieważnienia.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wyszukuje i wyklucza mogą sesję enklawy z pamięci podręcznej sesji enklawy, jeśli dostawca implementuje buforowanie sesji.</summary>
+        <param name="serverName">Nazwa wystąpienia SQL Server zawierającego enklawy.</param>
+        <param name="enclaveAttestationUrl">Punkt końcowy usługi zaświadczania, kontakty SqlClient, aby zaświadczyć enklawy.</param>
+        <param name="enclaveSession">Sesja ma zostać unieważniona.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, wyszukuje i wyklucza sesję enklawy z pamięci podręcznej sesji enklawy, jeśli dostawca implementuje buforowanie sesji.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
