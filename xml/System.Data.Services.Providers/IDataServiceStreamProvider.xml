@@ -1,5 +1,5 @@
 <Type Name="IDataServiceStreamProvider" FullName="System.Data.Services.Providers.IDataServiceStreamProvider">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="15a22d971b5923cf9c1cdb859aada6441d2157b4" /><Meta Name="ms.sourcegitcommit" Value="1bb00d2f4343e73ae8d58668f02297a3cf10a4c1" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="06/15/2019" /><Meta Name="ms.locfileid" Value="63890943" /></Metadata><TypeSignature Language="C#" Value="public interface IDataServiceStreamProvider" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="f49e3b6ce7c30bd1441e58b93612fbfb9ffde23e" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69124267" /></Metadata><TypeSignature Language="C#" Value="public interface IDataServiceStreamProvider" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IDataServiceStreamProvider" />
   <TypeSignature Language="DocId" Value="T:System.Data.Services.Providers.IDataServiceStreamProvider" />
   <TypeSignature Language="VB.NET" Value="Public Interface IDataServiceStreamProvider" />
@@ -12,16 +12,16 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Umożliwia danych binarnych będzie mieć dostęp i zmieniać zasobu multimediów, który należy do jednostki, która jest wpisu łącza nośnika.</summary>
+    <summary>Umożliwia dostęp do danych binarnych i zmianę ich jako zasobu multimedialnego, który należy do jednostki, która jest pozycją linku do nośnika.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Open Data Protocol (OData) umożliwia właściwość danych binarnych udostępnianych przez usługę danych, należy zdefiniować niezależnie od wpis w źródle, przy użyciu mechanizmu, w oparciu o następujące konstrukcje danych jednostki:  
+ Protokół Open Data Protocol (OData) umożliwia definiowanie właściwości danych binarnych jednostki udostępnionej przez usługę danych niezależnie od wpisu w strumieniowym źródle danych przy użyciu mechanizmu opartego na następujących konstrukcjach:  
   
--   Zasób — dane dużych obiektów binarnych, będącego danych binarnych, takich jak wideo, audio, obrazu lub inne zasoby multimediów.  
+-   Zasób multimedialny — dane binarne dużego obiektu, które są danymi binarnymi, takie jak wideo, audio, obrazy lub inne zasoby multimedialne.  
   
--   Wpis łącza do nośnika — AtomPub wpis w źródle danych, który reprezentuje jednostkę i ma odwołanie do powiązanych zasobów nośników.  
+-   Wpis multimediów — wpis AtomPub w strumieniu danych, który reprezentuje jednostkę i która ma odwołanie do powiązanego zasobu multimedialnego.  
   
  Aby uzyskać więcej informacji, zobacz [dostawca przesyłania strumieniowego](~/docs/framework/data/wcf/streaming-provider-wcf-data-services.md).  
   
@@ -50,20 +50,20 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Link do multimediów wpis, który został usunięty.</param>
-        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienia, która przetwarza żądania.</param>
-        <summary>Usuwa zasób nośnika skojarzony usunięcie wpisu łącza nośnika.</summary>
+        <param name="entity">Usunięty wpis łącza do nośnika.</param>
+        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie, które przetwarza żądanie.</param>
+        <summary>Usuwa skojarzony zasób multimedialny, gdy zostanie usunięty wpis linku do nośnika.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.DeleteStream%2A> Metoda zawiera implementację można usunąć zasobu multimediów, gdy jego skojarzony nośnika wpisu łącza nośnika są usuwane z usługi danych. Aby uzyskać więcej informacji, zobacz [dostawca przesyłania strumieniowego](~/docs/framework/data/wcf/streaming-provider-wcf-data-services.md).  
+ <xref:System.Data.Services.Providers.IDataServiceStreamProvider.DeleteStream%2A> Metoda zapewnia implementację do usuwania zasobu multimedialnego, gdy skojarzony z nim wpis multimediów zostanie usunięty z usługi danych. Aby uzyskać więcej informacji, zobacz [dostawca przesyłania strumieniowego](~/docs/framework/data/wcf/streaming-provider-wcf-data-services.md).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException">Gdy <paramref name="entity" /> lub <paramref name="operationContext" /> są <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Gdy <paramref name="entity" /> lub <paramref name="operationContext" /> są .<see langword="null" /></exception>
         <exception cref="T:System.ArgumentException">Gdy <paramref name="entity" /> nie jest jednostką, która ma właściwość binarną do strumienia.</exception>
-        <exception cref="T:System.Data.Services.DataServiceException">Kiedy strumień skojarzone z <paramref name="entity" /> nie można jej usunąć.</exception>
+        <exception cref="T:System.Data.Services.DataServiceException">Nie można usunąć strumienia skojarzonego z <paramref name="entity" /> tym elementem.</exception>
       </Docs>
     </Member>
     <Member MemberName="GetReadStream">
@@ -89,25 +89,25 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Jednostka, która nośników link wpis o powiązanych zasobów nośników.</param>
-        <param name="etag">Wartość elementu eTag wysłać jako część żądania HTTP, które są wysyłane do usługi danych.</param>
-        <param name="checkETagForEquality">Dopuszczający wartości null <see cref="T:System.Boolean" /> wartość, która określa, czy usługi danych należy typ element eTag, który jest używany.</param>
-        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienia używanego przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca strumień, który zawiera dane zasobu multimediów dla określonej jednostki, która jest wpisu łącza nośnika.</summary>
-        <returns>Dane <see cref="T:System.IO.Stream" /> zawierający dane binarne właściwość <paramref name="entity" />.</returns>
+        <param name="entity">Jednostka będąca pozycją linku do nośnika z powiązanym zasobem multimediów.</param>
+        <param name="etag">Wartość eTag wysyłana w ramach żądania HTTP, które jest wysyłane do usługi danych.</param>
+        <param name="checkETagForEquality">Wartość null <see cref="T:System.Boolean" /> , która określa, czy usługa danych musi być używanym typem elementu ETag.</param>
+        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie używane przez usługę danych do przetwarzania żądania.</param>
+        <summary>Zwraca strumień zawierający dane zasobu multimedialnego dla określonej jednostki, która jest wpisem linku do nośnika.</summary>
+        <returns>Dane <see cref="T:System.IO.Stream" /> zawierające dane <paramref name="entity" />binarne właściwości.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- `eTag` jest wartością nagłówek If-Match lub If-None-Match. Obsługiwane są następujące wartości:  
+ `eTag`jest wartością nagłówka If-Match lub If-None-Match. Obsługiwane są następujące wartości:  
   
--   `true` -Jeśli element eTag reprezentuje nagłówek If-Match.  
+-   `true`— gdy element eTag reprezentuje nagłówek if-Match.  
   
--   `false` -Jeśli element eTag reprezentuje nagłówek If-None-Match.  
+-   `false`— gdy element eTag reprezentuje nagłówek If-None-Match.  
   
--   `null` -Jeśli nagłówek If-Match lub If-None-Match nie jest obecne w żądaniu.  
+-   `null`— gdy nagłówek if-Match lub If-None-Match nie występuje w żądaniu.  
   
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStream%2A> Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych można uzyskać strumienia, który Usługa danych zwraca do klienta, gdy klient żąda zasobu multimediów dla określonego `entity`, który jest nośnika wpisu łącza. Aby uzyskać więcej informacji, zobacz [dostawca przesyłania strumieniowego](~/docs/framework/data/wcf/streaming-provider-wcf-data-services.md).  
+ Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych w celu uzyskania strumienia, który usługa danych powraca do klienta, gdy klient żąda zasobu multimedialnego dla określonego `entity`, który jest wpisem linku do nośnika. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStream%2A> Aby uzyskać więcej informacji, zobacz [dostawca przesyłania strumieniowego](~/docs/framework/data/wcf/streaming-provider-wcf-data-services.md).  
   
  ]]></format>
         </remarks>
@@ -134,19 +134,19 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Jednostka, która nośników link wpis o powiązanych zasobów nośników.</param>
-        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienia używanego przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca identyfikator URI, który jest używany do żądania zasobu multimediów, który należy do określonej jednostki.</summary>
-        <returns>A <see cref="T:System.Uri" /> wartość, która służy do żądania strumienia danych binarnych.</returns>
+        <param name="entity">Jednostka będąca pozycją linku do nośnika z powiązanym zasobem multimediów.</param>
+        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie używane przez usługę danych do przetwarzania żądania.</param>
+        <summary>Zwraca identyfikator URI, który jest używany do żądania zasobu nośnika, który należy do określonej jednostki.</summary>
+        <returns><see cref="T:System.Uri" /> Wartość, która jest używana do żądania strumienia danych binarnych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStreamUri%2A> Metoda jest wywoływana przez środowisko wykonawcze usług danych, aby uzyskać identyfikator URI, który klienci powinni używać podczas tworzenia pobieranie (czyli GET) żądania dla zasobu multimediów.  
+ <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStreamUri%2A> Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych w celu uzyskania identyfikatora URI, który powinien być używany przez klientów podczas pobierania (czyli pobierania) żądań dla zasobu multimedialnego.  
   
- <xref:System.Uri> Wartość zwrócona przez obiekt <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStreamUri%2A> implementacja metody jest używany jako nośnika Edytuj łącze w wpisu łącza nośnika znajdują się informacje lokalizacji zasobu multimediów.  
+ Wartość zwracana przez implementację metody jest używana jako link Edit-Media we wpisie linku do nośnika, aby odwoływać się do lokalizacji zasobu multimedialnego. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetReadStreamUri%2A> <xref:System.Uri>  
   
- Podczas implementacji metody zwraca wartość null, Usługa danych będzie konstruowania domyślny <xref:System.Uri>, który jest zazwyczaj identyfikator URI jednostki z dołączonym `/$value`.  
+ Gdy implementacja metody zwraca wartość null, usługa danych utworzy domyślną <xref:System.Uri>wartość, która jest zazwyczaj identyfikatorem URI jednostki dołączonej. `/$value`  
   
  ]]></format>
         </remarks>
@@ -173,15 +173,15 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Jednostka, która nośników link wpis o powiązanych zasobów nośników.</param>
-        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienia używanego przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca typ zawartości zasobu multimediów, który należy do określonej jednostki.</summary>
-        <returns>Nieprawidłowy typ zawartości danych binarnych.</returns>
+        <param name="entity">Jednostka będąca pozycją linku do nośnika z powiązanym zasobem multimediów.</param>
+        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie używane przez usługę danych do przetwarzania żądania.</param>
+        <summary>Zwraca typ zawartości zasobu multimedialnego, który należy do określonej jednostki.</summary>
+        <returns>Prawidłowy typ zawartości danych binarnych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamContentType%2A> Metoda jest wywoływana przez środowisko wykonawcze usług danych do pobrania Content-Type zasób nośnika, który należy do określonego `entity`. Użyj <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamContentType%2A> implementacji metody, aby ustawić właściwość Content-Type zasobu multimediów. Nie należy bezpośrednio ustawiać nagłówek Content-Type w swojej <xref:System.Data.Services.Providers.IDataServiceStreamProvider> implementacja dostawcy.  
+ Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych w celu pobrania typu zawartości zasobu multimedialnego, który należy do określonego `entity`. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamContentType%2A> Użyj implementacji <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamContentType%2A> metody, aby ustawić typ zawartości zasobu multimedialnego. Nie ustawiaj bezpośrednio nagłówka Content-Type w <xref:System.Data.Services.Providers.IDataServiceStreamProvider> implementacji dostawcy.  
   
  ]]></format>
         </remarks>
@@ -208,17 +208,17 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Jednostka, która nośników link wpis o powiązanych zasobów nośników.</param>
-        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienia używanego przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca element eTag dla zasobu multimediów, który należy do określonego nośnika wpisu łącza.</summary>
-        <returns>Element eTag skojarzone z zasobu multimediów <paramref name="entity" />.</returns>
+        <param name="entity">Jednostka będąca pozycją linku do nośnika z powiązanym zasobem multimediów.</param>
+        <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie używane przez usługę danych do przetwarzania żądania.</param>
+        <summary>Zwraca element eTag zasobu multimedialnego, który należy do określonego wpisu nośnika.</summary>
+        <returns>element eTag zasobu multimedialnego skojarzonego z <paramref name="entity" />.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamETag%2A> Metoda jest wywoływana przez środowisko wykonawcze usług danych, można pobrać element eTag dla zasobu multimediów, który jest skojarzony z `entity`.  
+ Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych w celu pobrania elementu ETag zasobu multimedialnego, który jest skojarzony `entity`z. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamETag%2A>  
   
- Musisz zaimplementować <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamETag%2A> metodę, aby włączyć usługę danych zarządzać współbieżności dla zasobu multimediów.  
+ Należy zaimplementować <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetStreamETag%2A> metodę, aby umożliwić usłudze danych Zarządzanie współbieżnością dla zasobu multimedialnego.  
   
  ]]></format>
         </remarks>
@@ -247,45 +247,45 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entity">Jednostka, która nośników link wpis o powiązanych zasobów nośników.</param>
-        <param name="etag">Wartość elementu eTag, który jest wysyłany jako część żądania HTTP, które są wysyłane do usługi danych.</param>
-        <param name="checkETagForEquality">Dopuszczający wartości null <see cref="T:System.Boolean" /> wartość, która wskazuje typ kontroli współbieżności zażądane przez klienta.</param>
+        <param name="entity">Jednostka będąca pozycją linku do nośnika z powiązanym zasobem multimediów.</param>
+        <param name="etag">Wartość eTag, która jest wysyłana w ramach żądania HTTP, które jest wysyłane do usługi danych.</param>
+        <param name="checkETagForEquality">Wartość null <see cref="T:System.Boolean" /> , która wskazuje typ sprawdzania współbieżności żądanego przez klienta.</param>
         <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie, które jest używane przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca strumień, z których korzysta usługa danych do zapisywania danych binarnych dla zasobu multimediów, odebrane od klienta, który należy do określonej jednostki.</summary>
-        <returns>Nieprawidłowy <see cref="T:System.IO.Stream" /> używa do zapisywania zawartości danych binarnych, odebrane od klienta usługi danych.</returns>
+        <summary>Zwraca strumień, którego usługa danych używa do zapisywania danych binarnych dla zasobu nośnika otrzymanego od klienta należącego do określonej jednostki.</summary>
+        <returns>Prawidłowa <see cref="T:System.IO.Stream" /> usługa danych używa do zapisywania zawartości danych binarnych otrzymanych od klienta.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> Metoda jest wywoływana przez obsługi usługi danych, gdy wstawiania lub Trwa przetwarzanie operacji aktualizacji dla zasobu multimediów, który jest skojarzony z `entity`.  
+ Metoda jest wywoływana przez środowisko uruchomieniowe usługi danych po przetworzeniu operacji wstawiania lub aktualizacji dla zasobu multimedialnego skojarzonego `entity`z. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A>  
   
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> Metoda nigdy nie powinna zwracać `null` wartość.  
+ Metoda nigdy nie powinna `null` zwracać wartości. <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A>  
   
- `operationContext` Jest dostarczany jako argument, ponieważ implementujący tej metody interfejsu będzie potrzebować informacji z nagłówków żądań HTTP do tworzenia strumienia zapisu. Podczas implementowania tej metody należy wykonać kontroli współbieżności, zgodnie z potrzebami. Jeśli nagłówek żądania If-Match lub If-None-Match został uwzględniony w żądaniu, `etag` nie będzie `null`. W przypadku tej metody należy wykonać wyboru odpowiedniej współbieżności. Jeśli wyboru współbieżność zakończy się pomyślnie, ta metoda powinna zwracać żądany strumień. Jeśli współbieżność sprawdza, czy niepowodzeniem, powinny wywoływać metodę <xref:System.Data.Services.DataServiceException> odpowiedni kod odpowiedzi HTTP.  
+ `operationContext` Podano jako argument, ponieważ implementacja tego interfejsu wymaga informacji z nagłówków żądań HTTP w celu utworzenia strumienia zapisu. Podczas implementowania tej metody należy wykonać sprawdzanie współbieżności zgodnie z wymaganiami. Jeśli w żądaniu uwzględniono nagłówek żądania if-Match lub If-None-Match, nie będzie to `etag` możliwe. `null` W takim przypadku ta metoda musi wykonać odpowiednie sprawdzanie współbieżności. Jeśli sprawdzanie współbieżności przebiega, ta metoda powinna zwrócić żądany strumień. Jeśli sprawdzanie współbieżności nie powiedzie się, metoda powinna <xref:System.Data.Services.DataServiceException> podnieść obiekt z odpowiednim kodem odpowiedzi HTTP.  
   
- `eTag` jest wartością nagłówek If-Match lub If-None-Match.  
+ `eTag`jest wartością nagłówka If-Match lub If-None-Match.  
   
- Następujące wartości `checkETagForEquality` są obsługiwane:  
+ Obsługiwane `checkETagForEquality` są następujące wartości:  
   
--   `true` -Jeśli element eTag reprezentuje nagłówek If-Match.  
+-   `true`— gdy element eTag reprezentuje nagłówek if-Match.  
   
--   `false` -Jeśli element eTag reprezentuje nagłówek If-None-Match.  
+-   `false`— gdy element eTag reprezentuje nagłówek If-None-Match.  
   
--   `null` -Jeśli nagłówek If-Match lub If-None-Match nie jest obecne w żądaniu.  
+-   `null`— gdy nagłówek if-Match lub If-None-Match nie występuje w żądaniu.  
   
- Po zaimplementowaniu tej metody, nie należy ustawić Content-Type lub element eTag nagłówków odpowiedzi HTTP, ponieważ są one ustalane przez środowisko wykonawcze usług danych. Możesz ustawić pozostałych nagłówków odpowiedzi HTTP przy użyciu podane `operationContext`.  
+ Podczas implementowania tej metody nie należy ustawiać nagłówków odpowiedzi HTTP typu Content-Type ani eTag, ponieważ są one ustawiane przez środowisko uruchomieniowe usługi danych. Pozostałe nagłówki odpowiedzi HTTP można ustawić przy użyciu podanej `operationContext`wartości.  
   
- Po zaimplementowaniu tej metody, właściwości tylko należy ustawić na `operationContext` , które są wymagane w przypadku pomyślnej odpowiedzi. Zmienianie innych właściwości w `operationContext` może spowodować uszkodzenie odpowiedź z usługi danych.  
+ Podczas implementowania tej metody należy ustawić tylko te właściwości `operationContext` , które są wymagane do pomyślnej odpowiedzi. Zmiana innych właściwości na `operationContext` może spowodować uszkodzenie odpowiedzi z usługi danych.  
   
- Środowisko wykonawcze usług danych zamyka strumienia, gdy wszystkie bajty zostały pomyślnie zapisane w strumieniu. Jeśli wystąpi błąd podczas zapisywania do strumienia, Usługa danych generuje odpowiedź o błędzie do klienta.  
+ Środowisko uruchomieniowe usługi danych zamyka strumień, gdy wszystkie bajty zostały pomyślnie zapisany w strumieniu. Jeśli wystąpi błąd podczas zapisywania do strumienia, usługa danych generuje odpowiedź na błąd klienta.  
   
- Podczas implementacji <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> metody powinny wywoływać następujące wyjątki, jak wskazano:  
+ Podczas implementowania <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> metody należy podnieść następujące wyjątki, jak wskazano:  
   
 |Typ wyjątku|Warunek|  
 |--------------------|---------------|  
-|<xref:System.ArgumentNullException>|Gdy `entity` lub `operationContext` są `null`.|  
-|<xref:System.ArgumentException>|Gdy `entity` nie ma właściwości binarnych.|  
-|<xref:System.Data.Services.DataServiceException>|Gdy nie można zwrócić prawidłową strumienia.|  
+|<xref:System.ArgumentNullException>|Gdy `entity` lub `operationContext` są .`null`|  
+|<xref:System.ArgumentException>|Gdy `entity` nie ma właściwości Binary.|  
+|<xref:System.Data.Services.DataServiceException>|Gdy nie można zwrócić prawidłowego strumienia.|  
   
  ]]></format>
         </remarks>
@@ -312,22 +312,22 @@
         <Parameter Name="operationContext" Type="System.Data.Services.DataServiceOperationContext" />
       </Parameters>
       <Docs>
-        <param name="entitySetName">Jednostki w pełni kwalifikowana nazwa zestawu.</param>
+        <param name="entitySetName">W pełni kwalifikowana nazwa zestawu jednostek.</param>
         <param name="operationContext"><see cref="T:System.Data.Services.DataServiceOperationContext" /> Wystąpienie, które jest używane przez usługę danych do przetwarzania żądania.</param>
-        <summary>Zwraca nazwę kwalifikowaną przestrzeń nazw typu, który reprezentuje typ, który środowiska uruchomieniowego usługi danych należy utworzyć dla wpisu łącza nośnika, skojarzony ze strumieniem danych dla zasobu multimediów, który jest wstawiany.</summary>
-        <returns>Przestrzeń nazw kwalifikowaną nazwę typu.</returns>
+        <summary>Zwraca nazwę typu kwalifikowanego przestrzeni nazw reprezentującą typ, który musi zostać utworzony przez środowisko uruchomieniowe usługi danych dla wpisu linku do nośnika skojarzonego ze strumieniem danych w przypadku wstawianego zasobu multimedialnego.</summary>
+        <returns>Kwalifikowana nazwa typu w przestrzeni nazw.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Data.Services.Providers.IDataServiceStreamProvider.ResolveType%2A> Metoda jest wywoływana przez usługę danych, gdy nowe jednostki, która jest wpisu łącza nośnika jest tworzona razem z jej zasobu multimediów. Implementujący tej metody należy sprawdzić nagłówki żądania w `operationContext` i zwracają w przestrzeni nazw kwalifikowana nazwa typu, który reprezentuje typ, który utworzyć środowisko wykonawcze usług danych do utworzenia nośnika wpisu łącza, który jest skojarzony z nowego nośnika zasób. Ciąg, który reprezentuje nazwę tego typu jest przekazywany do <xref:System.Data.Services.IUpdatable.CreateResource%2A> metodę w celu utworzenia nośnika wpisu łącza.  
+ <xref:System.Data.Services.Providers.IDataServiceStreamProvider.ResolveType%2A> Metoda jest wywoływana przez usługę danych w przypadku tworzenia nowej jednostki, która jest pozycją linku do nośnika, wraz z jej zasobem multimedialnym. Implementacja tej metody musi sprawdzać nagłówki żądań w `operationContext` i zwracać nazwę typu kwalifikowanego przestrzeni nazw, która reprezentuje typ, który musi utworzyć wystąpienie środowiska uruchomieniowego usługi danych zasoby. Ciąg, który reprezentuje tę nazwę typu, jest przesyłany <xref:System.Data.Services.IUpdatable.CreateResource%2A> do metody w celu utworzenia wpisu nośnika.  
   
- Podczas implementacji <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> metody powinny wywoływać następujące wyjątki, jak wskazano:  
+ Podczas implementowania <xref:System.Data.Services.Providers.IDataServiceStreamProvider.GetWriteStream%2A> metody należy podnieść następujące wyjątki, jak wskazano:  
   
 |Typ wyjątku|Warunek|  
 |--------------------|---------------|  
 |<xref:System.ArgumentNullException>|Gdy `operationContext` jest `null`.|  
-|<xref:System.Data.Services.DataServiceException>|Nie można rozpoznać po nazwie typu jednostki na podstawie `operationContext`.|  
+|<xref:System.Data.Services.DataServiceException>|Gdy nie można rozpoznać nazwy typu jednostki na podstawie `operationContext`.|  
   
  ]]></format>
         </remarks>
@@ -351,12 +351,12 @@
       </ReturnValue>
       <Docs>
         <summary>Pobiera rozmiar buforu strumienia.</summary>
-        <value>Liczba całkowita, która reprezentuje rozmiar buforu.</value>
+        <value>Liczba całkowita reprezentująca rozmiar buforu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Domyślny rozmiar buforu to 64 KB.  
+ Domyślny rozmiar buforu to 64 KB bajtów.  
   
  ]]></format>
         </remarks>
