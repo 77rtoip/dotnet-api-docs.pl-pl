@@ -1,5 +1,5 @@
 <Type Name="NetCodeGroup" FullName="System.Security.Policy.NetCodeGroup">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="ca0ce8da4d574b318dd7315c7303498d9b632aab" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56791384" /></Metadata><TypeSignature Language="C#" Value="public sealed class NetCodeGroup : System.Security.Policy.CodeGroup" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="b1fbaf25fda7f26c1371a8e71838b5048406cb2d" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69163031" /></Metadata><TypeSignature Language="C#" Value="public sealed class NetCodeGroup : System.Security.Policy.CodeGroup" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit NetCodeGroup extends System.Security.Policy.CodeGroup" />
   <TypeSignature Language="DocId" Value="T:System.Security.Policy.NetCodeGroup" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class NetCodeGroup&#xA;Inherits CodeGroup" />
@@ -31,32 +31,32 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Przyznaje uprawnienia do lokacji, z której zestaw został pobrany w sieci Web. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Przyznaje uprawnienia sieci Web do witryny, z której został pobrany zestaw. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Grupy kodu są blokami konstrukcyjnymi zasady zabezpieczeń dostępu kodu. Każdy poziom zasad składa się z korzenia grupy kodu, który może mieć jedną lub więcej podrzędnych grup kodu. Każda podrzędna grupę kodu może mieć własne podrzędne grupy kodu; to zachowanie rozszerza się na dowolną liczbę poziomów, tworzących drzewa. Każda grupa kodu posiada warunek członkostwa, który określa, czy dany zestaw należy do grupy, na podstawie dowodów dla tego zestawu. Tylko grupy kodu, których warunki członkostwa odpowiadają danego zestawu, wraz z ich podrzędne grupy kodu, mają zastosowanie zasady zabezpieczeń dostępu kodu.  
+ Grupy kodu są blokami konstrukcyjnymi zasad zabezpieczeń dostępu kodu. Każdy poziom zasad składa się z głównej grupy kodów, która może mieć jedną lub więcej podrzędnych grup kodów. Każda grupa kodów podrzędnych może mieć własne podrzędne grupy kodów; to zachowanie rozciąga się na dowolną liczbę poziomów, tworząc drzewo. Każda grupa kodu ma warunek członkostwa, który określa, czy dany zestaw należy do grupy, na podstawie dowodów dla tego zestawu. Należy zastosować zasady zabezpieczeń dostępu kodu tylko do grup kodu, których warunki członkostwa pasują do danego zestawu, wraz z ich podrzędnymi grupami kodów.  
   
- <xref:System.Security.Policy.NetCodeGroup> ma tą samą semantyką scalania jak w przypadku <xref:System.Security.Policy.UnionCodeGroup>; wchodzi w skład sumę <xref:System.Security.Policy.PolicyStatement> obiekty podrzędne wszystkich zgodnych grup kodów i <xref:System.Security.Policy.PolicyStatement> generuje on z danych wejściowych <xref:System.Security.Policy.Url> dowodów. Jednak <xref:System.Security.Policy.NetCodeGroup> zwraca uprawnienia zawierające dynamicznie obliczeniowego <xref:System.Net.WebPermission> przyznaje nawiązywać połączenie za dostęp do witryny, z którego jest uruchamiany kod; <xref:System.Security.Policy.UnionCodeGroup> po prostu zwraca zestaw uprawnień statyczne.  
+ <xref:System.Security.Policy.NetCodeGroup>ma tę samą semantykę scalania, która jest <xref:System.Security.Policy.UnionCodeGroup>taka sama, jak ta, stanowi <xref:System.Security.Policy.PolicyStatement> związek obiektów wszystkich zgodnych <xref:System.Security.Policy.PolicyStatement> podrzędnych grup kodu i generuje je z dowodu <xref:System.Security.Policy.Url> wejściowego. Jednakże zwraca uprawnienie zawierające dynamiczne obliczenie <xref:System.Net.WebPermission> , które przyznaje dostęp do lokacji, z której jest uruchamiany kod; <xref:System.Security.Policy.NetCodeGroup> <xref:System.Security.Policy.UnionCodeGroup> po prostu zwraca statyczny zestaw uprawnień.  
   
- Gdy <xref:System.Security.Policy.NetCodeGroup> jest utworzona, zawiera domyślne reguły dostępu do połączenia, pokazano w poniższej tabeli.  
+ <xref:System.Security.Policy.NetCodeGroup> Gdy jest tworzony, zawiera domyślne reguły dostępu do połączeń pokazane w poniższej tabeli.  
   
 |Schemat identyfikatora URI|Reguła|  
 |----------------|----------|  
-|plik|Nie dostępu do połączenia z serwerem źródłowym jest dozwolone.|  
-|http|HTTP i HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
-|https|HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
+|plik|Brak dostępu do połączenia z serwerem pochodzenia jest dozwolony.|  
+|http|Dostęp do protokołu HTTP i HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
+|https|Dostęp HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
   
- Można kontrolować schemat i port, który kod jest dozwolony do użycia podczas łączenia z powrotem do witryny pochodzenia, przekazując <xref:System.Security.Policy.CodeConnectAccess> obiektu z odpowiednim <xref:System.Security.Policy.CodeConnectAccess.Scheme%2A> i <xref:System.Security.Policy.CodeConnectAccess.Port%2A> wartości właściwości do <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody. Można utworzyć regułę dostępu połączenia, która ma zastosowanie, gdy schemat pochodzenia nie jest obecny w dowód lub nie jest rozpoznawane przez określenie <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> ("") jako systemu. Można również utworzyć połączenie regułę dostępu, który ma zastosowanie, gdy nie ma połączenia dostępu reguły ze schematem zgodne, określając <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> ("*") jako systemu.  
+ Można kontrolować schemat i port, do którego kod może być używany podczas nawiązywania połączenia z lokacją źródłową, <xref:System.Security.Policy.CodeConnectAccess> przekazując obiekt z <xref:System.Security.Policy.CodeConnectAccess.Port%2A> odpowiednimi <xref:System.Security.Policy.CodeConnectAccess.Scheme%2A> wartościami właściwości do <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody. Można utworzyć regułę dostępu do połączeń, która ma zastosowanie, gdy schemat pochodzenia nie występuje w zeznaniach lub nie jest rozpoznawany przez <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> określenie ("") jako schemat. Istnieje również możliwość utworzenia reguły dostępu do połączeń, która ma zastosowanie w przypadku braku reguły dostępu do połączeń z zgodnym schematem, określając <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> ("*") jako schemat.  
   
 > [!NOTE]
->  Jeśli kod nie przedstawi schemat identyfikatora URI jako dowód, dostęp jest dozwolony, przy użyciu dowolnego schematu do witryny pochodzenia.  
+>  Jeśli kod nie przesyła schematu identyfikatora URI jako dowodu, dostęp jest dozwolony przy użyciu dowolnego schematu z powrotem do lokacji źródłowej.  
   
    
   
 ## Examples  
- W poniższym przykładzie kodu pokazano tworzenie <xref:System.Security.Policy.NetCodeGroup> i dodawanie <xref:System.Security.Policy.CodeConnectAccess> obiektów kod pobrany przy użyciu schematu HTTP.  
+ Poniższy przykład kodu demonstruje tworzenie <xref:System.Security.Policy.NetCodeGroup> i Dodawanie <xref:System.Security.Policy.CodeConnectAccess> obiektów dla kodu pobranego za pomocą schematu http.  
   
  [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
  [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
@@ -90,32 +90,32 @@
         <Parameter Name="membershipCondition" Type="System.Security.Policy.IMembershipCondition" />
       </Parameters>
       <Docs>
-        <param name="membershipCondition">Warunek członkostwa, który umożliwia sprawdzenie, dowody w celu ustalenia, czy grupa kodu mają zastosowanie zasady zabezpieczeń dostępu kodu.</param>
+        <param name="membershipCondition">Warunek członkostwa, który testuje dowody, aby określić, czy ta grupa kodu stosuje zasady zabezpieczeń dostępu kodu.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Security.Policy.NetCodeGroup" /> klasy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Gdy <xref:System.Security.Policy.NetCodeGroup> jest utworzona, zawiera domyślne reguły dostępu do połączenia, pokazano w poniższej tabeli.  
+ <xref:System.Security.Policy.NetCodeGroup> Gdy jest tworzony, zawiera domyślne reguły dostępu do połączeń pokazane w poniższej tabeli.  
   
 |Schemat|Reguła|  
 |------------|----------|  
-|plik|Nie dostępu do połączenia z serwerem źródłowym jest dozwolone.|  
-|http|HTTP i HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
-|https|HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
+|plik|Brak dostępu do połączenia z serwerem pochodzenia jest dozwolony.|  
+|http|Dostęp do protokołu HTTP i HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
+|https|Dostęp HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
   
    
   
 ## Examples  
- W poniższym przykładzie kodu pokazano tworzenie <xref:System.Security.Policy.NetCodeGroup> i dodawanie <xref:System.Security.Policy.CodeConnectAccess> obiektów kod pobrany przy użyciu schematu HTTP.  
+ Poniższy przykład kodu demonstruje tworzenie <xref:System.Security.Policy.NetCodeGroup> i Dodawanie <xref:System.Security.Policy.CodeConnectAccess> obiektów dla kodu pobranego za pomocą schematu http.  
   
  [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
  [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="membershipCondition" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException">Typ <paramref name="membershipCondition" /> parametr jest nieprawidłowy.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="membershipCondition" /></exception>
+        <exception cref="T:System.ArgumentException">Typ <paramref name="membershipCondition" /> parametru jest nieprawidłowy.</exception>
       </Docs>
     </Member>
     <Member MemberName="AbsentOriginScheme">
@@ -142,14 +142,14 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zawiera wartość służy do określania połączenia dostępu do kodu przy użyciu schematu nieznany lub nierozpoznany pochodzenia.</summary>
+        <summary>Zawiera wartość służącą do określenia dostępu do połączenia dla kodu z nieznanym lub nierozpoznanym schematem źródła.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas wywoływania <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody, należy określić schemat i skojarzoną <xref:System.Security.Policy.CodeConnectAccess> obiektu. Wszelkie <xref:System.Security.Policy.CodeConnectAccess> obiekty, które dodajesz do <xref:System.Security.Policy.NetCodeGroup> przy użyciu <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> jako punkt początkowy schematu są stosowane, gdy schemat pochodzenia kodu nie jest obecny w jego dowodów lub schemat nie został rozpoznany przez <xref:System.Security.Policy.NetCodeGroup> obiektu.  
+ Podczas wywoływania <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody należy określić schemat i skojarzony <xref:System.Security.Policy.CodeConnectAccess> obiekt. Wszelkie <xref:System.Security.Policy.CodeConnectAccess> obiekty, które można dodać <xref:System.Security.Policy.NetCodeGroup> do użycia <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> jako schemat pochodzenia, są stosowane, gdy schemat pochodzenia kodu nie występuje w jego zeznaniu <xref:System.Security.Policy.NetCodeGroup> lub nie jest schematem rozpoznawanym przez obiekt.  
   
- Aby określić <xref:System.Security.Policy.CodeConnectAccess> obiekty do użycia podczas nie pasuje do żadnego schematów zawarty w zestawie schematów pochodzenia dodawane do bieżącego schematu źródła kodu <xref:System.Security.Policy.NetCodeGroup> obiektu, należy użyć <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> wartość.  
+ Aby określić obiekty <xref:System.Security.Policy.CodeConnectAccess> , które mają być używane, gdy schemat pochodzenia kodu nie pasuje do żadnego z schematów zawartych w zestawie schematów pochodzenia dodanych do bieżącego <xref:System.Security.Policy.NetCodeGroup> obiektu, użyj <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> wartości.  
   
  Wartość <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> pola jest pustym ciągiem ("").  
   
@@ -185,30 +185,30 @@
         <Parameter Name="connectAccess" Type="System.Security.Policy.CodeConnectAccess" Index="1" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="originScheme">A <see cref="T:System.String" /> zawierającego schemat do dopasowywania schemat kodu.</param>
-        <param name="connectAccess">Element <see cref="T:System.Security.Policy.CodeConnectAccess" /> , który określa kod schemat i port służy do łączenia z powrotem do serwera pochodzenia.</param>
-        <summary>Dodaje dostęp do określonego połączenia do bieżącej grupy kodu.</summary>
+        <param name="originScheme"><see cref="T:System.String" /> Zawierający schemat do dopasowania względem schematu kodu.</param>
+        <param name="connectAccess">A <see cref="T:System.Security.Policy.CodeConnectAccess" /> , który określa schemat i kod portu można użyć do nawiązania połączenia z serwerem pochodzenia.</param>
+        <summary>Dodaje określony dostęp do połączenia do bieżącej grupy kodu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Można dodawać wiele <xref:System.Security.Policy.CodeConnectAccess> obiektów tego samego `origin scheme`. Jeśli `origin scheme` już ma jeden lub kilka skojarzonych <xref:System.Security.Policy.CodeConnectAccess> obiekty, określając `null` dla `connectAccess` nie ma wpływu. Jeśli nie ma skojarzonego schematu źródła <xref:System.Security.Policy.CodeConnectAccess> obiekty, określając `null` dla `connectAccess` uniemożliwia kodu przy użyciu schematu źródła, który odpowiada `originScheme` dostęp do swojego serwera pochodzenia.  
+ Można dodać wiele <xref:System.Security.Policy.CodeConnectAccess> obiektów dla tego samego `origin scheme`. Jeśli ma <xref:System.Security.Policy.CodeConnectAccess> `null` `connectAccess` już jeden lub więcej skojarzonych obiektów, określenie dla nie ma żadnego wpływu. `origin scheme` Jeśli schemat <xref:System.Security.Policy.CodeConnectAccess> pochodzenia nie ma skojarzonych obiektów, określanie `null` dla `connectAccess` uniemożliwia kod z schematem źródła, który jest zgodny `originScheme` z dostępem do jego serwera pochodzenia.  
   
    
   
 ## Examples  
- Poniższy przykład kodu demonstruje, tworzeniem i dodawaniem <xref:System.Security.Policy.CodeConnectAccess> obiekty do <xref:System.Security.Policy.NetCodeGroup>.  
+ Poniższy przykład kodu demonstruje tworzenie i Dodawanie <xref:System.Security.Policy.CodeConnectAccess> obiektów <xref:System.Security.Policy.NetCodeGroup>do.  
   
  [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
  [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="originScheme" /> jest <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="originScheme" /> zawiera znaki, które nie są dozwolone w schematach.  
+        <exception cref="T:System.ArgumentNullException"><paramref name="originScheme" />jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="originScheme" />zawiera znaki, które nie są dozwolone w schematach.  
   
 —lub— 
- <paramref name="originScheme" /> = <see cref="F:System.Security.Policy.NetCodeGroup.AbsentOriginScheme" /> i <paramref name="connectAccess" /> Określa <see cref="F:System.Security.Policy.CodeConnectAccess.OriginScheme" /> jego schemat.</exception>
+ <paramref name="originScheme" /> = <see cref="F:System.Security.Policy.NetCodeGroup.AbsentOriginScheme" />i <paramref name="connectAccess" /> określa<see cref="F:System.Security.Policy.CodeConnectAccess.OriginScheme" /> jako schemat.</exception>
       </Docs>
     </Member>
     <Member MemberName="AnyOtherOriginScheme">
@@ -235,18 +235,18 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Zawiera wartość można określić inny schemat nieokreślony pochodzenia.</summary>
+        <summary>Zawiera wartość służącą do określenia dowolnego innego nieokreślonego schematu źródła.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Podczas wywoływania <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody, należy określić schemat i skojarzoną <xref:System.Security.Policy.CodeConnectAccess> obiektu. Można użyć wartości <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> pola, aby określić <xref:System.Security.Policy.CodeConnectAccess> obiekty, które powinny być używane dla dowolnego schematu, który nie jest jawnie zawarty w zestawie schematów pochodzenia dodawane do bieżącego <xref:System.Security.Policy.NetCodeGroup> obiektu.  
+ Podczas wywoływania <xref:System.Security.Policy.NetCodeGroup.AddConnectAccess%2A> metody należy określić schemat i skojarzony <xref:System.Security.Policy.CodeConnectAccess> obiekt. Można użyć wartości <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> pola, aby <xref:System.Security.Policy.CodeConnectAccess> określić obiekty, które mają być używane dla każdego schematu, który nie jest jawnie zawarty w zestawie schematów pochodzenia dodanych do bieżącego <xref:System.Security.Policy.NetCodeGroup> obiektu.  
   
- <xref:System.Security.Policy.CodeConnectAccess> Obiekty określone za pomocą <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> pola są używane tylko wtedy, jeśli nie pasuje do żadnego schematów zawarty w zestawie schematów pochodzenia dodawane do bieżącego schematu źródła kodu <xref:System.Security.Policy.NetCodeGroup> obiektu.  
+ Obiekty określone za pomocą pola są używane tylko wtedy, gdy schemat pochodzenia kodu nie pasuje do żadnego z schematów zawartych w zestawie schematów pochodzenia dodanych do bieżącego <xref:System.Security.Policy.NetCodeGroup> obiektu. <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> <xref:System.Security.Policy.CodeConnectAccess>  
   
- Aby określić <xref:System.Security.Policy.CodeConnectAccess> obiekty do zastosowania, gdy schemat pochodzenia kodu nie jest dostępna w jego dowodów lub nie zostanie rozpoznany, używają <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> wartość.  
+ Aby określić <xref:System.Security.Policy.CodeConnectAccess> obiekty do zastosowania, gdy schemat pochodzenia kodu nie jest dostępny w jego zeznaniu lub nie został rozpoznany, <xref:System.Security.Policy.NetCodeGroup.AbsentOriginScheme> Użyj wartości.  
   
- Wartość <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> pole jest "*".  
+ Wartość <xref:System.Security.Policy.NetCodeGroup.AnyOtherOriginScheme> pola to "*".  
   
  ]]></format>
         </remarks>
@@ -282,7 +282,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera ciąg reprezentujący atrybuty deklaracji zasad grupy kodu.</summary>
+        <summary>Pobiera ciąg reprezentujący atrybuty instrukcji zasad dla grupy kodów.</summary>
         <value>Zawsze <see langword="null" />.</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -318,13 +318,13 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Tworzy kopię głęboką bieżącej grupy kodu.</summary>
-        <returns>Równoważne kopię bieżącego grupy kodu, w tym jego warunki członkostwa i podrzędne grupy kodu.</returns>
+        <summary>Tworzy głębokie kopie bieżącej grupy kodu.</summary>
+        <returns>Równoważna kopia bieżącej grupy kodu, w tym jej warunki członkostwa i podrzędne grupy kodów.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda przeprowadza kopię głęboką grupy kodu, co oznacza również zostają kopie wszystkich obiektów zawartych w niej kod.  
+ Ta metoda tworzy głębokie kopie grupy kodu, co oznacza, że są również tworzone kopie wszystkich obiektów, które zawiera grupa kodów.  
   
  ]]></format>
         </remarks>
@@ -396,20 +396,20 @@
         <Parameter Name="o" Type="System.Object" Index="0" FrameworkAlternate="dotnet-plat-ext-2.1;dotnet-plat-ext-2.2;dotnet-plat-ext-3.0;netcore-2.0;netcore-2.1;netcore-2.2;netcore-3.0;netframework-2.0;netframework-3.0;netframework-3.5;netframework-4.0;netframework-4.5;netframework-4.5.1;netframework-4.5.2;netframework-4.6;netframework-4.6.1;netframework-4.6.2;netframework-4.7;netframework-4.7.1;netframework-4.7.2;netframework-4.8;xamarinandroid-7.1;xamarinios-10.8;xamarinmac-3.0" />
       </Parameters>
       <Docs>
-        <param name="o"><see cref="T:System.Security.Policy.NetCodeGroup" /> Obiekt do porównania z bieżącą grupą kodu.</param>
-        <summary>Określa, czy określona grupa kodu jest równoważne z bieżącej grupy kodu.</summary>
-        <returns><see langword="true" /> Jeśli określona grupa kodu jest równoważne z bieżącej grupy kodu; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="o"><see cref="T:System.Security.Policy.NetCodeGroup" /> Obiekt, który ma zostać porównany z bieżącą grupą kodu.</param>
+        <summary>Określa, czy określona grupa kodu jest równoważna z bieżącą grupą kodu.</summary>
+        <returns><see langword="true" />Jeśli określona grupa kodowa jest równoważna z bieżącą grupą kodu; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
  Następujące dane są używane do określania równości dwóch <xref:System.Security.Policy.NetCodeGroup> obiektów:  
   
--   <xref:System.Security.Policy.CodeGroup.Name%2A> i <xref:System.Security.Policy.CodeGroup.Description%2A> właściwości.  
+-   Właściwości <xref:System.Security.Policy.CodeGroup.Name%2A> i <xref:System.Security.Policy.CodeGroup.Description%2A> .  
   
--   <xref:System.Security.Policy.CodeGroup.MembershipCondition%2A> Właściwości.  
+-   <xref:System.Security.Policy.CodeGroup.MembershipCondition%2A> Właściwość.  
   
--   Zestaw schematów źródła oraz skojarzonych z nimi <xref:System.Security.Policy.CodeConnectAccess> obiektów.  
+-   Zestaw schematów pochodzenia i skojarzonych <xref:System.Security.Policy.CodeConnectAccess> obiektów.  
   
  ]]></format>
         </remarks>
@@ -440,18 +440,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera informacje o połączeniu dostępu dla bieżącej grupy kodu.</summary>
-        <returns>A <see cref="T:System.Collections.DictionaryEntry" /> tablica zawierająca informacje o połączeniu dostępu.</returns>
+        <summary>Pobiera informacje o dostępie do połączenia dla bieżącej grupy kodu.</summary>
+        <returns><see cref="T:System.Collections.DictionaryEntry" /> Tablica zawierająca informacje o dostępie do połączenia.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- W każdy wpis słownika <xref:System.Collections.DictionaryEntry.Key%2A> wartość właściwości jest schematu źródła oraz <xref:System.Collections.DictionaryEntry.Value%2A> wartość właściwości jest tablicą skojarzone <xref:System.Security.Policy.CodeConnectAccess> obiektów. W przypadku nie skojarzone <xref:System.Security.Policy.CodeConnectAccess> obiektów <xref:System.Collections.DictionaryEntry.Value%2A?displayProperty=nameWithType> zwraca pustą tablicę.  
+ W każdym wpisie <xref:System.Collections.DictionaryEntry.Key%2A> słownika wartość właściwości jest schematem źródła, <xref:System.Collections.DictionaryEntry.Value%2A> a wartość właściwości jest tablicą skojarzonych <xref:System.Security.Policy.CodeConnectAccess> obiektów. Jeśli nie ma żadnych skojarzonych <xref:System.Security.Policy.CodeConnectAccess> obiektów, <xref:System.Collections.DictionaryEntry.Value%2A?displayProperty=nameWithType> zwraca pustą tablicę.  
   
    
   
 ## Examples  
- Poniższy przykład kodu demonstruje, wyświetlanie reguły dostępu do połączenia dla <xref:System.Security.Policy.NetCodeGroup> obiektu.  
+ Poniższy przykład kodu demonstruje wyświetlanie reguły dostępu do połączeń dla <xref:System.Security.Policy.NetCodeGroup> obiektu.  
   
  [!code-cpp[NclCodeGroup#8](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#8)]
  [!code-csharp[NclCodeGroup#8](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#8)]  
@@ -490,8 +490,8 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Pobiera wartość skrótu dla bieżącej grupy kodu.</summary>
-        <returns>Wartość skrótu dla bieżącej grupy kodu.</returns>
+        <summary>Pobiera kod skrótu bieżącej grupy kodu.</summary>
+        <returns>Kod skrótu bieżącej grupy kodów.</returns>
         <remarks>To be added.</remarks>
         <altmember cref="M:System.Security.Policy.CodeGroup.GetHashCode" />
       </Docs>
@@ -521,7 +521,7 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera logiki na potrzeby scalania grup.</summary>
+        <summary>Pobiera logikę do użycia na potrzeby scalania grup.</summary>
         <value>Ciąg "Union".</value>
         <remarks>To be added.</remarks>
       </Docs>
@@ -590,8 +590,8 @@
         <ReturnType>System.String</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera nazwę <see cref="T:System.Security.NamedPermissionSet" /> dla grupy kodu.</summary>
-        <value>Zawsze ciąg "Tego samego witryna sieci Web".</value>
+        <summary>Pobiera nazwę <see cref="T:System.Security.NamedPermissionSet" /> grupy kodów.</summary>
+        <value>Zawsze ciąg "Ta sama witryna sieci Web".</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -620,25 +620,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Usuwa wszystkie informacje o połączeniu dostępu dla bieżącej grupy kodu.</summary>
+        <summary>Usuwa wszystkie informacje o dostępie do połączenia dla bieżącej grupy kodu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj tej metody można usunąć reguły dostępu do połączenia domyślne dostarczane przez system.  
+ Użyj tej metody, aby usunąć domyślne reguły dostępu do połączeń dostarczone przez system.  
   
- Reguły domyślne są przedstawione w poniższej tabeli.  
+ W poniższej tabeli przedstawiono reguły domyślne.  
   
 |Schemat|Reguła|  
 |------------|----------|  
-|plik|Nie dostępu do połączenia z serwerem źródłowym jest dozwolone.|  
-|http|HTTP i HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
-|https|HTTPS dostęp jest dozwolony, przy użyciu portu pochodzenia.|  
+|plik|Brak dostępu do połączenia z serwerem pochodzenia jest dozwolony.|  
+|http|Dostęp do protokołu HTTP i HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
+|https|Dostęp HTTPS jest dozwolony przy użyciu portu pochodzenia.|  
   
    
   
 ## Examples  
- Poniższy przykład kodu pokazuje wywołanie tej metody, aby usunąć reguł domyślnych kodu dostępu do połączenia.  
+ Poniższy przykład kodu demonstruje wywołanie tej metody w celu usunięcia domyślnych reguł połączenia dostępu do kodu.  
   
  [!code-cpp[NclCodeGroup#3](~/samples/snippets/cpp/VS_Snippets_Remoting/NclCodeGroup/cpp/sample.cpp#3)]
  [!code-csharp[NclCodeGroup#3](~/samples/snippets/csharp/VS_Snippets_Remoting/NclCodeGroup/CS/sample.cs#3)]  
@@ -680,22 +680,22 @@
       </Parameters>
       <Docs>
         <param name="evidence"><see cref="T:System.Security.Policy.Evidence" /> Dla zestawu.</param>
-        <summary>Usuwa zasady dla grupy kodu, a jego elementy podrzędne dla zestawu dowodów.</summary>
-        <returns>A <see cref="T:System.Security.Policy.PolicyStatement" /> składający się z uprawnienia przyznane przez grupę kodu za pomocą opcjonalnych atrybutów, lub <see langword="null" /> Jeśli grupy kodu nie ma zastosowania (warunek członkostwa jest niezgodna dowód określony).</returns>
+        <summary>Rozpoznaje zasady dla grupy kodów i jej elementów podrzędnych dla zestawu dowodów.</summary>
+        <returns>A <see cref="T:System.Security.Policy.PolicyStatement" /> , która składa się z uprawnień przyznanych przez grupę kodu z opcjonalnymi atrybutami lub <see langword="null" /> Jeśli grupa kodów nie ma zastosowania (warunek członkostwa nie jest zgodny z określonymi potwierdzeniami).</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Biorąc pod uwagę dowodu dla zestawu do załadowania, ta metoda oblicza grupy kodu zaznaczając pierwszy warunek członkostwa względem określonego dowodów. Jeśli istnieje dopasowanie, Metoda ta zwraca instrukcję zasady dla grupy kodu, w tym oceny podrzędne grupy kodu.  
+ Dane dowodowe dla zestawu, który ma zostać załadowany, ta metoda oblicza grupę kodu, sprawdzając warunek członkostwa w odniesieniu do określonego dowodu. Jeśli istnieje dopasowanie, ta metoda zwraca instrukcję zasad dla grupy kodu, łącznie z oceną podrzędnych grup kodów.  
   
- Działanie tej metody jest następujący:  
+ Ta metoda jest następująca:  
   
- Jeśli warunek członkostwa jest niezgodny z określonym dowód, zwracają `null`; w przeciwnym razie zestaw, zestaw uprawnień, aby otrzymać (P) równa deklaracji zasad grupy kodu i Kontynuuj. Dla każdej grupy kodu podrzędnego rozwiązać grupy kodu za pomocą tego samego dowody; Jeśli wynik nie jest `null`, return, instrukcja tej zasady. Jeśli nie podrzędną grupę kodu dopasowane, należy zwrócić P (Deklaracja zasad nadrzędnego).  
+ Jeśli warunek członkostwa nie pasuje do określonego dowodu, zwróć `null`; w przeciwnym razie ustaw zestaw uprawnień, który ma być zwracany (P), równy zasadzie zasad grupy kodu i Kontynuuj. Dla każdej podrzędnej grupy kodów należy rozwiązać grupę kodu o te same dowody; Jeśli wynik nie `null`jest, zwróć tę instrukcję zasad. Jeśli nie pasuje żadna podrzędna grupa kodów, zwróć P (oświadczenie zasad nadrzędnych).  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="evidence" /> Parametr <see langword="null" />.</exception>
-        <exception cref="T:System.Security.Policy.PolicyException">Więcej niż jednej grupy kodu (łącznie z nadrzędnej grupy kodu i wszystkie podrzędne grupy kodu) jest oznaczony <see cref="F:System.Security.Policy.PolicyStatementAttribute.Exclusive" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="evidence" /></exception>
+        <exception cref="T:System.Security.Policy.PolicyException">Jest oznaczona <see cref="F:System.Security.Policy.PolicyStatementAttribute.Exclusive" />więcej niż jedna grupa kodu (łącznie z nadrzędną grupą kodów i dowolnymi podrzędnymi grupami kodu).</exception>
       </Docs>
     </Member>
     <Member MemberName="ResolveMatchingCodeGroups">
@@ -730,18 +730,18 @@
         <Parameter Name="evidence" Type="System.Security.Policy.Evidence" />
       </Parameters>
       <Docs>
-        <param name="evidence">Dowód zestawu.</param>
-        <summary>Rozwiązuje pasujących grup kodu.</summary>
-        <returns>Kompletny zestaw grup kodu, które zostały dopasowane przez dowodów.</returns>
+        <param name="evidence">Dowód dla zestawu.</param>
+        <summary>Rozpoznaje dopasowania grup kodu.</summary>
+        <returns>Kompletny zestaw grup kodu, które zostały dopasowane przez dowód.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Biorąc pod uwagę dowodu dla zestawu do załadowania, ta metoda oblicza grupy kodu zaznaczając pierwszy warunek członkostwa względem określonego dowodów. Jeśli istnieje dopasowanie, Metoda ta zwraca korzenia grupy kodu. Grupy kodu, który jest zwracany może zawierać podrzędnych grup kodu, które z kolei może być podrzędne grupy kodu, więc wartość zwracana zawiera kompletny zestaw grup kodu, które zostały dopasowane przez dowody dostarczone.  
+ Dane dowodowe dla zestawu, który ma zostać załadowany, ta metoda oblicza grupę kodu, sprawdzając warunek członkostwa w odniesieniu do określonego dowodu. Jeśli istnieje dopasowanie, ta metoda zwraca grupę głównych kodów. Zwracana Grupa kodu może zawierać podrzędne grupy kodów, które z kolei mogą również mieć podrzędne grupy kodu, więc zwracana wartość odzwierciedla kompletny zestaw grup kodu, które zostały dopasowane przez podane dowody.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="evidence" /> Parametr <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException">Parametr ma wartość <see langword="null" />. <paramref name="evidence" /></exception>
       </Docs>
     </Member>
   </Members>
