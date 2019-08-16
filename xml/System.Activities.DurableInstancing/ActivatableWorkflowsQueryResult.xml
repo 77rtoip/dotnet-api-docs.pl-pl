@@ -1,5 +1,5 @@
 <Type Name="ActivatableWorkflowsQueryResult" FullName="System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="981a57c388f25464c284293f7cc7e67a23c5d18c" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="63930133" /></Metadata><TypeSignature Language="C#" Value="public sealed class ActivatableWorkflowsQueryResult : System.Runtime.DurableInstancing.InstanceStoreQueryResult" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5201df55fc0e0de6c5ba0f03681c7ce45ed09efe" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69310102" /></Metadata><TypeSignature Language="C#" Value="public sealed class ActivatableWorkflowsQueryResult : System.Runtime.DurableInstancing.InstanceStoreQueryResult" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit ActivatableWorkflowsQueryResult extends System.Runtime.DurableInstancing.InstanceStoreQueryResult" />
   <TypeSignature Language="DocId" Value="T:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class ActivatableWorkflowsQueryResult&#xA;Inherits InstanceStoreQueryResult" />
@@ -14,21 +14,21 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Zawiera wyniki wykonania <see cref="T:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand" /> względem magazynu wystąpienia.</summary>
+    <summary>Zawiera wyniki wykonywania <see cref="T:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand" /> względem magazynu wystąpień.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Magazyn wystąpienia należy okresowo wyszukiwać wystąpienia aktywowalnej przepływu pracy, które należą do hosta przepływu pracy, który używa magazynu. Powinna ona zgłosić <xref:System.Activities.DurableInstancing.HasActivatableWorkflowEvent> gdy znajdzie aktywowalnej wystąpienia w magazynie w trwałości. Jeśli Magazyn wystąpienia nie może odnaleźć aktywowalnej wystąpienia w magazynie w trwałości, powinno ono nadal monitorować wszystkie wystąpienia aktywowalnej w sklepie trwałości.  
+ Magazyn wystąpień powinien okresowo wyszukiwać wystąpienia przepływu pracy aktywowalnej należące do hosta przepływu pracy, który używa magazynu. Powinien on podnieść wartość <xref:System.Activities.DurableInstancing.HasActivatableWorkflowEvent> , gdy odnajdzie wystąpienie aktywowalnej w magazynie trwałości. Jeśli magazyn wystąpień nie znajdzie wystąpienia aktywowalnej w magazynie trwałości, powinien nadal monitorować magazyn trwałości dla dowolnych wystąpień aktywowalnej.  
   
- Po podnoszenie HasActivatableWorkflowEvent, Magazyn wystąpienia ma zostać zatrzymana, aktywowalnej wystąpienia w sklepie trwałości monitorowania, dopóki nie odbierze i wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>. Monitorowanie nadal tylko, jeśli wykonanie polecenia nie zwraca żadnych wystąpień aktywowalnej przepływu pracy.  
+ Po podniesieniu HasActivatableWorkflowEvent magazyn wystąpień powinien zatrzymać monitorowanie magazynu trwałości dla wystąpień aktywowalnej, dopóki nie odbierze i wykona <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand>. Monitorowanie jest kontynuowane tylko wtedy, gdy wykonanie polecenia nie zwróci żadnych wystąpień przepływu pracy aktywowalnej.  
   
- Gdy host ogólny otrzymuje to zdarzenie, wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand> względem magazynu wystąpienia, aby uzyskać parametry aktywacji wymagane do utworzenia hosta przepływu pracy. Ogólny hosta korzysta z tych parametrów aktywacji w celu utworzenia hosta przepływu pracy, który z kolei ładuje i uruchamia wystąpienie usługi. Parametry aktywacji dla typu aktywacji WAS są następujące: Lokacji nazwę, ścieżkę aplikacji (względem witryny) i ścieżki usługi (względem aplikacji). Magazyn wystąpień może zwrócić wiele zestawów tych trzech parametrów aktywacji.  
+ Gdy host ogólny odbiera to zdarzenie, wykonuje <xref:System.Activities.DurableInstancing.QueryActivatableWorkflowsCommand> względem magazynu wystąpień w celu uzyskania parametrów aktywacji wymaganych do utworzenia hosta przepływu pracy. Host ogólny używa tych parametrów aktywacji do utworzenia hosta przepływu pracy, który z kolei ładuje i uruchamia wystąpienie usługi. Parametry aktywacji dla typu aktywacji to: Nazwa witryny, ścieżka aplikacji (względem lokacji) i ścieżka usługi (względem aplikacji). Magazyn wystąpień może zwrócić wiele zestawów tych trzech parametrów aktywacji.  
   
- Ogólny host jest hostem, która ma parametr XName o nazwie **ActivationType**, które powinno być ustawione na wartość obsługiwane przez Magazyn wystąpienia. Obecnie Store wystąpienia przepływu pracy SQL obsługuje ogólny hosty z parametrem ActivationType ustawionym na wartość: **WAS**. Jeśli ActivationType nie jest ustawiona na wszystkich Store wystąpienia przepływu pracy SQL traktuje hosta jako hosta ogólnego.  
+ Host ogólny jest hostem, który ma parametr XName o nazwie **ActivationType**, który powinien być ustawiony na wartość obsługiwaną przez magazyn wystąpień. Obecnie magazyn wystąpień programu SQL Workflow obsługuje hosty ogólne z parametrem ActivationType ustawionym na wartość Value: **BYŁ**. Jeśli typ ActivationType nie jest ustawiony, magazyn wystąpień przepływu pracy SQL traktuje hosta jako hosta ogólnego.  
   
 > [!NOTE]
->  Usługa zarządzania przepływu pracy, że dostarczany z kodem o nazwie "Seattle" (rozszerzenia serwera aplikacji dla programów .NET 4.0) jest ogólny hosta, który ma ustawiony typ aktywacji **WAS**.  
+>  Usługa zarządzania przepływami pracy, która jest dostarczana z kodem o nazwie "Dublin" (rozszerzenia serwera aplikacji dla programu .NET 4,0), jest hostem ogólnym z ustawionym typem aktywacji **was**.  
   
  ]]></format>
     </remarks>
@@ -77,7 +77,7 @@
       </Parameters>
       <Docs>
         <param name="parameters">Obiekt słownika zawierający parametry aktywacji.</param>
-        <summary>Tworzy wystąpienie <see cref="T:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult" /> klasy i inicjuje <see cref="P:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult.ActivationParameters" /> właściwości z danymi w obiekt słownika przekazany jako parametr.</summary>
+        <summary>Tworzy wystąpienie <see cref="T:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult" /> klasy i <see cref="P:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult.ActivationParameters" /> inicjuje właściwość z danymi w obiekcie dictionary przekazaną jako parametr.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -97,8 +97,8 @@
         <Parameter Name="parameters" Type="System.Collections.Generic.IEnumerable&lt;System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Object&gt;&gt;" />
       </Parameters>
       <Docs>
-        <param name="parameters">Obiekt wyliczalny słownik zawierający parametry aktywacji.</param>
-        <summary>Tworzy wystąpienie <see cref="T:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult" /> klasy i inicjuje <see cref="P:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult.ActivationParameters" /> właściwości z danymi w obiekt słownika wyliczalny przekazany jako parametr.</summary>
+        <param name="parameters">Wyliczalny obiekt słownika zawierający parametry aktywacji.</param>
+        <summary>Tworzy wystąpienie <see cref="T:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult" /> klasy i <see cref="P:System.Activities.DurableInstancing.ActivatableWorkflowsQueryResult.ActivationParameters" /> inicjuje właściwość z danymi w wyliczalnym obiekcie dictionary przekazaną jako parametr.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -123,8 +123,8 @@
         <ReturnType>System.Collections.Generic.List&lt;System.Collections.Generic.IDictionary&lt;System.Xml.Linq.XName,System.Object&gt;&gt;</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Lista parametrów aktywacji, które korzysta z ogólnego hosta w celu utworzenia hosta przepływu pracy.</summary>
-        <value>Obiekt listy, zawierające parametry aktywacji.</value>
+        <summary>Lista parametrów aktywacji używanych przez hosta ogólnego do tworzenia hosta przepływu pracy.</summary>
+        <value>Obiekt listy zawierający parametry aktywacji.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

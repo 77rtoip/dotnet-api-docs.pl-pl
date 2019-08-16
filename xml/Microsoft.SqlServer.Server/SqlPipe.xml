@@ -1,5 +1,5 @@
 <Type Name="SqlPipe" FullName="Microsoft.SqlServer.Server.SqlPipe">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="131acc8d6211ac9b84fd44506f00355caf4ba928" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="63949598" /></Metadata><TypeSignature Language="C#" Value="public sealed class SqlPipe" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="2eacd1a5ec4707b956c3ddb1c43f6451deba47c3" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69303564" /></Metadata><TypeSignature Language="C#" Value="public sealed class SqlPipe" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi sealed beforefieldinit SqlPipe extends System.Object" />
   <TypeSignature Language="DocId" Value="T:Microsoft.SqlServer.Server.SqlPipe" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class SqlPipe" />
@@ -15,17 +15,17 @@
   </Base>
   <Interfaces />
   <Docs>
-    <summary>Umożliwia zarządzanym procedur składowanych działa w procesie w bazie danych programu SQL Server w celu zwracania wyników z powrotem do obiektu wywołującego. Klasa ta nie może być dziedziczona.</summary>
+    <summary>Zezwala na zarządzane procedury składowane działające w procesie w bazie danych SQL Server, aby zwracały wyniki z powrotem do obiektu wywołującego. Klasa ta nie może być dziedziczona.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wystąpienie tej klasy jest udostępniany zarządzanej procedury przechowywane za pomocą <xref:Microsoft.SqlServer.Server.SqlContext.Pipe%2A> właściwość <xref:Microsoft.SqlServer.Server.SqlContext> klasy.  
+ Wystąpienie tej klasy jest udostępniane zarządzanym procedurom składowanym za pomocą <xref:Microsoft.SqlServer.Server.SqlContext.Pipe%2A> właściwości <xref:Microsoft.SqlServer.Server.SqlContext> klasy.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto <xref:System.Data.SqlClient.SqlConnection> i <xref:System.Data.SqlClient.SqlCommand> celu wybrania wierszy ze źródła danych w procedurze składowanej. Następnie w przykładzie <xref:Microsoft.SqlServer.Server.SqlPipe> można wykonać polecenia i wysyłać wyniki do klienta.  
+ Poniższy przykład używa <xref:System.Data.SqlClient.SqlConnection> i <xref:System.Data.SqlClient.SqlCommand> do wybierania wierszy ze źródła danych w procedurze składowanej. W przykładzie jest używana <xref:Microsoft.SqlServer.Server.SqlPipe> do wykonywania polecenia i wysyłania wyników z powrotem do klienta.  
   
  [!code-csharp[DataWorks SqlPipe#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe/VB/source.vb#1)]  
@@ -54,32 +54,32 @@
         <Parameter Name="command" Type="System.Data.SqlClient.SqlCommand" />
       </Parameters>
       <Docs>
-        <param name="command"><see cref="T:System.Data.SqlClient.SqlCommand" /> Obiektu do wykonania.</param>
-        <summary>Wykonuje polecenie przekazany jako parametr, a następnie wysyła wyniki do klienta.</summary>
+        <param name="command">Obiekt <see cref="T:System.Data.SqlClient.SqlCommand" /> , który ma zostać wykonany.</param>
+        <summary>Wykonuje polecenie przesłane jako parametr i wysyła wyniki do klienta.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Oprócz wszystkie rzeczywiste wyniki inne wiadomości i błędy są również wysyłane bezpośrednio do klienta.  
+ Oprócz żadnych rzeczywistych wyników inne komunikaty i błędy są również wysyłane bezpośrednio do klienta.  
   
- Dane wyjściowe parametrów i zwracanych wartości nie są wysyłane do klienta; są one dostępne do obiektu wywołującego, za pomocą kolekcji parametrów obiektu polecenia.  
+ Parametry wyjściowe i zwracane wartości nie są wysyłane do klienta; są one dostępne dla obiektu wywołującego za pomocą kolekcji Parameters obiektu Command.  
   
- Jeśli polecenie nie jest powiązany z połączenia w trakcie <xref:System.InvalidOperationException> zgłaszany. Ta metoda nie jest obsługiwana w poleceniach powiązane z połączeniami spoza procesu.  
+ Jeśli polecenie nie jest powiązane z połączeniem w procesie, <xref:System.InvalidOperationException> zostanie zgłoszony. Ta metoda nie jest obsługiwana w przypadku poleceń związanych z połączeniami poza procesem.  
   
- Jeśli występują błędy w <xref:System.Data.SqlClient.SqlCommand> obiektu, który został przesłany wyjątki są wysyłane do potoku, ale kopia był wysyłany również do wywołującego kodu zarządzanego. Jeśli kod wywołujący nie przechwycić wyjątek, wówczas propagowane w górę stosu w kodzie języka Transact-SQL i są wyświetlane dwa razy w danych wyjściowych. Jeśli kod wywołujący przechwycić wyjątek, konsumenta potoku nadal zostanie wyświetlony następujący błąd, ale nie będzie błąd duplikatu.  
+ W przypadku wystąpienia błędów w <xref:System.Data.SqlClient.SqlCommand> przesłanym obiekcie wyjątki są wysyłane do potoku, ale kopia jest wysyłana również do wywoływania kodu zarządzanego. Jeśli wywołujący kod nie przechwytuje wyjątku, propaguje stos do kodu Transact-SQL i pojawi się w danych wyjściowych dwa razy. Jeśli wywoływany kod przechwytuje wyjątek, odbiorca potoku nadal zobaczy błąd, ale nie będzie zduplikowany błąd.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto <xref:System.Data.SqlClient.SqlConnection> i <xref:System.Data.SqlClient.SqlCommand> celu wybrania wierszy ze źródła danych w procedurze składowanej. Następnie w przykładzie <xref:Microsoft.SqlServer.Server.SqlPipe> można wykonać polecenia i wysyłać wyniki do klienta.  
+ Poniższy przykład używa <xref:System.Data.SqlClient.SqlConnection> i <xref:System.Data.SqlClient.SqlCommand> do wybierania wierszy ze źródła danych w procedurze składowanej. W przykładzie jest używana <xref:Microsoft.SqlServer.Server.SqlPipe> do wykonywania polecenia i wysyłania wyników z powrotem do klienta.  
   
  [!code-csharp[DataWorks SqlPipe.ExecuteAndSend#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe.ExecuteAndSend/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe.ExecuteAndSend#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe.ExecuteAndSend/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="command" /> Jest <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException">Ta metoda nie jest obsługiwana w poleceniach powiązane z połączeniami spoza procesu.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="command" /> Ma<see langword="null" />wartość.</exception>
+        <exception cref="T:System.InvalidOperationException">Ta metoda nie jest obsługiwana w przypadku poleceń związanych z połączeniami poza procesem.</exception>
       </Docs>
     </Member>
     <Member MemberName="IsSendingResults">
@@ -99,8 +99,8 @@
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> jest w trybie wysyłania zestawy pojedynczy wynik do klienta. Ta właściwość jest tylko do odczytu.</summary>
-        <value><see langword="true" /> Jeśli <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> metoda została wywołana i <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> jest w trybie wysyłania zestawy pojedynczy wynik do klienta; w przeciwnym razie <see langword="false" />.</value>
+        <summary>Pobiera wartość wskazującą, czy <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> jest w trybie wysyłania pojedynczych zestawów wyników z powrotem do klienta. Ta właściwość jest tylko do odczytu.</summary>
+        <value><see langword="true" />Jeśli metoda została wywołana <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> i jest w trybie wysyłania pojedynczych zestawów wyników z powrotem do klienta; w przeciwnym razie <see langword="false" />. <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /></value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -110,12 +110,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Wysyła wyniki bezpośrednio do klienta lub bieżącego odbiorcy danych wyjściowych.</summary>
+        <summary>Wysyła wyniki bezpośrednio do klienta lub bieżącego użytkownika wyjściowego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- **Wysyłania** metoda wysyła dane bezpośrednio do klienta lub obiekt wywołujący. Zazwyczaj jest to klient, który pobiera dane wyjściowe z **potoku** metody, ale w przypadku zagnieżdżonych CLR procedury składowane konsumenta danych wyjściowych może również być procedury składowanej. Na przykład wywołuje Procedure1 <xref:System.Data.SqlClient.SqlCommand.ExecuteReader%2A> tekstem polecenia "EXEC Procedure2". Procedure2 jest również zarządzanej procedury składowanej. Jeśli teraz wywołuje Procedure2 <xref:Microsoft.SqlServer.Server.SqlPipe.Send%2A>, wiersza są wysyłane do firmy Procedure1 czytnika, nie dla klienta.  
+ Metoda **send** wysyła dane bezpośrednio do klienta lub obiektu wywołującego. Zwykle jest to klient korzystający z metody potoku, ale **** w przypadku zagnieżdżonych procedur składowanych CLR, konsument wyjściowy może być również procedurą składowaną. Na przykład wywołania <xref:System.Data.SqlClient.SqlCommand.ExecuteReader%2A> Procedure1 z tekstem polecenia "EXEC Procedure2". Procedure2 jest również zarządzaną procedurą składowaną. Jeśli Procedure2 teraz wywołuje <xref:Microsoft.SqlServer.Server.SqlPipe.Send%2A>, wiersz jest wysyłany do czytnika Procedure1's, a nie do klienta.  
   
  ]]></format>
         </remarks>
@@ -141,10 +141,10 @@
         <Parameter Name="record" Type="Microsoft.SqlServer.Server.SqlDataRecord" />
       </Parameters>
       <Docs>
-        <param name="record">Zestaw wyników pojedynczy wiersz tabeli wysłane do klienta: <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> obiektu.</param>
-        <summary>Wysyła pojedynczy wiersz tabeli zestawu wyników bezpośrednio do klienta lub bieżącego odbiorcy danych wyjściowych.</summary>
+        <param name="record">Zestaw wyników z pojedynczym wierszem wysłany do klienta: <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> obiekt.</param>
+        <summary>Wysyła zestaw wyników z jednym wierszem bezpośrednio do klienta lub bieżącego użytkownika wyjściowego.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Ma<see langword="null" />wartość.</exception>
       </Docs>
     </Member>
     <Member MemberName="Send">
@@ -167,17 +167,17 @@
         <Parameter Name="reader" Type="System.Data.SqlClient.SqlDataReader" />
       </Parameters>
       <Docs>
-        <param name="reader">Zestaw wyników multirow do wysłania do klienta: <see cref="T:System.Data.SqlClient.SqlDataReader" /> obiektu.</param>
-        <summary>Wysyła multirow zestawu wyników bezpośrednio do klienta lub bieżącego odbiorcy danych wyjściowych.</summary>
+        <param name="reader">Zestaw wyników multirow do wysłania do klienta: <see cref="T:System.Data.SqlClient.SqlDataReader" /> obiekt.</param>
+        <summary>Wysyła zestaw wyników programu multirow bezpośrednio do klienta lub bieżącego użytkownika wyjściowego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Data.SqlClient.SqlDataReader> obiekt przekazany jako parametr ma ukrytej kolumn, te kolumny nie są propagowane do zestawu wyników, wysłane do klienta.  
+ <xref:System.Data.SqlClient.SqlDataReader> Jeśli obiekt przekazywany jako parametr ma ukryte kolumny, te kolumny nie są propagowane do zestawu wyników wysyłanego do klienta.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="reader" /> Jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="reader" /> Ma<see langword="null" />wartość.</exception>
       </Docs>
     </Member>
     <Member MemberName="Send">
@@ -200,26 +200,26 @@
         <Parameter Name="message" Type="System.String" />
       </Parameters>
       <Docs>
-        <param name="message">Ciąg komunikatu do wysłania do klienta.</param>
-        <summary>Wysyła komunikat w formacie ciągu bezpośrednio do klienta lub bieżącego odbiorcy danych wyjściowych.</summary>
+        <param name="message">Ciąg komunikatu, który ma zostać wysłany do klienta.</param>
+        <summary>Wysyła wiadomość ciągową bezpośrednio do klienta lub bieżącego użytkownika wyjściowego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ciąg komunikatu jest wysyłany jako komunikat informacyjny w do klienta. Aplikacje klienckie może nasłuchiwać komunikatów za pomocą różnych mechanizmów, w zależności od danych dostęp do interfejsu programowania aplikacji (API), używają. Na przykład, jeśli klient korzysta z programu ADO.NET, komunikaty są przesyłane za pośrednictwem <xref:System.Data.SqlClient.SqlConnection.InfoMessage> zdarzeń.  
+ Ciąg komunikatu jest wysyłany jako komunikat informacyjny do klienta. Aplikacje klienckie mogą słuchać komunikatów przy użyciu różnych mechanizmów, w zależności od interfejsu programowania aplikacji (API) dostępu do danych. Na przykład jeśli klient korzysta z programu ADO.NET, komunikaty są przesyłane przez <xref:System.Data.SqlClient.SqlConnection.InfoMessage> zdarzenie.  
   
    
   
 ## Examples  
- W poniższym przykładzie użyto <xref:Microsoft.SqlServer.Server.SqlPipe.Send%2A> metodę, aby wysłać ciąg komunikatu o bezpośrednio do klienta.  
+ Poniższy przykład używa <xref:Microsoft.SqlServer.Server.SqlPipe.Send%2A> metody do wysyłania ciągu komunikatu bezpośrednio do klienta.  
   
  [!code-csharp[DataWorks SqlPipe.Send#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe.Send/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe.Send#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe.Send/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="message" /> Jest większa niż 4000 znaków.</exception>
-        <exception cref="T:System.ArgumentNullException"><paramref name="message" /> Jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="message" /> Jest dłuższa niż 4 000 znaków.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="message" /> Ma<see langword="null" />wartość.</exception>
       </Docs>
     </Member>
     <Member MemberName="SendResultsEnd">
@@ -240,24 +240,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Oznacza koniec zestawu wyników, a następnie zwraca <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> wystąpienia do stanu początkowego.</summary>
+        <summary>Oznacza koniec zestawu wyników i zwraca <see cref="T:Microsoft.SqlServer.Server.SqlPipe" /> wystąpienie z powrotem do stanu początkowego.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zarządzane procedury składowane można wysyłać zestawów wyników dla klientów, którzy nie wdrażają <xref:System.Data.SqlClient.SqlDataReader>. Tej metody wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A>, Zezwalaj na procedur składowanych na potrzeby wysyłania zestawy wyników niestandardowy do klienta.  
+ Zarządzane procedury składowane mogą wysyłać zestawy wyników do klientów, którzy nie wdrażają programu <xref:System.Data.SqlClient.SqlDataReader>. Ta metoda, wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A>, zezwala na procedury składowane do wysyłania niestandardowych zestawów wyników do klienta programu.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy nowy <xref:Microsoft.SqlServer.Server.SqlDataRecord> i jego <xref:Microsoft.SqlServer.Server.SqlMetaData>. Przykład następnie oznacza początek rezultat, można ustawić przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody wysyła rekordy z przykładowe dane z powrotem do klienta przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metoda i znaki końca wynik zestawu przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> metody.  
+ Poniższy przykład tworzy nowe <xref:Microsoft.SqlServer.Server.SqlDataRecord> <xref:Microsoft.SqlServer.Server.SqlMetaData>i. Przykład oznacza początek zestawu wyników przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody, wysyła rekordy z przykładowymi danymi z powrotem do klienta <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> przy użyciu metody i oznacza koniec zestawu wyników przy <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> użyciu metody.  
   
  [!code-csharp[DataWorks SqlPipe.SendResultsEnd#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsEnd/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe.SendResultsEnd#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsEnd/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.InvalidOperationException"><see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> Metoda nie została wcześniej wywoływana.</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> Metoda nie została wcześniej wywołana.</exception>
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow(Microsoft.SqlServer.Server.SqlDataRecord)" />
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" />
       </Docs>
@@ -282,28 +282,28 @@
         <Parameter Name="record" Type="Microsoft.SqlServer.Server.SqlDataRecord" />
       </Parameters>
       <Docs>
-        <param name="record">A <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> obiekt o wartości kolumn dla wiersza do wysłania do klienta. Schemat dla rekordu musi być zgodna schematu opisany przez metadane <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> przekazany do <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> metody.</param>
-        <summary>Wysyła pojedynczy wiersz danych do klienta.</summary>
+        <param name="record"><see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> Obiekt z wartościami kolumn dla wiersza, który ma zostać wysłany do klienta. Schemat rekordu musi być zgodny ze schematem opisanym w metadanych <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> przekazaną <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> do metody.</param>
+        <summary>Wysyła z powrotem pojedynczy wiersz danych do klienta.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zarządzane procedury składowane można wysyłać zestawów wyników dla klientów, którzy nie wdrażają <xref:System.Data.SqlClient.SqlDataReader>. Tej metody wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A>, umożliwia procedur składowanych na potrzeby wysyłania zestawy wyników niestandardowy do klienta.  
+ Zarządzane procedury składowane mogą wysyłać zestawy wyników do klientów, którzy nie wdrażają programu <xref:System.Data.SqlClient.SqlDataReader>. Ta metoda, wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A>, zezwala na procedury składowane do wysyłania niestandardowych zestawów wyników do klienta programu.  
   
- <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> Metoda wysyła pojedynczy wiersz danych z powrotem do klienta. Wiersze następnie mogą być zwracane do obiektu wywołującego, wywołując <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A>, jeden raz dla każdego wiersza, które są wysyłane. Po wysłaniu wszystkich wierszy wywołania <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> metoda jest wymagany, aby zaznaczyć koniec zestawu wyników.  
+ <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> Metoda wysyła z powrotem pojedynczy wiersz danych do klienta. Wiersze można następnie zwrócić do obiektu wywołującego, wywołując <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A>jeden raz dla każdego wysyłanego wiersza. Po wysłaniu wszystkich wierszy wywołanie <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> metody jest wymagane do oznaczenia końca zestawu wyników.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy nowy <xref:Microsoft.SqlServer.Server.SqlDataRecord> i jego <xref:Microsoft.SqlServer.Server.SqlMetaData>. Przykład następnie oznacza początek rezultat, można ustawić przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody wysyła rekordy z przykładowe dane z powrotem do klienta przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metoda i znaki końca wynik zestawu przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> metody.  
+ Poniższy przykład tworzy nowe <xref:Microsoft.SqlServer.Server.SqlDataRecord> <xref:Microsoft.SqlServer.Server.SqlMetaData>i. Przykład oznacza początek zestawu wyników przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody, wysyła rekordy z przykładowymi danymi z powrotem do klienta <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> przy użyciu metody i oznacza koniec zestawu wyników przy <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> użyciu metody.  
   
  [!code-csharp[DataWorks SqlPipe.SendResultsRow#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsRow/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe.SendResultsRow#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsRow/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Jest <see langword="null" />.</exception>
-        <exception cref="T:System.InvalidOperationException"><see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> Metoda nie została wcześniej wywoływana.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Ma<see langword="null" />wartość.</exception>
+        <exception cref="T:System.InvalidOperationException"><see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> Metoda nie została wcześniej wywołana.</exception>
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" />
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd" />
       </Docs>
@@ -328,33 +328,33 @@
         <Parameter Name="record" Type="Microsoft.SqlServer.Server.SqlDataRecord" />
       </Parameters>
       <Docs>
-        <param name="record">Element <see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> obiektu, z której jest wyodrębniany metadanych i używany do opisania zestawu wyników.</param>
-        <summary>Oznacza początek zestaw wyników, aby zostać odesłany do klienta, a parametr rekordu do utworzenia metadanych, które opisują zestaw wyników.</summary>
+        <param name="record"><see cref="T:Microsoft.SqlServer.Server.SqlDataRecord" /> Obiekt, z którego metadane są wyodrębniane i używane do opisywania zestawu wyników.</param>
+        <summary>Oznacza początek zestawu wyników do wysłania do klienta i używa parametru rekordu do konstruowania metadanych opisujących zestaw wyników.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Zarządzane procedury składowane można wysyłać zestawów wyników dla klientów, którzy nie wdrażają <xref:System.Data.SqlClient.SqlDataReader>. Tej metody wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A>, Zezwalaj na procedur składowanych na potrzeby wysyłania zestawy wyników niestandardowy do klienta.  
+ Zarządzane procedury składowane mogą wysyłać zestawy wyników do klientów, którzy nie wdrażają programu <xref:System.Data.SqlClient.SqlDataReader>. Ta metoda, wraz z <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A>, zezwala na procedury składowane do wysyłania niestandardowych zestawów wyników do klienta programu.  
   
- <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> Metoda oznacza początek zestaw wyników i jest używany parametr rekordu do utworzenia metadanych, które opisują zestaw wyników. Wszystkie kolejne wiersze, wysyłane przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metody musi odpowiadać tej definicji metadanych.  
+ <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> Metoda oznacza początek zestawu wyników i używa parametru rekordu do konstruowania metadanych opisujących zestaw wyników. Wszystkie kolejne wiersze, wysyłane przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metody, muszą być zgodne z definicją metadanych.  
   
- Należy pamiętać, że po wywołanie <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A>, tylko <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> i <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> może zostać wywołana. Inne metody, w tym samym wystąpieniu <xref:Microsoft.SqlServer.Server.SqlPipe> zgłasza <xref:System.InvalidOperationException>. <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> Ustawia <xref:Microsoft.SqlServer.Server.SqlPipe> do stanu początkowego, gdzie mogą być wywoływane innych metod.  
+ Należy pamiętać, że <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A>po wywołaniu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metody <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> tylko i można ją wywołać. Każda inna metoda w tym samym wystąpieniu <xref:Microsoft.SqlServer.Server.SqlPipe> <xref:System.InvalidOperationException>zgłasza. <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A>przywraca <xref:Microsoft.SqlServer.Server.SqlPipe> początkowy stan, w którym można wywołać inne metody.  
   
- Po sterowanie powraca do instrukcji języka Transact-SQL z wykonywania CLR, nie należy próbować użyć zmiennej statycznej lub lokalne inicjowany do pamięci CLR. Na przykład, czy przechowuje klasy wystąpienia w toku, na przykład `SQLDataRecord`, które będą używane po formant powraca z aparatu CLR. Jedynym wyjątkiem jest `SQLMetaData` w klasie procesu.  
+ Po powrocie kontroli do języka Transact-SQL z wykonywania środowiska CLR nie należy próbować używać zmiennej statycznej ani lokalnej zainicjowanej dla pamięci CLR. Na przykład nie należy przechowywać wystąpienia klasy w procesie, na przykład `SQLDataRecord`, która będzie używana po powrocie kontroli z CLR. Jedynym wyjątkiem jest `SQLMetaData` Klasa w procesie.  
   
    
   
 ## Examples  
- Poniższy przykład tworzy nowy <xref:Microsoft.SqlServer.Server.SqlDataRecord> i jego <xref:Microsoft.SqlServer.Server.SqlMetaData>. Przykład następnie oznacza początek rezultat, można ustawić przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody wysyła rekordy z przykładowe dane z powrotem do klienta przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> metoda i znaki końca wynik zestawu przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> metody.  
+ Poniższy przykład tworzy nowe <xref:Microsoft.SqlServer.Server.SqlDataRecord> <xref:Microsoft.SqlServer.Server.SqlMetaData>i. Przykład oznacza początek zestawu wyników przy użyciu <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart%2A> metody, wysyła rekordy z przykładowymi danymi z powrotem do klienta <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow%2A> przy użyciu metody i oznacza koniec zestawu wyników przy <xref:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd%2A> użyciu metody.  
   
  [!code-csharp[DataWorks SqlPipe.SendResultsStart#1](~/samples/snippets/csharp/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsStart/CS/source.cs#1)]
  [!code-vb[DataWorks SqlPipe.SendResultsStart#1](~/samples/snippets/visualbasic/VS_Snippets_ADO.NET/DataWorks SqlPipe.SendResultsStart/VB/source.vb#1)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Jest <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentException"><paramref name="record" /> Nie ma kolumn lub nie został zainicjowany.</exception>
-        <exception cref="T:System.InvalidOperationException">Inną metodą niż <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow(Microsoft.SqlServer.Server.SqlDataRecord)" /> lub <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd" /> została wywołana po <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> metody.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="record" /> Ma<see langword="null" />wartość.</exception>
+        <exception cref="T:System.ArgumentException">Nie <paramref name="record" /> ma kolumn lub nie została zainicjowana.</exception>
+        <exception cref="T:System.InvalidOperationException">Metoda inna niż <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow(Microsoft.SqlServer.Server.SqlDataRecord)" /> lub <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd" /> została wywołana po <see cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsStart(Microsoft.SqlServer.Server.SqlDataRecord)" /> metodzie.</exception>
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsRow(Microsoft.SqlServer.Server.SqlDataRecord)" />
         <altmember cref="M:Microsoft.SqlServer.Server.SqlPipe.SendResultsEnd" />
       </Docs>
