@@ -1,5 +1,5 @@
 <Type Name="ChannelWriter&lt;T&gt;" FullName="System.Threading.Channels.ChannelWriter&lt;T&gt;">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="cfcba3780d3a305119ba590c86cb524f9503ade1" /><Meta Name="ms.sourcegitcommit" Value="220917117f9d774aaa482439aa7324e39dc1f5b6" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="02/25/2019" /><Meta Name="ms.locfileid" Value="56775784" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChannelWriter&lt;T&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="be6934f62328e48214c95e1d650ec210ab39158b" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69144492" /></Metadata><TypeSignature Language="C#" Value="public abstract class ChannelWriter&lt;T&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ChannelWriter`1&lt;T&gt; extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Threading.Channels.ChannelWriter`1" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class ChannelWriter(Of T)" />
@@ -18,8 +18,8 @@
   </Base>
   <Interfaces />
   <Docs>
-    <typeparam name="T">Określa typ danych, które mogą być zapisywane do kanału.</typeparam>
-    <summary>Udostępnia klasę bazową dla zapisu do kanału.</summary>
+    <typeparam name="T">Określa typ danych, które mogą być zapisywane w kanale.</typeparam>
+    <summary>Udostępnia klasę bazową do zapisu w kanale.</summary>
     <remarks>To be added.</remarks>
   </Docs>
   <Members>
@@ -60,10 +60,10 @@
         <Parameter Name="error" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="error">Opcjonalne wyjątek błędu, który jest przyczyną kanał zakończyć.</param>
-        <summary>Oznacz kanał, jako są kompletne, co oznacza brak elementów zostanie zapisany do niego.</summary>
+        <param name="error">Opcjonalny wyjątek wskazujący awarię, która powoduje ukończenie kanału.</param>
+        <summary>Oznacz kanał jako kompletny, co oznacza, że nie będą w nim zapisywane żadne elementy.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Kanał został już oznaczony jako ukończone.</exception>
+        <exception cref="T:System.InvalidOperationException">Kanał został już oznaczony jako zakończony.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryComplete">
@@ -85,9 +85,9 @@
         <Parameter Name="error" Type="System.Exception" />
       </Parameters>
       <Docs>
-        <param name="error"><see cref="T:System.Exception" /> Wskazujący awarię, powodując nie ma więcej danych być napisane lub wartość null w przypadku powodzenia.</param>
-        <summary>Próbuje oznaczyć kanału jako ukończone, co oznacza, że żadne dane będą zapisywane do niego.</summary>
-        <returns><see langword="true" /> Jeśli operacja zakończy się pomyślnie kanał. w przeciwnym razie <see langword="false" /> Jeśli kanał nie można oznaczyć zakończenia, na przykład z powodu konieczności już została oznaczona lub z powodu nie obsługuje zakończenia.</returns>
+        <param name="error"><see cref="T:System.Exception" /> Wskazanie błędu powodującego, że nie ma więcej danych do zapisania, lub wartość null dla sukcesu.</param>
+        <summary>Próbuje oznaczyć kanał jako gotowy, co oznacza, że nie będą w nim zapisywane żadne dalsze dane.</summary>
+        <returns><see langword="true" />Jeśli ta operacja zakończyła się pomyślnie kanałem; w przeciwnym <see langword="false" /> razie, jeśli nie można było oznaczyć kanału do ukończenia, na przykład ze względu na to, że został już oznaczony jako taki lub nie jest obsługiwany.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -111,9 +111,9 @@
         <Parameter Name="item" Type="T" />
       </Parameters>
       <Docs>
-        <param name="item">Element do zapisu.</param>
-        <summary>Podejmuje próbę zapisu określonego elementu w kanale.</summary>
-        <returns><see langword="true" /> Jeśli element został napisany; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="item">Element do zapisania.</param>
+        <summary>Próbuje zapisać określony element w kanale.</summary>
+        <returns><see langword="true" />Jeśli element został zapisany; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -135,9 +135,9 @@
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="cancellationToken">Element <see cref="T:System.Threading.CancellationToken" /> używany do anulowania operacji oczekiwania.</param>
-        <summary>Zwraca <see cref="T:System.Threading.Tasks.Task`1" /> które zostanie ukończone, gdy ilość miejsca jest dostępna dla zapisu elementu.</summary>
-        <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> , zostanie zakończony i <see langword="true" /> wyniku, gdy ilość miejsca jest dostępna do zapisania elementu lub <see langword="false" /> powodować podczas pisania żadne dodatkowe nie może.</returns>
+        <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Służy do anulowania operacji oczekiwania.</param>
+        <summary><see cref="T:System.Threading.Tasks.Task`1" /> Zwraca, która zostanie zakończona, gdy dostępna jest ilość miejsca do zapisania elementu.</summary>
+        <returns>A <see cref="T:System.Threading.Tasks.Task`1" /> , który zakończy się <see langword="true" /> z wynikiem, gdy dostępna jest ilość miejsca, aby napisać element <see langword="false" /> lub wynik, gdy nie będzie dozwolone dalsze zapisywanie.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -160,10 +160,10 @@
         <Parameter Name="cancellationToken" Type="System.Threading.CancellationToken" />
       </Parameters>
       <Docs>
-        <param name="item">Wartość do zapisania do kanału.</param>
-        <param name="cancellationToken">Element <see cref="T:System.Threading.CancellationToken" /> używany do anulowania operacji zapisu.</param>
+        <param name="item">Wartość do zapisu w kanale.</param>
+        <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken" /> Służy do anulowania operacji zapisu.</param>
         <summary>Asynchronicznie zapisuje element w kanale.</summary>
-        <returns>A <see cref="T:System.Threading.Tasks.Task" /> reprezentujący operację asynchronicznego zapisu.</returns>
+        <returns><see cref="T:System.Threading.Tasks.Task" /> Reprezentuje asynchroniczną operację zapisu.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
