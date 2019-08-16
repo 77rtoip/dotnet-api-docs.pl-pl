@@ -1,5 +1,5 @@
 <Type Name="DefaultWorkflowSchedulerService" FullName="System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="a309ca3084748679a112dc3e7fc94a7f6c28bdf7" /><Meta Name="ms.sourcegitcommit" Value="9e3550fb2088d4faf2043f0acb29da4555519937" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="12/12/2018" /><Meta Name="ms.locfileid" Value="53298520" /></Metadata><TypeSignature Language="C#" Value="public class DefaultWorkflowSchedulerService : System.Workflow.Runtime.Hosting.WorkflowSchedulerService" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ccd7116be8127dd6de0bb894c485af30b06e86f9" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69441578" /></Metadata><TypeSignature Language="C#" Value="public class DefaultWorkflowSchedulerService : System.Workflow.Runtime.Hosting.WorkflowSchedulerService" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi beforefieldinit DefaultWorkflowSchedulerService extends System.Workflow.Runtime.Hosting.WorkflowSchedulerService" />
   <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" />
   <TypeSignature Language="VB.NET" Value="Public Class DefaultWorkflowSchedulerService&#xA;Inherits WorkflowSchedulerService" />
@@ -20,7 +20,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Tworzy i zarządza wątki, które są uruchamiane wystąpienia przepływu pracy na aparatu wykonawczego przepływów pracy.</summary>
+    <summary>Tworzy wątki, które uruchamiają wystąpienia przepływu pracy w aparacie środowiska uruchomieniowego przepływu pracy, i zarządza nimi.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -29,7 +29,7 @@
 > [!NOTE]
 >  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
   
- <xref:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService> jest używany przez aparatu wykonawczego przepływów pracy domyślnie. Obejmuje obsługę domyślne posiadanie wielu wystąpień w kolejce w puli wątków środowiska uruchomieniowego przepływu pracy. Jeśli chcesz kontrolować wątku, który jest odpowiedzialny za wykonywanie przepływu pracy, użyj <xref:System.Workflow.Runtime.Hosting.ManualWorkflowSchedulerService>.  
+ <xref:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService>jest domyślnie używany przez aparat środowiska uruchomieniowego przepływu pracy. Obejmuje ona domyślną obsługę wielu wystąpień przepływu pracy w kolejce w puli wątków środowiska uruchomieniowego. Jeśli chcesz kontrolować wątek, który jest odpowiedzialny za wykonywanie przepływu pracy, użyj <xref:System.Workflow.Runtime.Hosting.ManualWorkflowSchedulerService>.  
   
  ]]></format>
     </remarks>
@@ -79,27 +79,27 @@
         <Parameter Name="parameters" Type="System.Collections.Specialized.NameValueCollection" />
       </Parameters>
       <Docs>
-        <param name="parameters">A <see cref="T:System.Collections.Specialized.NameValueCollection" /> zawierającego dane inicjowania.</param>
+        <param name="parameters"><see cref="T:System.Collections.Specialized.NameValueCollection" /> Zawiera informacje o inicjalizacji.</param>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /> klasy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ten konstruktor jest wywoływana, gdy aparatu wykonawczego przepływów pracy ładuje usługi z pliku konfiguracji aplikacji. Jest tylko prawidłowy parametr `maxSimultaneousWorkflows`, które można określić liczbę przepływów pracy, które mogą być uruchamiane w tym samym czasie.  
+ Ten konstruktor jest wywoływany, gdy aparat środowiska uruchomieniowego przepływu pracy ładuje usługi z pliku konfiguracyjnego aplikacji. Jedynym prawidłowym parametrem `maxSimultaneousWorkflows`jest, który może określać liczbę przepływów pracy, które mogą być uruchamiane w tym samym czasie.  
   
- Ustawienie `maxSimultaneousWorkflows` wysokiej wartości może spowodować puli wątków .NET blokować. Może to spowodować błędy przekroczenia limitu czasu, gdy usługa trwałości próbuje ukończyć transakcji trwałości, ponieważ <xref:System.Transactions.Transaction> obiektów również użyć puli wątków .NET.  
+ Ustawienie `maxSimultaneousWorkflows` wysokiej wartości może spowodować, że Pula wątków .NET zablokować dostęp. Może to spowodować przekroczenie limitu czasu, gdy usługa trwałości próbuje wykonać transakcję <xref:System.Transactions.Transaction> trwałości, ponieważ obiekty również używają puli wątków .NET.  
   
- Jeśli nie zostanie określony w konstruktorze lub plikiem konfiguracyjnym, wartość domyślna `maxSimultaneousWorkflows` wynosi 5 na komputerze jednoprocesorowym, oraz (int) (5 * Environment.ProcessorCount *.8) dla maszyny wieloprocesorowych. Należy pamiętać, że (int) (5 * Environment.ProcessorCount *.8) nie zawsze jest taki sam jak (int)(4 * Environment.ProcessorCount), ze względu na reguły arytmetyczne liczby całkowitej.  
+ Jeśli nie zostanie określony w konstruktorze lub pliku konfiguracji, wartość `maxSimultaneousWorkflows` domyślna równa 5 dla komputera z jednym procesorem i (int) (5 * Environment. ProcessorCount * .8) dla maszyny z wieloma procesorami. Należy pamiętać, że (int) (5 * Environment. ProcessorCount * .8) nie zawsze jest taka sama jak (int) (4 * Environment. ProcessorCount) z powodu reguł arytmetycznych liczb całkowitych.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="parameters" /> zawiera odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic).</exception>
-        <exception cref="T:System.ArgumentException">Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcja zawiera odwołanie o wartości null (<see langword="Nothing" />).  
+        <exception cref="T:System.ArgumentNullException"><paramref name="parameters" />zawiera odwołanie o wartości null<see langword="Nothing" /> (w Visual Basic).</exception>
+        <exception cref="T:System.ArgumentException">Jedna z wartości klucza w <paramref name="parameters" /> kolekcji zawiera odwołanie o wartości null (<see langword="Nothing" />).  
   
 —lub— 
-Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest niezgodna z domyślnego klucza dla <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" />.</exception>
-        <exception cref="T:System.FormatException">Jeden z parametrów nie można przekonwertować na podwójnej precyzji liczba zmiennoprzecinkowa odpowiadający <see cref="P:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.MaxSimultaneousWorkflows" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><see cref="P:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.MaxSimultaneousWorkflows" /> jest mniejsza niż 1.</exception>
+Jedna z wartości klucza w <paramref name="parameters" /> kolekcji nie jest zgodna z kluczem domyślnym dla. <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /></exception>
+        <exception cref="T:System.FormatException">Jednego z parametrów nie można przekonwertować na liczbę zmiennoprzecinkową o podwójnej precyzji pasującą <see cref="P:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.MaxSimultaneousWorkflows" />do liczby.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><see cref="P:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.MaxSimultaneousWorkflows" />jest mniejsza niż 1.</exception>
       </Docs>
     </Member>
     <Member MemberName=".ctor">
@@ -119,19 +119,19 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <Parameter Name="maxSimultaneousWorkflows" Type="System.Int32" />
       </Parameters>
       <Docs>
-        <param name="maxSimultaneousWorkflows">Liczba całkowita określająca maksymalną liczbę wystąpień przepływu pracy, które mogą być przechowywane w kolejce puli wątków.</param>
-        <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /> przy użyciu określoną maksymalną liczbę wystąpień przepływu pracy, które usługa może działać jednocześnie.</summary>
+        <param name="maxSimultaneousWorkflows">Liczba całkowita określająca maksymalną liczbę wystąpień przepływów pracy, które mogą być przechowywane w kolejce puli wątków.</param>
+        <summary>Inicjuje nowe wystąpienie <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /> klasy przy użyciu określonej maksymalnej liczby wystąpień przepływów pracy, które mogą być uruchamiane jednocześnie przez usługę.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ustawienie `maxSimultaneousWorkflows` wysokiej wartości może spowodować puli wątków .NET blokować. Może to spowodować błędy przekroczenia limitu czasu, gdy usługa trwałości próbuje ukończyć transakcji trwałości, ponieważ <xref:System.Transactions.Transaction> obiektów również użyć puli wątków .NET.  
+ Ustawienie `maxSimultaneousWorkflows` wysokiej wartości może spowodować, że Pula wątków .NET zablokować dostęp. Może to spowodować przekroczenie limitu czasu, gdy usługa trwałości próbuje wykonać transakcję <xref:System.Transactions.Transaction> trwałości, ponieważ obiekty również używają puli wątków .NET.  
   
- Jeśli nie zostanie określony w konstruktorze lub plikiem konfiguracyjnym, wartość domyślna `maxSimultaneousWorkflows` wynosi 5 na komputerze jednoprocesorowym, oraz (int) (5 * Environment.ProcessorCount *.8) dla maszyny wieloprocesorowych. Należy pamiętać, że (int) (5 * Environment.ProcessorCount *.8) nie zawsze jest taki sam jak (int)(4 * Environment.ProcessorCount), ze względu na reguły arytmetyczne liczby całkowitej.  
+ Jeśli nie zostanie określony w konstruktorze lub pliku konfiguracji, wartość `maxSimultaneousWorkflows` domyślna równa 5 dla komputera z jednym procesorem i (int) (5 * Environment. ProcessorCount * .8) dla maszyny z wieloma procesorami. Należy pamiętać, że (int) (5 * Environment. ProcessorCount * .8) nie zawsze jest taka sama jak (int) (4 * Environment. ProcessorCount) z powodu reguł arytmetycznych liczb całkowitych.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxSimultaneousWorkflows" /> jest mniejsza niż 1.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="maxSimultaneousWorkflows" />jest mniejsza niż 1.</exception>
       </Docs>
     </Member>
     <Member MemberName="Cancel">
@@ -154,10 +154,10 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <Parameter Name="timerId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="timerId"><see cref="T:System.Guid" /> Skojarzone z istniejącego elementu zaplanowanych zadań, aby anulować.</param>
-        <summary>Anuluje określonego elementu roboczego istniejącego wystąpienia przepływu pracy.</summary>
+        <param name="timerId"><see cref="T:System.Guid" /> Skojarzona z istniejącym zaplanowanym elementem roboczym do anulowania.</param>
+        <summary>Anuluje określony element roboczy wystąpienia przepływu pracy.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="timerId" /> jest pustym identyfikatorem GUID.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="timerId" />jest pustym identyfikatorem GUID.</exception>
       </Docs>
     </Member>
     <Member MemberName="MaxSimultaneousWorkflows">
@@ -177,13 +177,13 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera maksymalną liczbę wystąpień przepływu pracy, które mogą być przechowywane w kolejce puli wątków.</summary>
-        <value>Liczba całkowita, która przedstawia maksymalną liczbę wystąpień przepływu pracy, które mogą być przechowywane w kolejce puli wątków.</value>
+        <summary>Pobiera maksymalną liczbę wystąpień przepływów pracy, które mogą być przechowywane w kolejce puli wątków.</summary>
+        <value>Liczba całkowita, która reprezentuje maksymalną liczbę wystąpień przepływów pracy, które mogą być przechowywane w kolejce puli wątków.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wartością domyślną dla tej metody jest 5 na komputerze jednoprocesorowym, oraz (int) (5 * Environment.ProcessorCount *.8) dla maszyny wieloprocesorowych. Należy pamiętać, że (int) (5 * Environment.ProcessorCount *.8) nie zawsze jest taki sam jak (int)(4 * Environment.ProcessorCount), ze względu na reguły arytmetyczne liczby całkowitej.  
+ Wartością domyślną dla tej metody jest 5 dla komputera z jednym procesorem i (int) (5 * Environment. ProcessorCount * .8) dla maszyny z wieloma procesorami. Należy pamiętać, że (int) (5 * Environment. ProcessorCount * .8) nie zawsze jest taka sama jak (int) (4 * Environment. ProcessorCount) z powodu reguł arytmetycznych liczb całkowitych.  
   
  ]]></format>
         </remarks>
@@ -207,12 +207,12 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Powiadamia <see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /> rozpoczęcia wystąpienia przepływu pracy do uruchomienia.</summary>
+        <summary><see cref="T:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService" /> Powiadamia o uruchomieniu wystąpienia przepływu pracy.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.OnStarted%2A> Tworzy wątek do pierwszego elementu roboczego na liście elementów oczekujących mają zostać uwzględnione w puli wątków wystąpienia przepływu pracy.  
+ <xref:System.Workflow.Runtime.Hosting.DefaultWorkflowSchedulerService.OnStarted%2A>tworzy wątek pierwszego elementu roboczego na liście elementów oczekujących na uwzględnienie w puli wątków wystąpienia przepływu pracy.  
   
  ]]></format>
         </remarks>
@@ -224,7 +224,7 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Dodaje wystąpienie przepływu pracy do kolejki elementów roboczych oczekujących.</summary>
+        <summary>Dodaje wystąpienie przepływu pracy do kolejki oczekujących elementów roboczych.</summary>
       </Docs>
     </MemberGroup>
     <Member MemberName="Schedule">
@@ -248,18 +248,18 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <Parameter Name="workflowInstanceId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="callback">A <see cref="T:System.Threading.WaitCallback" /> multiemisji delegata, który reprezentuje metodę do uruchomienia.</param>
-        <param name="workflowInstanceId">A <see cref="T:System.Guid" /> reprezentujący wystąpienie przepływu pracy.</param>
-        <summary>Dodaje wystąpienie przepływu pracy do kolejki elementów roboczych oczekujących przy użyciu wystąpienia określonego przepływu pracy za pomocą określonego delegata multiemisji.</summary>
+        <param name="callback">Delegat <see cref="T:System.Threading.WaitCallback" /> multiemisji reprezentujący metodę do uruchomienia.</param>
+        <param name="workflowInstanceId"><see cref="T:System.Guid" /> Reprezentujący wystąpienie przepływu pracy.</param>
+        <summary>Dodaje wystąpienie przepływu pracy do kolejki oczekujących elementów roboczych przy użyciu określonego wystąpienia przepływu pracy przy użyciu określonego delegata multiemisji.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.Threading.WaitCallback> konstruktora, aby utworzyć metodę delegata do uruchamiania w nowym wątku.  
+ Użyj konstruktora <xref:System.Threading.WaitCallback> , aby utworzyć metodę Delegate do uruchomienia w nowym wątku.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="callback" /> zawiera odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic).</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="callback" />zawiera odwołanie o wartości null<see langword="Nothing" /> (w Visual Basic).</exception>
       </Docs>
     </Member>
     <Member MemberName="Schedule">
@@ -285,21 +285,21 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
         <Parameter Name="timerId" Type="System.Guid" />
       </Parameters>
       <Docs>
-        <param name="callback">A <see cref="T:System.Threading.WaitCallback" /> multiemisji delegata, który reprezentuje metodę do uruchomienia.</param>
-        <param name="workflowInstanceId">A <see cref="T:System.Guid" /> reprezentujący wystąpienie przepływu pracy.</param>
-        <param name="whenUtc"><see cref="T:System.DateTime" /> Oznacza czas uruchomienie wątku.</param>
-        <param name="timerId">A <see cref="T:System.Guid" /> reprezentujący zaplanowane wątku.</param>
-        <summary>Dodaje wystąpienie określonego przepływu pracy do kolejki elementów roboczych oczekujących za pomocą określonego delegata multiemisji, <see cref="T:System.DateTime" /> i identyfikatory GUID.</summary>
+        <param name="callback">Delegat <see cref="T:System.Threading.WaitCallback" /> multiemisji reprezentujący metodę do uruchomienia.</param>
+        <param name="workflowInstanceId"><see cref="T:System.Guid" /> Reprezentujący wystąpienie przepływu pracy.</param>
+        <param name="whenUtc"><see cref="T:System.DateTime" /> Wskazuje godzinę rozpoczęcia wątku.</param>
+        <param name="timerId"><see cref="T:System.Guid" /> Reprezentujący zaplanowany wątek.</param>
+        <summary>Dodaje określone wystąpienie przepływu pracy do kolejki oczekujących elementów roboczych przy użyciu określonego delegata <see cref="T:System.DateTime" /> multiemisji i identyfikatorów GUID.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj <xref:System.Threading.WaitCallback> konstruktora, aby utworzyć metodę delegata do uruchamiania w nowym wątku.  
+ Użyj konstruktora <xref:System.Threading.WaitCallback> , aby utworzyć metodę Delegate do uruchomienia w nowym wątku.  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="callback" /> zawiera odwołanie o wartości null (<see langword="Nothing" /> w języku Visual Basic).</exception>
-        <exception cref="T:System.ArgumentException"><paramref name="workflowInstanceId" /> lub <paramref name="timerId" /> jest pustym identyfikatorem GUID.</exception>
+        <exception cref="T:System.ArgumentNullException"><paramref name="callback" />zawiera odwołanie o wartości null<see langword="Nothing" /> (w Visual Basic).</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="workflowInstanceId" />lub <paramref name="timerId" /> jest pustym identyfikatorem GUID.</exception>
       </Docs>
     </Member>
     <Member MemberName="Stop">
@@ -320,7 +320,7 @@ Jednego z kluczowych wartości w <paramref name="parameters" /> kolekcji jest ni
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zatrzymuje aktualnie uruchomionemu wątkowi na wystąpienie przepływu pracy i wszelkie czasomierzy, które są uruchomione.</summary>
+        <summary>Kończy aktualnie uruchomiony wątek w wystąpieniu przepływu pracy i wszystkie czasomierze, które są uruchomione.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>

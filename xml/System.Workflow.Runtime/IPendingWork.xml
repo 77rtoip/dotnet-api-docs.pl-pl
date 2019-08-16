@@ -1,5 +1,5 @@
 <Type Name="IPendingWork" FullName="System.Workflow.Runtime.IPendingWork">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="d486f332ad1a3e964cfd758a5b65a077958b19c9" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64176369" /></Metadata><TypeSignature Language="C#" Value="public interface IPendingWork" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="5ce6c6212b928a64933542eebb9a2e41c98a8317" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69417008" /></Metadata><TypeSignature Language="C#" Value="public interface IPendingWork" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IPendingWork" />
   <TypeSignature Language="DocId" Value="T:System.Workflow.Runtime.IPendingWork" />
   <TypeSignature Language="VB.NET" Value="Public Interface IPendingWork" />
@@ -17,7 +17,7 @@
     </Attribute>
   </Attributes>
   <Docs>
-    <summary>Udostępnia metody do wzięcia udziału w zadaniu wsadowym pracy.</summary>
+    <summary>Dostarcza metody do uczestnictwa w partii zadań.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -26,11 +26,11 @@
 > [!NOTE]
 >  [!INCLUDE[DeprecatedContent](~/includes/deprecatedcontent-md.md)]  
   
- <xref:System.Workflow.Runtime.IPendingWork> Dla usług, które chcesz brać udział w czasie wykonywania przepływu pracy aparatu mechanizm łączenia we wsady znajduje się interfejs. Mechanizm łączenia we wsady jest szczególnie przydatne w przypadku usług korzystających z magazynu trwałego. Często jest to istotne w takich przypadkach, aby zachować spójność między trwałych magazynach, używane przez usługę i wewnętrzny stan aparatu wykonawczego przepływów pracy.  
+ <xref:System.Workflow.Runtime.IPendingWork> Interfejs jest udostępniany dla usług, które chcą wziąć udział w mechanizm wsadowy tworzenia partii aparatu środowiska uruchomieniowego przepływu pracy. Mechanizm przetwarzania wsadowego jest szczególnie przydatny w przypadku usług korzystających z magazynu trwałego. Często ważne jest, aby zachować spójność między trwałym magazynem używanym przez usługę i wewnętrznym stanem aparatu środowiska uruchomieniowego przepływu pracy.  
   
- Jeśli chcesz, aby uczestniczyć w przepływ pracy transakcja tworzenia plików wsadowych udostępniane przez usługi <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>, musi implementować metody zdefiniowane przez <xref:System.Workflow.Runtime.IPendingWork> interfejsu. Wywoła aparatu wykonawczego przepływów pracy <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody na usługi, aby zatwierdzić partii.  
+ Jeśli chcesz <xref:System.Workflow.Runtime.Hosting.WorkflowCommitWorkBatchService>, aby usługa uczestniczyła w przetwarzaniu wsadowym transakcji przepływu pracy dostarczonym przez program, musisz zaimplementować metody zdefiniowane <xref:System.Workflow.Runtime.IPendingWork> przez interfejs. Aparat środowiska uruchomieniowego przepływu pracy wywoła <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metodę w usłudze, aby zatwierdzić partię.  
   
- <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> Klasy implementuje <xref:System.Workflow.Runtime.IPendingWork> interfejsu.  
+ <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> Klasa<xref:System.Workflow.Runtime.IPendingWork> implementuje interfejs.  
   
  ]]></format>
     </remarks>
@@ -56,14 +56,14 @@
         <Parameter Name="items" Type="System.Collections.ICollection" />
       </Parameters>
       <Docs>
-        <param name="transaction"><see cref="T:System.Transactions.Transaction" /> Związane z pracą oczekujące.</param>
+        <param name="transaction"><see cref="T:System.Transactions.Transaction" /> Skojarzona z oczekującą czynnością.</param>
         <param name="items">Elementy robocze do zatwierdzenia.</param>
-        <summary>Zatwierdza listy elementów roboczych przy użyciu określonego <see cref="T:System.Transactions.Transaction" /> obiektu.</summary>
+        <summary>Zatwierdza listę elementów roboczych przy użyciu określonego <see cref="T:System.Transactions.Transaction" /> obiektu.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Środowisko uruchomieniowe wywołuje aparat przepływu pracy <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody, gdy jego semantyki dyktowanie oczekujące pracy w trybie wsadowym pracy należy zatwierdzać. Po osiągnięciu punktu zatwierdzenia, wywołuje aparatu wykonawczego przepływów pracy <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody na każdym <xref:System.Workflow.Runtime.IPendingWork> obiektu w usłudze batch jego pracy; przekazuje aparatu wykonawczego przepływów pracy <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metoda kolekcji elementy skojarzone z tym <xref:System.Workflow.Runtime.IPendingWork> obiekt. Wszystkie zadania w zadaniu wsadowym zakończy się pomyślnie lub żaden z jej zakończy się pomyślnie. Należy zgłosić wyjątek, jeśli dowolny z elementów roboczych jest przekazywany do <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody w danej implementacji nie można zatwierdzić. W zależności od implementacji, możesz cofnąć w swojej <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody, jeśli nie można zatwierdzić, jego elementy robocze. Jeśli pomyślnie aparatu wykonawczego przepływów pracy zatwierdzeń, wszystkie zadania w usłudze batch pracy, wywołuje metodę <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> z `succeeded` parametr `true`; w przeciwnym razie wywoływanych przez nią <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> z `succeeded` równa `false`.  
+ Aparat środowiska uruchomieniowego przepływu pracy <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> wywołuje metodę, gdy jej semantyka wymusza, że oczekująca pracy w partii pracy powinna zostać zatwierdzona. Gdy osiągnie punkt zatwierdzenia, aparat środowiska <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> uruchomieniowego przepływu pracy wywołuje metodę dla każdego <xref:System.Workflow.Runtime.IPendingWork> obiektu w partii pracy; aparat środowiska uruchomieniowego <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> przepływu pracy przekazuje metodę do kolekcji elementów skojarzonych z tym <xref:System.Workflow.Runtime.IPendingWork> Stream. Wszystkie prace w partii powiodło się lub żadna z nich nie powiedzie się. Należy zgłosić wyjątek, jeśli nie można zatwierdzić dowolnego elementu pracy przekazanego do <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> metody w implementacji. W zależności od implementacji można wykonać wycofywanie w <xref:System.Workflow.Runtime.IPendingWork.Commit%2A> ramach metody, jeśli nie można zatwierdzić jej elementów roboczych. Jeśli aparat środowiska uruchomieniowego przepływu pracy pomyślnie zatwierdził całą służbę w partii pracy, wywołuje <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> `succeeded` z parametrem ustawionym `true`na; w przeciwnym razie <xref:System.Workflow.Runtime.IPendingWork.Complete%2A> wywołuje `succeeded` z ustawionym na `false`.  
   
  ]]></format>
         </remarks>
@@ -90,14 +90,14 @@
         <Parameter Name="items" Type="System.Collections.ICollection" />
       </Parameters>
       <Docs>
-        <param name="succeeded"><see langword="true" /> Jeśli transakcja zakończyła się pomyślnie; w przeciwnym razie <see langword="false" />.</param>
+        <param name="succeeded"><see langword="true" />Jeśli transakcja zakończyła się pomyślnie; w przeciwnym razie. <see langword="false" /></param>
         <param name="items"><see cref="T:System.Collections.ICollection" /> Elementów roboczych.</param>
-        <summary>Wywołuje się, gdy transakcja została zakończona.</summary>
+        <summary>Wywoływana, gdy transakcja została ukończona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli `succeeded` jest `true`transakcji zakończyło się pomyślnie i można zwolnić wszystkie zasoby używane przez partię zakończoną pracy. Jeśli `succeeded` jest `false`, transakcji nie powiodło się. W zależności od implementacji można wykonać wszelkie odpowiednie wdrożenie po powrocie na pracy w trybie wsadowym pracy po transakcja nie powiedzie się.  
+ Jeśli `succeeded` tak`true`, transakcja zakończyła się pomyślnie i wszystkie zasoby używane przez partię pracy mogą zostać wydane. Jeśli `succeeded` jest`false`, transakcja nie powiodła się. W zależności od implementacji można wykonać odpowiednie wycofywanie w pracy w partii zadań, gdy transakcja nie powiedzie się.  
   
  ]]></format>
         </remarks>
@@ -124,13 +124,13 @@
       </Parameters>
       <Docs>
         <param name="items"><see cref="T:System.Collections.ICollection" /> Elementów roboczych.</param>
-        <summary>Umożliwia elementy pracy usługi batch do potwierdzenia, czy ich zatwierdzić natychmiast.</summary>
-        <returns><see langword="true" /> Jeśli dowolny element w kolekcji musi być zatwierdzone natychmiast; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Zezwala elementom w partii zadań na potwierdzenie, czy muszą oni natychmiast zatwierdzić.</summary>
+        <returns><see langword="true" />Jeśli jakiekolwiek elementy w kolekcji muszą być zatwierdzone natychmiast; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli <xref:System.Workflow.Runtime.IPendingWork.MustCommit%2A> zwraca `false`, praca może przełożone na punktu zatwierdzenia w przyszłości. Jeśli jakiekolwiek elementy muszą być zatwierdzone, zwracany jest `true` i wszystkie elementy zostaną przekazane w bieżącym punkcie zatwierdzenia. Omówienie dotyczące zatwierdzania możliwych punktów, zobacz <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> klasy.  
+ W <xref:System.Workflow.Runtime.IPendingWork.MustCommit%2A> przypadku `false`powracania pracy można odroczyć do przyszłego punktu zatwierdzania. Jeśli którykolwiek z elementów musi być zatwierdzony, zwracane `true` i wszystkie elementy zostaną zatwierdzone w bieżącym punkcie zatwierdzania. Aby zapoznać się z informacjami na temat możliwych punktów zatwierdzania, zobacz <xref:System.Workflow.Runtime.Hosting.SqlWorkflowPersistenceService> Klasa.  
   
  ]]></format>
         </remarks>

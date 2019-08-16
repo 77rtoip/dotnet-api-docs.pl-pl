@@ -1,5 +1,5 @@
 <Type Name="ReservationCollection" FullName="System.IO.Log.ReservationCollection">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="0538791316db2eba28cb8bcfa09bf2da24805dea" /><Meta Name="ms.sourcegitcommit" Value="7845f124909a0999a19cc65f40feab5e75cd9b8d" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="05/06/2019" /><Meta Name="ms.locfileid" Value="65064888" /></Metadata><TypeSignature Language="C#" Value="public abstract class ReservationCollection : System.Collections.Generic.ICollection&lt;long&gt;, System.Collections.Generic.IEnumerable&lt;long&gt;" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="0b5f7c5e00b035f2197d50e122641e5237cd5df1" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69245106" /></Metadata><TypeSignature Language="C#" Value="public abstract class ReservationCollection : System.Collections.Generic.ICollection&lt;long&gt;, System.Collections.Generic.IEnumerable&lt;long&gt;" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit ReservationCollection extends System.Object implements class System.Collections.Generic.ICollection`1&lt;int64&gt;, class System.Collections.Generic.IEnumerable`1&lt;int64&gt;, class System.Collections.IEnumerable" />
   <TypeSignature Language="DocId" Value="T:System.IO.Log.ReservationCollection" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class ReservationCollection&#xA;Implements ICollection(Of Long), IEnumerable(Of Long)" />
@@ -28,32 +28,32 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Zarządza zbiór rezerwacji miejsca w sekwencji rekordu.</summary>
+    <summary>Zarządza kolekcją rezerwacji miejsca w sekwencji rekordów.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta klasa reprezentuje zestaw obszarów rezerwacji, które zostały wprowadzone w sekwencji rekordu. Dodawanie elementów do kolekcji przydziela nowej rezerwacji. Usuwanie elementów z kolekcji zwalnia te zastrzeżenia.  
+ Ta klasa reprezentuje zestaw obszarów rezerwacji, które są wykonywane w sekwencji rekordów. Dodawanie elementów do kolekcji przydziela nowe rezerwacje. Usunięcie elementów z kolekcji zwalnia te rezerwacje.  
   
- Aplikacja zastrzega miejsca w dzienniku, gdy zawiera dane, które mają być zapisywane w dzienniku w przyszłości, ale nie można zapisać go bezpośrednio. Rezerwacje gwarantować, że dane mogą być zapisywane w dzienniku, po udostępnieniu do zapisania danych. Korzystając z dzienników, aplikacje często rezerwowania co najmniej jednego rekordu dziennika, w obszarze organizowania. Należy zarezerwować rekordów przed ich dołączenie.  
+ Aplikacja rezerwuje miejsce w dzienniku, gdy ma dane, które mają zostać zapisane w dzienniku w przyszłości, ale nie mogą go natychmiast zapisać. Rezerwacje zapewniają gwarancję, że dane mogą być zapisywane w dzienniku, gdy dane są dostępne do zapisania. W przypadku korzystania z dzienników aplikacje często rezerwują co najmniej jeden rekord dziennika w obszarze organizowania. Przed dołączeniem rekordów należy zarezerwować rekordy.  
   
- Rezerwacji może służyć do zagwarantowania, że można można wykonać operacji, zanim dane są zatwierdzone; w przeciwnym razie zmiany zostaną wycofane. Może również służyć do rejestrowania "action cofania" w dzienniku. Podczas operacji wycofywania transakcyjnego menedżera zasobów (RM) musi być możliwe odzyskanie stanu, jeśli Menedżera zasobów zostanie przerwany podczas operacji wycofywania. Za pomocą obszaru rezerwacji, RM możliwość rezerwowania miejsca w dzienniku, zanim zostaną one użyte.  
+ Rezerwacje mogą służyć do zagwarantowania, że operacja może zostać zakończona przed zatwierdzeniem danych; w przeciwnym razie zmiany są wycofywane. Można go również użyć do rejestrowania "akcji cofania" w dzienniku. Podczas operacji wycofywania, transakcyjny Menedżer zasobów (RM) musi mieć możliwość odzyskania stanu, jeśli RM zostanie przerwany podczas operacji wycofywania. Za pomocą obszaru rezerwacja, Menedżer zasobów może zarezerwować miejsce w dzienniku przed jego użyciem.  
   
- <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> Metoda może zarezerwować miejsce lub dołączania danych i / lub, w zależności od parametrów, które zostały określone podczas wywołania. W miarę postępów prac w ramach transakcji aplikacji można dołączyć informacje o cofania i zarezerwować miejsce dla rekordów wynagrodzenia. Podczas operacji wycofywania wynagrodzenia rekordy, które są tworzone wskazują, jakie została cofnięta na dysku. Rekordy są dołączane, przy użyciu miejsca, który został wcześniej zarezerwowany. Gwarantuje to, że nie działa RM mało miejsca na dziennik, który jest stanem krytycznym, podczas wykonywania operacji wycofywania. Jeśli dziennik się zapełni podczas transakcji, aplikację można bezpiecznie wycofać transakcji bez uszkodzenia danych trwałych.  
+ <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> Metoda może zarezerwować miejsce lub dołączać dane albo w zależności od parametrów, które są określone podczas tworzenia wywołania. W miarę postępów prac w transakcji aplikacja może dołączyć informacje cofania i rezerwowe miejsce dla rekordów wynagrodzeń. Podczas operacji wycofywania tworzone rekordy wynagrodzeń wskazują, co zostało cofnięte na dysku. Rekordy są dołączane przy użyciu miejsca, które zostało wcześniej zarezerwowane. Gwarantuje to, że Menedżer zasobów nie wypróbuje miejsca w dzienniku, co jest krytycznym warunkiem podczas wykonywania operacji wycofywania. Jeśli dziennik zostanie wystawiony podczas transakcji, aplikacja może bezpiecznie wycofać transakcję bez uszkodzenia danych trwałych.  
   
- CLFS jest zgodny z ARIES systemu rejestrowania przeznaczone do rejestrowania zapisu z wyprzedzeniem. Rejestrowanie zapisu z wyprzedzeniem, aplikacja zapisuje rekord cofania, przed wykonaniem operacji rezerwacji, ilość miejsca, jaki zajmuje w dzienniku zapisu wyrównującej rekord, który może być używany podczas wycofywania. Później zarezerwowane miejsce jest używana, gdy rekord wynagrodzenia jest zapisana.  
+ CLFS to system rejestrowania zgodny z ARIES, przeznaczony do zapisu z wyprzedzeniem. W przypadku rejestrowania z wyprzedzeniem aplikacja zapisuje rekord cofnięcia przed wykonaniem operacji, zachowując ilość miejsca, jaką zajmuje w dzienniku, aby napisać rekord kompensowania, który może być używany podczas wycofywania. Później zarezerwowane miejsce jest używane, gdy rekord wynagrodzeń zostanie rzeczywiście zapisany.  
   
- Aplikacje można zarezerwować lub dostęp do miejsca długie w dowolnym momencie (są one wzajemnie wykluczających się operacje). Po zatwierdzeniu rekordu są zapisywane w dzienniku aplikacji można zwolnić rezerwacji dla rekordów wynagrodzenia. Ta akcja może odbywać się przez wywołanie metody albo <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> lub <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> metody. Wywoływanie <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> metoda gwarantuje, że operacja jest atomic, podczas wywoływania <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> nie obsługuje metody.  
+ Aplikacje mogą zarezerwować lub uzyskać dostęp do wolnego miejsca w dowolnym momencie (są to wzajemnie wykluczające się operacje). Po zapisaniu rekordu zatwierdzania w dzienniku Aplikacja może zwolnić rezerwacje dla rekordów wynagrodzeń. Tę akcję można wykonać przez wywołanie <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> metody lub. <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> Wywołanie metody gwarantuje, że operacja jest niepodzielna, podczas gdy <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> wywołanie metody nie jest. <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A>  
   
- Po zwolnieniu rekordy, należy zwolnić te same rekordy został zarezerwowany razem poprzednie wywołanie <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> metody.  
+ W przypadku bezpłatnych rekordów należy zwolnić te same rekordy, które zostały zarezerwowane we wcześniejszej wywołaniu <xref:System.IO.Log.IRecordSequence.ReserveAndAppend%2A> metody.  
   
 > [!NOTE]
->  Implementacja <xref:System.IO.Log.IRecordSequence> musi implementować <xref:System.IO.Log.ReservationCollection.MakeReservation%2A> i <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> metody umożliwiają przeprowadzanie rzeczywiste rezerwacji alokacji i dezalokacji. Ponadto należy także wywołać implementacji <xref:System.IO.Log.ReservationCollection.ReservationFreed%2A> gdy rekord zostanie zapisane zarezerwowane miejsce.  
+>  Implementacja programu <xref:System.IO.Log.IRecordSequence> musi <xref:System.IO.Log.ReservationCollection.MakeReservation%2A> implementować metody i <xref:System.IO.Log.ReservationCollection.FreeReservation%2A> do wykonywania rzeczywistej alokacji rezerwacji i cofania alokacji. Ponadto implementacja musi również wywołać <xref:System.IO.Log.ReservationCollection.ReservationFreed%2A> , gdy rekord jest zapisywana w zarezerwowanej przestrzeni.  
   
    
   
 ## Examples  
- Rezerwacje można przeprowadzić na dwa sposoby, jak pokazano w poniższych przykładach. Można przyjąć praktyki przykłady dla niezawodne przetwarzanie. Należy zauważyć, że to zadanie można wykonać tylko podczas korzystania z CLFS opartą <xref:System.IO.Log.LogRecordSequence> klasy.  
+ Rezerwacje można wykonać na dwa sposoby, jak pokazano w poniższych przykładach. Możesz zastosować praktyki w przykładach do niezawodnego przetwarzania. Należy zauważyć, że to zadanie można wykonać tylko w przypadku korzystania z klasy <xref:System.IO.Log.LogRecordSequence> opartej na CLFS.  
   
 ```  
 //Using the ReserveAndAppend Method  
@@ -132,13 +132,13 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar żądanej rezerwacji, w bajtach.</param>
-        <summary>Przydziela rezerwacji i dodaje go do kolekcji. Ta metoda nie może być dziedziczona.</summary>
+        <param name="size">Rozmiar żądanego zastrzeżenia, w bajtach.</param>
+        <summary>Alokuje rezerwację i dodaje ją do kolekcji. Ta metoda nie może być dziedziczona.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład pokazuje, jak ręcznie utworzyć zastrzeżenie. Należy zauważyć, że to zadanie można wykonać tylko podczas korzystania z CLFS opartą <xref:System.IO.Log.LogRecordSequence> klasy.  
+ Poniższy przykład pokazuje, jak ręcznie wprowadzić rezerwację. Należy zauważyć, że to zadanie można wykonać tylko w przypadku korzystania z klasy <xref:System.IO.Log.LogRecordSequence> opartej na CLFS.  
   
 ```  
 ReservationCollection reservations = recordSequence.CreateReservationCollection();  
@@ -158,13 +158,13 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="archiveTail" /> nie jest od numeru podstawowego do ostatniego sekwencji.</exception>
-        <exception cref="T:System.ArgumentException"><paramref name="size" /> jest nieprawidłowy lub przekracza rozmiar maksymalny rezerwacji.</exception>
-        <exception cref="T:System.IO.IOException">Podczas tworzenia migawki archiwum, wystąpi błąd We/Wy.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełny.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="archiveTail" />nie jest między bazowym i ostatnim numerem sekwencji tej sekwencji.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="size" />jest nieprawidłowy lub przekracza maksymalny rozmiar rezerwacji.</exception>
+        <exception cref="T:System.IO.IOException">Wystąpił błąd we/wy podczas tworzenia migawki archiwum.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełna.</exception>
       </Docs>
     </Member>
     <Member MemberName="Clear">
@@ -190,12 +190,12 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
       <Docs>
         <summary>Zwalnia wszystkie rezerwacje w kolekcji. Ta metoda nie może być dziedziczona.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentException"><paramref name="size" /> jest nieprawidłowy lub przekracza rozmiar maksymalny rezerwacji.</exception>
-        <exception cref="T:System.IO.IOException">Podczas tworzenia migawki archiwum, wystąpi błąd We/Wy.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełny.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+        <exception cref="T:System.ArgumentException"><paramref name="size" />jest nieprawidłowy lub przekracza maksymalny rozmiar rezerwacji.</exception>
+        <exception cref="T:System.IO.IOException">Wystąpił błąd we/wy podczas tworzenia migawki archiwum.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełna.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
     <Member MemberName="Contains">
@@ -221,13 +221,13 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar do zlokalizowania w kolekcji.</param>
-        <summary>Określa, czy wprowadzono rezerwacji o określonym rozmiarze. Ta metoda nie może być dziedziczona.</summary>
-        <returns><see langword="true" /> Jeśli dokonano co najmniej jedną rezerwację o określonym rozmiarze; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="size">Rozmiar, który ma zostać zlokalizowany w kolekcji.</param>
+        <summary>Określa, czy została wprowadzona rezerwacja określonego rozmiaru. Ta metoda nie może być dziedziczona.</summary>
+        <returns><see langword="true" />Jeśli została wprowadzona co najmniej jedna rezerwacja o określonym rozmiarze; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
     <Member MemberName="CopyTo">
@@ -252,18 +252,18 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
       </Parameters>
       <Docs>
         <param name="array">Tablica, która jest miejscem docelowym kopii.</param>
-        <param name="arrayIndex">Rozpoczyna się od zera indeks w tablicy, w których kopiowanie.</param>
-        <summary>Kopiuje całą kolekcję jednowymiarowej tablicy, zaczynając od określonego indeksu tablicy docelowej. Ta metoda nie może być dziedziczona.</summary>
+        <param name="arrayIndex">Indeks (liczony od zera) w tablicy, w której rozpoczyna się kopiowanie.</param>
+        <summary>Kopiuje całą kolekcję do jednowymiarowej tablicy, rozpoczynając od określonego indeksu tablicy docelowej. Ta metoda nie może być dziedziczona.</summary>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.ArgumentNullException"><paramref name="array" /> lub <paramref name="arrayIndex" /> jest <see langword="null" />.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" /> jest większa niż zero, lub większa niż długość <paramref name="array" />.</exception>
-        <exception cref="T:System.ArgumentException">W wybranej tablicy do kopiowania danych nie jest wystarczająca ilość miejsca.  
+        <exception cref="T:System.ArgumentNullException"><paramref name="array" />lub <paramref name="arrayIndex" /> jest <see langword="null" />.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex" />jest mniejsza od zera lub większa lub równa długości <paramref name="array" />.</exception>
+        <exception cref="T:System.ArgumentException">W określonej tablicy nie ma wystarczającej ilości miejsca, aby skopiować dane.  
   
 —lub— 
- <paramref name="array" /> nie jest tablicą jednowymiarową, który jest jedynym typem obsługiwane dla żądanej akcji.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+ <paramref name="array" />nie jest tablicą jednowymiarową, która jest jedynym typem obsługiwanym przez żądaną akcję.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
     <Member MemberName="Count">
@@ -287,7 +287,7 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
       </ReturnValue>
       <Docs>
         <summary>Pobiera liczbę rezerwacji w kolekcji.</summary>
-        <value>Liczba rezerwacje w kolekcji.</value>
+        <value>Liczba rezerwacji w kolekcji.</value>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -309,7 +309,7 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Umożliwia <see cref="T:System.IO.Log.ReservationCollection" /> zwolnienia zasobów, zanim zostanie zniszczony przez moduł odśmiecania pamięci.</summary>
+        <summary><see cref="T:System.IO.Log.ReservationCollection" /> Umożliwia zwolnienie zasobów przed ich zniszczeniem przez moduł wyrzucania elementów bezużytecznych.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -333,12 +333,12 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar rezerwacji do wydania.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, zwalnia rezerwacji o określonym rozmiarze.</summary>
+        <param name="size">Rozmiar rezerwacji do zwolnienia.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, zwalnia rezerwację określonego rozmiaru.</summary>
         <remarks>To be added.</remarks>
-        <block subset="none" type="overrides"><para>Przy dziedziczeniu z <see cref="T:System.IO.Log.ReservationCollection" />, musisz zaimplementować tę metodę, aby faktycznie zwolnienia miejsca w sekwencji rekordu. Nie należy wywołać <see cref="M:System.IO.Log.ReservationCollection.ReservationFreed(System.Int64)" /> po ukończeniu tej metody; obsługiwania logiki dla Ciebie.  
+        <block subset="none" type="overrides"><para>Gdy dziedziczysz z <see cref="T:System.IO.Log.ReservationCollection" />, musisz zaimplementować tę metodę, aby faktycznie zwolnić miejsce w sekwencji rekordów. Nie należy wywoływać <see cref="M:System.IO.Log.ReservationCollection.ReservationFreed(System.Int64)" /> , gdy ta metoda jest kompletna. logika jest obsługiwana przez Ciebie.  
   
-Po zwolnieniu rekordy, należy zwolnić te same rekordy został zarezerwowany razem poprzednie wywołanie <see cref="Overload:System.IO.Log.IRecordSequence.ReserveAndAppend" /> metody.</para></block>
+W przypadku bezpłatnych rekordów należy zwolnić te same rekordy, które zostały zarezerwowane we wcześniejszej wywołaniu <see cref="Overload:System.IO.Log.IRecordSequence.ReserveAndAppend" /> metody.</para></block>
       </Docs>
     </Member>
     <Member MemberName="GetBestMatchingReservation">
@@ -361,14 +361,14 @@ Po zwolnieniu rekordy, należy zwolnić te same rekordy został zarezerwowany ra
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar rezerwacji, które należy dopasować.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej pobiera najlepiej dopasowaną rezerwacji na dany rozmiar.</summary>
-        <returns>Zastrzeżenie z kolekcji, która jest mniejsza niż określony rozmiar lub wartość -1, jeśli takie rezerwacja nie istnieje.</returns>
+        <param name="size">Rozmiar rezerwacji, która musi być zgodna.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera najlepszą zgodną rezerwację dla danego rozmiaru.</summary>
+        <returns>Rezerwacja z kolekcji, która jest większa lub równa określonej wielkości lub-1, jeśli taka rezerwacja nie istnieje.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Ta metoda jest wywoływana zazwyczaj, gdy dołączenie rekord na podstawie zarezerwowane miejsce do sekwencji rekordu. Gdy zwraca ono rezerwacji, rozmiaru zwróconego został usunięty z kolekcji. Jeśli z jakiegoś powodu zarezerwowane miejsce nie są faktycznie dostępne, <xref:System.IO.Log.ReservationCollection.ReservationMade%2A> metoda powinna być wywoływana w celu zapewnienia, że <xref:System.IO.Log.ReservationCollection> dokładnie reprezentuje ilość zarezerwowane miejsce w sekwencji rekordu.  
+ Ta metoda jest zazwyczaj wywoływana podczas dołączania rekordu z zarezerwowanego miejsca do sekwencji rekordów. Gdy zwróci wartość, rezerwacja zwracanego rozmiaru została usunięta z kolekcji. Jeśli z jakiegoś powodu zarezerwowane miejsce nie jest faktycznie dostępne, należy wywołać <xref:System.IO.Log.ReservationCollection.ReservationMade%2A> metodę, aby upewnić się, <xref:System.IO.Log.ReservationCollection> że dokładnie reprezentuje ilość zarezerwowanego miejsca w sekwencji rekordów.  
   
  ]]></format>
         </remarks>
@@ -395,18 +395,18 @@ Po zwolnieniu rekordy, należy zwolnić te same rekordy został zarezerwowany ra
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca moduł wyliczający, który można wykonać iterację <see cref="T:System.IO.Log.ReservationCollection" />. Ta metoda nie może być dziedziczona.</summary>
-        <returns>Moduł wyliczający, który można wykonać iterację <see cref="T:System.IO.Log.ReservationCollection" />.</returns>
+        <summary>Zwraca moduł wyliczający, który może przechodzić przez <see cref="T:System.IO.Log.ReservationCollection" />. Ta metoda nie może być dziedziczona.</summary>
+        <returns>Moduł wyliczający, który może przechodzić przez <see cref="T:System.IO.Log.ReservationCollection" />.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Ta operacja jest nieprawidłowa dla jednego z następujących powodów: 
-— Wyliczanie zostało zakończone.  
+        <exception cref="T:System.InvalidOperationException">Operacja jest nieprawidłowa z jednego z następujących powodów: 
+-Wyliczenie zostało zakończone.  
   
-Kolekcja została zmodyfikowana.  
+-Kolekcja została zmodyfikowana.  
   
--Wyliczenia nie został uruchomiony. Wywołanie <see cref="M:System.Collections.IEnumerator.MoveNext" /> muszą być wykonane.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+-Wyliczenie nie zostało uruchomione. Wywołanie <see cref="M:System.Collections.IEnumerator.MoveNext" /> musi być wykonane.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
     <Member MemberName="IsReadOnly">
@@ -430,7 +430,7 @@ Kolekcja została zmodyfikowana.
       </ReturnValue>
       <Docs>
         <summary>Pobiera wartość wskazującą, czy kolekcja jest tylko do odczytu.</summary>
-        <value>Właściwość ta zwraca zawsze <see langword="false" />.</value>
+        <value>Ta właściwość zawsze zwraca <see langword="false" />wartość.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -462,9 +462,9 @@ Kolekcja została zmodyfikowana.
       </Parameters>
       <Docs>
         <param name="size">Rozmiar rezerwacji do przydzielenia.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, przydziela rezerwacji o określonym rozmiarze.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, przydziela rezerwację określonego rozmiaru.</summary>
         <remarks>To be added.</remarks>
-        <block subset="none" type="overrides"><para>Przy dziedziczeniu z <see cref="T:System.IO.Log.ReservationCollection" />, musisz zaimplementować tę metodę, aby faktycznie zarezerwowanego miejsca w sekwencji rekordu. Nie należy wywołać <see cref="M:System.IO.Log.ReservationCollection.ReservationMade(System.Int64)" /> po ukończeniu tej metody; obsługiwania logiki dla Ciebie.</para></block>
+        <block subset="none" type="overrides"><para>Gdy dziedziczysz z <see cref="T:System.IO.Log.ReservationCollection" />, musisz zaimplementować tę metodę, aby faktycznie zarezerwować miejsce w sekwencji rekordów. Nie należy wywoływać <see cref="M:System.IO.Log.ReservationCollection.ReservationMade(System.Int64)" /> , gdy ta metoda jest kompletna. logika jest obsługiwana przez Ciebie.</para></block>
       </Docs>
     </Member>
     <Member MemberName="Remove">
@@ -490,14 +490,14 @@ Kolekcja została zmodyfikowana.
         <Parameter Name="item" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="item">Rozmiar rezerwacji do wydania.</param>
-        <summary>Zwalnia rezerwacji o określonym rozmiarze, jeśli została wprowadzona. Ta metoda nie może być dziedziczona.</summary>
-        <returns><see langword="true" /> Jeśli rezerwacji o określonym rozmiarze zostało znalezione i usunięte; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="item">Rozmiar rezerwacji do zwolnienia.</param>
+        <summary>Zwalnia zastrzeżenie o określonym rozmiarze, jeśli zostało wykonane. Ta metoda nie może być dziedziczona.</summary>
+        <returns><see langword="true" />w przypadku znalezienia i usunięcia rezerwacji o określonym rozmiarze; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy przykład pokazuje, jak ręcznie utworzyć zastrzeżenie. Należy zauważyć, że to zadanie można wykonać tylko podczas korzystania z CLFS opartą <xref:System.IO.Log.LogRecordSequence> klasy.  
+ Poniższy przykład pokazuje, jak ręcznie wprowadzić rezerwację. Należy zauważyć, że to zadanie można wykonać tylko w przypadku korzystania z klasy <xref:System.IO.Log.LogRecordSequence> opartej na CLFS.  
   
 ```  
 ReservationCollection reservations = recordSequence.CreateReservationCollection();  
@@ -517,12 +517,12 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.ArgumentException">Rezerwacja nie jest wystarczająco duży, aby dopasować podana rekordu znajdują się w określonej kolekcji rezerwacji.</exception>
-        <exception cref="T:System.IO.IOException">Podczas tworzenia migawki archiwum, wystąpi błąd We/Wy.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełny.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+        <exception cref="T:System.ArgumentException">W określonej kolekcji rezerwacji nie można znaleźć rezerwacji wystarczającej do dopasowania do podanego rekordu.</exception>
+        <exception cref="T:System.IO.IOException">Wystąpił błąd we/wy podczas tworzenia migawki archiwum.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.IO.Log.SequenceFullException">Sekwencja rekordów jest pełna.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
     <Member MemberName="ReservationFreed">
@@ -545,13 +545,13 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar rezerwacji, która została zwolniona.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wskazuje wydano rezerwacji.</summary>
+        <param name="size">Rozmiar wydanej rezerwacji.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, wskazuje, że rezerwacja została wydana.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Przy dziedziczeniu z <xref:System.IO.Log.ReservationCollection>, należy wywołać tę metodę, po zwolnieniu rezerwacji z przyczyn innych niż usunięcie go z kolekcji.  
+ W przypadku dziedziczenia <xref:System.IO.Log.ReservationCollection>z, należy wywołać tę metodę, gdy rezerwacja jest wydana z przyczyn innych niż usunięcie jej z kolekcji.  
   
  ]]></format>
         </remarks>
@@ -577,13 +577,13 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
         <Parameter Name="size" Type="System.Int64" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar rezerwacji, które zostały wprowadzone.</param>
-        <summary>W przypadku przesłonięcia w klasie pochodnej, wskazuje, czy przeprowadzono rezerwacji.</summary>
+        <param name="size">Rozmiar rezerwacji, która została wprowadzona.</param>
+        <summary>Gdy jest zastępowany w klasie pochodnej, oznacza to, że została wprowadzona rezerwacja.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Przy dziedziczeniu z <xref:System.IO.Log.ReservationCollection>, należy wywołać tę metodę, po przeprowadzeniu rezerwacji poza wywołanie w celu <xref:System.IO.Log.ReservationCollection.Add%2A>.  
+ W przypadku dziedziczenia <xref:System.IO.Log.ReservationCollection>z, należy wywołać tę metodę, gdy rezerwacja jest wykonywana poza wywołaniem do. <xref:System.IO.Log.ReservationCollection.Add%2A>  
   
  ]]></format>
         </remarks>
@@ -609,18 +609,18 @@ recordSequence.Append(undoRecordData, userSqn, previousSqn, RecordAppendOptions.
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca moduł wyliczający, który można wykonać iterację <see cref="T:System.IO.Log.ReservationCollection" />. Ta metoda nie może być dziedziczona.</summary>
-        <returns>Moduł wyliczający, który można wykonać iterację <see cref="T:System.IO.Log.ReservationCollection" />.</returns>
+        <summary>Zwraca moduł wyliczający, który może przechodzić przez <see cref="T:System.IO.Log.ReservationCollection" />. Ta metoda nie może być dziedziczona.</summary>
+        <returns>Moduł wyliczający, który może przechodzić przez <see cref="T:System.IO.Log.ReservationCollection" />.</returns>
         <remarks>To be added.</remarks>
-        <exception cref="T:System.InvalidOperationException">Ta operacja jest nieprawidłowa dla jednego z następujących powodów: 
-— Wyliczanie zostało zakończone.  
+        <exception cref="T:System.InvalidOperationException">Operacja jest nieprawidłowa z jednego z następujących powodów: 
+-Wyliczenie zostało zakończone.  
   
-Kolekcja została zmodyfikowana.  
+-Kolekcja została zmodyfikowana.  
   
--Wyliczenia nie został uruchomiony. Wywołanie <see cref="M:System.Collections.IEnumerator.MoveNext" /> muszą być wykonane.</exception>
-        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po sekwencji został zlikwidowany.</exception>
-        <exception cref="T:System.OutOfMemoryException">Nie ma wystarczającej ilości pamięci dla kontynuowania wykonywania programu.</exception>
-        <exception cref="T:System.UnauthorizedAccessException">Odmowa dostępu dla magazynu dziennika określony przez system operacyjny.</exception>
+-Wyliczenie nie zostało uruchomione. Wywołanie <see cref="M:System.Collections.IEnumerator.MoveNext" /> musi być wykonane.</exception>
+        <exception cref="T:System.ObjectDisposedException">Metoda została wywołana po usunięciu sekwencji.</exception>
+        <exception cref="T:System.OutOfMemoryException">Za mało pamięci, aby kontynuować wykonywanie programu.</exception>
+        <exception cref="T:System.UnauthorizedAccessException">System operacyjny odmówiono dostępu do określonego magazynu dzienników.</exception>
       </Docs>
     </Member>
   </Members>

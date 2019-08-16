@@ -1,5 +1,5 @@
 <Type Name="IMemoryCacheManager" FullName="System.Runtime.Caching.Hosting.IMemoryCacheManager">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="afa333659513dad7781db43497b79c84f99c80fb" /><Meta Name="ms.sourcegitcommit" Value="f1d16425528e237257ca3b58eb49217a514849ea" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="04/24/2019" /><Meta Name="ms.locfileid" Value="64164476" /></Metadata><TypeSignature Language="C#" Value="public interface IMemoryCacheManager" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="216337722b27c913ea8984f61ad9f489ddfa33e4" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69275763" /></Metadata><TypeSignature Language="C#" Value="public interface IMemoryCacheManager" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IMemoryCacheManager" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.Caching.Hosting.IMemoryCacheManager" />
   <TypeSignature Language="VB.NET" Value="Public Interface IMemoryCacheManager" />
@@ -11,14 +11,14 @@
   </AssemblyInfo>
   <Interfaces />
   <Docs>
-    <summary>Definiuje interfejs, który korzysta z pamięci podręcznej w celu komunikowania się użycie pamięci podręcznej w środowisku hosta.</summary>
+    <summary>Definiuje interfejs, który jest wykorzystywany przez pamięć podręczną w celu przekazywania użycia pamięci podręcznej do środowiska hosta.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager> Interfejs jest implementowany przez hosta środowisk, takich jak ASP.NET i jest używany przez <xref:System.Runtime.Caching.ObjectCache> implementacji, które muszą wchodzić w interakcje ze środowiskiem hosta w celu określenia użycia pamięci. Ponieważ pamięci podręcznych często zużywać znaczne ilości pamięci, <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager> interfejsu pomaga środowisk hostów, zarządzać wykorzystaniem pamięci.  
+ Interfejs jest implementowany przez środowiska hosta, takie jak ASP.NET, i jest używany <xref:System.Runtime.Caching.ObjectCache> przez implementacje, które muszą współdziałać ze środowiskiem hosta, aby określić użycie pamięci. <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager> Ponieważ pamięć podręczna często zużywa znaczną ilość pamięci, <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager> interfejs ułatwia hostowanie środowisk zarządzania użyciem pamięci.  
   
- Zwykle tylko <xref:System.Runtime.Caching.ObjectCache> implementacje, zarządzanych obiektów w pamięci podręcznej w pamięci będzie używać tego interfejsu.  
+ Zazwyczaj ten interfejs <xref:System.Runtime.Caching.ObjectCache> może być używany tylko w przypadku implementacji, które zarządzają obiektami pamięci podręcznej w pamięci.  
   
  ]]></format>
     </remarks>
@@ -49,7 +49,7 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli pamięć podręczna został wcześniej zarejestrowany za pomocą środowiska hosta, wywołując pamięci podręcznej <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.ReleaseCache%2A> metodę, aby zwolnić odwołania. Gdy pamięć podręczna jest usuwany, powinny wywoływać <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.ReleaseCache%2A> metody, aby upewnić się, że żadne odwołanie do pamięci podręcznej jest przechowywany na hoście.  
+ Jeśli pamięć podręczna została wcześniej zarejestrowana w środowisku hosta, pamięć podręczna może wywoływać <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.ReleaseCache%2A> metodę, aby zwolnić odwołanie. Gdy pamięć podręczna jest usuwana, powinna wywołać <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.ReleaseCache%2A> metodę, aby upewnić się, że żadne odwołanie do pamięci podręcznej nie jest przechowywane na hoście.  
   
  ]]></format>
         </remarks>
@@ -75,20 +75,20 @@
         <Parameter Name="cache" Type="System.Runtime.Caching.MemoryCache" />
       </Parameters>
       <Docs>
-        <param name="size">Rozmiar pamięci w bajtach, które korzysta z pamięci podręcznej.</param>
+        <param name="size">Rozmiar pamięci (w bajtach) zużywanej przez pamięć podręczną.</param>
         <param name="cache">Odwołanie do pamięci podręcznej.</param>
-        <summary>Raporty rozmiar bieżącej pamięci podręcznej.</summary>
+        <summary>Zgłasza rozmiar bieżącej pamięci podręcznej.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Należy użyć implementacji dobrze behaved pamięci podręcznej <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.UpdateCacheSize%2A> metodę, aby okresowo zgłosić rozmiar pamięci podręcznej zużycie pamięci w środowisku hosta.  
+ Dobrze działa implementacja pamięci podręcznej powinna używać metody <xref:System.Runtime.Caching.Hosting.IMemoryCacheManager.UpdateCacheSize%2A> , aby okresowo raportować rozmiar pamięci podręcznej do środowiska hosta.  
   
- Implementacja pamięci podręcznej, który zgłasza rozmiar przekazuje również odwołanie do samego siebie jako parametr. Dzięki temu środowisko hosta do wykonywania następujących zadań:  
+ Implementacja pamięci podręcznej, która zgłasza rozmiar, również przekazuje odwołanie do samego siebie jako parametr. Umożliwia to środowisku hosta wykonywanie następujących zadań:  
   
--   Obsługa listy znanych obiektu w pamięci podręcznej.  
+-   Obsługa listy znanych pamięci podręcznych obiektów.  
   
--   Wywołaj pamięci podręcznej i żądania pamięci podręcznej trim procent elementów pamięci podręcznej na podstawie rozmiaru zgłaszane, gdy jest to wymagane.  
+-   Wywołaj pamięć podręczną i zażądaj, aby pamięć podręczna przycinania procent elementów pamięci podręcznej na podstawie zgłoszonego rozmiaru, jeśli jest to wymagane.  
   
  ]]></format>
         </remarks>
