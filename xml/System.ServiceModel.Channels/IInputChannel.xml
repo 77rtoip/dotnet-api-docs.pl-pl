@@ -1,5 +1,5 @@
 <Type Name="IInputChannel" FullName="System.ServiceModel.Channels.IInputChannel">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="40c8ffa57b4d9f6bcbed9b66bd5abaed8e71f031" /><Meta Name="ms.sourcegitcommit" Value="7461f9e28c2f184bd1596e6f07c25a3f34984516" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="03/28/2019" /><Meta Name="ms.locfileid" Value="58553765" /></Metadata><TypeSignature Language="C#" Value="public interface IInputChannel : System.ServiceModel.Channels.IChannel" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="2dc8466a0eab8c4b6523c6cb4479b1a0fc8a7363" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69155801" /></Metadata><TypeSignature Language="C#" Value="public interface IInputChannel : System.ServiceModel.Channels.IChannel" />
   <TypeSignature Language="ILAsm" Value=".class public interface auto ansi abstract IInputChannel implements class System.ServiceModel.Channels.IChannel, class System.ServiceModel.ICommunicationObject" />
   <TypeSignature Language="DocId" Value="T:System.ServiceModel.Channels.IInputChannel" />
   <TypeSignature Language="VB.NET" Value="Public Interface IInputChannel&#xA;Implements IChannel" />
@@ -29,7 +29,7 @@
     </Interface>
   </Interfaces>
   <Docs>
-    <summary>Definiuje interfejs, który musi implementować kanał, aby komunikat o błędzie.</summary>
+    <summary>Definiuje interfejs, który kanał musi zaimplementować, aby odebrać komunikat.</summary>
     <remarks>
       <format type="text/markdown"><![CDATA[  
   
@@ -37,11 +37,11 @@
 
 [!INCLUDE [untrusted-data-interface-note](~/includes/untrusted-data-interface-note.md)]
 
- <xref:System.ServiceModel.Channels.IInputChannel> Umowa obejmuje synchroniczne i asynchroniczne warianty receive, spróbuj odbierania i oczekiwania na komunikat funkcje.  
+ <xref:System.ServiceModel.Channels.IInputChannel> Kontrakt obejmuje synchroniczną i asynchroniczną odmianę funkcji Receive, try-to-Receive i oczekiwanie na komunikaty.  
   
- Model ściągania jest zwykle używana z <xref:System.ServiceModel.Channels.IInputChannel> do odbierania komunikatów: wywołanie <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> (w celu "ściągania" wiadomości z kanału) i poczekaj na nadejściu wiadomości. Wzorzec użycia alternatywnych jest wywołanie <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> lub <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29>, a następnie wywołaj <xref:System.ServiceModel.Channels.IInputChannel.Receive%28System.TimeSpan%29>. To podejście jest często transakcyjnych użycia, z którego zaczynasz transakcji między wywołaniami do <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> i <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>.  
+ Model ściągania jest zazwyczaj <xref:System.ServiceModel.Channels.IInputChannel> używany do odbierania komunikatów: wywoływany <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> ("ściągający" komunikat z kanału), a następnie poczekaj na nadejście komunikatu. Alternatywnym wzorcem użycia jest wywołanie <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> metody <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29>lub, a następnie <xref:System.ServiceModel.Channels.IInputChannel.Receive%28System.TimeSpan%29>wywołanie metody. Takie podejście jest typowe w przypadku transakcyjnych zastosowań, w których rozpoczęto transakcję między <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> wywołaniami do i <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>.  
   
- <xref:System.ServiceModel.Channels.IInputChannel> Niekoniecznie nie jest powiązany z jednego nadawcy. Inne kanały i interfejsy kanału może zapewnić korelacja określonych nadawców i <xref:System.ServiceModel.Channels.IInputChannel>, ale podstawowego kontraktu sprawia, że nie ma tego ograniczenia. Wdrożenia można utworzyć nową <xref:System.ServiceModel.Channels.IInputChannel> dla każdego komunikatu lub ponownie użyj tego samego <xref:System.ServiceModel.Channels.IInputChannel> dla wielu komunikatów i nadawcy.  
+ <xref:System.ServiceModel.Channels.IInputChannel> Nie musi być powiązane z pojedynczym nadawcą. Inne kanały i interfejsy kanałów mogą zapewnić korelację między określonymi nadawcami a <xref:System.ServiceModel.Channels.IInputChannel>, ale kontrakt podstawowy nie ma takich ograniczeń. Implementacja może utworzyć nową <xref:System.ServiceModel.Channels.IInputChannel> dla każdego komunikatu lub użyć <xref:System.ServiceModel.Channels.IInputChannel> jej ponownie dla wielu komunikatów i nadawców.  
   
  ]]></format>
     </remarks>
@@ -54,12 +54,12 @@
         <AssemblyVersion>4.0.0.0</AssemblyVersion>
       </AssemblyInfo>
       <Docs>
-        <summary>Rozpoczyna się asynchronicznej operacji odbioru.</summary>
+        <summary>Rozpoczyna asynchroniczne operacje odbierania.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru. Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku do zablokowania otrzymanie komunikatu żądania lub przedział czasu określony przez `timeout` został przekroczony. Operacja asynchroniczna jest dostępne z lub bez jawnego limitu czasu.  
+ Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania. Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout` czasu określonego przez. Operacja asynchroniczna jest dostępna z niejawnym limitem czasu lub bez niego.  
   
  ]]></format>
         </remarks>
@@ -96,22 +96,22 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną, aby otrzymać komunikat, który ma obiektu stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Która odwołuje się do odbierania komunikatów asynchronicznych.</returns>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna operację asynchroniczną, aby odebrać komunikat z obiektem stanu skojarzonym z nim.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołujący się do odbierania komunikatów asynchronicznych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru. Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku do zablokowania otrzymanie komunikatu żądania lub przedział czasu określony przez `timeout` został przekroczony. Operacja asynchroniczna jest dostępne z lub bez jawnego limitu czasu.  
+ Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania. Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout` czasu określonego przez. Operacja asynchroniczna jest dostępna z niejawnym limitem czasu lub bez niego.  
   
- Ta metoda otrzymuje powiadomienia, za pośrednictwem wywołania zwrotnego, tożsamość programu obsługi zdarzeń dla tej operacji. Operacja nie została zakończona, aż komunikat o stanie się dostępny w kanale.  
+ Ta metoda odbiera powiadomienie przez wywołanie zwrotne tożsamości programu obsługi zdarzeń dla operacji. Operacja nie zostanie ukończona, dopóki wiadomość nie zostanie udostępniona w kanale.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#15](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#15)]  
   
@@ -151,31 +151,31 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> , Która określa czas oczekiwania na udostępnienie wiadomości.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną do odbierania komunikatów, która ma określony limit czasu i obiektu stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Odwołania asynchronicznych operacji odbioru.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa interwał czasu oczekiwania na udostępnienie komunikatu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna operację asynchroniczną, aby odebrać komunikat, który ma określony limit czasu i skojarzony z nim obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do asynchronicznej operacji odbierania.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru. Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku do zablokowania otrzymanie komunikatu żądania lub przedział czasu określony przez `timeout` został przekroczony. Operacja asynchroniczna jest dostępne z lub bez jawnego limitu czasu.  
+ Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania. Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout` czasu określonego przez. Operacja asynchroniczna jest dostępna z niejawnym limitem czasu lub bez niego.  
   
- Operacja nie została zakończona, aż do komunikat o stanie się dostępny w kanale lub występuje limit czasu.  
+ Operacja nie zostanie ukończona, dopóki wiadomość nie zostanie udostępniona w kanale lub upłynie limit czasu.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#16](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#16)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
-        <block subset="none" type="overrides"><para>Operacja zgłosi <see cref="T:System.TimeoutException" /> Jeśli określony <paramref name="timeout" /> zostanie przekroczony, przed ukończeniem.</para></block>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
+        <block subset="none" type="overrides"><para>Operacja zgłasza <see cref="T:System.TimeoutException" /> wyjątek, jeśli określony <paramref name="timeout" /> zostanie przekroczony przed ukończeniem.</para></block>
       </Docs>
     </Member>
     <Member MemberName="BeginTryReceive">
@@ -210,35 +210,35 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> , Która określa czas oczekiwania na udostępnienie wiadomości.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną do odbierania komunikatów, która ma określony limit czasu i obiektu stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> Odwołania asynchronicznych operacji odbioru.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa interwał czasu oczekiwania na udostępnienie komunikatu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna operację asynchroniczną, aby odebrać komunikat, który ma określony limit czasu i skojarzony z nim obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do asynchronicznej operacji odbierania.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginTryReceive%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez zbędnego oczekiwania. Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.TryReceive%28System.TimeSpan%2CSystem.ServiceModel.Channels.Message%40%29> metody, gdy jest dopuszczalny dla bieżącego wątku zablokowana, gdy zostanie wysłana odpowiedź na komunikat żądania lub dopóki nie zostanie przekroczony limit czasu.  
+ Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginTryReceive%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania. Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.TryReceive%28System.TimeSpan%2CSystem.ServiceModel.Channels.Message%40%29> , gdy jest akceptowalny do zablokowania bieżącego wątku podczas odpowiedzi na komunikat żądania lub do momentu przekroczenia limitu czasu.  
   
- Operacja nie została zakończona, dopóki nie zostanie przekroczony limit czasu lub komunikat o stanie się dostępny w kanale.  
+ Operacja nie zostanie ukończona, dopóki wiadomość nie zostanie udostępniona w kanale lub zostanie przekroczony limit czasu.  
   
- Jeśli zamierzasz obsługiwać przekroczeń limitu czasu i nie tylko ponownie wygenerować lub zawijania <xref:System.TimeoutException>, a następnie należy wywołać <xref:System.ServiceModel.Channels.IInputChannel.BeginTryReceive%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> zamiast <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A>.  
+ Jeśli zamierzasz obsługiwać limity czasu i nie tylko ponownie zgłosić lub otoczyćsz <xref:System.TimeoutException>, należy wywołać <xref:System.ServiceModel.Channels.IInputChannel.BeginTryReceive%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> zamiast <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A>.  
   
- Jeśli nie ma specjalnie traktują przekroczeń limitu czasu następnie po prostu Wywołaj <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A>, w przeciwnym razie utracisz informacje o błędzie.  
+ Jeśli nie chcesz traktować przekroczeń limitu czasu <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A>, w przeciwnym razie utracisz informacje o błędzie.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#19](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#19)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
-        <block subset="none" type="overrides"><para>Operacja zwraca <see langword="false" /> z <see cref="M:System.ServiceModel.Channels.IInputChannel.EndTryReceive(System.IAsyncResult,System.ServiceModel.Channels.Message@)" /> Jeśli określony <paramref name="timeout" /> zostanie przekroczony.</para></block>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
+        <block subset="none" type="overrides"><para>Operacja wraca <see langword="false" /> z w <see cref="M:System.ServiceModel.Channels.IInputChannel.EndTryReceive(System.IAsyncResult,System.ServiceModel.Channels.Message@)" /> przypadku przekroczenia określonego. <paramref name="timeout" /></para></block>
       </Docs>
     </Member>
     <Member MemberName="BeginWaitForMessage">
@@ -273,31 +273,31 @@
         <Parameter Name="state" Type="System.Object" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> , Która określa czas oczekiwania na udostępnienie wiadomości.</param>
-        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegata, który będą wysyłane powiadomienia o zakończeniu operacji asynchronicznej.</param>
-        <param name="state">Obiekt określony przez aplikację, która zawiera informacje o stanie związane z operacją asynchroniczną.</param>
-        <summary>Rozpoczyna operację asynchroniczną wait-for-a-message-to-arrive, która ma określony limit czasu i obiektu stanu skojarzonych z nim.</summary>
-        <returns><see cref="T:System.IAsyncResult" /> , Która odwołuje się operacja asynchroniczna oczekiwania na dostarczenie wiadomości.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa interwał czasu oczekiwania na udostępnienie komunikatu.</param>
+        <param name="callback"><see cref="T:System.AsyncCallback" /> Delegat, który odbiera powiadomienie o ukończeniu operacji asynchronicznej.</param>
+        <param name="state">Obiekt określony przez aplikację, który zawiera informacje o stanie skojarzone z operacją asynchroniczną.</param>
+        <summary>Rozpoczyna asynchroniczne operacje oczekiwania na zakończenie dla komunikatu do odebrania, które ma określony limit czasu i skojarzony z nim obiekt stanu.</summary>
+        <returns><see cref="T:System.IAsyncResult" /> Odwołuje się do operacji asynchronicznej, aby poczekać na nadejście komunikatu.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> metody, jeśli potrzebujesz przetwarzania aplikacji, aby kontynuować bez oczekiwania na komunikat do odbierania. Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> metody, gdy jest dopuszczalny dla bieżącego wątku być blokowane podczas oczekiwania na komunikat w kolejce. Wątek jest blokowany w górę do określonego `timeout`.  
+ Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na nadejście komunikatu. Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> , gdy jest akceptowalny do zablokowania bieżącego wątku podczas oczekiwania na nadejście komunikatu w kolejce. Wątek jest blokowany do określonego `timeout`.  
   
- Ta metoda otrzymuje powiadomienia, za pośrednictwem wywołania zwrotnego, tożsamość programu obsługi zdarzeń dla tej operacji. Operacja nie została zakończona, aż do komunikat o stanie się dostępny w kanale lub występuje limit czasu.  
+ Ta metoda odbiera powiadomienie przez wywołanie zwrotne tożsamości programu obsługi zdarzeń dla operacji. Operacja nie zostanie ukończona, dopóki wiadomość nie zostanie udostępniona w kanale lub upłynie limit czasu.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#22](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#22)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
-        <block subset="none" type="overrides"><para>Operacja zwraca <see langword="false" /> Jeśli określony <paramref name="timeout" /> zostanie przekroczony, nie wyjątek limitu czasu.</para></block>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
+        <block subset="none" type="overrides"><para>Operacja zwraca <see langword="false" /> w przypadku przekroczenia określonego <paramref name="timeout" /> limitu czasu.</para></block>
       </Docs>
     </Member>
     <Member MemberName="EndReceive">
@@ -330,14 +330,14 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do jednego z <see cref="Overload:System.ServiceModel.Channels.IInputChannel.BeginReceive" /> metody.</param>
-        <summary>Kończy operację asynchroniczną na komunikat o błędzie.</summary>
+        <param name="result">Zwracany przez wywołanie jednej <see cref="Overload:System.ServiceModel.Channels.IInputChannel.BeginReceive" /> z metod. <see cref="T:System.IAsyncResult" /></param>
+        <summary>Kończy operację asynchroniczną w celu odebrania komunikatu.</summary>
         <returns><see cref="T:System.ServiceModel.Channels.Message" /> Odebrane.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#17](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#17)]  
   
@@ -376,15 +376,15 @@
         <Parameter Name="message" Type="System.ServiceModel.Channels.Message" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Zwracany przez wywołanie <see cref="M:System.ServiceModel.Channels.IInputChannel.BeginTryReceive(System.TimeSpan,System.AsyncCallback,System.Object)" /> metody.</param>
+        <param name="result">Zwracany przez wywołanie <see cref="M:System.ServiceModel.Channels.IInputChannel.BeginTryReceive(System.TimeSpan,System.AsyncCallback,System.Object)" />metody. <see cref="T:System.IAsyncResult" /></param>
         <param name="message"><see cref="T:System.ServiceModel.Channels.Message" /> Odebrane.</param>
-        <summary>Wykonuje określoną operacją asynchroniczną w celu odebrania komunikatu.</summary>
-        <returns><see langword="true" /> gdy wiadomość zostaje odebrana przed określonym interwale czasu upłynie; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Kończy określoną operację asynchroniczną w celu odebrania komunikatu.</summary>
+        <returns><see langword="true" />Jeśli wiadomość zostanie odebrana przed upływem określonego interwału czasu; w <see langword="false" />przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#20](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#20)]  
   
@@ -422,14 +422,14 @@
         <Parameter Name="result" Type="System.IAsyncResult" />
       </Parameters>
       <Docs>
-        <param name="result"><see cref="T:System.IAsyncResult" /> Określający <see cref="M:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage(System.TimeSpan,System.AsyncCallback,System.Object)" /> operację, aby zakończyć z którego mają zostać pobrane wynik końcowy.</param>
-        <summary>Wykonuje określoną operacją asynchroniczną oczekiwania dla wiadomości.</summary>
-        <returns><see langword="true" /> Jeśli komunikat jest już dostępna przed <paramref name="timeout" /> została przekroczona; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="result"><see cref="T:System.IAsyncResult" /> Identyfikujeoperacjędozakończeniaizktórejma<see cref="M:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage(System.TimeSpan,System.AsyncCallback,System.Object)" /> zostać pobrany wynik końcowy.</param>
+        <summary>Kończy określoną operację asynchronicznego oczekiwania na komunikat.</summary>
+        <returns><see langword="true" />Jeśli komunikat dotarł przed <paramref name="timeout" /> przekroczeniem limitu, w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#23](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#23)]  
   
@@ -465,14 +465,14 @@
       </ReturnValue>
       <Docs>
         <summary>Pobiera adres, na którym kanał wejściowy odbiera komunikaty.</summary>
-        <value><see cref="T:System.ServiceModel.EndpointAddress" /> Na którym kanał wejściowy odbiera komunikaty.</value>
+        <value><see cref="T:System.ServiceModel.EndpointAddress" /> Na którym kanale wejściowym odbiera komunikaty.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli ten kanał wejściowy nie ma adresu autonomiczny (na przykład jest dane wejściowe boku kanału TCP zainicjowane przez klienta), a następnie ta właściwość jest `null`.  
+ Jeśli ten kanał wejściowy nie ma adresu autonomicznego (na przykład po stronie wejściowej kanału TCP zainicjowanego przez klienta), ta właściwość jest `null`.  
   
- Ta właściwość może służyć przez kanały wyższego poziomu dla korelacji. Na przykład, jeśli kanał wyższego poziomu implementuje żądanie odpowiedź, w górnej części <xref:System.ServiceModel.Channels.IDuplexChannel>, można użyć <xref:System.ServiceModel.Channels.IInputChannel.LocalAddress%2A> właściwości w nagłówku protokołu WS-Addressing ReplyTo.  
+ Ta właściwość może być używana przez kanały wyższego poziomu na potrzeby korelacji. Na przykład, jeśli kanał wyższego poziomu implementuje żądanie-odpowiedź na górze <xref:System.ServiceModel.Channels.IDuplexChannel>, może <xref:System.ServiceModel.Channels.IInputChannel.LocalAddress%2A> użyć właściwości w nagłówku ReplyTo WS-Addressing.  
   
    
   
@@ -493,19 +493,19 @@
       </AssemblyInfo>
       <Docs>
         <exception cref="T:System.ServiceProcess.TimeoutException">Operacja nie została ukończona z interwałem limitu czasu.</exception>
-        <exception cref="T:System.ServiceModel.CommunicationException">Kanał wejściowy nie powiodło się.</exception>
+        <exception cref="T:System.ServiceModel.CommunicationException">Kanał wejściowy nie powiódł się.</exception>
         <exception cref="T:System.ServiceModel.CommunicationObjectAbortedException">Kanał wejściowy został przerwany.</exception>
-        <exception cref="T:System.ServiceModel.CommunicationObjectFaultedException">Kanał wejściowy błędne.</exception>
-        <summary>Zwraca komunikat odbierane przez kanał wejściowy, jeśli jest dostępny w odstępie czasu, który jest jawnie lub niejawnie zdefiniowany.</summary>
+        <exception cref="T:System.ServiceModel.CommunicationObjectFaultedException">Błąd kanału wejściowego.</exception>
+        <summary>Zwraca komunikat otrzymany przez kanał wejściowy, jeśli jest dostępny z przedziałem czasu, który jest jawnie lub niejawnie zdefiniowany.</summary>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku zablokowany, dopóki odbierze komunikatu żądania lub przekroczy ten interwał czasu określonego przez `timeout`. Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy będziesz potrzebować przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru.  
+ Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout`czasu określonego przez. Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , gdy potrzebujesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania.  
   
- Synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> operacja jest niedostępna, z lub bez jawnego limitu czasu.  
+ Operacja synchroniczna <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> jest dostępna z niejawnym limitem czasu lub bez niego.  
   
- Jeśli komunikat nie jest dostępna, blokuje, dopóki nie jest dostępny, lub dopóki nie zostanie przekroczony limit czasu.  
+ Jeśli komunikat nie jest dostępny, jest blokowany do momentu udostępnienia lub do momentu przekroczenia limitu czasu.  
   
  ]]></format>
         </remarks>
@@ -539,24 +539,24 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca komunikat, jeśli jest dostępny. Jeśli komunikat nie jest dostępna, bloki domyślny interwał czasu.</summary>
+        <summary>Zwraca otrzymany komunikat, jeśli jest dostępny. Jeśli komunikat nie jest dostępny, bloki dla domyślnego interwału czasu.</summary>
         <returns><see cref="T:System.ServiceModel.Channels.Message" /> Odebrane.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku zablokowany, dopóki odbierze komunikatu żądania lub przekroczy ten interwał czasu określonego przez `timeout`. Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru.  
+ Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout`czasu określonego przez. Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania.  
   
- Synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> operacja jest niedostępna, z lub bez jawnego limitu czasu.  
+ Operacja synchroniczna <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> jest dostępna z niejawnym limitem czasu lub bez niego.  
   
- Jeśli komunikat nie jest dostępna, blokuje, dopóki nie jest dostępny, lub dopóki nie zostanie przekroczony limit czasu.  
+ Jeśli komunikat nie jest dostępny, jest blokowany do momentu udostępnienia lub do momentu przekroczenia limitu czasu.  
   
- <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> może być wywoływana wiele razy lub jednocześnie. Tylko jeden <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> wywołania można wykonać dla każdego komunikatu odebranego.  
+ <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>może być wywoływana wiele razy lub współbieżnie. Dla każdego <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> odebranego komunikatu można wykonać tylko jedno wywołanie.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#13](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#13)]  
   
@@ -594,32 +594,32 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określający, ile operacji odbierania musi ukończyć przed wyczerpaniem i zostanie zgłoszony <see cref="T:System.TimeoutException" />.</param>
-        <summary>Zwraca komunikat, jeśli jest dostępny. Jeśli komunikat nie jest dostępna, bloków dla określonego przedziału czasu.</summary>
+        <param name="timeout">Określa, jak długo operacja odbierania musi zakończyć się przed upływem limitu czasu i <see cref="T:System.TimeoutException" />wyrzucając. <see cref="T:System.TimeSpan" /></param>
+        <summary>Zwraca otrzymany komunikat, jeśli jest dostępny. Jeśli komunikat nie jest dostępny, bloki w określonym przedziale czasu.</summary>
         <returns><see cref="T:System.ServiceModel.Channels.Message" /> Odebrane.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Użyj synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> metody, gdy jest dopuszczalny dla bieżącego wątku zablokowany, dopóki odbierze komunikatu żądania lub przekroczy ten interwał czasu określonego przez `timeout`. Użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> metody, gdy chcesz, aby przetwarzania aplikacji, aby kontynuować bez oczekiwania na żądanie do odbioru.  
+ Użyj metody synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , gdy jest akceptowalny do zablokowania bieżącego wątku do momentu odebrania komunikatu żądania lub przekroczenia przedziału `timeout`czasu określonego przez. Użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginReceive%2A> , jeśli chcesz, aby przetwarzanie aplikacji było kontynuowane bez oczekiwania na odebranie żądania.  
   
- Synchronicznej <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> operacja jest niedostępna, z lub bez jawnego limitu czasu.  
+ Operacja synchroniczna <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> jest dostępna z niejawnym limitem czasu lub bez niego.  
   
- Jeśli komunikat nie jest dostępna, blokuje, dopóki nie jest dostępny, lub dopóki nie zostanie przekroczony limit czasu.  
+ Jeśli komunikat nie jest dostępny, jest blokowany do momentu udostępnienia lub do momentu przekroczenia limitu czasu.  
   
- <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> może być wywoływana wiele razy lub jednocześnie. Tylko jeden <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> wywołania można wykonać dla każdego komunikatu odebranego.  
+ <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>może być wywoływana wiele razy lub współbieżnie. Dla każdego <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> odebranego komunikatu można wykonać tylko jedno wywołanie.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#14](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#14)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
       </Docs>
     </Member>
     <Member MemberName="TryReceive">
@@ -653,29 +653,29 @@
         <Parameter Name="message" Type="System.ServiceModel.Channels.Message" RefType="out" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.IAsyncResult" /> Zwrócony przez wywołanie do jednego z <see cref="Overload:System.ServiceModel.Channels.IInputChannel.BeginReceive" /> metody.</param>
+        <param name="timeout">Zwracany przez wywołanie jednej <see cref="Overload:System.ServiceModel.Channels.IInputChannel.BeginReceive" /> z metod. <see cref="T:System.IAsyncResult" /></param>
         <param name="message"><see cref="T:System.ServiceModel.Channels.Message" /> Odebrane.</param>
-        <summary>Stara się komunikat o błędzie w określonym interwale czasu.</summary>
-        <returns><see langword="true" /> gdy wiadomość zostaje odebrana przed <paramref name="timeout" /> została przekroczona; w przeciwnym razie <see langword="false" />.</returns>
+        <summary>Próbuje odebrać komunikat w określonym przedziale czasu.</summary>
+        <returns><see langword="true" />Jeśli komunikat zostanie odebrany przed <paramref name="timeout" /> przekroczeniem limitu, w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Jeśli zamierzasz obsługiwać przekroczeń limitu czasu i nie tylko ponownie wygenerować lub zawijania <xref:System.TimeoutException>, a następnie należy wywołać <xref:System.ServiceModel.Channels.IInputChannel.TryReceive%28System.TimeSpan%2CSystem.ServiceModel.Channels.Message%40%29> zamiast <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>.  
+ Jeśli zamierzasz obsługiwać limity czasu i nie tylko ponownie zgłosić lub otoczyćsz <xref:System.TimeoutException>, należy wywołać <xref:System.ServiceModel.Channels.IInputChannel.TryReceive%28System.TimeSpan%2CSystem.ServiceModel.Channels.Message%40%29> zamiast <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>.  
   
- Jeśli nie ma specjalnie traktują przekroczeń limitu czasu następnie po prostu Wywołaj <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>, w przeciwnym razie utracisz informacje o błędzie.  
+ Jeśli nie chcesz traktować przekroczeń limitu czasu, wystarczy wywołać <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A>polecenie, w przeciwnym razie utracisz informacje o błędzie.  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#18](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#18)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
       </Docs>
     </Member>
     <Member MemberName="WaitForMessage">
@@ -708,33 +708,33 @@
         <Parameter Name="timeout" Type="System.TimeSpan" />
       </Parameters>
       <Docs>
-        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa maksymalny interwał czasu oczekiwania na wiadomość dotrze przed przekroczeniem limitu czasu.</param>
-        <summary>Zwraca wartość wskazującą, czy komunikat jest już dostępna w określonym interwale czasu.</summary>
-        <returns><see langword="true" /> Jeśli komunikat jest już dostępna przed <paramref name="timeout" /> została przekroczona; w przeciwnym razie <see langword="false" />.</returns>
+        <param name="timeout"><see cref="T:System.TimeSpan" /> Określa maksymalny interwał czasu oczekiwania na nadejście komunikatu przed upływem limitu czasu.</param>
+        <summary>Zwraca wartość wskazującą, czy wiadomość dotarła w określonym przedziale czasu.</summary>
+        <returns><see langword="true" />Jeśli komunikat dotarł przed <paramref name="timeout" /> przekroczeniem limitu, w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywoływanie <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> nie powoduje komunikat, że otrzymano lub przetwarzania w jakikolwiek inny sposób.  
+ Wywołanie <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> nie powoduje, że komunikat jest odbierany lub przetwarzany w inny sposób.  
   
- <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> Istnieje metoda głównie dla scenariuszy transakcyjne, gdy użytkownik chce, aby odbierać wiadomości przy użyciu transakcji. Korzystając z właśnie <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> zwykle w tym celu użytkownik musi utworzyć transakcję i następnie wywołać <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> i mamy nadzieję, komunikat dociera przed transakcji upłynie limit czasu, który może nie być możliwe.  
+ <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> Metoda istnieje głównie dla scenariuszy transakcyjnych, w których użytkownik chce otrzymać komunikat przy użyciu transakcji. W przypadku użycia <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> zwykle w tym celu użytkownik musi utworzyć transakcję, a następnie wywołać <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> i nadzieję, że wiadomość dociera przed upływem limitu czasu transakcji, co może być niemożliwe.  
   
- Zamiast tego użytkownik może wywołać <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> przy użyciu niezależnie od limitu czasu chcą (nawet nieskończona), a następnie po nadejściu wiadomości mogą otwierać transakcji, wywołaj <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> i mieć pewność, że otrzymują wiadomości przed wygaśnięciem transakcji.  
+ Zamiast tego użytkownik może nawiązać <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> połączenie z dowolnym przekroczeniem limitu czasu (nawet nieskończonym), a następnie po nadejściu wiadomości może otworzyć transakcję <xref:System.ServiceModel.Channels.IInputChannel.Receive%2A> , wywołać i upewnić się, że mogą oni otrzymać komunikat z powrotem przed wygaśnięciem transakcji.  
   
- Ta metoda jest synchroniczne, więc blokują bieżący wątek, aż komunikat jest dostępny lub występuje limit czasu. Użyj <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> gdy jest dopuszczalny dla bieżącego wątku być blokowane podczas oczekiwania na komunikat w kolejce. Wątek jest blokowany w górę do określonego `timeout`. Jeśli potrzebujesz przetwarzania aplikacji, aby kontynuować bez zbędnego oczekiwania, użycie asynchronicznego <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> metody.  
+ Ta metoda jest synchroniczna, dlatego blokuje bieżący wątek do momentu dostępności komunikatu lub przekroczenia limitu czasu. Użyj <xref:System.ServiceModel.Channels.IInputChannel.WaitForMessage%28System.TimeSpan%29> , gdy jest akceptowalny do zablokowania bieżącego wątku podczas oczekiwania na nadejście komunikatu w kolejce. Wątek jest blokowany do określonego `timeout`. Aby przetwarzanie aplikacji było kontynuowane bez oczekiwania, użyj metody asynchronicznej <xref:System.ServiceModel.Channels.IInputChannel.BeginWaitForMessage%28System.TimeSpan%2CSystem.AsyncCallback%2CSystem.Object%29> .  
   
    
   
 ## Examples  
- Poniższy kod ilustruje sposób zaimplementować tę metodę:  
+ Poniższy kod ilustruje sposób implementacji tej metody:  
   
  [!code-csharp[S_UE_MessageInterceptor#21](~/samples/snippets/csharp/VS_Snippets_CFX/s_ue_messageinterceptor/cs/interceptingduplexchannel.cs#21)]  
   
  ]]></format>
         </remarks>
-        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> zostanie przekroczony, zanim operacja została wykonana.</exception>
-        <exception cref="T:System.ArgumentOutOfRangeException">Określono limit czasu jest mniejsza niż zero.</exception>
-        <block subset="none" type="overrides"><para>Operacja zwraca <see langword="false" /> Jeśli określony <paramref name="timeout" /> zostanie przekroczony, nie wyjątek limitu czasu.</para></block>
+        <exception cref="T:System.TimeoutException">Określony <paramref name="timeout" /> limit został przekroczony przed ukończeniem operacji.</exception>
+        <exception cref="T:System.ArgumentOutOfRangeException">Określony limit czasu jest mniejszy od zera.</exception>
+        <block subset="none" type="overrides"><para>Operacja zwraca <see langword="false" /> w przypadku przekroczenia określonego <paramref name="timeout" /> limitu czasu.</para></block>
       </Docs>
     </Member>
   </Members>
