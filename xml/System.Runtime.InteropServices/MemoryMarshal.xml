@@ -1,5 +1,5 @@
 <Type Name="MemoryMarshal" FullName="System.Runtime.InteropServices.MemoryMarshal">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="10291d94526466a6a071d4ad6764465616a0532c" /><Meta Name="ms.sourcegitcommit" Value="634678f7ccd2928c6b2cf792a301b079b63639af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="07/26/2019" /><Meta Name="ms.locfileid" Value="68542990" /></Metadata><TypeSignature Language="C#" Value="public static class MemoryMarshal" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="061fde1ad6b10337c3320608dcc3a5dd94f4c8dc" /><Meta Name="ms.sourcegitcommit" Value="cb4d218ffd5a459a5f921fe1d945c682d1e09aca" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/16/2019" /><Meta Name="ms.locfileid" Value="69540067" /></Metadata><TypeSignature Language="C#" Value="public static class MemoryMarshal" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract sealed beforefieldinit MemoryMarshal extends System.Object" />
   <TypeSignature Language="DocId" Value="T:System.Runtime.InteropServices.MemoryMarshal" />
   <TypeSignature Language="VB.NET" Value="Public Class MemoryMarshal" />
@@ -380,7 +380,11 @@ Ta metoda jest obsługiwana tylko na platformach, które obsługują niewyrówna
 
 `TFrom` Aniniemoże`TTo` zawierać wskaźników ani odwołań. `TFrom`i `TTo` są sprawdzane w czasie wykonywania w celu zachowania bezpieczeństwa typów.  
 
-Rzutowanie występuje w niesprawdzonym kontekście. Jeśli zakres jest mniejszy `TTo` niż `TFrom`zakres, może dojść do utraty danych. Na przykład, jeśli `TFrom` jest <xref:System.Int64>, jedna z `ReadOnlySpan<Int32>` wartości to 0x100001111110F0F, a `TTo` <xref:System.Int32>wartość jest równa 11110F0F.
+Jeśli rozmiary dwóch typów są różne, Rzutowanie łączy lub dzieli wartości, co prowadzi do zmiany długości.
+
+Na przykład, jeśli `TFrom` jest <xref:System.Int64>, `ReadOnlySpan<Int64>` zawiera pojedynczą wartość, 0x0100001111110F0F i is, `TTo` a <xref:System.Int32>wynikiem `ReadOnlySpan<Int32>` są dwie wartości. Wartości to 0x11110F0F i 0x01000011 na architekturze little-endian, na przykład x86. W przypadku architektury big-endian kolejność dwóch wartości zostaje odwrócona, np. 0x01000011, a następnie 0x11110F0F.
+
+W innym przykładzie, jeśli `TFrom` jest <xref:System.Int32>, `ReadOnlySpan<Int32>` zawiera wartości <xref:System.Int64>1, 2 i 3, a `TTo` w efekcie `ReadOnlySpan<Int64>` zawiera pojedynczą wartość: 0x0000000200000001 na architekturze little-endian i 0x0000000100000002 w architekturze big-endian.
 
 Ta metoda jest obsługiwana tylko na platformach, które obsługują niewyrównany dostęp do pamięci lub gdy blok pamięci jest wyrównany w inny sposób.
 
@@ -423,7 +427,7 @@ Ta metoda jest obsługiwana tylko na platformach, które obsługują niewyrówna
         <param name="start">Indeks <paramref name="array" /> , pod którym ma zostać rozpoczęty blok pamięci.</param>
         <param name="length">Liczba elementów do uwzględnienia w bloku pamięci.</param>
         <summary>Tworzy nowy bufor pamięci nad częścią wstępnie przypiętej tablicy docelowej, rozpoczynając <paramref name="start" /> od indeksu i składającą się z <paramref name="length" /> elementów.</summary>
-        <returns>Blok pamięci dla określonych elementów <paramref name="array" />. Jeśli <paramref name="array" /> <paramref name="start" /> jest <see langword="null" />, lub <see cref="System.Memory`1.Length" /> Jeśli<see cref="T:System.Memory`1" /> i <paramref name="length" /> są 0, metoda zwraca wystąpienie równe zero.</returns>
+        <returns>Blok pamięci dla określonych elementów <paramref name="array" />. Jeśli <paramref name="array" /> <paramref name="start" /> jest <see langword="null" />, lub <see cref="P:System.Memory`1.Length" /> Jeśli<see cref="T:System.Memory`1" /> i <paramref name="length" /> są 0, metoda zwraca wystąpienie równe zero.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
