@@ -1,5 +1,5 @@
 <Type Name="DbDataReader" FullName="System.Data.Common.DbDataReader">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="9c2a96d2a517c50595e2d338b967374bc710e2a9" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69078657" /></Metadata><TypeSignature Language="C#" Value="public abstract class DbDataReader : MarshalByRefObject, IDisposable, System.Collections.IEnumerable, System.Data.IDataReader" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="40a74e42c6e035b1c1b08aac89e3c8df07bacb1a" /><Meta Name="ms.sourcegitcommit" Value="81833381d2d0b5a8c55f71b43f00769fd38298af" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/17/2019" /><Meta Name="ms.locfileid" Value="69571952" /></Metadata><TypeSignature Language="C#" Value="public abstract class DbDataReader : MarshalByRefObject, IDisposable, System.Collections.IEnumerable, System.Data.IDataReader" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi abstract beforefieldinit DbDataReader extends System.MarshalByRefObject implements class System.Collections.IEnumerable, class System.Data.IDataReader, class System.Data.IDataRecord, class System.IDisposable" />
   <TypeSignature Language="DocId" Value="T:System.Data.Common.DbDataReader" />
   <TypeSignature Language="VB.NET" Value="Public MustInherit Class DbDataReader&#xA;Inherits MarshalByRefObject&#xA;Implements IDataReader, IDisposable, IEnumerable" />
@@ -44,7 +44,7 @@
   <Docs>
     <summary>Odczytuje strumień wierszy tylko do przodu ze źródła danych.</summary>
     <remarks>To be added.</remarks>
-    <related type="Article" href="https://msdn.microsoft.com/library/2a8e2640-3a49-42a1-a3a9-b43026907ae1">DbProviderFactories (ADO.NET)</related>
+    <related type="Article" href="~/docs/framework/data/adonet/dbproviderfactories.md">DbProviderFactories (ADO.NET)</related>
     <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
   </Docs>
   <Members>
@@ -77,7 +77,7 @@
       <Docs>
         <summary>Inicjuje nowe wystąpienie klasy <see cref="T:System.Data.Common.DbDataReader" /> klasy.</summary>
         <remarks>To be added.</remarks>
-        <related type="Article" href="https://msdn.microsoft.com/library/2a8e2640-3a49-42a1-a3a9-b43026907ae1">DbProviderFactories (ADO.NET)</related>
+        <related type="Article" href="~/docs/framework/data/adonet/dbproviderfactories.md">DbProviderFactories (ADO.NET)</related>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
       </Docs>
     </Member>
@@ -141,9 +141,18 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronicznie zamyka <see cref="T:System.Data.Common.DbDataReader" /> obiekt.</summary>
+        <returns>Zadanie reprezentujące operację asynchroniczną.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ Domyślna implementacja tej metody asynchronicznej deleguje do synchronicznego odpowiednika i zwraca ukończony `Task`, potencjalnie blokujący wątek wywołujący.
+ 
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
+   
+ ]]></format>
+        </remarks>
       </Docs>
     </Member>
     <Member MemberName="Depth">
@@ -247,12 +256,12 @@
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
- Wywołaj `Dispose` po zakończeniu korzystania z <xref:System.Data.Common.DbDataReader>. `Dispose` Metoda<xref:System.Data.Common.DbDataReader> pozostawia w stanie niezdatnym do użytku. Po wywołaniu `Dispose`należy wydać wszystkie odwołania <xref:System.Data.Common.DbDataReader> do, aby moduł wyrzucania elementów bezużytecznych mógł odwoływać pamięć <xref:System.Data.Common.DbDataReader> , którą zajmował.  
+ `Dispose` Wywołaj `DisposeAsync` lub po zakończeniu korzystania z <xref:System.Data.Common.DbDataReader>. Wywołanie jednej z tych metod pozostawia <xref:System.Data.Common.DbDataReader> w stanie niezdatnym do użytku. Po usunięciu należy wydać wszystkie odwołania do <xref:System.Data.Common.DbDataReader> , aby moduł wyrzucania elementów bezużytecznych mógł odzyskiwać pamięć <xref:System.Data.Common.DbDataReader> , którą zajmował.  
   
  Aby uzyskać więcej informacji, zobacz [Oczyszczanie zasobów niezarządzanych](~/docs/standard/garbage-collection/unmanaged.md) i implementowanie [metody Dispose](~/docs/standard/garbage-collection/implementing-dispose.md).  
   
 > [!NOTE]
->  Zawsze wywołuj `Dispose` przed wydaniem ostatniego odwołania <xref:System.Data.Common.DbDataReader>do. W przeciwnym razie używane zasoby nie zostaną zwolnione do momentu wywołania <xref:System.Data.Common.DbDataReader> `Finalize` metody obiektu przez moduł zbierający elementy bezużyteczne.  
+>  Zawsze usuwaj przed wydaniem ostatniego odwołania do <xref:System.Data.Common.DbDataReader>. W przeciwnym razie używane zasoby nie zostaną zwolnione do momentu wywołania <xref:System.Data.Common.DbDataReader> `Finalize` metody obiektu przez moduł zbierający elementy bezużyteczne.  
   
  ]]></format>
         </remarks>
@@ -328,9 +337,25 @@
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
-        <remarks>To be added.</remarks>
+        <summary>Asynchronicznie zwalnia wszystkie zasoby używane przez bieżące wystąpienie <see cref="T:System.Data.Common.DbDataReader" /> klasy.</summary>
+        <returns><see cref="P:System.Threading.Tasks.ValueTask" /> Reprezentuje operację asynchroniczną.</returns>
+        <remarks>
+          <format type="text/markdown"><![CDATA[  
+  
+## Remarks  
+ `Dispose` Wywołaj `DisposeAsync` lub po zakończeniu korzystania z <xref:System.Data.Common.DbDataReader>. Wywołanie jednej z tych metod pozostawia <xref:System.Data.Common.DbDataReader> w stanie niezdatnym do użytku. Po usunięciu należy wydać wszystkie odwołania do <xref:System.Data.Common.DbDataReader> , aby moduł wyrzucania elementów bezużytecznych mógł odzyskiwać pamięć <xref:System.Data.Common.DbDataReader> , którą zajmował.  
+  
+ Aby uzyskać więcej informacji, zobacz [Oczyszczanie zasobów niezarządzanych](~/docs/standard/garbage-collection/unmanaged.md) i implementowanie [metody Dispose](~/docs/standard/garbage-collection/implementing-dispose.md).  
+  
+> [!NOTE]
+>  Zawsze usuwaj przed wydaniem ostatniego odwołania do <xref:System.Data.Common.DbDataReader>. W przeciwnym razie używane zasoby nie zostaną zwolnione do momentu wywołania <xref:System.Data.Common.DbDataReader> `Finalize` metody obiektu przez moduł zbierający elementy bezużyteczne.  
+  
+ Domyślna implementacja tej metody asynchronicznej deleguje do synchronicznego odpowiednika i zwraca ukończony `ValueTask`, potencjalnie blokujący wątek wywołujący.
+ 
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
+
+ ]]></format>
+        </remarks>        
       </Docs>
     </Member>
     <Member MemberName="FieldCount">
@@ -366,7 +391,7 @@
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera liczbę kolumn w bieżącym wierszu.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera liczbę kolumn w bieżącym wierszu.</summary>
         <value>Liczba kolumn w bieżącym wierszu.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -417,7 +442,7 @@
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako wartość logiczną.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako wartość logiczną.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -462,7 +487,7 @@
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako bajt.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako bajt.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -515,7 +540,7 @@
         <param name="buffer">Bufor, do którego mają zostać skopiowane dane.</param>
         <param name="bufferOffset">Indeks z buforem, do którego zostaną skopiowane dane.</param>
         <param name="length">Maksymalna liczba znaków do odczytania.</param>
-        <summary>Odczytuje określoną liczbę bajtów z określonej kolumny, rozpoczynając od określonego indeksu i zapisuje je w buforze, rozpoczynając od określonej pozycji w buforze.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, odczytuje określoną liczbę bajtów z określonej kolumny, rozpoczynając od określonego indeksu i zapisuje je w buforze, rozpoczynając od określonej pozycji w buforze.</summary>
         <returns>Rzeczywista liczba odczytanych bajtów.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -560,7 +585,7 @@
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako pojedynczy znak.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako pojedynczy znak.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -613,7 +638,7 @@
         <param name="buffer">Bufor, do którego mają zostać skopiowane dane.</param>
         <param name="bufferOffset">Indeks z buforem, do którego zostaną skopiowane dane.</param>
         <param name="length">Maksymalna liczba znaków do odczytania.</param>
-        <summary>Odczytuje określoną liczbę znaków z określonej kolumny, zaczynając od określonego indeksu, i zapisuje je w buforze, rozpoczynając od określonej pozycji.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, odczytuje określoną liczbę znaków z określonej kolumny, zaczynając od określonego indeksu, i zapisuje je w buforze, rozpoczynając od określonej pozycji.</summary>
         <returns>Rzeczywista liczba odczytanych znaków.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
@@ -702,27 +727,32 @@
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera nazwę typu danych dla określonej kolumny.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera nazwę typu danych określonej kolumny.</summary>
         <returns>Nazwa typu danych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
-```  
-private static void GetDataTypes(String connectionString) {       
-   using (SqlConnection conn = new SqlConnection(connectionString)) {  
-      String queryString = "Select [CourseID],[Title],[Credits] from [MySchool].[dbo].[Course]";  
-      using (DbCommand command = new SqlCommand(queryString, conn)) {  
-         conn.Open();               
-         using (DbDataReader reader = command.ExecuteReader()) {  
-            for (Int32 i = 0; i < reader.FieldCount; i++) {  
-               Console.WriteLine("ColumnName:{0,-15}DataType:{1,-15}",reader.GetName(i),reader.GetDataTypeName(i));  
-            }  
-         }  
-      }  
-   }  
-}  
+```csharp
+private static void GetDataTypes(String connectionString) 
+{
+    using (SqlConnection conn = new SqlConnection(connectionString)) 
+    {
+        String queryString = "Select [CourseID],[Title],[Credits] from [MySchool].[dbo].[Course]";  
+        using (DbCommand command = new SqlCommand(queryString, conn)) 
+        {
+            conn.Open();               
+            using (DbDataReader reader = command.ExecuteReader()) 
+            {
+                for (Int32 i = 0; i < reader.FieldCount; i++)
+                {
+                    Console.WriteLine("ColumnName:{0,-15}DataType:{1,-15}",reader.GetName(i),reader.GetDataTypeName(i));
+                }
+            }
+        }
+    }
+}
 ```  
   
  ]]></format>
@@ -768,7 +798,7 @@ private static void GetDataTypes(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako <see cref="T:System.DateTime" /> obiekt.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako <see cref="T:System.DateTime" /> obiekt.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -853,7 +883,7 @@ private static void GetDataTypes(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako <see cref="T:System.Decimal" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako <see cref="T:System.Decimal" />.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -898,7 +928,7 @@ private static void GetDataTypes(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako liczbę zmiennoprzecinkową o podwójnej precyzji.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako liczbę zmiennoprzecinkową o podwójnej precyzji.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.InvalidCastException">Określone Rzutowanie jest nieprawidłowe.</exception>
@@ -944,8 +974,8 @@ private static void GetDataTypes(String connectionString) {
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca wartość <see cref="T:System.Collections.IEnumerator" /> , która może być używana do iteracji w wierszach w czytniku danych.</summary>
-        <returns><see cref="T:System.Collections.IEnumerator" /> , Który może być używany do iteracji wierszy w czytniku danych.</returns>
+        <summary>Gdy jest zastępowany w klasie pochodnej, zwraca moduł wyliczający, który może być używany do iteracji w wierszach w czytniku danych.</summary>
+        <returns>Moduł wyliczający, który może być używany do iteracji wierszy w czytniku danych.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
@@ -996,7 +1026,7 @@ private static void GetDataTypes(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera typ danych dla określonej kolumny.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera typ danych określonej kolumny.</summary>
         <returns>Typ danych określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1121,7 +1151,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Inne metody i właściwości obiektu DbDataReader nie powinny być wywoływane, gdy zwrócone zadanie nie zostało jeszcze ukończone.
 
@@ -1197,7 +1227,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod Get_ * _ podcza
 
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego. Domyślna implementacja zwraca również anulowane zadanie, jeśli zostało zakończone już anulowane tokeny anulowania.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Ta metoda akceptuje token anulowania, którego można użyć do żądania wcześniejszego anulowania operacji. Implementacje mogą zignorować to żądanie.
  
@@ -1262,7 +1292,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod Get_ * _ podcza
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako liczbę zmiennoprzecinkową o pojedynczej precyzji.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako liczbę zmiennoprzecinkową o pojedynczej precyzji.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1307,7 +1337,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod Get_ * _ podcza
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako unikatowy identyfikator globalny (GUID).</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako unikatowy identyfikator globalny (GUID).</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1352,7 +1382,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod Get_ * _ podcza
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako 16-bitową liczbę całkowitą ze znakiem.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako 16-bitową liczbę całkowitą ze znakiem.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1397,28 +1427,33 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod Get_ * _ podcza
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako 32-bitową liczbę całkowitą ze znakiem.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako 32-bitową liczbę całkowitą ze znakiem.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
   
 ## Remarks  
   
-```  
-private static void GetCredits(String connectionString) {  
-   using (SqlConnection conn = new SqlConnection(connectionString)) {  
-      String queryString = "Select [CourseID],[Title],[Credits] from [MySchool].[dbo].[Course]";   
-      using (DbCommand command = new SqlCommand(queryString, conn)) {  
-         conn.Open();   
-         using (DbDataReader reader = command.ExecuteReader()) {  
-            while (reader.Read()) {  
-               // Credits column is the integer column, and you can use the GetInt32 method                        
-               // to return a 32-bit signed integer.                       
-               Console.WriteLine("Course:{0,-15} Credits:{1}",reader[1],reader.GetInt32(2));   
-            }  
-         }  
-      }  
-   }  
+```csharp
+private static void GetCredits(String connectionString) 
+{
+    using (SqlConnection conn = new SqlConnection(connectionString)) 
+    {
+        String queryString = "Select [CourseID],[Title],[Credits] from [MySchool].[dbo].[Course]";   
+        using (DbCommand command = new SqlCommand(queryString, conn)) 
+        {
+            conn.Open();   
+            using (DbDataReader reader = command.ExecuteReader()) 
+            {
+                while (reader.Read()) 
+                {
+                    // Credits column is the integer column, and you can use the GetInt32 method                        
+                    // to return a 32-bit signed integer.                       
+                    Console.WriteLine("Course:{0,-15} Credits:{1}",reader[1],reader.GetInt32(2));   
+                }
+            }
+        }
+    }
 }  
 ```  
   
@@ -1466,7 +1501,7 @@ private static void GetCredits(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako 64-bitową liczbę całkowitą ze znakiem.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako 64-bitową liczbę całkowitą ze znakiem.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1511,7 +1546,7 @@ private static void GetCredits(String connectionString) {
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera nazwę kolumny z numerem porządkowym kolumny liczonym od zera.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera nazwę kolumny z numerem porządkowym kolumny liczonym od zera.</summary>
         <returns>Nazwa określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
@@ -1554,7 +1589,7 @@ private static void GetCredits(String connectionString) {
       </Parameters>
       <Docs>
         <param name="name">Nazwa kolumny.</param>
-        <summary>Pobiera numer porządkowy kolumny, używając nazwy kolumny.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, Pobiera numer kolumny według nazwy kolumny.</summary>
         <returns>Numer porządkowy kolumny liczony od zera.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Podana nazwa nie jest prawidłową nazwą kolumny.</exception>
@@ -1741,6 +1776,7 @@ private static void GetCredits(String connectionString) {
         <remarks>To be added.</remarks>
         <exception cref="T:System.InvalidOperationException"><see cref="T:System.Data.Common.DbDataReader" /> Jest zamknięty.</exception>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
+        <exception cref="T:System.NotSupportedException">Tylko .NET Core: wszystkie przypadki.</exception>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
       </Docs>
     </Member>
@@ -1844,7 +1880,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako wystąpienie elementu <see cref="T:System.String" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako wystąpienie <see cref="T:System.String" />.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1952,7 +1988,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako wystąpienie elementu <see cref="T:System.Object" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako wystąpienie <see cref="T:System.Object" />.</summary>
         <returns>Wartość określonej kolumny.</returns>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -1996,7 +2032,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="values">Tablica <see cref="T:System.Object" /> , do której mają zostać skopiowane kolumny atrybutów.</param>
-        <summary>Wypełnia tablicę obiektów wartościami kolumn bieżącego wiersza.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, wypełnia tablicę obiektów wartościami kolumn w bieżącym wierszu.</summary>
         <returns>Liczba wystąpień <see cref="T:System.Object" /> w tablicy.</returns>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
@@ -2032,7 +2068,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, czy zawiera ona <see cref="T:System.Data.Common.DbDataReader" /> co najmniej jeden wiersz.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość wskazującą, czy <see cref="T:System.Data.Common.DbDataReader" /> zawiera ona co najmniej jeden wiersz.</summary>
         <value><see langword="true" />Jeśli zawiera jeden lub więcej wierszy; <see langword="false" />w przeciwnym razie. <see cref="T:System.Data.Common.DbDataReader" /></value>
         <remarks>To be added.</remarks>
         <related type="Article" href="~/docs/framework/data/adonet/ado-net-overview.md">Omówienie ADO.NET</related>
@@ -2071,7 +2107,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
         <ReturnType>System.Boolean</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera wartość wskazującą, <see cref="T:System.Data.Common.DbDataReader" /> czy jest zamknięty.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość wskazującą, <see cref="T:System.Data.Common.DbDataReader" /> czy jest zamknięty.</summary>
         <value><see langword="true" />Jeśli jest zamknięty; w przeciwnym razie <see langword="false" />. <see cref="T:System.Data.Common.DbDataReader" /></value>
         <remarks>To be added.</remarks>
         <exception cref="T:System.InvalidOperationException"><see cref="T:System.Data.Common.DbDataReader" /> Jest zamknięty.</exception>
@@ -2116,7 +2152,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość wskazującą, czy kolumna zawiera nieistniejące lub brakujące wartości.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość wskazującą, czy kolumna zawiera nieistniejące lub brakujące wartości.</summary>
         <returns><see langword="true" />Jeśli określona kolumna jest odpowiednikiem <see cref="T:System.DBNull" />; <see langword="false" />w przeciwnym razie.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2184,7 +2220,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Inne metody i właściwości obiektu DbDataReader nie powinny być wywoływane, gdy zwrócone zadanie nie zostało jeszcze ukończone.
 
@@ -2255,7 +2291,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego. Domyślna implementacja zwraca również anulowane zadanie, jeśli zostało zakończone już anulowane tokeny anulowania.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Ta metoda akceptuje token anulowania, którego można użyć do żądania wcześniejszego anulowania operacji. Implementacje mogą zignorować to żądanie.
  
@@ -2329,7 +2365,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="ordinal">Numer porządkowy kolumny liczony od zera.</param>
-        <summary>Pobiera wartość określonej kolumny jako wystąpienie elementu <see cref="T:System.Object" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako wystąpienie <see cref="T:System.Object" />.</summary>
         <value>Wartość określonej kolumny.</value>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Indeks kolumny jest poza zakresem.</exception>
@@ -2373,7 +2409,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </Parameters>
       <Docs>
         <param name="name">Nazwa kolumny.</param>
-        <summary>Pobiera wartość określonej kolumny jako wystąpienie elementu <see cref="T:System.Object" />.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera wartość określonej kolumny jako wystąpienie <see cref="T:System.Object" />.</summary>
         <value>Wartość określonej kolumny.</value>
         <remarks>To be added.</remarks>
         <exception cref="T:System.IndexOutOfRangeException">Nie znaleziono kolumny o podanej nazwie.</exception>
@@ -2414,7 +2450,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Przesuwa czytelnika do następnego wyniku podczas odczytywania wyników partii instrukcji.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, przesuwa czytelnika do następnego wyniku podczas odczytywania wyników partii instrukcji.</summary>
         <returns><see langword="true" />Jeśli istnieje więcej zestawów wyników; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2476,13 +2512,13 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       <Parameters />
       <Docs>
         <summary>Asynchronicznie przesuwa czytnik do następnego wyniku podczas odczytywania wyników partii instrukcji.</summary>
-        <returns>Właściwość ma więcej zestawów wyników lub<see langword="false" /> Jeśli nie ma. <see langword="true" /> <see cref="T:System.Threading.Tasks.Task`1" /> <see cref="P:System.Threading.Tasks.Task`1.Result" /></returns>
+        <returns>Zadanie, którego <see cref="P:System.Threading.Tasks.Task`1.Result" /> właściwość ma <see langword="true" /> więcej zestawów wyników lub <see langword="false" /> Jeśli nie ma.</returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
 ## Remarks  
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Inne metody i właściwości obiektu DbDataReader nie powinny być wywoływane, gdy zwrócone zadanie nie zostało jeszcze ukończone.
  ]]></format>
@@ -2530,7 +2566,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 ## Remarks  
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego. Domyślna implementacja zwraca również anulowane zadanie, jeśli zostało zakończone już anulowane tokeny anulowania.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Ta metoda akceptuje token anulowania, którego można użyć do żądania wcześniejszego anulowania operacji. Implementacje mogą zignorować to żądanie.
  
@@ -2575,7 +2611,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Przesuwa czytelnika do następnego rekordu w zestawie wyników.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, przechodzenie do następnego rekordu w zestawie wyników.</summary>
         <returns><see langword="true" />Jeśli istnieje więcej wierszy; w przeciwnym razie. <see langword="false" /></returns>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2643,7 +2679,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 ## Remarks  
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
  
  Inne metody i właściwości obiektu DbDataReader nie powinny być wywoływane, gdy zwrócone zadanie nie zostało jeszcze ukończone.
 
@@ -2692,7 +2728,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
 ## Remarks  
  Domyślna implementacja tej metody asynchronicznej wywołuje jej odpowiednik synchroniczny i zwraca ukończone zadanie, co może spowodować zablokowanie wątku wywołującego. Domyślna implementacja zwraca również anulowane zadanie, jeśli zostało zakończone już anulowane tokeny anulowania.
 
- Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślne inmplementation przy użyciu asynchronicznych operacji we/wy.
+ Dostawcy danych, którzy obsługują [programowanie asynchroniczne](~/docs/framework/data/adonet/asynchronous-programming.md) , powinny zastąpić domyślną implementację przy użyciu asynchronicznych operacji we/wy.
 
  Ta metoda akceptuje token anulowania, którego można użyć do żądania wcześniejszego anulowania operacji. Implementacje mogą zignorować to żądanie.
  
@@ -2737,7 +2773,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
         <ReturnType>System.Int32</ReturnType>
       </ReturnValue>
       <Docs>
-        <summary>Pobiera liczbę wierszy zmienionych, wstawionych lub usuniętych przez wykonanie instrukcji SQL.</summary>
+        <summary>Gdy jest zastępowany w klasie pochodnej, pobiera liczbę wierszy zmienionych, wstawionych lub usuniętych przez wykonanie instrukcji SQL.</summary>
         <value>Liczba wierszy zmienionych, wstawionych lub usuniętych. -1 dla instrukcji SELECT; 0, jeśli nie wpłynęły żadne wiersze lub instrukcja nie powiodła się.</value>
         <remarks>
           <format type="text/markdown"><![CDATA[  
@@ -2776,7 +2812,7 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
+        <summary>Aby uzyskać opis tego elementu członkowskiego, <see cref="M:System.Data.IDataReader.Close" />Zobacz.</summary>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
@@ -2805,8 +2841,8 @@ Operacja asynchroniczna jest w toku. Dotyczy to wszystkich metod get * podczas u
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>To be added.</summary>
-        <returns>To be added.</returns>
+        <summary>Aby uzyskać opis tego elementu członkowskiego, <see cref="M:System.Data.IDataReader.GetSchemaTable" />Zobacz.</summary>
+        <returns>A <see cref="T:System.Data.DataTable" /> który opisuje metadane kolumn.</returns>
         <remarks>To be added.</remarks>
       </Docs>
     </Member>
