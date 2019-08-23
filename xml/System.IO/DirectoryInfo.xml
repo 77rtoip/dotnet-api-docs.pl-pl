@@ -1,5 +1,5 @@
 <Type Name="DirectoryInfo" FullName="System.IO.DirectoryInfo">
-  <Metadata><Meta Name="ms.openlocfilehash" Value="380506d10e50a751045aac309916343b72f2e3b4" /><Meta Name="ms.sourcegitcommit" Value="055a4a82a0b08bfbdc21bd1347fb71f7fe2c099e" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/15/2019" /><Meta Name="ms.locfileid" Value="69243851" /></Metadata><TypeSignature Language="C#" Value="public sealed class DirectoryInfo : System.IO.FileSystemInfo" />
+  <Metadata><Meta Name="ms.openlocfilehash" Value="ceed6829b5a0a3adab04cfbb9318ee9b329320d1" /><Meta Name="ms.sourcegitcommit" Value="a81314feefaa9d10797d6bfe39dab52ca7fd1709" /><Meta Name="ms.translationtype" Value="MT" /><Meta Name="ms.contentlocale" Value="pl-PL" /><Meta Name="ms.lasthandoff" Value="08/22/2019" /><Meta Name="ms.locfileid" Value="69973068" /></Metadata><TypeSignature Language="C#" Value="public sealed class DirectoryInfo : System.IO.FileSystemInfo" />
   <TypeSignature Language="ILAsm" Value=".class public auto ansi serializable sealed beforefieldinit DirectoryInfo extends System.IO.FileSystemInfo" />
   <TypeSignature Language="DocId" Value="T:System.IO.DirectoryInfo" />
   <TypeSignature Language="VB.NET" Value="Public NotInheritable Class DirectoryInfo&#xA;Inherits FileSystemInfo" />
@@ -2933,23 +2933,33 @@ Przeniesiony katalog i katalog docelowy mają tę samą nazwę.</exception>
       </ReturnValue>
       <Docs>
         <summary>Pobiera katalog nadrzędny określonego podkatalogu.</summary>
-        <value>Katalog nadrzędny lub <see langword="null" /> ścieżka ma wartość null lub jeśli ścieżka do pliku wskazuje, że katalog główny (na przykład "\\", "C:" lub * "\\\server\share").</value>
+        <value>Katalog nadrzędny lub <see langword="null" /> , jeśli ścieżka ma wartość null lub jeśli ścieżka pliku jest oznaczona jako główna (na `\`przykład, `C:\`lub `\\server\share`).</value>
         <remarks>
-          <format type="text/markdown"><![CDATA[  
-  
-## Remarks  
- Aby uzyskać listę typowych zadań we/wy, zobacz [typowe zadania we/wy](~/docs/standard/io/common-i-o-tasks.md).  
-  
-   
-  
-## Examples  
- Poniższy przykład ilustruje odwołujący się do katalogu nadrzędnego określonego katalogu.  
-  
- [!code-cpp[directoryinfoparent#1](~/samples/snippets/cpp/VS_Snippets_CLR/directoryinfoparent/CPP/directoryinfoparent.cpp#1)]
- [!code-csharp[directoryinfoparent#1](~/samples/snippets/csharp/VS_Snippets_CLR/directoryinfoparent/CS/directoryinfoparent.cs#1)]
- [!code-vb[directoryinfoparent#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/directoryinfoparent/VB/directoryinfoparent.vb#1)]  
-  
- ]]></format>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+> [!IMPORTANT]
+> W .NET Framework `Parent` zwraca ścieżkę względną.
+> W programie .NET Core `Parent` funkcja zwraca w pełni kwalifikowaną ścieżkę.
+
+Aby zapewnić spójne zachowanie w różnych wersjach i zapewnić jawne zamiar, należy pobrać wartość jednej z następujących właściwości w <xref:System.IO.DirectoryInfo> wystąpieniu zwracanym przez. `Parent`
+- <xref:System.IO.DirectoryInfo.Name>, która zwraca prostą nazwę katalogu (na przykład `bin`).
+- <xref:System.IO.DirectoryInfo.FullName>, która zwraca ścieżkę bezwzględną katalogu. 
+
+
+Aby uzyskać listę typowych zadań we/wy, zobacz [typowe zadania we/wy](~/docs/standard/io/common-i-o-tasks.md).
+
+
+## Examples
+
+Poniższy przykład odnosi się do katalogu nadrzędnego określonego katalogu.
+
+[!code-cpp[directoryinfoparent#1](~/samples/snippets/cpp/VS_Snippets_CLR/directoryinfoparent/CPP/directoryinfoparent.cpp#1)]
+[!code-csharp[directoryinfoparent#1](~/samples/snippets/csharp/VS_Snippets_CLR/directoryinfoparent/CS/directoryinfoparent.cs#1)]
+[!code-vb[directoryinfoparent#1](~/samples/snippets/visualbasic/VS_Snippets_CLR/directoryinfoparent/VB/directoryinfoparent.vb#1)]
+
+          ]]></format>
         </remarks>
         <exception cref="T:System.Security.SecurityException">Obiekt wywołujący nie posiada wymaganych uprawnień.</exception>
         <permission cref="T:System.Security.Permissions.FileIOPermission">do odczytywania z plików i katalogów oraz do uzyskiwania dostępu do ścieżki. Skojarzone wyliczenia: <see cref="T:System.Security.Permissions.FileIOPermissionAccess" />,<see cref="T:System.Security.Permissions.FileIOPermissionAccess" /></permission>
@@ -3122,9 +3132,20 @@ Przeniesiony katalog i katalog docelowy mają tę samą nazwę.</exception>
       </ReturnValue>
       <Parameters />
       <Docs>
-        <summary>Zwraca oryginalną ścieżkę, która została przeniesiona przez użytkownika.</summary>
+        <summary>Zwraca oryginalną ścieżkę, która została przeniesiona <see cref="T:System.IO.DirectoryInfo" /> do konstruktora. Zamiast tej metody <see cref="P:System.IO.DirectoryInfo.Name" /> Użyj właściwości lubdlapełnejścieżkilubnazwypliku/katalogu.<see cref="P:System.IO.DirectoryInfo.FullName" /></summary>
         <returns>Oryginalna ścieżka, która została przeniesiona przez użytkownika.</returns>
-        <remarks>To be added.</remarks>
+        <remarks>
+          <format type="text/markdown"><![CDATA[
+
+## Remarks
+
+> [!IMPORTANT]
+> Ciąg zwracany przez <xref:System.IO.DirectoryInfo.ToString%2A> metodę reprezentuje ścieżkę, która została przekazana <xref:System.IO.DirectoryInfo> do konstruktora. Zamiast wywoływania `ToString` metody, należy pobrać wartość jednej z następujących właściwości, w zależności od zamiaru:
+> - <xref:System.IO.DirectoryInfo.Name>, aby uzyskać nazwę katalogu bez informacji o ścieżce nadrzędnej.
+> - <xref:System.IO.DirectoryInfo.FullName>, aby uzyskać w pełni kwalifikowaną ścieżkę katalogu.
+
+          ]]></format>
+        </remarks>
         <related type="Article" href="~/docs/standard/io/index.md">We/Wy plików i strumieni</related>
         <related type="Article" href="~/docs/standard/io/how-to-read-text-from-a-file.md">Instrukcje: Odczytywanie tekstu z pliku</related>
         <related type="Article" href="~/docs/standard/io/how-to-write-text-to-a-file.md">Instrukcje: Zapisywanie tekstu w pliku</related>
